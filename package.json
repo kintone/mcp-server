@@ -1,16 +1,37 @@
 {
   "name": "@kintone/mcp-server",
-  "private": true,
   "version": "1.0.0",
+  "private": true,
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
+  "license": "UNLICENSED",
   "author": {
     "name": "Cybozu, Inc.",
     "url": "https://cybozu.co.jp"
   },
-  "license": "UNLICENSED"
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch --experimental-strip-types src/index.ts",
+    "fix": "pnpm run \"/^fix:.*/\"",
+    "fix:eslint": "pnpm lint:eslint --fix",
+    "fix:prettier": "pnpm lint:prettier --write",
+    "lint": "pnpm run \"/^lint:.*/\"",
+    "lint:eslint": "eslint . --max-warnings 0",
+    "lint:prettier": "prettier --check '**/*.{json,json5,md,yml,yaml}' --cache",
+    "start": "node --experimental-strip-types src/index.ts",
+    "test": "echo \"no test specified\""
+  },
+  "devDependencies": {
+    "@cybozu/eslint-config": "^24.0.0",
+    "@types/node": "^24.0.14",
+    "eslint": "^9.31.0",
+    "eslint-plugin-package-json": "^0.44.1",
+    "globals": "^16.3.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">= 22"
+  }
 }
