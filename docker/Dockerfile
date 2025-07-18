@@ -6,18 +6,15 @@ WORKDIR /app
 
 RUN corepack enable
 
-RUN pnpm install
-
-# https://pnpm.io/ja/cli/deploy
-RUN pnpm --filter @kintone/mcp-server --prod deploy pruned
+RUN pnpm install --prod
 
 FROM gcr.io/distroless/nodejs22-debian12:nonroot@sha256:8d8b9363b0c9d1153f845824f9b754fdb050ada4fa190583eca2da13fdd3138c
 LABEL org.opencontainers.image.source=https://github.com/kintone/mcp-server
 
 WORKDIR /app
-COPY --from=build /app/pruned/src ./src
-COPY --from=build /app/pruned/node_modules ./node_modules
-COPY --from=build /app/pruned/package.json ./package.json
+COPY --from=build /app/src ./src
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package.json ./package.json
 
 # Entrypointにnodeが指定されているため、CMDにはオプション・ファイル名を指定する
 # ref. https://github.com/GoogleContainerTools/distroless/tree/main/nodejs#usage
