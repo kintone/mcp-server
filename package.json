@@ -21,7 +21,7 @@
     "lint:prettier": "prettier --check '**/*.{json,json5,md,yml,yaml}' --cache",
     "start": "node --experimental-strip-types src/index.ts",
     "test": "echo \"no test specified\"",
-    "tsc:noEmit": "tsc -noEmit "
+    "typecheck": "tsc -noEmit "
   },
   "devDependencies": {
     "@cybozu/eslint-config": "^24.0.0",

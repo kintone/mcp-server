@@ -20,6 +20,6 @@ jobs:
       - name: eslint
         run: pnpm lint
       - name: typecheck
-        run: pnpm tsc:noEmit
+        run: pnpm typecheck
       - name: Check licenses
         run: pnpm license:analyze
