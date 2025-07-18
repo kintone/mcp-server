@@ -15,6 +15,7 @@
     "fix": "pnpm run \"/^fix:.*/\"",
     "fix:eslint": "pnpm lint:eslint --fix",
     "fix:prettier": "pnpm lint:prettier --write",
+    "license:analyze": "license-manager analyze -c license-manager.config.cjs",
     "lint": "pnpm run \"/^lint:.*/\"",
     "lint:eslint": "eslint . --max-warnings 0",
     "lint:prettier": "prettier --check '**/*.{json,json5,md,yml,yaml}' --cache",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@cybozu/eslint-config": "^24.0.0",
+    "@cybozu/license-manager": "^1.2.1",
     "@types/node": "^24.0.14",
     "eslint": "^9.31.0",
     "eslint-plugin-package-json": "^0.44.1",
