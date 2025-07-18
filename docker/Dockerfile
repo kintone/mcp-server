@@ -8,7 +8,7 @@ RUN corepack enable
 
 RUN pnpm install --prod
 
-FROM gcr.io/distroless/nodejs22-debian12:nonroot@sha256:8d8b9363b0c9d1153f845824f9b754fdb050ada4fa190583eca2da13fdd3138c
+FROM gcr.io/distroless/nodejs22-debian12:nonroot@sha256:2a8c8af8bf7046d71efccaf1226e491f2ef934f3079dca9ad8ebbf36551f7fc5
 LABEL org.opencontainers.image.source=https://github.com/kintone/mcp-server
 
 WORKDIR /app
