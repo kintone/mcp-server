@@ -1,4 +1,4 @@
-name: "lint"
+name: "static-test"
 
 on:
   pull_request:
@@ -14,7 +14,7 @@ defaults:
     shell: bash -eo pipefail {0}
 
 jobs:
-  lint:
+  static-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,4 +24,7 @@ jobs:
           node-version-file: .node-version
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
+      - name: eslint
+        run: pnpm lint
+      - name: typecheck
+        run: pnpm tsc:noEmit
