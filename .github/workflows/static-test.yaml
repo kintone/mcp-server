@@ -1,0 +1,25 @@
+name: "static-test"
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  static-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
+      - name: eslint
+        run: pnpm lint
+      - name: typecheck
+        run: pnpm typecheck
+      - name: Check licenses
+        run: pnpm license:analyze
