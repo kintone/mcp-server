@@ -14,40 +14,34 @@ const inputSchema = {
 };
 
 const outputSchema = {
-  success: z.boolean().describe("Whether the operation was successful"),
-  app: z
+  appId: z.string().describe("The app ID"),
+  code: z.string().describe("The app code (empty string if not set)"),
+  name: z.string().describe("The app name"),
+  description: z
+    .string()
+    .describe("The app description (empty string if not set)"),
+  spaceId: z
+    .string()
+    .nullable()
+    .describe("The space ID (null if not in a space)"),
+  threadId: z
+    .string()
+    .nullable()
+    .describe("The thread ID (null if not in a space)"),
+  createdAt: z.string().describe("The creation date and time"),
+  creator: z
     .object({
-      appId: z.string().describe("The app ID"),
-      code: z.string().describe("The app code (empty string if not set)"),
-      name: z.string().describe("The app name"),
-      description: z
-        .string()
-        .describe("The app description (empty string if not set)"),
-      spaceId: z
-        .string()
-        .nullable()
-        .describe("The space ID (null if not in a space)"),
-      threadId: z
-        .string()
-        .nullable()
-        .describe("The thread ID (null if not in a space)"),
-      createdAt: z.string().describe("The creation date and time"),
-      creator: z
-        .object({
-          code: z.string().describe("The creator's user code"),
-          name: z.string().describe("The creator's display name"),
-        })
-        .describe("The creator information"),
-      modifiedAt: z.string().describe("The last modified date and time"),
-      modifier: z
-        .object({
-          code: z.string().describe("The modifier's user code"),
-          name: z.string().describe("The modifier's display name"),
-        })
-        .describe("The modifier information"),
+      code: z.string().describe("The creator's user code"),
+      name: z.string().describe("The creator's display name"),
     })
-    .optional(),
-  error: z.string().optional(),
+    .describe("The creator information"),
+  modifiedAt: z.string().describe("The last modified date and time"),
+  modifier: z
+    .object({
+      code: z.string().describe("The modifier's user code"),
+      name: z.string().describe("The modifier's display name"),
+    })
+    .describe("The modifier information"),
 };
 
 export const getApp = createTool(
@@ -66,49 +60,28 @@ export const getApp = createTool(
       },
     });
 
-    try {
-      const app = await client.app.getApp({ id: appId });
-      const result = {
-        success: true,
-        app: {
-          appId: app.appId,
-          code: app.code,
-          name: app.name,
-          description: app.description,
-          spaceId: app.spaceId,
-          threadId: app.threadId,
-          createdAt: app.createdAt,
-          creator: app.creator,
-          modifiedAt: app.modifiedAt,
-          modifier: app.modifier,
+    const app = await client.app.getApp({ id: appId });
+    const result = {
+      appId: app.appId,
+      code: app.code,
+      name: app.name,
+      description: app.description,
+      spaceId: app.spaceId,
+      threadId: app.threadId,
+      createdAt: app.createdAt,
+      creator: app.creator,
+      modifiedAt: app.modifiedAt,
+      modifier: app.modifier,
+    };
+
+    return {
+      structuredContent: result,
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify(result, null, 2),
         },
-      };
-
-      return {
-        structuredContent: result,
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(result, null, 2),
-          },
-        ],
-      };
-    } catch (error) {
-      const errorResult = {
-        success: false,
-        error:
-          error instanceof Error ? error.message : "Unknown error occurred",
-      };
-
-      return {
-        structuredContent: errorResult,
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(errorResult, null, 2),
-          },
-        ],
-      };
-    }
+      ],
+    };
   },
 );
