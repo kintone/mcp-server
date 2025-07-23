@@ -14,6 +14,7 @@
     "kintone-mcp-server": "./src/index.ts"
   },
   "scripts": {
+    "build": "tsc",
     "dev": "tsx --watch src/index.ts",
     "fix": "pnpm run \"/^fix:.*/\"",
     "fix:eslint": "pnpm lint:eslint --fix",
@@ -22,7 +23,7 @@
     "lint": "pnpm run \"/^lint:.*/\"",
     "lint:eslint": "eslint . --max-warnings 0",
     "lint:prettier": "prettier --check '**/*.{json,json5,md,yml,yaml}' --cache",
-    "start": "node --experimental-strip-types src/index.ts",
+    "start": "node dist/index.js",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "test:watch": "vitest --watch",

@@ -23,3 +23,6 @@ lerna-debug.log*
 
 ## Claude settings
 .claude/settings.local.json
+
+## Build output
+dist/
