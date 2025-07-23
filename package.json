@@ -11,7 +11,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch --experimental-strip-types src/index.ts",
+    "dev": "tsx --watch src/index.ts",
     "fix": "pnpm run \"/^fix:.*/\"",
     "fix:eslint": "pnpm lint:eslint --fix",
     "fix:prettier": "pnpm lint:prettier --write",
@@ -31,11 +31,17 @@
     "eslint-plugin-package-json": "^0.44.1",
     "globals": "^16.3.0",
     "prettier": "^3.6.2",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4"
   },
   "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad",
   "engines": {
     "node": ">= 22"
+  },
+  "dependencies": {
+    "@kintone/rest-api-client": "^5.7.4",
+    "@modelcontextprotocol/sdk": "^1.16.0",
+    "zod": "^3.23.8"
   }
 }

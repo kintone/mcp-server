@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { createTool } from '../types.js';
-import { getConfig } from '../../config.js';
 
 const inputSchema = {
   a: z.number().describe('First number'),

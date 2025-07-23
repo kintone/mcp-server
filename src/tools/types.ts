@@ -1,6 +1,6 @@
-import { ToolCallback } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { ToolAnnotations } from '@modelcontextprotocol/sdk/types.js';
-import { ZodRawShape } from 'zod';
+import type { ToolCallback } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { ToolAnnotations } from '@modelcontextprotocol/sdk/types.js';
+import type { ZodRawShape } from 'zod';
 
 // Tool configuration type
 type ToolConfig<InputArgs extends ZodRawShape, OutputArgs extends ZodRawShape> = {
