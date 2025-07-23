@@ -1,15 +1,9 @@
 import { z } from "zod";
-import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { createTool } from "../types.js";
+import { getKintoneClient } from "../../client.js";
+import { parseKintoneClientConfig } from "../../config.js";
 
 const inputSchema = {
-  baseUrl: z
-    .string()
-    .describe(
-      "The base URL of your kintone environment (e.g., https://example.cybozu.com)",
-    ),
-  username: z.string().describe("Username for authentication"),
-  password: z.string().describe("Password for authentication"),
   appId: z.number().describe("The ID of the app to retrieve"),
 };
 
@@ -51,15 +45,9 @@ export const getApp = createTool(
     inputSchema,
     outputSchema,
   },
-  async ({ baseUrl, username, password, appId }) => {
-    const client = new KintoneRestAPIClient({
-      baseUrl,
-      auth: {
-        username,
-        password,
-      },
-    });
-
+  async ({ appId }) => {
+    const config = parseKintoneClientConfig();
+    const client = getKintoneClient(config);
     const app = await client.app.getApp({ id: appId });
     const result = {
       appId: app.appId,

@@ -1,31 +1,55 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { getApp } from "../get-app.js";
 import { z } from "zod";
 import { mockExtra } from "../../../__tests__/utils.js";
 
-// Mock the KintoneRestAPIClient
-vi.mock("@kintone/rest-api-client", () => ({
-  KintoneRestAPIClient: vi.fn().mockImplementation(() => ({
-    app: {
-      getApp: vi.fn(),
-    },
-  })),
+// Mock the client module
+vi.mock("../../../client.js", () => ({
+  getKintoneClient: vi.fn(),
+  resetKintoneClient: vi.fn(),
+}));
+
+// Mock the config module
+vi.mock("../../../config.js", () => ({
+  parseKintoneClientConfig: vi.fn(),
 }));
 
 describe("get-app tool", () => {
   let mockGetApp: ReturnType<typeof vi.fn>;
+  const originalEnv = process.env;
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    const { KintoneRestAPIClient } = vi.mocked(
-      await import("@kintone/rest-api-client"),
+    // Set up environment variables for testing
+    process.env = {
+      ...originalEnv,
+      KINTONE_BASE_URL: "https://example.cybozu.com",
+      KINTONE_USERNAME: "testuser",
+      KINTONE_PASSWORD: "testpass",
+    };
+
+    // Mock parseKintoneClientConfig
+    const { parseKintoneClientConfig } = vi.mocked(
+      await import("../../../config.js"),
     );
+    parseKintoneClientConfig.mockReturnValue({
+      KINTONE_BASE_URL: "https://example.cybozu.com",
+      KINTONE_USERNAME: "testuser",
+      KINTONE_PASSWORD: "testpass",
+    });
+
+    // Mock getKintoneClient
+    const { getKintoneClient } = vi.mocked(await import("../../../client.js"));
     mockGetApp = vi.fn();
-    (KintoneRestAPIClient as any).mockImplementation(() => ({
+    getKintoneClient.mockReturnValue({
       app: {
         getApp: mockGetApp,
       },
-    }));
+    } as any);
+  });
+
+  afterEach(() => {
+    process.env = originalEnv;
   });
 
   describe("tool configuration", () => {
@@ -42,43 +66,16 @@ describe("get-app tool", () => {
 
       // Valid input
       const validInput = {
-        baseUrl: "https://example.cybozu.com",
-        username: "testuser",
-        password: "testpass",
         appId: 123,
       };
       expect(() => schema.parse(validInput)).not.toThrow();
 
       // Invalid input - missing fields
-      expect(() =>
-        schema.parse({
-          baseUrl: "https://example.cybozu.com",
-          username: "testuser",
-          password: "testpass",
-        }),
-      ).toThrow();
-      expect(() =>
-        schema.parse({
-          username: "testuser",
-          password: "testpass",
-          appId: 123,
-        }),
-      ).toThrow();
+      expect(() => schema.parse({})).toThrow();
 
       // Invalid input - wrong types
       expect(() =>
         schema.parse({
-          baseUrl: 123, // should be string
-          username: "testuser",
-          password: "testpass",
-          appId: 123,
-        }),
-      ).toThrow();
-      expect(() =>
-        schema.parse({
-          baseUrl: "https://example.cybozu.com",
-          username: "testuser",
-          password: "testpass",
           appId: "123", // should be number
         }),
       ).toThrow();
@@ -149,9 +146,6 @@ describe("get-app tool", () => {
 
       const result = await getApp.callback(
         {
-          baseUrl: "https://example.cybozu.com",
-          username: "testuser",
-          password: "testpass",
           appId: 123,
         },
         mockExtra,
@@ -190,9 +184,6 @@ describe("get-app tool", () => {
 
       const result = await getApp.callback(
         {
-          baseUrl: "https://example.cybozu.com",
-          username: "testuser",
-          password: "testpass",
           appId: 456,
         },
         mockExtra,
@@ -201,7 +192,7 @@ describe("get-app tool", () => {
       expect(result.structuredContent).toEqual(mockAppData);
     });
 
-    it("should pass through different baseUrl correctly", async () => {
+    it("should use client from getKintoneClient", async () => {
       const mockAppData = {
         appId: "789",
         code: "APP789",
@@ -225,24 +216,23 @@ describe("get-app tool", () => {
 
       const result = await getApp.callback(
         {
-          baseUrl: "https://custom.kintone.com",
-          username: "admin",
-          password: "adminpass",
           appId: 789,
         },
         mockExtra,
       );
 
-      // Verify the client was created with correct baseUrl
-      const { KintoneRestAPIClient } = vi.mocked(
-        await import("@kintone/rest-api-client"),
+      // Verify parseKintoneClientConfig and getKintoneClient were called
+      const { parseKintoneClientConfig } = vi.mocked(
+        await import("../../../config.js"),
       );
-      expect(KintoneRestAPIClient).toHaveBeenCalledWith({
-        baseUrl: "https://custom.kintone.com",
-        auth: {
-          username: "admin",
-          password: "adminpass",
-        },
+      const { getKintoneClient } = vi.mocked(
+        await import("../../../client.js"),
+      );
+      expect(parseKintoneClientConfig).toHaveBeenCalled();
+      expect(getKintoneClient).toHaveBeenCalledWith({
+        KINTONE_BASE_URL: "https://example.cybozu.com",
+        KINTONE_USERNAME: "testuser",
+        KINTONE_PASSWORD: "testpass",
       });
 
       expect(result.structuredContent).toEqual(mockAppData);
