@@ -1,9 +1,12 @@
-import type { ToolCallback } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { ToolAnnotations } from '@modelcontextprotocol/sdk/types.js';
-import type { ZodRawShape } from 'zod';
+import type { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { ToolAnnotations } from "@modelcontextprotocol/sdk/types.js";
+import type { ZodRawShape } from "zod";
 
 // Tool configuration type
-type ToolConfig<InputArgs extends ZodRawShape, OutputArgs extends ZodRawShape> = {
+type ToolConfig<
+  InputArgs extends ZodRawShape,
+  OutputArgs extends ZodRawShape,
+> = {
   title?: string;
   description?: string;
   inputSchema?: InputArgs;
@@ -14,14 +17,20 @@ type ToolConfig<InputArgs extends ZodRawShape, OutputArgs extends ZodRawShape> =
 };
 
 // Tool type
-export type Tool<InputArgs extends ZodRawShape = ZodRawShape, OutputArgs extends ZodRawShape = ZodRawShape> = {
+export type Tool<
+  InputArgs extends ZodRawShape = ZodRawShape,
+  OutputArgs extends ZodRawShape = ZodRawShape,
+> = {
   name: string;
-  config: ToolConfig<InputArgs, OutputArgs>; 
+  config: ToolConfig<InputArgs, OutputArgs>;
   callback: ToolCallback<InputArgs>;
 };
 
 // Tool creation helper function
-export function createTool<InputArgs extends ZodRawShape, OutputArgs extends ZodRawShape>(
+export function createTool<
+  InputArgs extends ZodRawShape,
+  OutputArgs extends ZodRawShape,
+>(
   name: string,
   config: ToolConfig<InputArgs, OutputArgs>,
   callback: ToolCallback<InputArgs>,
@@ -31,4 +40,4 @@ export function createTool<InputArgs extends ZodRawShape, OutputArgs extends Zod
     config,
     callback,
   };
-};
+}

@@ -1,20 +1,20 @@
-import { z } from 'zod';
-import { createTool } from '../types.js';
+import { z } from "zod";
+import { createTool } from "../types.js";
 
 const inputSchema = {
-  a: z.number().describe('First number'),
-  b: z.number().describe('Second number'),
+  a: z.number().describe("First number"),
+  b: z.number().describe("Second number"),
 };
 
 const outputSchema = {
-  result: z.number().describe('Sum of the two numbers'),
-  operation: z.string().describe('Description of the operation performed'),
+  result: z.number().describe("Sum of the two numbers"),
+  operation: z.string().describe("Description of the operation performed"),
 };
 
 export const add = createTool(
-  'add_numbers',
+  "add_numbers",
   {
-    description: 'Add two numbers together',
+    description: "Add two numbers together",
     inputSchema,
     outputSchema,
   },
@@ -28,10 +28,10 @@ export const add = createTool(
       structuredContent: result,
       content: [
         {
-          type: 'text',
+          type: "text",
           text: JSON.stringify(result, null, 2),
         },
       ],
     };
-  }
+  },
 );

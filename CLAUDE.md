@@ -5,6 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## よく使うコマンド
 
 ### 開発環境の起動
+
 ```bash
 # 開発サーバーの起動（ファイル変更の自動検知付き）
 pnpm dev
@@ -14,6 +15,7 @@ pnpm start
 ```
 
 ### コード品質チェック
+
 ```bash
 # すべてのリントチェックを実行
 pnpm lint
@@ -21,7 +23,7 @@ pnpm lint
 # ESLintチェック
 pnpm lint:eslint
 
-# Prettierチェック  
+# Prettierチェック
 pnpm lint:prettier
 
 # TypeScriptの型チェック
@@ -29,6 +31,7 @@ pnpm typecheck
 ```
 
 ### コード修正
+
 ```bash
 # すべての自動修正を実行
 pnpm fix
@@ -41,18 +44,21 @@ pnpm fix:prettier
 ```
 
 ### テスト
+
 ```bash
 # テストの実行（現在はno test specifiedと表示される）
 pnpm test
 ```
 
 ### ライセンス管理
+
 ```bash
 # ライセンスの分析
 pnpm license:analyze
 ```
 
 ### Docker環境での実行
+
 ```bash
 # Dockerイメージのビルドと実行
 docker compose up
@@ -64,6 +70,7 @@ docker run ghcr.io/kintone/mcp-server
 ## コードのアーキテクチャと構造
 
 ### プロジェクト構造
+
 ```
 kintone-mcp-server/
 ├── src/
@@ -81,6 +88,7 @@ kintone-mcp-server/
 ```
 
 ### 主要な技術スタック
+
 - **TypeScript**: ES2024ターゲット、Node16モジュール解決
 - **MCP SDK**: Model Context Protocol SDKを使用したサーバー実装
 - **Zod**: スキーマ検証とバリデーション
@@ -110,12 +118,14 @@ kintone-mcp-server/
 kintoneの公式ローカルMCPサーバーです。
 
 ### 実行方法
+
 - **Docker**: `docker run ghcr.io/kintone/mcp-server`
 - **npm**: `npx @kintone/mcp-server`
 
 ## 重要な設定ファイル
 
 ### TypeScript設定（tsconfig.json）
+
 - **ターゲット**: ES2024
 - **モジュール**: node16
 - **厳格モード**: 有効（strict: true）
@@ -126,12 +136,14 @@ kintoneの公式ローカルMCPサーバーです。
   - `forceConsistentCasingInFileNames`: true
 
 ### ESLint設定（eslint.config.js）
+
 - Cybozuのプリセット（`@cybozu/eslint-config`）を使用
 - Node.js向けTypeScript + Prettier設定
 - `@typescript-eslint/consistent-type-imports`ルールを強制
 - package.jsonのリントも含む
 
 ### パッケージ管理
+
 - **pnpm**: v10.13.1を使用
 - **Node.js**: v22以上が必要
 - **プライベートパッケージ**: 公開されない設定
