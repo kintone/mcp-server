@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { createTool } from "./types.js";
+import { createTool } from "../types.js";
 
 const inputSchema = {
   baseUrl: z
