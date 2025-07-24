@@ -9,11 +9,6 @@ vi.mock("../../../client.js", () => ({
   resetKintoneClient: vi.fn(),
 }));
 
-// Mock the config module
-vi.mock("../../../config.js", () => ({
-  parseKintoneClientConfig: vi.fn(),
-}));
-
 describe("get-app tool", () => {
   let mockGetApp: ReturnType<typeof vi.fn>;
   const originalEnv = process.env;
@@ -27,16 +22,6 @@ describe("get-app tool", () => {
       KINTONE_USERNAME: "testuser",
       KINTONE_PASSWORD: "testpass",
     };
-
-    // Mock parseKintoneClientConfig
-    const { parseKintoneClientConfig } = vi.mocked(
-      await import("../../../config.js"),
-    );
-    parseKintoneClientConfig.mockReturnValue({
-      KINTONE_BASE_URL: "https://example.cybozu.com",
-      KINTONE_USERNAME: "testuser",
-      KINTONE_PASSWORD: "testpass",
-    });
 
     // Mock getKintoneClient
     const { getKintoneClient } = vi.mocked(await import("../../../client.js"));
@@ -223,14 +208,10 @@ describe("get-app tool", () => {
         mockExtra,
       );
 
-      // Verify parseKintoneClientConfig and getKintoneClient were called
-      const { parseKintoneClientConfig } = vi.mocked(
-        await import("../../../config.js"),
-      );
+      // Verify getKintoneClient was called
       const { getKintoneClient } = vi.mocked(
         await import("../../../client.js"),
       );
-      expect(parseKintoneClientConfig).toHaveBeenCalled();
       expect(getKintoneClient).toHaveBeenCalledWith({
         KINTONE_BASE_URL: "https://example.cybozu.com",
         KINTONE_USERNAME: "testuser",
