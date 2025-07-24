@@ -79,23 +79,14 @@ export const getApps = createTool(
     const config = parseKintoneClientConfig();
     const client = getKintoneClient(config);
 
-    const params: {
-      ids?: number[];
-      codes?: string[];
-      name?: string;
-      spaceIds?: number[];
-      offset?: number;
-      limit?: number;
-    } = {};
-
-    if (ids !== undefined) params.ids = ids;
-    if (codes !== undefined) params.codes = codes;
-    if (name !== undefined) params.name = name;
-    if (spaceIds !== undefined) params.spaceIds = spaceIds;
-    if (offset !== undefined) params.offset = offset;
-    if (limit !== undefined) params.limit = limit;
-
-    const response = await client.app.getApps(params);
+    const response = await client.app.getApps({
+      ids,
+      codes,
+      name,
+      spaceIds,
+      offset,
+      limit,
+    });
 
     const result = {
       apps: response.apps.map((app) => ({
