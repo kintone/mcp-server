@@ -224,9 +224,13 @@ describe("get-apps tool", () => {
 
       mockGetApps.mockResolvedValueOnce(mockAppsData);
 
-      const result = await getApps.callback({}, mockExtra);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const schema = z.object(getApps.config.inputSchema!);
+      const params = schema.parse({});
 
-      expect(mockGetApps).toHaveBeenCalledWith({});
+      const result = await getApps.callback(params, mockExtra);
+
+      expect(mockGetApps).toHaveBeenCalledWith(params);
       expect(result.structuredContent).toEqual(mockAppsData);
       expect(result.content).toHaveLength(1);
       expect(result.content[0]).toEqual({
@@ -291,16 +295,15 @@ describe("get-apps tool", () => {
 
       mockGetApps.mockResolvedValueOnce(mockAppsData);
 
-      const result = await getApps.callback(
-        {
-          name: "NonExistentApp",
-        },
-        mockExtra,
-      );
-
-      expect(mockGetApps).toHaveBeenCalledWith({
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const schema = z.object(getApps.config.inputSchema!);
+      const params = schema.parse({
         name: "NonExistentApp",
       });
+
+      const result = await getApps.callback(params, mockExtra);
+
+      expect(mockGetApps).toHaveBeenCalledWith(params);
       expect(result.structuredContent).toEqual(mockAppsData);
     });
 
@@ -330,20 +333,17 @@ describe("get-apps tool", () => {
 
       mockGetApps.mockResolvedValueOnce(mockAppsData);
 
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const schema = z.object(getApps.config.inputSchema!);
+      const params = schema.parse({
+        name: "Default",
+      });
+
       // Input without offset and limit
-      const result = await getApps.callback(
-        {
-          name: "Default",
-        },
-        mockExtra,
-      );
+      const result = await getApps.callback(params, mockExtra);
 
       // Should use defaults: offset=0, limit=100
-      expect(mockGetApps).toHaveBeenCalledWith({
-        name: "Default",
-        offset: 0,
-        limit: 100,
-      });
+      expect(mockGetApps).toHaveBeenCalledWith(params);
       expect(result.structuredContent).toEqual(mockAppsData);
     });
 
