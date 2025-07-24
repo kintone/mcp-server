@@ -14,6 +14,7 @@ describe("add tool", () => {
     });
 
     it("should have valid input schema", () => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const schema = z.object(add.config.inputSchema!);
 
       // Valid input
@@ -31,7 +32,8 @@ describe("add tool", () => {
     });
 
     it("should have valid output schema", () => {
-      const schema = z.object(add.config.outputSchema!);
+      expect(add.config.outputSchema).not.toBeUndefined();
+      const schema = z.object(add.config.outputSchema);
 
       // Valid output
       const validOutput = { result: 3, operation: "1 + 2 = 3" };

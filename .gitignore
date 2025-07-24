@@ -26,3 +26,6 @@ lerna-debug.log*
 
 ## Build output
 dist/
+
+## Test coverage
+coverage/

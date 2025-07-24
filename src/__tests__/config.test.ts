@@ -181,7 +181,9 @@ describe("config", () => {
         };
 
         const errorCall = () => parseKintoneClientConfig();
-        expect(errorCall).toThrow("Environment variables are missing or invalid");
+        expect(errorCall).toThrow(
+          "Environment variables are missing or invalid",
+        );
         expect(errorCall).toThrow("KINTONE_BASE_URL: Invalid url");
         expect(errorCall).toThrow(
           "KINTONE_USERNAME: String must contain at least 1 character(s)",
@@ -199,7 +201,9 @@ describe("config", () => {
         delete process.env.KINTONE_PASSWORD;
 
         const errorCall = () => parseKintoneClientConfig();
-        expect(errorCall).toThrow("Environment variables are missing or invalid");
+        expect(errorCall).toThrow(
+          "Environment variables are missing or invalid",
+        );
         expect(errorCall).toThrow("KINTONE_BASE_URL: Required");
         expect(errorCall).toThrow("KINTONE_USERNAME: Required");
         expect(errorCall).toThrow("KINTONE_PASSWORD: Required");

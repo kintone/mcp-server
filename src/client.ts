@@ -3,7 +3,9 @@ import type { KintoneClientConfig } from "./config.js";
 
 let client: KintoneRestAPIClient | null = null;
 
-export const getKintoneClient = (config: KintoneClientConfig): KintoneRestAPIClient => {
+export const getKintoneClient = (
+  config: KintoneClientConfig,
+): KintoneRestAPIClient => {
   if (client) {
     return client;
   }
@@ -19,8 +21,8 @@ export const getKintoneClient = (config: KintoneClientConfig): KintoneRestAPICli
   });
 
   return client;
-}
+};
 
 export const resetKintoneClient = (): void => {
   client = null;
-}
+};

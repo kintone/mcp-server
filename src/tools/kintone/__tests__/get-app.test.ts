@@ -62,6 +62,7 @@ describe("get-app tool", () => {
     });
 
     it("should have valid input schema", () => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const schema = z.object(getApp.config.inputSchema!);
 
       // Valid input
@@ -82,6 +83,7 @@ describe("get-app tool", () => {
     });
 
     it("should have valid output schema", () => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const schema = z.object(getApp.config.outputSchema!);
 
       // Valid output
