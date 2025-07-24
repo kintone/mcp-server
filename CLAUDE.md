@@ -5,6 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## よく使うコマンド
 
 ### 開発環境の起動
+
 ```bash
 # 開発サーバーの起動（ファイル変更の自動検知付き）
 pnpm dev
@@ -17,6 +18,7 @@ pnpm start
 ```
 
 ### コード品質チェック
+
 ```bash
 # すべてのリントチェックを実行
 pnpm lint
@@ -24,7 +26,7 @@ pnpm lint
 # ESLintチェック
 pnpm lint:eslint
 
-# Prettierチェック  
+# Prettierチェック
 pnpm lint:prettier
 
 # TypeScriptの型チェック
@@ -32,6 +34,7 @@ pnpm typecheck
 ```
 
 ### コード修正
+
 ```bash
 # すべての自動修正を実行
 pnpm fix
@@ -44,6 +47,7 @@ pnpm fix:prettier
 ```
 
 ### テスト
+
 ```bash
 # すべてのテストを実行
 pnpm test
@@ -59,12 +63,14 @@ pnpm test:coverage
 ```
 
 ### ライセンス管理
+
 ```bash
 # ライセンスの分析
 pnpm license:analyze
 ```
 
 ### Docker環境での実行
+
 ```bash
 # Dockerイメージのビルドと実行
 docker compose up
@@ -76,6 +82,7 @@ docker run ghcr.io/kintone/mcp-server
 ## コードのアーキテクチャと構造
 
 ### プロジェクト構造
+
 ```
 kintone-mcp-server/
 ├── src/
@@ -98,6 +105,7 @@ kintone-mcp-server/
 ```
 
 ### 主要な技術スタック
+
 - **TypeScript**: ES2024ターゲット、Node16モジュール解決
 - **MCP SDK**: Model Context Protocol SDKを使用したサーバー実装
 - **Kintone REST API Client**: `@kintone/rest-api-client`でKintoneとの通信
@@ -132,6 +140,7 @@ kintone-mcp-server/
 ## 重要な設定ファイル
 
 ### TypeScript設定（tsconfig.json）
+
 - **ターゲット**: ES2024
 - **モジュール**: node16
 - **厳格モード**: 有効（strict: true）
@@ -144,12 +153,14 @@ kintone-mcp-server/
   - `forceConsistentCasingInFileNames`: true
 
 ### ESLint設定（eslint.config.js）
+
 - Cybozuのプリセット（`@cybozu/eslint-config`）を使用
 - Node.js向けTypeScript + Prettier設定
 - `@typescript-eslint/consistent-type-imports`ルールを強制
 - package.jsonのリントも含む
 
 ### パッケージ管理
+
 - **pnpm**: v10.13.1を使用
 - **Node.js**: v22以上が必要
 - **プライベートパッケージ**: 公開されない設定
@@ -157,6 +168,7 @@ kintone-mcp-server/
 ## 開発のポイント
 
 ### 新しいツールの追加
+
 1. `src/tools/`ディレクトリに新しいツールファイルを作成
 2. `createTool`関数を使用してツールを定義
    ```typescript
@@ -164,21 +176,26 @@ kintone-mcp-server/
      "tool-name",
      {
        description: "ツールの説明",
-       inputSchema: { /* Zodスキーマ */ },
-       outputSchema: { /* Zodスキーマ */ }
+       inputSchema: {
+         /* Zodスキーマ */
+       },
+       outputSchema: {
+         /* Zodスキーマ */
+       },
      },
      async (input) => {
        // 実装
        return {
          structuredContent: result,
-         content: [{ type: "text", text: JSON.stringify(result, null, 2) }]
+         content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
        };
-     }
+     },
    );
    ```
 3. `src/tools/index.ts`のtools配列にエクスポートを追加
 
 ### Kintoneツールの追加
+
 1. `src/tools/kintone/`ディレクトリに新しいツールファイルを作成
 2. 環境変数の設定を使用してKintoneクライアントを取得
    ```typescript
@@ -188,21 +205,25 @@ kintone-mcp-server/
 3. 既存のget-app.tsを参考に実装
 
 ### テストの作成
+
 - テストファイルは`__tests__`ディレクトリに配置
 - `mockExtra`ユーティリティを使用してツールのテストを作成
 - Vitestのモック機能を使用して外部依存をモック化
 
 ### 型安全性
+
 - Zodスキーマを使用して入出力を定義
 - TypeScriptの厳格モードが有効なので、型安全性が保証される
 - すべてのインポートで`.js`拡張子を使用（ESMの要件）
 
 ### コード品質
+
 - コミット前に`pnpm lint`でチェック
 - 自動修正可能な問題は`pnpm fix`で解決
 - テストが通ることを確認（`pnpm test`）
 
 ### Docker環境
+
 - 開発時は`compose.yaml`を使用
 - 本番環境はdistrolessイメージで最小限の実行環境
 - ビルドは多段階ビルドで最適化
@@ -210,10 +231,12 @@ kintone-mcp-server/
 ## 現在の実装状況
 
 ### 実装済みのツール
+
 1. **add_numbers** (examples/add.ts): 2つの数値を加算するサンプルツール
 2. **kintone-get-app** (kintone/get-app.ts): Kintoneアプリの情報を取得
 
 ### インフラストラクチャ
+
 - MCPサーバーのセットアップ完了
 - ツール登録システム実装済み
 - Kintone APIクライアント統合済み
@@ -226,5 +249,6 @@ kintone-mcp-server/
 kintoneの公式ローカルMCPサーバーです。
 
 ### 実行方法
+
 - **Docker**: `docker run ghcr.io/kintone/mcp-server`
 - **npm**: `npx @kintone/mcp-server`
