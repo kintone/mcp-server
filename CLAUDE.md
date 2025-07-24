@@ -96,7 +96,8 @@ kintone-mcp-server/
 │       ├── examples/
 │       │   └── add.ts        # サンプルツール（数値の加算）
 │       └── kintone/
-│           └── get-app.ts    # Kintoneアプリ情報取得ツール
+│           ├── get-app.ts    # 単一のKintoneアプリ情報取得ツール
+│           └── get-apps.ts   # 複数のKintoneアプリ情報取得ツール
 ├── dist/                     # TypeScriptビルド出力（gitignored）
 ├── docker/
 │   └── Dockerfile            # 本番用Dockerイメージの定義
@@ -119,23 +120,25 @@ kintone-mcp-server/
 1. **MCPサーバー実装**
    - `@modelcontextprotocol/sdk`を使用してMCPサーバーを実装
    - STDIOトランスポートを使用した通信
-   - ツールの動的登録システム
+   - `src/server.ts`でツールを動的に登録
 
 2. **ツールシステム**
    - 各ツールは独立したモジュールとして実装
-   - `Tool`型を使用した型安全な実装
+   - `Tool`型（`src/tools/types.ts`）による型安全な実装
    - Zodスキーマによる入出力の検証
-   - `createTool`ヘルパー関数でツールを簡単に作成可能
+   - `createTool`ヘルパー関数でツールを作成
+   - `src/tools/index.ts`のtools配列に追加するだけで自動登録
 
 3. **Kintone統合**
    - 環境変数による認証情報の管理（KINTONE_BASE_URL, KINTONE_USERNAME, KINTONE_PASSWORD）
-   - シングルトンパターンでクライアント管理
-   - Zodによる環境変数の検証
+   - `src/client.ts`でシングルトンパターンのクライアント管理
+   - `src/config.ts`でZodによる環境変数の検証
+   - `resetKintoneClient()`でクライアントのリセットが可能
 
 4. **開発環境**
    - `tsx --watch`によるホットリロード対応
    - Docker Composeによる開発環境の分離
-   - 包括的なテストスイート
+   - Vitestによる高速なテスト実行
 
 ## 重要な設定ファイル
 
@@ -208,7 +211,17 @@ kintone-mcp-server/
 
 - テストファイルは`__tests__`ディレクトリに配置
 - `mockExtra`ユーティリティを使用してツールのテストを作成
-- Vitestのモック機能を使用して外部依存をモック化
+- KintoneRestAPIClientを直接モックする方法：
+  ```typescript
+  const mockGetApp = vi.fn();
+  vi.mock("@kintone/rest-api-client", () => ({
+    KintoneRestAPIClient: vi.fn().mockImplementation(() => ({
+      app: {
+        getApp: mockGetApp,
+      },
+    })),
+  }));
+  ```
 
 ### 型安全性
 
@@ -218,9 +231,14 @@ kintone-mcp-server/
 
 ### コード品質
 
-- コミット前に`pnpm lint`でチェック
+- コミット前に必ず実行：
+  ```bash
+  pnpm lint      # リントチェック
+  pnpm typecheck # 型チェック
+  pnpm test      # テスト実行
+  pnpm build     # ビルド確認
+  ```
 - 自動修正可能な問題は`pnpm fix`で解決
-- テストが通ることを確認（`pnpm test`）
 
 ### Docker環境
 
@@ -234,6 +252,7 @@ kintone-mcp-server/
 
 1. **add_numbers** (examples/add.ts): 2つの数値を加算するサンプルツール
 2. **kintone-get-app** (kintone/get-app.ts): Kintoneアプリの情報を取得
+3. **kintone-get-apps** (kintone/get-apps.ts): 複数のKintoneアプリ情報を取得（フィルタリング、ページネーション対応）
 
 ### インフラストラクチャ
 
