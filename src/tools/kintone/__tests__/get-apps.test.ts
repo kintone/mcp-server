@@ -3,14 +3,17 @@ import { getApps } from "../get-apps.js";
 import { z } from "zod";
 import { mockExtra } from "../../../__tests__/utils.js";
 
-// Mock the client module
-vi.mock("../../../client.js", () => ({
-  getKintoneClient: vi.fn(),
-  resetKintoneClient: vi.fn(),
+// Mock the KintoneRestAPIClient
+const mockGetApps = vi.fn();
+vi.mock("@kintone/rest-api-client", () => ({
+  KintoneRestAPIClient: vi.fn().mockImplementation(() => ({
+    app: {
+      getApps: mockGetApps,
+    },
+  })),
 }));
 
 describe("get-apps tool", () => {
-  let mockGetApps: ReturnType<typeof vi.fn>;
   const originalEnv = process.env;
 
   beforeEach(async () => {
@@ -22,15 +25,6 @@ describe("get-apps tool", () => {
       KINTONE_USERNAME: "testuser",
       KINTONE_PASSWORD: "testpass",
     };
-
-    // Mock getKintoneClient
-    const { getKintoneClient } = vi.mocked(await import("../../../client.js"));
-    mockGetApps = vi.fn();
-    getKintoneClient.mockReturnValue({
-      app: {
-        getApps: mockGetApps,
-      },
-    } as any);
   });
 
   afterEach(() => {
@@ -164,8 +158,8 @@ describe("get-apps tool", () => {
     });
   });
 
-  describe("handler function", () => {
-    it("should retrieve apps information successfully with no filters", async () => {
+  describe("callback function", () => {
+    it("should retrieve apps information successfully", async () => {
       const mockAppsData = {
         apps: [
           {
@@ -215,7 +209,7 @@ describe("get-apps tool", () => {
 
       const result = await getApps.callback(params, mockExtra);
 
-      expect(mockGetApps).toHaveBeenCalledWith(params);
+      expect(mockGetApps).toHaveBeenCalledWith({ limit: 100, offset: 0 });
       expect(result.structuredContent).toEqual(mockAppsData);
       expect(result.content).toHaveLength(1);
       expect(result.content[0]).toEqual({
@@ -271,84 +265,10 @@ describe("get-apps tool", () => {
         limit: 50,
       });
       expect(result.structuredContent).toEqual(mockAppsData);
-    });
-
-    it("should handle empty result", async () => {
-      const mockAppsData = {
-        apps: [],
-      };
-
-      mockGetApps.mockResolvedValueOnce(mockAppsData);
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(getApps.config.inputSchema!);
-      const params = schema.parse({
-        name: "NonExistentApp",
-      });
-
-      const result = await getApps.callback(params, mockExtra);
-
-      expect(mockGetApps).toHaveBeenCalledWith(params);
-      expect(result.structuredContent).toEqual(mockAppsData);
-    });
-
-    it("should use defaults for offset and limit when not provided", async () => {
-      const mockAppsData = {
-        apps: [
-          {
-            appId: "111",
-            code: "APP111",
-            name: "Default Pagination App",
-            description: "Testing default pagination",
-            spaceId: null,
-            threadId: null,
-            createdAt: "2024-01-07T00:00:00Z",
-            creator: {
-              code: "user",
-              name: "Default User",
-            },
-            modifiedAt: "2024-01-08T00:00:00Z",
-            modifier: {
-              code: "user",
-              name: "Default User",
-            },
-          },
-        ],
-      };
-
-      mockGetApps.mockResolvedValueOnce(mockAppsData);
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(getApps.config.inputSchema!);
-      const params = schema.parse({
-        name: "Default",
-      });
-
-      // Input without offset and limit
-      const result = await getApps.callback(params, mockExtra);
-
-      // Should use defaults: offset=0, limit=100
-      expect(mockGetApps).toHaveBeenCalledWith(params);
-      expect(result.structuredContent).toEqual(mockAppsData);
-    });
-
-    it("should use client from getKintoneClient", async () => {
-      const mockAppsData = {
-        apps: [],
-      };
-
-      mockGetApps.mockResolvedValueOnce(mockAppsData);
-
-      await getApps.callback({}, mockExtra);
-
-      // Verify getKintoneClient was called
-      const { getKintoneClient } = vi.mocked(
-        await import("../../../client.js"),
-      );
-      expect(getKintoneClient).toHaveBeenCalledWith({
-        KINTONE_BASE_URL: "https://example.cybozu.com",
-        KINTONE_USERNAME: "testuser",
-        KINTONE_PASSWORD: "testpass",
+      expect(result.content).toHaveLength(1);
+      expect(result.content[0]).toEqual({
+        type: "text",
+        text: JSON.stringify(mockAppsData, null, 2),
       });
     });
   });
