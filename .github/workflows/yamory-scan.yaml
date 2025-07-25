@@ -1,0 +1,63 @@
+name: yamory-scan
+on:
+  registry_package:
+    types: [published, updated]
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  scan:
+    if: |
+      ${{ github.event.registry_package.package_version.container_metadata.tag.name != '' && github.event.registry_package.package_version.container_metadata.tag.name != 'latest' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup trivy
+        env:
+          TRIVY_VERSION: 0.36.1
+          TRIVY_CHECKSUM: 332da8e456e2ae1b5bc02ba7e7c24d2210e04ce06c67bef1f43fe4fec4482875
+        run: |
+          wget https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.deb
+          echo "${TRIVY_CHECKSUM}  trivy_${TRIVY_VERSION}_Linux-64bit.deb" > trivy-sha256sum.txt
+          sha256sum -c trivy-sha256sum.txt
+          sudo dpkg -i trivy_${TRIVY_VERSION}_Linux-64bit.deb
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: create YAMORY_IMAGE_IDENTIFIER
+        uses: actions/github-script@v7
+        id: image_identifier
+        env:
+          TAG: ${{ github.event.registry_package.package_version.container_metadata.tag.name }}
+        with:
+          script: |
+            const tag = process.env.TAG
+            const re_version = /v[0-9]+.[0-9]+.[0-9]+/
+            if (re_version.test(tag)) {
+                return 'kintone-mcp-server-release'
+            }
+            return 'kintone-mcp-server-feat'
+
+      - name: Container image scan with yamory and trivy
+        env:
+          IMAGE_SCAN_CHECKSUM: 6c5d4ffcc2e88a6f879166179e9d511cd00e45dc9e05e7a41a21db419d5103cf81d0a2350d6e113d8666652906d836f02ab0e441c53e6a5fbdd51b6704c05f30
+          YAMORY_ACCESS_TOKEN: ${{ secrets.YAMORY_API_KEY }}
+          YAMORY_IMAGE_NAME: ghcr.io/${{ github.event.registry_package.namespace }}/${{ github.event.registry_package.name }}:${{ github.event.registry_package.package_version.container_metadata.tag.name }}
+        run: |
+          curl -sSf -L -o image_scan.sh https://mw-receiver.yamory.io/image/script/trivy
+          echo "${IMAGE_SCAN_CHECKSUM} image_scan.sh" > image_scan_sha512sum.txt
+          sha512sum -c image_scan_sha512sum.txt
+          chmod +x image_scan.sh
+
+          YAMORY_IMAGE_TITLE=kintone-mcp-server \
+          YAMORY_OPEN_CONTAINER=false \
+          YAMORY_IMAGE_TAGS=kintone-mcp-server \
+          YAMORY_IMAGE_IDENTIFIER=${{ steps.image_identifier.outputs.result }} \
+          bash image_scan.sh
