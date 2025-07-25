@@ -8,6 +8,7 @@ on:
 permissions:
   pull-requests: write
   contents: write
+  packages: write # To push Docker images to ghcr.io
 
 jobs:
   release-please:
@@ -23,3 +24,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           manifest-file: .release-please-manifest.json
           config-file: .release-please-config.json
+
+  build-and-publish-container:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    uses: ./.github/workflows/publish-image.yaml
+    with:
+      tags: "${{ needs.release-please.outputs.tag_name }},latest"
+      push: true
