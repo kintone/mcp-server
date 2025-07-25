@@ -1,0 +1,20 @@
+{
+  "release-type": "node",
+  "draft": false,
+  "prerelease": false,
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": false,
+  "initial-version": "0.0.1",
+  "changelog-path": "CHANGELOG.md",
+  "versioning": "default",
+  "include-v-in-tag": false,
+  "include-component-in-tag": false,
+  "tag-separator": "@",
+  "group-pull-request-title-pattern": "chore: release from ${branch}",
+  "packages": {
+    ".": {
+      "package-name": "@kintone/mcp-server",
+      "component": "@kintone/mcp-server"
+    }
+  }
+}
