@@ -5,14 +5,13 @@ on:
     branches:
       - main
 
-permissions:
-  pull-requests: write
-  contents: write
-  packages: write # To push Docker images to ghcr.io
-
 jobs:
   release-please:
     runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+      contents: write
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
@@ -26,6 +25,8 @@ jobs:
           config-file: .release-please-config.json
 
   build-and-publish-container:
+    permissions:
+      packages: write # To push Docker images to ghcr.io
     needs: release-please
     if: ${{ needs.release-please.outputs.release_created }}
     uses: ./.github/workflows/publish-image.yaml

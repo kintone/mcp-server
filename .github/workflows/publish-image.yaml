@@ -22,9 +22,6 @@ on:
         required: false
         type: boolean
         default: true
-permissions:
-  contents: read # To use actions/checkout
-  packages: write # To push an image to ghcr.io
 
 defaults:
   run:
@@ -66,6 +63,8 @@ jobs:
   build-and-publish-container:
     needs: generate-tags
     runs-on: ubuntu-latest
+    permissions:
+      packages: write # To push an image to ghcr.io
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
