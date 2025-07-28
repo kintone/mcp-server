@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { getKintoneClient, resetKintoneClient } from "../client.js";
 import type { KintoneClientConfig } from "../config.js";
+import { mockKintoneConfig } from "./utils.js";
 
 // Mock the KintoneRestAPIClient
 vi.mock("@kintone/rest-api-client", () => ({
@@ -15,11 +16,7 @@ describe("client", () => {
 
   describe("getKintoneClient", () => {
     it("should create a new client with provided config", async () => {
-      const config: KintoneClientConfig = {
-        KINTONE_BASE_URL: "https://example.cybozu.com",
-        KINTONE_USERNAME: "testuser",
-        KINTONE_PASSWORD: "testpass",
-      };
+      const config = mockKintoneConfig;
 
       const { KintoneRestAPIClient } = vi.mocked(
         await import("@kintone/rest-api-client"),
@@ -30,21 +27,17 @@ describe("client", () => {
       const client = getKintoneClient(config);
 
       expect(KintoneRestAPIClient).toHaveBeenCalledWith({
-        baseUrl: "https://example.cybozu.com",
+        baseUrl: mockKintoneConfig.KINTONE_BASE_URL,
         auth: {
-          username: "testuser",
-          password: "testpass",
+          username: mockKintoneConfig.KINTONE_USERNAME,
+          password: mockKintoneConfig.KINTONE_PASSWORD,
         },
       });
       expect(client).toBe(mockClient);
     });
 
     it("should return the same instance on subsequent calls", async () => {
-      const config: KintoneClientConfig = {
-        KINTONE_BASE_URL: "https://example.cybozu.com",
-        KINTONE_USERNAME: "testuser",
-        KINTONE_PASSWORD: "testpass",
-      };
+      const config = mockKintoneConfig;
 
       const { KintoneRestAPIClient } = vi.mocked(
         await import("@kintone/rest-api-client"),
@@ -60,11 +53,7 @@ describe("client", () => {
     });
 
     it("should work with different config values", async () => {
-      const config: KintoneClientConfig = {
-        KINTONE_BASE_URL: "https://custom.kintone.com",
-        KINTONE_USERNAME: "admin",
-        KINTONE_PASSWORD: "adminpass123",
-      };
+      const config = mockKintoneConfig;
 
       const { KintoneRestAPIClient } = vi.mocked(
         await import("@kintone/rest-api-client"),
@@ -75,20 +64,19 @@ describe("client", () => {
       const client = getKintoneClient(config);
 
       expect(KintoneRestAPIClient).toHaveBeenCalledWith({
-        baseUrl: "https://custom.kintone.com",
+        baseUrl: mockKintoneConfig.KINTONE_BASE_URL,
         auth: {
-          username: "admin",
-          password: "adminpass123",
+          username: mockKintoneConfig.KINTONE_USERNAME,
+          password: mockKintoneConfig.KINTONE_PASSWORD,
         },
       });
       expect(client).toBe(mockClient);
     });
 
     it("should handle config with URL containing path", async () => {
-      const config: KintoneClientConfig = {
+      const config = {
+        ...mockKintoneConfig,
         KINTONE_BASE_URL: "https://example.cybozu.com/k/",
-        KINTONE_USERNAME: "user",
-        KINTONE_PASSWORD: "pass",
       };
 
       const { KintoneRestAPIClient } = vi.mocked(
@@ -102,17 +90,16 @@ describe("client", () => {
       expect(KintoneRestAPIClient).toHaveBeenCalledWith({
         baseUrl: "https://example.cybozu.com/k/",
         auth: {
-          username: "user",
-          password: "pass",
+          username: mockKintoneConfig.KINTONE_USERNAME,
+          password: mockKintoneConfig.KINTONE_PASSWORD,
         },
       });
     });
 
     it("should handle config with http protocol", async () => {
-      const config: KintoneClientConfig = {
+      const config = {
+        ...mockKintoneConfig,
         KINTONE_BASE_URL: "http://localhost:8080",
-        KINTONE_USERNAME: "local",
-        KINTONE_PASSWORD: "localpass",
       };
 
       const { KintoneRestAPIClient } = vi.mocked(
@@ -126,8 +113,8 @@ describe("client", () => {
       expect(KintoneRestAPIClient).toHaveBeenCalledWith({
         baseUrl: "http://localhost:8080",
         auth: {
-          username: "local",
-          password: "localpass",
+          username: mockKintoneConfig.KINTONE_USERNAME,
+          password: mockKintoneConfig.KINTONE_PASSWORD,
         },
       });
     });
@@ -135,11 +122,7 @@ describe("client", () => {
 
   describe("resetKintoneClient", () => {
     it("should reset the client instance", async () => {
-      const config: KintoneClientConfig = {
-        KINTONE_BASE_URL: "https://example.cybozu.com",
-        KINTONE_USERNAME: "testuser",
-        KINTONE_PASSWORD: "testpass",
-      };
+      const config = mockKintoneConfig;
 
       const { KintoneRestAPIClient } = vi.mocked(
         await import("@kintone/rest-api-client"),
@@ -161,16 +144,13 @@ describe("client", () => {
     });
 
     it("should allow creating new client after reset", async () => {
-      const config1: KintoneClientConfig = {
+      const config1 = {
+        ...mockKintoneConfig,
         KINTONE_BASE_URL: "https://example1.cybozu.com",
-        KINTONE_USERNAME: "user1",
-        KINTONE_PASSWORD: "pass1",
       };
-
-      const config2: KintoneClientConfig = {
+      const config2 = {
+        ...mockKintoneConfig,
         KINTONE_BASE_URL: "https://example2.cybozu.com",
-        KINTONE_USERNAME: "user2",
-        KINTONE_PASSWORD: "pass2",
       };
 
       const { KintoneRestAPIClient } = vi.mocked(
@@ -186,8 +166,8 @@ describe("client", () => {
       expect(KintoneRestAPIClient).toHaveBeenCalledWith({
         baseUrl: "https://example1.cybozu.com",
         auth: {
-          username: "user1",
-          password: "pass1",
+          username: mockKintoneConfig.KINTONE_USERNAME,
+          password: mockKintoneConfig.KINTONE_PASSWORD,
         },
       });
 
@@ -197,8 +177,8 @@ describe("client", () => {
       expect(KintoneRestAPIClient).toHaveBeenCalledWith({
         baseUrl: "https://example2.cybozu.com",
         auth: {
-          username: "user2",
-          password: "pass2",
+          username: mockKintoneConfig.KINTONE_USERNAME,
+          password: mockKintoneConfig.KINTONE_PASSWORD,
         },
       });
 
@@ -208,11 +188,7 @@ describe("client", () => {
 
   describe("integration scenarios", () => {
     it("should maintain singleton behavior until reset", async () => {
-      const config: KintoneClientConfig = {
-        KINTONE_BASE_URL: "https://example.cybozu.com",
-        KINTONE_USERNAME: "testuser",
-        KINTONE_PASSWORD: "testpass",
-      };
+      const config = mockKintoneConfig;
 
       const { KintoneRestAPIClient } = vi.mocked(
         await import("@kintone/rest-api-client"),

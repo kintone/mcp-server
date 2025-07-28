@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { parseKintoneClientConfig } from "../config.js";
+import { mockKintoneConfig } from "./utils.js";
 
 describe("config", () => {
   const originalEnv = process.env;
@@ -19,46 +20,42 @@ describe("config", () => {
       it("should parse valid environment variables", () => {
         process.env = {
           ...originalEnv,
-          KINTONE_BASE_URL: "https://example.cybozu.com",
-          KINTONE_USERNAME: "testuser",
-          KINTONE_PASSWORD: "testpass",
+          ...mockKintoneConfig,
         };
 
         const config = parseKintoneClientConfig();
 
-        expect(config).toEqual({
-          KINTONE_BASE_URL: "https://example.cybozu.com",
-          KINTONE_USERNAME: "testuser",
-          KINTONE_PASSWORD: "testpass",
-        });
+        expect(config).toEqual(mockKintoneConfig);
       });
 
       it("should accept different valid URLs", () => {
         process.env = {
           ...originalEnv,
+          ...mockKintoneConfig,
           KINTONE_BASE_URL: "https://custom.kintone.com",
-          KINTONE_USERNAME: "admin",
-          KINTONE_PASSWORD: "admin123",
         };
 
         const config = parseKintoneClientConfig();
 
-        expect(config.KINTONE_BASE_URL).toBe("https://custom.kintone.com");
-        expect(config.KINTONE_USERNAME).toBe("admin");
-        expect(config.KINTONE_PASSWORD).toBe("admin123");
+        expect(config).toEqual({
+          ...mockKintoneConfig,
+          KINTONE_BASE_URL: "https://custom.kintone.com",
+        });
       });
 
       it("should accept URLs with paths", () => {
         process.env = {
           ...originalEnv,
+          ...mockKintoneConfig,
           KINTONE_BASE_URL: "https://example.cybozu.com/k/",
-          KINTONE_USERNAME: "user",
-          KINTONE_PASSWORD: "pass",
         };
 
         const config = parseKintoneClientConfig();
 
-        expect(config.KINTONE_BASE_URL).toBe("https://example.cybozu.com/k/");
+        expect(config).toEqual({
+          ...mockKintoneConfig,
+          KINTONE_BASE_URL: "https://example.cybozu.com/k/",
+        });
       });
     });
 
@@ -66,8 +63,8 @@ describe("config", () => {
       it("should throw error when KINTONE_BASE_URL is missing", () => {
         process.env = {
           ...originalEnv,
-          KINTONE_USERNAME: "testuser",
-          KINTONE_PASSWORD: "testpass",
+          KINTONE_USERNAME: mockKintoneConfig.KINTONE_USERNAME,
+          KINTONE_PASSWORD: mockKintoneConfig.KINTONE_PASSWORD,
         };
 
         expect(() => parseKintoneClientConfig()).toThrow(
@@ -81,9 +78,8 @@ describe("config", () => {
       it("should throw error when KINTONE_BASE_URL is invalid", () => {
         process.env = {
           ...originalEnv,
+          ...mockKintoneConfig,
           KINTONE_BASE_URL: "not-a-url",
-          KINTONE_USERNAME: "testuser",
-          KINTONE_PASSWORD: "testpass",
         };
 
         expect(() => parseKintoneClientConfig()).toThrow(
@@ -97,9 +93,8 @@ describe("config", () => {
       it("should throw error when KINTONE_BASE_URL is empty", () => {
         process.env = {
           ...originalEnv,
+          ...mockKintoneConfig,
           KINTONE_BASE_URL: "",
-          KINTONE_USERNAME: "testuser",
-          KINTONE_PASSWORD: "testpass",
         };
 
         expect(() => parseKintoneClientConfig()).toThrow(
@@ -113,8 +108,8 @@ describe("config", () => {
       it("should throw error when KINTONE_USERNAME is missing", () => {
         process.env = {
           ...originalEnv,
-          KINTONE_BASE_URL: "https://example.cybozu.com",
-          KINTONE_PASSWORD: "testpass",
+          KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
+          KINTONE_PASSWORD: mockKintoneConfig.KINTONE_PASSWORD,
         };
 
         expect(() => parseKintoneClientConfig()).toThrow(
@@ -128,9 +123,8 @@ describe("config", () => {
       it("should throw error when KINTONE_USERNAME is empty", () => {
         process.env = {
           ...originalEnv,
-          KINTONE_BASE_URL: "https://example.cybozu.com",
+          ...mockKintoneConfig,
           KINTONE_USERNAME: "",
-          KINTONE_PASSWORD: "testpass",
         };
 
         expect(() => parseKintoneClientConfig()).toThrow(
@@ -144,8 +138,8 @@ describe("config", () => {
       it("should throw error when KINTONE_PASSWORD is missing", () => {
         process.env = {
           ...originalEnv,
-          KINTONE_BASE_URL: "https://example.cybozu.com",
-          KINTONE_USERNAME: "testuser",
+          KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
+          KINTONE_USERNAME: mockKintoneConfig.KINTONE_USERNAME,
         };
 
         expect(() => parseKintoneClientConfig()).toThrow(
@@ -159,8 +153,7 @@ describe("config", () => {
       it("should throw error when KINTONE_PASSWORD is empty", () => {
         process.env = {
           ...originalEnv,
-          KINTONE_BASE_URL: "https://example.cybozu.com",
-          KINTONE_USERNAME: "testuser",
+          ...mockKintoneConfig,
           KINTONE_PASSWORD: "",
         };
 
@@ -214,9 +207,8 @@ describe("config", () => {
       it("should accept http URLs", () => {
         process.env = {
           ...originalEnv,
+          ...mockKintoneConfig,
           KINTONE_BASE_URL: "http://localhost:8080",
-          KINTONE_USERNAME: "test",
-          KINTONE_PASSWORD: "test",
         };
 
         const config = parseKintoneClientConfig();
@@ -228,8 +220,7 @@ describe("config", () => {
         const longPassword = "a".repeat(1000);
         process.env = {
           ...originalEnv,
-          KINTONE_BASE_URL: "https://example.cybozu.com",
-          KINTONE_USERNAME: "testuser",
+          ...mockKintoneConfig,
           KINTONE_PASSWORD: longPassword,
         };
 
@@ -241,19 +232,13 @@ describe("config", () => {
       it("should handle environment variables with extra properties", () => {
         process.env = {
           ...originalEnv,
-          KINTONE_BASE_URL: "https://example.cybozu.com",
-          KINTONE_USERNAME: "testuser",
-          KINTONE_PASSWORD: "testpass",
+          ...mockKintoneConfig,
           OTHER_VAR: "should be ignored",
         };
 
         const config = parseKintoneClientConfig();
 
-        expect(config).toEqual({
-          KINTONE_BASE_URL: "https://example.cybozu.com",
-          KINTONE_USERNAME: "testuser",
-          KINTONE_PASSWORD: "testpass",
-        });
+        expect(config).toEqual(mockKintoneConfig);
         expect(config).not.toHaveProperty("OTHER_VAR");
       });
     });
