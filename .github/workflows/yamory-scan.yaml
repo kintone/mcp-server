@@ -2,14 +2,14 @@ name: yamory-scan
 on:
   registry_package:
     types: [published, updated]
-permissions:
-  contents: read
-  packages: read
 
 jobs:
   scan:
     if: |
       ${{ github.event.registry_package.package_version.container_metadata.tag.name != '' && github.event.registry_package.package_version.container_metadata.tag.name != 'latest' }}
+    permissions:
+      contents: read
+      packages: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

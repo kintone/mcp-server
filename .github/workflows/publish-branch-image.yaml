@@ -12,10 +12,6 @@ on:
         type: boolean
         default: false
 
-permissions:
-  contents: read # To use actions/checkout
-  packages: write # To push an image to ghcr.io
-
 defaults:
   run:
     shell: bash -eo pipefail {0}
@@ -46,6 +42,9 @@ jobs:
 
   build-and-publish-container:
     needs: generate-tags
+    permissions:
+      contents: read # To checkout in the reusable workflow
+      packages: write # To push Docker image to ghcr.io
     uses: ./.github/workflows/publish-image.yaml
     with:
       tags: ${{ needs.generate-tags.outputs.tags }}
