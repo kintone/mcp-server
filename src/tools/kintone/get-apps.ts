@@ -4,9 +4,14 @@ import { getKintoneClient } from "../../client.js";
 import { parseKintoneClientConfig } from "../../config.js";
 
 const inputSchema = {
-  ids: z.array(z.number()).optional().describe("Array of app IDs (max 100)"),
+  ids: z
+    .array(z.number())
+    .max(100)
+    .optional()
+    .describe("Array of app IDs (max 100)"),
   codes: z
     .array(z.string().max(64))
+    .max(100)
     .optional()
     .describe("Array of app codes (max 64 characters each)"),
   name: z

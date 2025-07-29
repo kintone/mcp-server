@@ -1,10 +1,18 @@
+import { readFileSync } from "fs";
+import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { tools } from "./tools/index.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const packageJson = JSON.parse(
+  readFileSync(resolve(__dirname, "../package.json"), "utf-8"),
+);
 
 const server = new McpServer(
   {
     name: "kintone-mcp-server",
-    version: "1.0.0",
+    version: packageJson.version,
   },
   {
     capabilities: {
