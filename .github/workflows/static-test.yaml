@@ -21,5 +21,7 @@ jobs:
         run: pnpm lint
       - name: typecheck
         run: pnpm typecheck
+      - name: dxt manifest check
+        run: pnpm dxt:test
       - name: Check licenses
         run: pnpm license:analyze

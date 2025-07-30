@@ -1,0 +1,25 @@
+src/
+
+build/
+**/*.test.ts
+**/__tests__/**/*
+pnpm-lock.yaml
+
+CLAUDE.md
+
+# configuration files for development
+renovate.json5
+.release-please-config.json
+.release-please-manifest.json
+license-manager.config.cjs
+eslint.config.js
+
+# docker
+compose.yaml
+docker/
+.dockerignore
+
+# github
+.github/
+
+.mcp.json

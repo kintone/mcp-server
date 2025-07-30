@@ -33,6 +33,28 @@ jobs:
       tags: "${{ needs.release-please.outputs.tag_name }},latest"
       push: true
 
+  build-and-upload-dxt-to-release:
+    needs: [release-please]
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # To upload release assets
+    steps:
+      - name: Build dxt
+        uses: ./.github/workflows/build-dxt.yaml
+      - name: Download dxt artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: kintone-mcp-server
+          path: ./
+      - name: Upload release asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ needs.release-please.outputs.tag_name }} \
+            kintone-mcp-server.dxt \
+            --clobber
+
   # TODO: Enable when ready to publish
   # publish-npm-package:
   #   name: Publish to npm
