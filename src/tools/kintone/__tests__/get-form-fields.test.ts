@@ -44,11 +44,17 @@ describe("get-form-fields tool", () => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const schema = z.object(getFormFields.config.inputSchema!);
 
-      // Valid input - required app field only
+      // Valid input - required app field only (number)
       const validInput = {
         app: 123,
       };
       expect(() => schema.parse(validInput)).not.toThrow();
+
+      // Valid input - app as string
+      const validInputStringApp = {
+        app: "123",
+      };
+      expect(() => schema.parse(validInputStringApp)).not.toThrow();
 
       // Valid input - with optional lang field
       const validInputWithLang = {
@@ -57,13 +63,19 @@ describe("get-form-fields tool", () => {
       };
       expect(() => schema.parse(validInputWithLang)).not.toThrow();
 
+      // Valid input - all valid lang values
+      const validLangValues = ["ja", "en", "zh", "default", "user"];
+      validLangValues.forEach((lang) => {
+        expect(() => schema.parse({ app: 123, lang })).not.toThrow();
+      });
+
       // Invalid input - missing required app field
       expect(() => schema.parse({})).toThrow();
 
       // Invalid input - wrong type for app
       expect(() =>
         schema.parse({
-          app: "123", // should be number
+          app: true, // should be number or string
         }),
       ).toThrow();
 
@@ -72,6 +84,14 @@ describe("get-form-fields tool", () => {
         schema.parse({
           app: 123,
           lang: 123, // should be string
+        }),
+      ).toThrow();
+
+      // Invalid input - invalid lang value
+      expect(() =>
+        schema.parse({
+          app: 123,
+          lang: "fr", // not in enum
         }),
       ).toThrow();
     });
@@ -166,18 +186,42 @@ describe("get-form-fields tool", () => {
               },
             },
           },
+          "radio_field": {
+            type: "RADIO_BUTTON",
+            code: "radio_field",
+            label: "Radio Field",
+            options: {
+              "opt1": { label: "Option 1", index: "0" },
+              "opt2": { label: "Option 2", index: "1" },
+            },
+            align: "HORIZONTAL",
+          },
+          "user_select": {
+            type: "USER_SELECT",
+            code: "user_select",
+            label: "User Selection",
+            entities: [
+              { type: "USER", code: "user1" },
+              { type: "GROUP", code: "group1" },
+            ],
+          },
         },
+        revision: "1",
       };
       expect(() => schema.parse(validOutput)).not.toThrow();
 
-      // Valid output - empty properties
+      // Valid output - empty properties with revision
       const emptyOutput = {
         properties: {},
+        revision: "1",
       };
       expect(() => schema.parse(emptyOutput)).not.toThrow();
 
       // Invalid output - missing properties field
       expect(() => schema.parse({})).toThrow();
+
+      // Invalid output - missing revision field
+      expect(() => schema.parse({ properties: {} })).toThrow();
 
       // Invalid output - invalid field structure
       expect(() =>
@@ -188,6 +232,7 @@ describe("get-form-fields tool", () => {
               // missing required fields like code and label
             },
           },
+          revision: "1",
         }),
       ).toThrow();
     });
@@ -252,6 +297,7 @@ describe("get-form-fields tool", () => {
             enabled: false,
           },
         },
+        revision: "1",
       };
 
       mockGetFormFields.mockResolvedValueOnce(mockFieldsData);
@@ -286,6 +332,7 @@ describe("get-form-fields tool", () => {
             defaultValue: "",
           },
         },
+        revision: "2",
       };
 
       mockGetFormFields.mockResolvedValueOnce(mockFieldsData);
@@ -301,6 +348,72 @@ describe("get-form-fields tool", () => {
       expect(mockGetFormFields).toHaveBeenCalledWith({
         app: 456,
         lang: "en",
+      });
+      expect(result.structuredContent).toEqual(mockFieldsData);
+      expect(result.content).toHaveLength(1);
+      expect(result.content[0]).toEqual({
+        type: "text",
+        text: JSON.stringify(mockFieldsData, null, 2),
+      });
+    });
+
+    it("should retrieve form fields with app as string", async () => {
+      const mockFieldsData = {
+        properties: {
+          "lookup_field": {
+            type: "LOOKUP",
+            code: "lookup_field",
+            label: "Lookup Field",
+            lookup: {
+              relatedApp: {
+                app: "10",
+                code: "MASTER_APP",
+              },
+              relatedKeyField: "key_field",
+              fieldMappings: [
+                { field: "name", relatedField: "master_name" },
+                { field: "value", relatedField: "master_value" },
+              ],
+              lookupPickerFields: ["key_field", "master_name"],
+              filterCond: "status = \"active\"",
+              sort: "key_field asc",
+            },
+          },
+          "reference_table": {
+            type: "REFERENCE_TABLE",
+            code: "reference_table",
+            label: "Related Records",
+            referenceTable: {
+              relatedApp: {
+                app: "20",
+                code: "RELATED_APP",
+              },
+              condition: {
+                field: "parent_id",
+                relatedField: "レコード番号",
+              },
+              displayFields: ["title", "status", "created_time"],
+              sort: "created_time desc",
+              size: "5",
+            },
+          },
+        },
+        revision: "3",
+      };
+
+      mockGetFormFields.mockResolvedValueOnce(mockFieldsData);
+
+      const result = await getFormFields.callback(
+        {
+          app: "789",
+          lang: "ja",
+        },
+        mockExtra,
+      );
+
+      expect(mockGetFormFields).toHaveBeenCalledWith({
+        app: "789",
+        lang: "ja",
       });
       expect(result.structuredContent).toEqual(mockFieldsData);
       expect(result.content).toHaveLength(1);

@@ -5,7 +5,7 @@ import { parseKintoneClientConfig } from "../../config.js";
 
 const inputSchema = {
   app: z
-    .number()
+    .union([z.number(), z.string()])
     .describe("The ID of the app to retrieve form fields from"),
   lang: z
     .enum(["ja", "en", "zh", "default", "user"])
@@ -17,7 +17,7 @@ const fieldPropertySchema = z.object({
   type: z.string().describe("The field type"),
   code: z.string().describe("The field code"),
   label: z.string().describe("The field name"),
-  enabled: z.boolean().optional().describe("Whether the field is enabled"),
+  enabled: z.boolean().optional().describe("Whether the field is enabled (for STATUS and CATEGORY fields)"),
   noLabel: z.boolean().optional().describe("Whether to hide the field name"),
   required: z.boolean().optional().describe("Whether the field is required"),
   unique: z.boolean().optional().describe("Whether the field must be unique"),
@@ -71,7 +71,7 @@ const fieldPropertySchema = z.object({
     filterCond: z.string().optional(),
     displayFields: z.array(z.string()),
     sort: z.string().optional(),
-    size: z.number().optional(),
+    size: z.string().optional(),
   }).optional().describe("Related records settings"),
   fields: z.record(z.any()).optional().describe("Fields in subtable"),
   openGroup: z.boolean().optional().describe("Whether the group is expanded by default"),
@@ -79,6 +79,7 @@ const fieldPropertySchema = z.object({
 
 const outputSchema = {
   properties: z.record(fieldPropertySchema).describe("Object containing field configurations"),
+  revision: z.string().describe("App configuration revision number"),
 };
 
 export const getFormFields = createTool(
@@ -99,6 +100,7 @@ export const getFormFields = createTool(
 
     const result = {
       properties: response.properties,
+      revision: response.revision,
     };
 
     return {
