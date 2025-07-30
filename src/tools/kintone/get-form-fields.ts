@@ -27,10 +27,15 @@ const fieldPropertySchema = z.object({
   minLength: z.string().optional().describe("Minimum length"),
   defaultValue: z.any().optional().describe("Default value"),
   defaultNowValue: z.boolean().optional().describe("Whether to use current date/time as default"),
+  entities: z.array(z.object({
+    type: z.enum(["USER", "GROUP", "ORGANIZATION"]),
+    code: z.string(),
+  })).optional().describe("Default entities for user/group/organization selection fields"),
   options: z.record(z.object({
     label: z.string(),
     index: z.string(),
   })).optional().describe("Options for selection fields"),
+  align: z.enum(["HORIZONTAL", "VERTICAL"]).optional().describe("Option alignment for radio/checkbox fields"),
   expression: z.string().optional().describe("Calculation formula"),
   hideExpression: z.boolean().optional().describe("Whether to hide the formula"),
   format: z.string().optional().describe("Display format"),
