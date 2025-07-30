@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "author": {
     "name": "Cybozu, Inc.",
     "url": "https://cybozu.co.jp"
