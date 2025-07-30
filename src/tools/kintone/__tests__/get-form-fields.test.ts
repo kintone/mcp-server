@@ -40,158 +40,155 @@ describe("get-form-fields tool", () => {
       );
     });
 
-    describe("input schema validation", () => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(getFormFields.config.inputSchema!);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const inputSchema = z.object(getFormFields.config.inputSchema!);
 
-      describe("valid inputs", () => {
-        it.each([
-          { input: { app: 123 }, description: "app as number" },
-          { input: { app: "123" }, description: "app as string" },
-          { input: { app: 456, lang: "ja" }, description: "with lang ja" },
-          { input: { app: 456, lang: "en" }, description: "with lang en" },
-          { input: { app: 456, lang: "zh" }, description: "with lang zh" },
-          { input: { app: 456, lang: "default" }, description: "with lang default" },
-          { input: { app: 456, lang: "user" }, description: "with lang user" },
-        ])("accepts $description", ({ input }) => {
-          expect(() => schema.parse(input)).not.toThrow();
-        });
-      });
-
-      describe("invalid inputs", () => {
-        it.each([
-          { input: {}, description: "missing required app field" },
-          { input: { app: true }, description: "app as boolean" },
-          { input: { app: null }, description: "app as null" },
-          { input: { app: [] }, description: "app as array" },
-          { input: { app: 123, lang: 123 }, description: "lang as number" },
-          { input: { app: 123, lang: "fr" }, description: "invalid lang value" },
-          { input: { app: 123, lang: null }, description: "lang as null" },
-        ])("rejects $description", ({ input }) => {
-          expect(() => schema.parse(input)).toThrow();
-        });
+    describe("input schema validation with valid inputs", () => {
+      it.each([
+        { input: { app: 123 }, description: "app as number" },
+        { input: { app: "123" }, description: "app as string" },
+        { input: { app: 456, lang: "ja" }, description: "with lang ja" },
+        { input: { app: 456, lang: "en" }, description: "with lang en" },
+        { input: { app: 456, lang: "zh" }, description: "with lang zh" },
+        {
+          input: { app: 456, lang: "default" },
+          description: "with lang default",
+        },
+        { input: { app: 456, lang: "user" }, description: "with lang user" },
+      ])("accepts $description", ({ input }) => {
+        expect(() => inputSchema.parse(input)).not.toThrow();
       });
     });
 
-    describe("output schema validation", () => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(getFormFields.config.outputSchema!);
-
-      describe("valid outputs", () => {
-        it.each([
-          {
-            output: {
-              properties: {
-                "text_field": {
-                  type: "SINGLE_LINE_TEXT",
-                  code: "text_field",
-                  label: "Text Field",
-                  noLabel: false,
-                  required: true,
-                },
-              },
-              revision: "1",
-            },
-            description: "basic text field",
-          },
-          {
-            output: {
-              properties: {
-                "category_field": {
-                  type: "CATEGORY",
-                  code: "category_field",
-                  label: "Category",
-                  enabled: false,
-                },
-              },
-              revision: "1",
-            },
-            description: "field with enabled property",
-          },
-          {
-            output: {
-              properties: {
-                "radio_field": {
-                  type: "RADIO_BUTTON",
-                  code: "radio_field",
-                  label: "Radio Field",
-                  options: {
-                    "opt1": { label: "Option 1", index: "0" },
-                  },
-                  align: "HORIZONTAL",
-                },
-              },
-              revision: "1",
-            },
-            description: "field with align property",
-          },
-          {
-            output: {
-              properties: {
-                "user_select": {
-                  type: "USER_SELECT",
-                  code: "user_select",
-                  label: "User Selection",
-                  entities: [
-                    { type: "USER", code: "user1" },
-                  ],
-                },
-              },
-              revision: "1",
-            },
-            description: "field with entities property",
-          },
-          {
-            output: { properties: {}, revision: "1" },
-            description: "empty properties with revision",
-          },
-        ])("accepts $description", ({ output }) => {
-          expect(() => schema.parse(output)).not.toThrow();
-        });
+    describe("input schema validation with invalid inputs", () => {
+      it.each([
+        { input: {}, description: "missing required app field" },
+        { input: { app: true }, description: "app as boolean" },
+        { input: { app: null }, description: "app as null" },
+        { input: { app: [] }, description: "app as array" },
+        { input: { app: 123, lang: 123 }, description: "lang as number" },
+        { input: { app: 123, lang: "fr" }, description: "invalid lang value" },
+        { input: { app: 123, lang: null }, description: "lang as null" },
+      ])("rejects $description", ({ input }) => {
+        expect(() => inputSchema.parse(input)).toThrow();
       });
+    });
 
-      describe("invalid outputs", () => {
-        it.each([
-          {
-            output: {},
-            description: "missing all required fields",
-          },
-          {
-            output: { properties: {} },
-            description: "missing revision field",
-          },
-          {
-            output: { revision: "1" },
-            description: "missing properties field",
-          },
-          {
-            output: {
-              properties: {
-                "field_1": {
-                  type: "SINGLE_LINE_TEXT",
-                  // missing required fields
-                },
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const outputSchema = z.object(getFormFields.config.outputSchema!);
+
+    describe("output schema validation with valid outputs", () => {
+      it.each([
+        {
+          output: {
+            properties: {
+              text_field: {
+                type: "SINGLE_LINE_TEXT",
+                code: "text_field",
+                label: "Text Field",
+                noLabel: false,
+                required: true,
               },
-              revision: "1",
             },
-            description: "field missing required code and label",
+            revision: "1",
           },
-          {
-            output: {
-              properties: {
-                "field_1": {
-                  type: "SINGLE_LINE_TEXT",
-                  code: "field_1",
-                  // missing required label
-                },
+          description: "basic text field",
+        },
+        {
+          output: {
+            properties: {
+              category_field: {
+                type: "CATEGORY",
+                code: "category_field",
+                label: "Category",
+                enabled: false,
               },
-              revision: "1",
             },
-            description: "field missing required label",
+            revision: "1",
           },
-        ])("rejects $description", ({ output }) => {
-          expect(() => schema.parse(output)).toThrow();
-        });
+          description: "field with enabled property",
+        },
+        {
+          output: {
+            properties: {
+              radio_field: {
+                type: "RADIO_BUTTON",
+                code: "radio_field",
+                label: "Radio Field",
+                options: {
+                  opt1: { label: "Option 1", index: "0" },
+                },
+                align: "HORIZONTAL",
+              },
+            },
+            revision: "1",
+          },
+          description: "field with align property",
+        },
+        {
+          output: {
+            properties: {
+              user_select: {
+                type: "USER_SELECT",
+                code: "user_select",
+                label: "User Selection",
+                entities: [{ type: "USER", code: "user1" }],
+              },
+            },
+            revision: "1",
+          },
+          description: "field with entities property",
+        },
+        {
+          output: { properties: {}, revision: "1" },
+          description: "empty properties with revision",
+        },
+      ])("accepts $description", ({ output }) => {
+        expect(() => outputSchema.parse(output)).not.toThrow();
+      });
+    });
+
+    describe("output schema validation with invalid outputs", () => {
+      it.each([
+        {
+          output: {},
+          description: "missing all required fields",
+        },
+        {
+          output: { properties: {} },
+          description: "missing revision field",
+        },
+        {
+          output: { revision: "1" },
+          description: "missing properties field",
+        },
+        {
+          output: {
+            properties: {
+              field_1: {
+                type: "SINGLE_LINE_TEXT",
+                // missing required fields
+              },
+            },
+            revision: "1",
+          },
+          description: "field missing required code and label",
+        },
+        {
+          output: {
+            properties: {
+              field_1: {
+                type: "SINGLE_LINE_TEXT",
+                code: "field_1",
+                // missing required label
+              },
+            },
+            revision: "1",
+          },
+          description: "field missing required label",
+        },
+      ])("rejects $description", ({ output }) => {
+        expect(() => outputSchema.parse(output)).toThrow();
       });
     });
   });
@@ -200,7 +197,7 @@ describe("get-form-fields tool", () => {
     it("should call API and return formatted response", async () => {
       const mockData = {
         properties: {
-          "field_1": {
+          field_1: {
             type: "SINGLE_LINE_TEXT",
             code: "field_1",
             label: "Text Field",
