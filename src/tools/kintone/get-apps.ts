@@ -21,6 +21,7 @@ const inputSchema = {
     .describe("App name for partial match search"),
   spaceIds: z
     .array(z.number())
+    .max(100)
     .optional()
     .describe("Array of space IDs (max 100)"),
   offset: z

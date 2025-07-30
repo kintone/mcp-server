@@ -14,8 +14,9 @@
     "kintone-mcp-server": "./src/index.ts"
   },
   "scripts": {
-    "build": "tsc",
-    "dev": "tsx --watch src/index.ts",
+    "prebuild": "node scripts/generate-version.js",
+    "build": "pnpm prebuild && tsc",
+    "dev": "pnpm prebuild && tsx --watch src/index.ts",
     "fix": "pnpm run \"/^fix:.*/\"",
     "fix:eslint": "pnpm lint:eslint --fix",
     "fix:prettier": "pnpm lint:prettier --write",
