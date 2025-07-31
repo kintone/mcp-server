@@ -32,4 +32,14 @@ export default [
       "@typescript-eslint/consistent-type-imports": "off",
     },
   },
+  {
+    rules: {
+      "n/no-missing-import": [
+        "error",
+        {
+          allowModules: ["@modelcontextprotocol/sdk"],
+        },
+      ],
+    },
+  },
 ];

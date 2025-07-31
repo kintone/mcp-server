@@ -10,8 +10,12 @@
   },
   "type": "module",
   "main": "index.js",
+  "bin": {
+    "kintone-mcp-server": "./src/index.ts"
+  },
   "scripts": {
-    "dev": "node --watch --experimental-strip-types src/index.ts",
+    "build": "tsc",
+    "dev": "tsx --watch src/index.ts",
     "fix": "pnpm run \"/^fix:.*/\"",
     "fix:eslint": "pnpm lint:eslint --fix",
     "fix:prettier": "pnpm lint:prettier --write",
@@ -19,9 +23,16 @@
     "lint": "pnpm run \"/^lint:.*/\"",
     "lint:eslint": "eslint . --max-warnings 0",
     "lint:prettier": "prettier --check '**/*.{json,json5,md,yml,yaml}' --cache",
-    "start": "node --experimental-strip-types src/index.ts",
-    "test": "echo \"no test specified\"",
+    "start": "node dist/index.js",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "test:watch": "vitest --watch",
     "typecheck": "tsc -noEmit "
+  },
+  "dependencies": {
+    "@kintone/rest-api-client": "^5.7.4",
+    "@modelcontextprotocol/sdk": "^1.16.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@cybozu/eslint-config": "^24.0.0",
@@ -31,6 +42,7 @@
     "eslint-plugin-package-json": "^0.44.1",
     "globals": "^16.3.0",
     "prettier": "^3.6.2",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4"
   },

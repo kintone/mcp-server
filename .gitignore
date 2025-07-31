@@ -20,3 +20,12 @@ lerna-debug.log*
 
 ## Misc
 .DS_Store
+
+## Claude settings
+.claude/settings.local.json
+
+## Build output
+dist/
+
+## Test coverage
+coverage/
