@@ -14,7 +14,14 @@
   "packages": {
     ".": {
       "package-name": "@kintone/mcp-server",
-      "component": "@kintone/mcp-server"
+      "component": "@kintone/mcp-server",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "src/version.ts",
+          "glob": false
+        }
+      ]
     }
   }
 }
