@@ -20,6 +20,10 @@
           "type": "generic",
           "path": "src/version.ts",
           "glob": false
+        },
+        {
+          "type": "json",
+          "path": "manifest.json"
         }
       ]
     }
