@@ -15,3 +15,9 @@ docker run ghcr.io/kintone/mcp-server
 ```shell
 npx @kintone/mcp-server
 ```
+
+## License
+
+Copyright 2025 Cybozu, Inc.
+
+Licensed under the [Apache 2.0](LICENSE).
