@@ -104,7 +104,9 @@ describe("get-records tool", () => {
           input: {
             app: 123,
             filters: {
-              notInValues: [{ field: "status", values: ["rejected", "cancelled"] }],
+              notInValues: [
+                { field: "status", values: ["rejected", "cancelled"] },
+              ],
             },
           },
           description: "with notInValues filter",
@@ -130,10 +132,7 @@ describe("get-records tool", () => {
         {
           input: {
             app: 123,
-            orderBy: [
-              { field: "created", order: "desc" },
-              { field: "title" },
-            ],
+            orderBy: [{ field: "created", order: "desc" }, { field: "title" }],
           },
           description: "with orderBy",
         },
@@ -354,20 +353,11 @@ describe("get-records tool", () => {
             dateRange: [
               { field: "created", from: "2025-01-01", to: "2025-12-31" },
             ],
-            numberRange: [
-              { field: "price", min: 100, max: 1000 },
-            ],
-            inValues: [
-              { field: "category", values: ["A", "B", "C"] },
-            ],
-            notInValues: [
-              { field: "type", values: ["X", "Y"] },
-            ],
+            numberRange: [{ field: "price", min: 100, max: 1000 }],
+            inValues: [{ field: "category", values: ["A", "B", "C"] }],
+            notInValues: [{ field: "type", values: ["X", "Y"] }],
           },
-          orderBy: [
-            { field: "created", order: "desc" },
-            { field: "title" },
-          ],
+          orderBy: [{ field: "created", order: "desc" }, { field: "title" }],
           limit: 50,
           offset: 100,
         },
@@ -376,7 +366,8 @@ describe("get-records tool", () => {
 
       expect(mockGetRecords).toHaveBeenCalledWith({
         app: 123,
-        query: 'title like "meeting" and status = "approved" and priority = 1 and created >= "2025-01-01" and created <= "2025-12-31" and price >= 100 and price <= 1000 and category in ("A", "B", "C") and type not in ("X", "Y") order by created desc, title asc limit 50 offset 100',
+        query:
+          'title like "meeting" and status = "approved" and priority = 1 and created >= "2025-01-01" and created <= "2025-12-31" and price >= 100 and price <= 1000 and category in ("A", "B", "C") and type not in ("X", "Y") order by created desc, title asc limit 50 offset 100',
         fields: undefined,
         totalCount: true,
       });
