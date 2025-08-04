@@ -29,12 +29,16 @@
   },
   "tools": [
     {
-      "name": "kintone_get_app",
-      "description": "Get detailed information about a specific kintone application"
+      "name": "kintone-get-app",
+      "description": "Get app settings from kintone"
     },
     {
-      "name": "kintone_get_apps",
-      "description": "List and search kintone applications with filtering options"
+      "name": "kintone-get-apps",
+      "description": "Get multiple app settings from kintone"
+    },
+    {
+      "name": "kintone-get-form-fields",
+      "description": "Get form field settings from a kintone app"
     }
   ],
   "user_config": {
