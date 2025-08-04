@@ -238,12 +238,14 @@ describe("get-records tool", () => {
                 $id: { type: "__ID__", value: "1" },
               },
             ],
+            totalCount: "1",
           },
           description: "basic records array",
         },
         {
           output: {
             records: [],
+            totalCount: "0",
           },
           description: "empty records array",
         },

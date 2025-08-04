@@ -108,13 +108,12 @@ const outputSchema = {
   records: z
     .array(recordSchema)
     .describe("Array of records matching the query"),
-  totalCount: z
-    .string()
-    .optional()
-    .describe("Total count of records matching the query (if requested)"),
+  totalCount: z.string().describe("Total count of records matching the query"),
 };
 
-function buildQueryFromFilters(filters: any): string | undefined {
+function buildQueryFromFilters(
+  filters: NonNullable<z.infer<typeof filtersSchema>>,
+): string | undefined {
   const conditions: string[] = [];
 
   filters.textContains?.forEach((f: any) => {
@@ -192,9 +191,7 @@ export const getRecords = createTool(
 
     const result = {
       records: response.records,
-      ...(response.totalCount !== undefined && {
-        totalCount: response.totalCount,
-      }),
+      totalCount: response.totalCount,
     };
 
     return {
