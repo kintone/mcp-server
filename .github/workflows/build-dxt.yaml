@@ -17,16 +17,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: build dxt archive
         run: pnpm dxt:pack
-      - name: sign dxt
-        env:
-          DXT_PRIVATE_KEY: ${{ secrets.DXT_PRIVATE_KEY }}
-          DXT_CERTIFICATE: ${{ secrets.DXT_CERTIFICATE }}
-        run: |
-          echo "$DXT_PRIVATE_KEY" > dxt-key.pem
-          echo "$DXT_CERTIFICATE" > dxt-cert.pem
-          chmod 600 dxt-key.pem dxt-cert.pem
-          pnpm dxt:sign --cert dxt-cert.pem --key dxt-key.pem
-          rm dxt-key.pem dxt-cert.pem
       - name: upload build result
         uses: actions/upload-artifact@v4
         with:

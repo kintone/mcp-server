@@ -23,7 +23,6 @@
     "predxt:pack": "pnpm clean && pnpm build && pnpm i --prod",
     "dxt:pack": "pnpm dlx @anthropic-ai/dxt@0.2.6 pack . build/kintone-mcp-server.dxt",
     "postdxt:pack": "pnpm i --frozen-lockfile",
-    "dxt:sign": "dxt sign build/kintone-mcp-server.dxt ",
     "dxt:test": "dxt validate .",
     "fix": "pnpm run \"/^fix:.*/\"",
     "fix:eslint": "pnpm lint:eslint --fix",
