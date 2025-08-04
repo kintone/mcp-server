@@ -297,38 +297,5 @@ describe("get-process-management tool", () => {
         text: JSON.stringify(mockData, null, 2),
       });
     });
-
-    it("should handle null states and actions", async () => {
-      const mockData = {
-        enable: false,
-        states: null,
-        actions: null,
-        revision: "1",
-      };
-
-      mockGetProcessManagement.mockResolvedValueOnce(mockData);
-
-      const result = await getProcessManagement.callback(
-        { app: 456 },
-        mockExtra,
-      );
-
-      const expectedResult = {
-        enable: false,
-        states: {},
-        actions: [],
-        revision: "1",
-      };
-
-      expect(mockGetProcessManagement).toHaveBeenCalledWith({
-        app: 456,
-      });
-      expect(result.structuredContent).toEqual(expectedResult);
-      expect(result.content).toHaveLength(1);
-      expect(result.content[0]).toEqual({
-        type: "text",
-        text: JSON.stringify(expectedResult, null, 2),
-      });
-    });
   });
 });

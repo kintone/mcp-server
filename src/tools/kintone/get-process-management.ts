@@ -88,19 +88,12 @@ export const getProcessManagement = createTool(
       lang,
     });
 
-    const result = {
-      enable: response.enable,
-      states: response.states || {},
-      actions: response.actions || [],
-      revision: response.revision,
-    };
-
     return {
-      structuredContent: result,
+      structuredContent: response,
       content: [
         {
           type: "text",
-          text: JSON.stringify(result, null, 2),
+          text: JSON.stringify(response, null, 2),
         },
       ],
     };
