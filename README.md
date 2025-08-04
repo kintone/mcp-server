@@ -11,8 +11,8 @@ Cursorのインストール用Deep Linkは以下のJSONから生成している
 {
   "kintone": {
     "command": "docker",
-    "args": ["run", "-it", "--rm", "ghcr.io/kintone/mcp-server"],
-  },
+    "args": ["run", "-it", "--rm", "ghcr.io/kintone/mcp-server:latest"]
+  }
 }
 
 作成方法は以下を参照
