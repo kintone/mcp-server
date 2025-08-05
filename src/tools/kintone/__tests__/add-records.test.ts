@@ -99,30 +99,12 @@ describe("add-records tool", () => {
             records: [
               {
                 user_field: {
-                  value: [
-                    { code: "user1" },
-                    { code: "user2" },
-                  ],
+                  value: [{ code: "user1" }, { code: "user2" }],
                 },
               },
             ],
           },
           description: "record with user select field",
-        },
-        {
-          input: {
-            app: 123,
-            records: [
-              {
-                file_field: {
-                  value: [
-                    { fileKey: "file123" },
-                  ],
-                },
-              },
-            ],
-          },
-          description: "record with file field",
         },
         {
           input: {
@@ -234,6 +216,20 @@ describe("add-records tool", () => {
             records: Array(101).fill({ title: { value: "test" } }),
           },
           description: "too many records (over 100)",
+        },
+        {
+          input: {
+            app: 123,
+            records: [
+              {
+                file_field: {
+                  value: [{ fileKey: "file123" }],
+                },
+              },
+            ],
+          },
+          description:
+            "record with file field (should be rejected as z.never())",
         },
       ])("rejects $description", ({ input }) => {
         expect(() => inputSchema.parse(input)).toThrow();
@@ -403,16 +399,7 @@ describe("add-records tool", () => {
           {
             title: { value: "Complex Record" },
             user_field: {
-              value: [
-                { code: "user1" },
-                { code: "user2" },
-              ],
-            },
-            file_field: {
-              value: [
-                { fileKey: "file123" },
-                { fileKey: "file456" },
-              ],
+              value: [{ code: "user1" }, { code: "user2" }],
             },
             subtable_field: {
               value: [
@@ -442,16 +429,7 @@ describe("add-records tool", () => {
           {
             title: { value: "Complex Record" },
             user_field: {
-              value: [
-                { code: "user1" },
-                { code: "user2" },
-              ],
-            },
-            file_field: {
-              value: [
-                { fileKey: "file123" },
-                { fileKey: "file456" },
-              ],
+              value: [{ code: "user1" }, { code: "user2" }],
             },
             subtable_field: {
               value: [
