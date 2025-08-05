@@ -1,0 +1,40 @@
+name: build
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-dxt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm dxt:pack
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kintone-mcp-server
+          path: build/kintone-mcp-server.dxt
+
+  build-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm pack
+      - uses: actions/upload-artifact@v4
+        with:
+          name: npm-package
+          path: "kintone-mcp-server-*.tgz"
