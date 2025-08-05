@@ -35,7 +35,7 @@ jobs:
 
   build-and-upload-dxt-to-release:
     needs: release-please
-    if:  needs.release-please.outputs.release_created
+    if: needs.release-please.outputs.release_created
     runs-on: ubuntu-latest
     permissions:
       contents: write # To upload release assets
