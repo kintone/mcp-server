@@ -99,10 +99,7 @@ describe("add-records tool", () => {
             records: [
               {
                 user_field: {
-                  value: [
-                    { code: "user1" },
-                    { code: "user2" },
-                  ],
+                  value: [{ code: "user1" }, { code: "user2" }],
                 },
               },
             ],
@@ -115,9 +112,7 @@ describe("add-records tool", () => {
             records: [
               {
                 file_field: {
-                  value: [
-                    { fileKey: "file123" },
-                  ],
+                  value: [{ fileKey: "file123" }],
                 },
               },
             ],
@@ -403,16 +398,10 @@ describe("add-records tool", () => {
           {
             title: { value: "Complex Record" },
             user_field: {
-              value: [
-                { code: "user1" },
-                { code: "user2" },
-              ],
+              value: [{ code: "user1" }, { code: "user2" }],
             },
             file_field: {
-              value: [
-                { fileKey: "file123" },
-                { fileKey: "file456" },
-              ],
+              value: [{ fileKey: "file123" }, { fileKey: "file456" }],
             },
             subtable_field: {
               value: [
@@ -442,16 +431,10 @@ describe("add-records tool", () => {
           {
             title: { value: "Complex Record" },
             user_field: {
-              value: [
-                { code: "user1" },
-                { code: "user2" },
-              ],
+              value: [{ code: "user1" }, { code: "user2" }],
             },
             file_field: {
-              value: [
-                { fileKey: "file123" },
-                { fileKey: "file456" },
-              ],
+              value: [{ fileKey: "file123" }, { fileKey: "file456" }],
             },
             subtable_field: {
               value: [
