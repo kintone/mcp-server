@@ -21,6 +21,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           path: build/kintone-mcp-server.dxt
+          name: kintone-mcp-server.dxt
           retention-days: 3
 
   build-npm:
@@ -37,4 +38,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           path: "kintone-mcp-server-*.tgz"
+          name: kintone-mcp-server.tgz
           retention-days: 3
