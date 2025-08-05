@@ -235,13 +235,13 @@ describe("add-records tool", () => {
             app: 123,
             records: [
               {
-                invalid_field_type: {
-                  value: "invalid",
+                field_with_invalid_structure: {
+                  invalid_property: "should_fail",
                 },
               },
             ],
           },
-          description: "record with invalid field type",
+          description: "record with invalid field structure",
         },
       ])("rejects $description", ({ input }) => {
         expect(() => inputSchema.parse(input)).toThrow();

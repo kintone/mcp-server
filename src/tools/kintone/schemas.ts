@@ -3,13 +3,13 @@ import { z } from "zod";
 // kintoneレコードのフィールド値用共通スキーマ
 export const recordInputSchema = z.record(
   z.union([
-    // 文字列系フィールド (SINGLE_LINE_TEXT, MULTI_LINE_TEXT, RICH_TEXT, LINK, MOBILE, EMAIL, URL, PASSWORD)
+    // 文字列系フィールド (SINGLE_LINE_TEXT, MULTI_LINE_TEXT, RICH_TEXT, LINK)
     z.object({
       value: z
         .string()
         .nullable()
         .describe(
-          "Text value for string fields (SINGLE_LINE_TEXT, MULTI_LINE_TEXT, RICH_TEXT, LINK, MOBILE, EMAIL, URL, PASSWORD)",
+          "Text value for string fields (SINGLE_LINE_TEXT, MULTI_LINE_TEXT, RICH_TEXT, LINK)",
         ),
     }),
     // 数値フィールド (NUMBER) - 文字列として送信
@@ -17,7 +17,9 @@ export const recordInputSchema = z.record(
       value: z
         .string()
         .nullable()
-        .describe("Numeric value as string for NUMBER fields (e.g., '123.45')"),
+        .describe(
+          "Numeric value as string for NUMBER fields (e.g., '123.45'). Only half-width numbers, +/- signs, decimal point (.), and exponential notation (e/E) are allowed. Empty string, null, or undefined for empty values.",
+        ),
     }),
     // 日付・時間系フィールド (DATE, TIME, DATETIME)
     z.object({
@@ -106,7 +108,7 @@ export const recordInputSchema = z.record(
           "User information for CREATOR and MODIFIER fields (registration format with code only)",
         ),
     }),
-    // サブテーブルフィールド (SUBTABLE)
+    // サブテーブルフィールド (SUBTABLE - kintone specific table field type)
     z.object({
       value: z
         .array(
