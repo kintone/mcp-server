@@ -20,8 +20,8 @@ jobs:
       - run: pnpm build:dxt
       - uses: actions/upload-artifact@v4
         with:
-          name: kintone-mcp-server
           path: build/kintone-mcp-server.dxt
+          retention-days: 3
 
   build-npm:
     runs-on: ubuntu-latest
@@ -36,5 +36,5 @@ jobs:
       - run: pnpm pack
       - uses: actions/upload-artifact@v4
         with:
-          name: npm-package
           path: "kintone-mcp-server-*.tgz"
+          retention-days: 3
