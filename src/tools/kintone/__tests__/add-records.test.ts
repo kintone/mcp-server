@@ -111,6 +111,19 @@ describe("add-records tool", () => {
             app: 123,
             records: [
               {
+                file_field: {
+                  value: [{ fileKey: "file123" }],
+                },
+              },
+            ],
+          },
+          description: "record with file field",
+        },
+        {
+          input: {
+            app: 123,
+            records: [
+              {
                 subtable_field: {
                   value: [
                     {
@@ -222,14 +235,13 @@ describe("add-records tool", () => {
             app: 123,
             records: [
               {
-                file_field: {
-                  value: [{ fileKey: "file123" }],
+                invalid_field_type: {
+                  value: "invalid",
                 },
               },
             ],
           },
-          description:
-            "record with file field (should be rejected as z.never())",
+          description: "record with invalid field type",
         },
       ])("rejects $description", ({ input }) => {
         expect(() => inputSchema.parse(input)).toThrow();
@@ -401,6 +413,9 @@ describe("add-records tool", () => {
             user_field: {
               value: [{ code: "user1" }, { code: "user2" }],
             },
+            file_field: {
+              value: [{ fileKey: "file123" }, { fileKey: "file456" }],
+            },
             subtable_field: {
               value: [
                 {
@@ -430,6 +445,9 @@ describe("add-records tool", () => {
             title: { value: "Complex Record" },
             user_field: {
               value: [{ code: "user1" }, { code: "user2" }],
+            },
+            file_field: {
+              value: [{ fileKey: "file123" }, { fileKey: "file456" }],
             },
             subtable_field: {
               value: [
