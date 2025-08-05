@@ -6,21 +6,21 @@ import { parseKintoneClientConfig } from "../../config.js";
 // レコード登録用のスキーマ定義
 const recordInputSchema = z.record(
   z.union([
-    // 文字列系フィールド (SINGLE_LINE_TEXT, MULTI_LINE_TEXT, RICH_TEXT, LINK, MOBILE, EMAIL, URL, PASSWORD)
+    // 文字列系フィールド (SINGLE_LINE_TEXT, MULTI_LINE_TEXT, RICH_TEXT, LINK)
     z.object({
       value: z
         .string()
         .nullable()
         .describe(
-          "Text value for string fields (SINGLE_LINE_TEXT, MULTI_LINE_TEXT, RICH_TEXT, LINK, MOBILE, EMAIL, URL, PASSWORD)",
+          "Text value for string fields (SINGLE_LINE_TEXT, MULTI_LINE_TEXT, RICH_TEXT, LINK)",
         ),
     }),
-    // 数値フィールド (NUMBER) - 文字列として送信
+    // 数値フィールド (NUMBER) - 文字列として送信、半角数値のみ使用可能
     z.object({
       value: z
         .string()
         .nullable()
-        .describe("Numeric value as string for NUMBER fields (e.g., '123.45')"),
+        .describe("Numeric value as string for NUMBER fields (e.g., '123.45'). Only half-width numbers, +/- signs, decimal point (.), and exponential notation (e/E) are allowed. Empty string, null, or undefined for empty values."),
     }),
     // 日付・時間系フィールド (DATE, TIME, DATETIME)
     z.object({
