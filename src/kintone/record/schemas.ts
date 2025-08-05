@@ -191,23 +191,6 @@ export const recordValueSchema = z.union([
     type: z.literal("LABEL"),
     value: z.null(),
   }),
-  // 追加の可能性があるフィールドタイプ
-  z.object({
-    type: z.literal("MOBILE"),
-    value: z.string().nullable(),
-  }),
-  z.object({
-    type: z.literal("EMAIL"),
-    value: z.string().nullable(),
-  }),
-  z.object({
-    type: z.literal("URL"),
-    value: z.string().nullable(),
-  }),
-  z.object({
-    type: z.literal("PASSWORD"),
-    value: z.string().nullable(),
-  }),
 ]);
 
 export const recordSchema = z.record(recordValueSchema);
