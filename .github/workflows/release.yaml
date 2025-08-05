@@ -76,6 +76,6 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: pnpm build
-      - run: pnpm -r publish --access public
+      - run: pnpm publish --access public
         env:
           NPM_CONFIG_PROVENANCE: true
