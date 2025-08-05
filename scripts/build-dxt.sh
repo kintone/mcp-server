@@ -8,12 +8,12 @@ pnpm build
 
 mkdir -p build/tmp
 
+# buildに必要なものとdxtにパッケージングするものを列挙する
 cp package.json \
    pnpm-lock.yaml \
    manifest.json \
    LICENSE \
    README.md \
-   .node-version \
    build/tmp/
 cp -r dist build/tmp/
 
