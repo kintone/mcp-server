@@ -1,4 +1,3 @@
-import { add } from "./examples/add.js";
 import { addRecords } from "./kintone/add-records.js";
 import { updateRecords } from "./kintone/update-records.js";
 import { getApp } from "./kintone/get-app.js";
@@ -10,7 +9,6 @@ import { getProcessManagement } from "./kintone/get-process-management.js";
 import type { Tool } from "./types.js";
 
 export const tools: Array<Tool<any, any>> = [
-  add,
   addRecords,
   updateRecords,
   getApp,
