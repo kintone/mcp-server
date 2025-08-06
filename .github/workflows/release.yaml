@@ -28,7 +28,7 @@ jobs:
       packages: write # To push Docker images to ghcr.io
     needs: release-please
     if: needs.release-please.outputs.release_created
-    uses: ./.github/workflows/publish-image.yaml
+    uses: ./.github/workflows/reusable-publish-image.yaml
     with:
       tags: "${{ needs.release-please.outputs.tag_name }},latest"
       push: true
