@@ -8,10 +8,11 @@ RUN corepack enable
 
 RUN pnpm install --frozen-lockfile
 RUN pnpm run build
-RUN pnpm install --prod
-
 # generate NOTICE file
 RUN pnpm license:extract
+
+RUN pnpm install --prod
+
 
 FROM gcr.io/distroless/nodejs22-debian12:nonroot@sha256:2a8c8af8bf7046d71efccaf1226e491f2ef934f3079dca9ad8ebbf36551f7fc5
 LABEL org.opencontainers.image.source=https://github.com/kintone/mcp-server
