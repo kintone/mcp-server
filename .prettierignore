@@ -11,3 +11,4 @@ CHANGELOG.md
 # Ignore files updated by release-please
 .release-please-manifest.json
 manifest.json
+src/version.ts
