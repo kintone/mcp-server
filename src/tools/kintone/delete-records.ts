@@ -12,12 +12,15 @@ const inputSchema = {
     .max(100, "Maximum 100 records can be deleted at once"),
 };
 
+const outputSchema = {};
+
 export const deleteRecords = createTool(
   "kintone-delete-records",
   {
     description:
       "Delete multiple records from a kintone app. Maximum 100 records can be deleted at once.",
     inputSchema,
+    outputSchema,
   },
   async ({ app, ids }) => {
     const config = parseKintoneClientConfig();
