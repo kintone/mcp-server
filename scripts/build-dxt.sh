@@ -17,7 +17,7 @@ cp package.json \
    build/tmp/
 cp -r dist build/tmp/
 
-pnpm --prefix build/tmp install --prod --frozen-lockfile
+pnpm --prefix build/tmp install --prod --frozen-lockfile --shamefully-hoist
 
 pnpm dxt pack build/tmp build/kintone-mcp-server.dxt
 
