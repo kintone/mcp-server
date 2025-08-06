@@ -4,5 +4,4 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile
     volumes:
-      - "./src:/app/src"
-    command: ["--watch", "--experimental-strip-types", "src/index.ts"]
+      - "./dist:/app/dist"

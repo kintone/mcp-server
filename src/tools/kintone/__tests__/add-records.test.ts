@@ -3,6 +3,12 @@ import { addRecords } from "../add-records.js";
 import { z } from "zod";
 import { mockExtra, mockKintoneConfig } from "../../../__tests__/utils.js";
 
+// Add-records inputの型を定義
+type AddRecordsInput = {
+  app: string | number;
+  records: Array<Record<string, any>>;
+};
+
 // Mock the KintoneRestAPIClient
 const mockAddRecords = vi.fn();
 vi.mock("@kintone/rest-api-client", () => ({
@@ -105,19 +111,6 @@ describe("add-records tool", () => {
             ],
           },
           description: "record with user select field",
-        },
-        {
-          input: {
-            app: 123,
-            records: [
-              {
-                file_field: {
-                  value: [{ fileKey: "file123" }],
-                },
-              },
-            ],
-          },
-          description: "record with file field",
         },
         {
           input: {
@@ -235,13 +228,14 @@ describe("add-records tool", () => {
             app: 123,
             records: [
               {
-                field_with_invalid_structure: {
-                  invalid_property: "should_fail",
+                file_field: {
+                  value: [{ fileKey: "file123" }],
                 },
               },
             ],
           },
-          description: "record with invalid field structure",
+          description:
+            "record with file field (should be rejected as z.never())",
         },
       ])("rejects $description", ({ input }) => {
         expect(() => inputSchema.parse(input)).toThrow();
@@ -357,7 +351,7 @@ describe("add-records tool", () => {
 
       mockAddRecords.mockResolvedValueOnce(mockResponse);
 
-      const input = {
+      const input: AddRecordsInput = {
         app: "456",
         records: [
           {
@@ -413,9 +407,6 @@ describe("add-records tool", () => {
             user_field: {
               value: [{ code: "user1" }, { code: "user2" }],
             },
-            file_field: {
-              value: [{ fileKey: "file123" }, { fileKey: "file456" }],
-            },
             subtable_field: {
               value: [
                 {
@@ -445,9 +436,6 @@ describe("add-records tool", () => {
             title: { value: "Complex Record" },
             user_field: {
               value: [{ code: "user1" }, { code: "user2" }],
-            },
-            file_field: {
-              value: [{ fileKey: "file123" }, { fileKey: "file456" }],
             },
             subtable_field: {
               value: [

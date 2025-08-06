@@ -1,0 +1,85 @@
+{
+  "dxt_version": "0.1",
+  "name": "@kintone/mcp-server",
+  "display_name": "Kintone MCP Server",
+  "version": "0.0.1",
+  "description": "The official MCP Server for kintone",
+  "long_description": "This extension provides Model Context Protocol (MCP) server capabilities for kintone, allowing AI assistants to interact with your kintone applications.",
+  "author": {
+    "name": "Cybozu, Inc.",
+    "url": "https://cybozu.co.jp"
+  },
+  "homepage": "https://github.com/kintone/mcp-server",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kintone/mcp-server"
+  },
+  "server": {
+    "type": "node",
+    "entry_point": "dist/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/dist/index.js"
+      ],
+      "env": {
+        "KINTONE_BASE_URL": "${user_config.kintone_base_url}",
+        "KINTONE_USERNAME": "${user_config.kintone_username}",
+        "KINTONE_PASSWORD": "${user_config.kintone_password}"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "kintone-get-app",
+      "description": "Get app settings from kintone"
+    },
+    {
+      "name": "kintone-get-apps",
+      "description": "Get multiple app settings from kintone"
+    },
+    {
+      "name": "kintone-get-form-fields",
+      "description": "Get form field settings from a kintone app"
+    }
+  ],
+  "user_config": {
+    "kintone_base_url": {
+      "type": "string",
+      "title": "Kintone Base URL",
+      "description": "The base URL of your kintone environment (e.g., https://example.cybozu.com)",
+      "required": true,
+      "sensitive": false
+    },
+    "kintone_username": {
+      "type": "string",
+      "title": "Kintone Username",
+      "description": "Your kintone username for authentication",
+      "required": true,
+      "sensitive": false
+    },
+    "kintone_password": {
+      "type": "string",
+      "title": "Kintone Password",
+      "description": "Your kintone password for authentication",
+      "required": true,
+      "sensitive": true
+    }
+  },
+  "keywords": [
+    "kintone",
+    "mcp",
+    "cybozu"
+  ],
+  "license": "Apache-2.0",
+  "compatibility": {
+    "platforms": [
+      "darwin",
+      "win32",
+      "linux"
+    ],
+    "runtimes": {
+      "node": ">= 22"
+    }
+  }
+}
