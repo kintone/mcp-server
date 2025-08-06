@@ -29,6 +29,7 @@ export const deleteRecords = createTool(
     await client.record.deleteRecords({ app, ids });
 
     return {
+      structuredContent: {},
       content: [],
     };
   },
