@@ -56,7 +56,7 @@ jobs:
             build/kintone-mcp-server.dxt \
             --clobber
 
-  # TODO: Remove false when ready to publish
+  # TODO: Remove false when ready to publish (and don't forget to remove `private: true` from package.json)
   publish-npm-package:
     name: Publish to npm
     permissions:
