@@ -27,6 +27,7 @@
     "fix:eslint": "pnpm lint:eslint --fix",
     "fix:prettier": "pnpm lint:prettier --write",
     "license:analyze": "license-manager analyze -c license-manager.config.cjs",
+    "license:extract": "license-manager extract -c license-manager.config.cjs -w .",
     "lint": "pnpm run \"/^lint:.*/\"",
     "lint:eslint": "eslint . --max-warnings 0",
     "lint:prettier": "prettier --check '**/*.{json,json5,md,yml,yaml}' --cache",
