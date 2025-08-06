@@ -2,7 +2,7 @@
   "dxt_version": "0.1",
   "name": "@kintone/mcp-server",
   "display_name": "Kintone MCP Server",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "The official MCP Server for kintone",
   "long_description": "This extension provides Model Context Protocol (MCP) server capabilities for kintone, allowing AI assistants to interact with your kintone applications.",
   "author": {
@@ -19,7 +19,9 @@
     "entry_point": "dist/index.js",
     "mcp_config": {
       "command": "node",
-      "args": ["${__dirname}/dist/index.js"],
+      "args": [
+        "${__dirname}/dist/index.js"
+      ],
       "env": {
         "KINTONE_BASE_URL": "${user_config.kintone_base_url}",
         "KINTONE_USERNAME": "${user_config.kintone_username}",
@@ -64,10 +66,18 @@
       "sensitive": true
     }
   },
-  "keywords": ["kintone", "mcp", "cybozu"],
+  "keywords": [
+    "kintone",
+    "mcp",
+    "cybozu"
+  ],
   "license": "Apache-2.0",
   "compatibility": {
-    "platforms": ["darwin", "win32", "linux"],
+    "platforms": [
+      "darwin",
+      "win32",
+      "linux"
+    ],
     "runtimes": {
       "node": ">= 22"
     }
