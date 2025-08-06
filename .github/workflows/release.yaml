@@ -8,21 +8,20 @@ on:
 jobs:
   release-please:
     runs-on: ubuntu-latest
-
-    permissions:
-      pull-requests: write
-      contents: write
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
+      - uses: actions/create-github-app-token@v2
+        id: create-iat
+        with:
+          app-id: ${{ secrets.NPM_RELEASER_GITHUB_APP_ID}}
+          private-key: ${{ secrets.NPM_RELEASER_GITHUB_APP_KEY }}
       - name: Release Please
         id: release
         uses: googleapis/release-please-action@a02a34c4d625f9be7cb89156071d8567266a2445 # v4.2.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          manifest-file: .release-please-manifest.json
-          config-file: .release-please-config.json
+          token: ${{ steps.create-iat.outputs.token }}
 
   build-and-publish-container:
     permissions:
