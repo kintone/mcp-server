@@ -3,6 +3,12 @@ import { addRecords } from "../add-records.js";
 import { z } from "zod";
 import { mockExtra, mockKintoneConfig } from "../../../__tests__/utils.js";
 
+// Add-records inputの型を定義
+type AddRecordsInput = {
+  app: string | number;
+  records: Array<Record<string, any>>;
+};
+
 // Mock the KintoneRestAPIClient
 const mockAddRecords = vi.fn();
 vi.mock("@kintone/rest-api-client", () => ({
@@ -345,7 +351,7 @@ describe("add-records tool", () => {
 
       mockAddRecords.mockResolvedValueOnce(mockResponse);
 
-      const input = {
+      const input: AddRecordsInput = {
         app: "456",
         records: [
           {
