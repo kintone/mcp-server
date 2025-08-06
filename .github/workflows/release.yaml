@@ -25,6 +25,7 @@ jobs:
 
   build-and-publish-container:
     permissions:
+      contents: read
       packages: write # To push Docker images to ghcr.io
     needs: release-please
     if: needs.release-please.outputs.release_created
