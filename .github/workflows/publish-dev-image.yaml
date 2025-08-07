@@ -1,0 +1,15 @@
+name: publish-dev-image
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-publish-container:
+    permissions:
+      contents: read # To checkout in the reusable workflow
+      packages: write # To push Docker image to ghcr.io
+    uses: ./.github/workflows/reusable-publish-image.yaml
+    with:
+      tags: dev
+      push: true
