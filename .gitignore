@@ -28,6 +28,7 @@ lerna-debug.log*
 dist/
 build/
 kintone-mcp-server-*.tgz
+NOTICE
 
 ## Test coverage
 coverage/

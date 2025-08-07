@@ -5,6 +5,7 @@ cd "$(dirname "$0")/.."
 
 pnpm clean
 pnpm build
+pnpm license:extract
 
 mkdir -p build/tmp
 
@@ -13,6 +14,7 @@ cp package.json \
    pnpm-lock.yaml \
    manifest.json \
    LICENSE \
+   NOTICE \
    README.md \
    build/tmp/
 cp -r dist build/tmp/
