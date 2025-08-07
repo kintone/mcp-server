@@ -2,12 +2,12 @@ import { z } from "zod";
 import { createTool } from "../../types.js";
 import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config.js";
-import { recordInputSchema } from "../schemas.js";
+import { recordSchemaForParameter } from "../../../schema/record/record-for-parameter.js";
 
 const updateRecordSchema = z.object({
   // updateKey指定は対象外
   id: z.string().describe("Record ID to update"),
-  record: recordInputSchema.describe(
+  record: recordSchemaForParameter.describe(
     "Record data with field codes as keys. Use kintone-get-form-fields tool first to discover available field codes and their types.",
   ),
 });
