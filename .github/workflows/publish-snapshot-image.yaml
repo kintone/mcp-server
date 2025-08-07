@@ -1,32 +1,62 @@
-name: publish-branch-image
+name: publish-snapshot-image
 on:
   workflow_dispatch:
     inputs:
       tags:
-        description: 'Comma-separated list of tags for the Docker image (e.g., "1.0.0,latest"). If empty, branch name will be used.'
+        description: |
+          Comma-separated list of tags for the Docker image (e.g., "feature-test,hotfix").
+          If empty, branch name will be used.
+
+          Prohibited tags: latest, dev, or version tags like 1.0.0.
         required: false
         type: string
       push:
         description: "Whether to push the Docker image to registry"
         required: false
         type: boolean
-        default: false
+        default: true
 
 defaults:
   run:
     shell: bash -eo pipefail {0}
 
 jobs:
+  validate-tags:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate prohibited tags
+        env:
+          INPUT_TAGS: "${{ inputs.tags }}"
+        run: |
+          # tagsが空の場合はスキップ（ブランチ名を使用するため問題なし）
+          if [ -z "$INPUT_TAGS" ]; then
+            echo "No input tags provided, will use branch name"
+            exit 0
+          fi
+
+          # latest, dev, または X.Y.Z 形式をチェック
+          PROHIBITED_PATTERN="(^|,)\s*(latest|dev|[0-9]+\.[0-9]+\.[0-9]+)\s*(,|$)"
+
+          # 入力タグ全体をチェック
+          if [[ "$INPUT_TAGS" =~ $PROHIBITED_PATTERN ]]; then
+            MATCHED_TAG="${BASH_REMATCH[2]}"
+            echo "ERROR: Tag '$MATCHED_TAG' is prohibited in snapshot builds"
+            echo "Prohibited tags detected. Allowed tags should not include 'latest', 'dev', or version tags like '1.0.0'"
+            exit 1
+          fi
+
+          echo "All tags are valid for snapshot builds"
+
   generate-tags:
+    needs: validate-tags
     runs-on: ubuntu-latest
     outputs:
       tags: ${{ steps.generate-tags.outputs.result }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Generate tags
-        id: generate-tags
+      - name: Prepare base tags
+        id: prepare-base-tags
         env:
           BRANCH_NAME: "${{ github.ref_name }}"
           INPUT_TAGS: "${{ inputs.tags }}"
@@ -34,10 +64,38 @@ jobs:
           # tagsが空の場合はブランチ名を使用
           if [ -z "$INPUT_TAGS" ]; then
             # ブランチ名をDocker tagに適した形式に変換（/を-に置換）
-            FINAL_TAGS=$(echo "$BRANCH_NAME" | sed 's/\//-/g')
+            BASE_TAGS=$(echo "$BRANCH_NAME" | sed 's/\//-/g')
           else
-            FINAL_TAGS="$INPUT_TAGS"
+            BASE_TAGS="$INPUT_TAGS"
           fi
+          echo "result=$BASE_TAGS" >> "$GITHUB_OUTPUT"
+
+      - name: Add snapshot prefix
+        id: generate-tags
+        env:
+          BASE_TAGS: "${{ steps.prepare-base-tags.outputs.result }}"
+        run: |
+          # カンマ区切りのタグを処理
+          IFS=',' read -ra TAGS <<< "$BASE_TAGS"
+          FINAL_TAGS=""
+
+          for tag in "${TAGS[@]}"; do
+            # 前後の空白を除去
+            tag=$(echo "$tag" | xargs)
+
+            # snapshot- プレフィックスがない場合は追加
+            if [[ ! "$tag" =~ ^snapshot- ]]; then
+              tag="snapshot-$tag"
+            fi
+
+            # 文字列を連結（最初のタグでなければカンマを追加）
+            if [ -z "$FINAL_TAGS" ]; then
+              FINAL_TAGS="$tag"
+            else
+              FINAL_TAGS="$FINAL_TAGS,$tag"
+            fi
+          done
+
           echo "result=$FINAL_TAGS" >> "$GITHUB_OUTPUT"
 
   build-and-publish-container:
