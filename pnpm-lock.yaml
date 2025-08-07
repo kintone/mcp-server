@@ -12,8 +12,8 @@ importers:
         specifier: ^5.7.4
         version: 5.7.4
       '@modelcontextprotocol/sdk':
-        specifier: ^1.16.0
-        version: 1.16.0
+        specifier: ^1.17.2
+        version: 1.17.2
       zod:
         specifier: ^3.23.8
         version: 3.25.76
@@ -367,8 +367,8 @@ packages:
     resolution: {integrity: sha512-R6FFVMs2pFwaMdgt+GOCdjnA/J9q5dH9zD5iJLIeCA8sZrDna5sUtLvaapcKUhMHd2Ls6T1TZ+sXZ+nGksGOKw==}
     engines: {node: '>=18'}
 
-  '@modelcontextprotocol/sdk@1.16.0':
-    resolution: {integrity: sha512-8ofX7gkZcLj9H9rSd50mCgm3SSF8C7XoclxJuLoV0Cz3rEQ1tv9MZRYYvJtm9n1BiEQQMzSmE/w2AEkNacLYfg==}
+  '@modelcontextprotocol/sdk@1.17.2':
+    resolution: {integrity: sha512-EFLRNXR/ixpXQWu6/3Cu30ndDFIFNaqUXcTqsGebujeMan9FzhAaFFswLRiFj61rgygDRr8WO1N+UijjgRxX9g==}
     engines: {node: '>=18'}
 
   '@napi-rs/wasm-runtime@0.2.12':
@@ -2700,7 +2700,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@modelcontextprotocol/sdk@1.16.0':
+  '@modelcontextprotocol/sdk@1.17.2':
     dependencies:
       ajv: 6.12.6
       content-type: 1.0.5
