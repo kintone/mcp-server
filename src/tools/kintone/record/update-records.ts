@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { createTool } from "../types.js";
-import { getKintoneClient } from "../../client.js";
-import { parseKintoneClientConfig } from "../../config.js";
-import { recordInputSchema } from "./schemas.js";
+import { createTool } from "../../types.js";
+import { getKintoneClient } from "../../../client.js";
+import { parseKintoneClientConfig } from "../../../config.js";
+import { recordInputSchema } from "../schemas.js";
 
 const updateRecordSchema = z.object({
   // updateKey指定は対象外
