@@ -45,7 +45,7 @@ jobs:
     permissions:
       contents: read # To checkout in the reusable workflow
       packages: write # To push Docker image to ghcr.io
-    uses: ./.github/workflows/publish-image.yaml
+    uses: ./.github/workflows/reusable-publish-image.yaml
     with:
       tags: ${{ needs.generate-tags.outputs.tags }}
       push: ${{ inputs.push }}

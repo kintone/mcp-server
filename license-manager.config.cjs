@@ -24,6 +24,9 @@ const config = createConfig({
       "Unlicense",
     ],
   },
+  extract: {
+    output: "./NOTICE",
+  },
   packageManager: "pnpm",
 });
 
