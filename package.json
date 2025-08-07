@@ -2,17 +2,34 @@
   "name": "@kintone/mcp-server",
   "version": "0.0.1",
   "private": true,
-  "description": "",
+  "description": "The official MCP Server for kintone",
+  "keywords": [
+    "kintone",
+    "mcp",
+    "modelcontextprotocol"
+  ],
+  "homepage": "https://github.com/kintone/mcp-server#readme",
+  "bugs": {
+    "url": "https://github.com/kintone/mcp-server/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kintone/mcp-server.git"
+  },
   "license": "Apache-2.0",
   "author": {
     "name": "Cybozu, Inc.",
     "url": "https://cybozu.co.jp"
   },
   "type": "module",
-  "main": "index.js",
+  "main": "dist/index.js",
   "bin": {
-    "kintone-mcp-server": "./src/index.ts"
+    "kintone-mcp-server": "dist/index.js"
   },
+  "files": [
+    "CHANGELOG.md",
+    "dist"
+  ],
   "scripts": {
     "prebuild": "pnpm clean:dist",
     "build": "tsc",
@@ -58,5 +75,8 @@
   "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad",
   "engines": {
     "node": ">= 20"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
