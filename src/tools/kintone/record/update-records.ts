@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTool } from "../../types.js";
+import { createTool } from "../../utils.js";
 import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config.js";
 import { recordSchemaForParameter } from "../../../schema/record/record-for-parameter.js";
