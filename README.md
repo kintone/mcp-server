@@ -59,6 +59,20 @@ docker run ghcr.io/kintone/mcp-server
 npx @kintone/mcp-server
 ```
 
+## ツール一覧
+
+| ツール名                         | 説明                         |
+| -------------------------------- | ---------------------------- |
+| `kintone-get-apps`               | 複数のアプリ情報を取得       |
+| `kintone-get-app`                | 単一アプリの詳細情報を取得   |
+| `kintone-get-form-fields`        | アプリのフィールド設定を取得 |
+| `kintone-get-process-management` | ワークフロー設定を取得       |
+| `kintone-get-records`            | レコードを検索・取得         |
+| `kintone-add-records`            | 新規レコードを追加           |
+| `kintone-update-records`         | 既存レコードを更新           |
+| `kintone-delete-records`         | レコードを削除               |
+| `kintone-update-statuses`        | レコードのステータスを変更   |
+
 ## 注意事項
 
 レコード登録更新ツールにおいて、添付ファイルフィールドは2025/08/05時点で指定できません。
