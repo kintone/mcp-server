@@ -2,22 +2,11 @@
 
 kintoneの公式ローカルMCPサーバーです。
 
-[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=kintone&config=JTdCJTIyY29tbWFuZCUyMiUzQSUyMmRvY2tlciUyMHJ1biUyMC1pdCUyMC0tcm0lMjBnaGNyLmlvJTJGa2ludG9uZSUyRm1jcC1zZXJ2ZXIlMjIlN0Q%3D)
+[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en/install-mcp?name=kintone&config=eyJjb21tYW5kIjoiZG9ja2VyIiwiZW52Ijp7IktJTlRPTkVfQkFTRV9VUkwiOiJodHRwczovLyhzdWJkb21haW4pLmN5Ym96dS5jb20iLCJLSU5UT05FX1VTRVJOQU1FIjoiKHVzZXJuYW1lKSIsIktJTlRPTkVfUEFTU1dPUkQiOiIocGFzc3dvcmQpIn0sImFyZ3MiOlsicnVuIiwiLWkiLCItLXJtIiwiLWUiLCJLSU5UT05FX0JBU0VfVVJMIiwiLWUiLCJLSU5UT05FX1VTRVJOQU1FIiwiLWUiLCJLSU5UT05FX1BBU1NXT1JEIiwiZ2hjci5pby9raW50b25lL21jcC1zZXJ2ZXI6bGF0ZXN0Il19)
 
 <!--
-
-Cursorのインストール用Deep Linkは以下のJSONから生成している
-
-{
-  "kintone": {
-    "command": "docker",
-    "args": ["run", "-it", "--rm", "ghcr.io/kintone/mcp-server:latest"]
-  }
-}
-
-作成方法は以下を参照
-https://docs.cursor.com/ja/tools/developers
-
+NOTE: Cursorのインストールリンク生成は scripts/generate-cursor-install-link.js で生成している
+>>>>>>> 7caf26e (docs: fix cursor deeplink)
 -->
 
 ## 利用方法
