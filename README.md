@@ -80,7 +80,7 @@ npx @kintone/mcp-server
 
 ## 貢献
 
-[Contributing Guide](./CONTRIBUTING.md) を参照してください。
+[Contributing Guide](CONTRIBUTING.md) を参照してください。
 
 ## License
 
