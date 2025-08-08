@@ -10,13 +10,13 @@ import { updateStatuses } from "./kintone/update-statuses.js";
 import type { Tool } from "./utils.js";
 
 export const tools: Array<Tool<any, any>> = [
-  addRecords,
   getApp,
   getApps,
   getFormFields,
-  getRecords,
   getProcessManagement,
-  updateRecords,
   updateStatuses,
+  addRecords,
   deleteRecords,
+  getRecords,
+  updateRecords,
 ];
