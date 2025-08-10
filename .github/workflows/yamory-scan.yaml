@@ -25,7 +25,7 @@ jobs:
           sudo dpkg -i trivy_${TRIVY_VERSION}_Linux-64bit.deb
 
       - name: Login to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
