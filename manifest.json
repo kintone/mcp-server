@@ -7,7 +7,7 @@
   "long_description": "This extension provides Model Context Protocol (MCP) server capabilities for kintone, allowing AI assistants to interact with your kintone applications.",
   "author": {
     "name": "Cybozu, Inc.",
-    "url": "https://cybozu.co.jp"
+    "url": "https://cybozu-global.com/"
   },
   "repository": {
     "type": "git",
