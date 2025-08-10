@@ -9,11 +9,13 @@
     "name": "Cybozu, Inc.",
     "url": "https://cybozu.co.jp"
   },
-  "homepage": "https://github.com/kintone/mcp-server",
   "repository": {
     "type": "git",
     "url": "https://github.com/kintone/mcp-server"
   },
+  "homepage": "https://github.com/kintone/mcp-server",
+  "documentation": "https://github.com/kintone/mcp-server/blob/main/README.md",
+  "support": "https://github.com/kintone/mcp-server/issues",
   "server": {
     "type": "node",
     "entry_point": "dist/index.js",
