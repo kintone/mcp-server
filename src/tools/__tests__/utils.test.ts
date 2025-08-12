@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { createTool } from "../types.js";
+import { createTool } from "../utils.js";
 import { z } from "zod";
 import { mockExtra } from "../../__tests__/utils.js";
 

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { addRecords } from "../add-records.js";
 import { z } from "zod";
-import { mockExtra, mockKintoneConfig } from "../../../__tests__/utils.js";
+import { mockExtra, mockKintoneConfig } from "../../../../__tests__/utils.js";
 
 // Add-records inputの型を定義
 type AddRecordsInput = {

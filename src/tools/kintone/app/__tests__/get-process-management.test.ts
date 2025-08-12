@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { getProcessManagement } from "../get-process-management.js";
 import { z } from "zod";
-import { mockExtra, mockKintoneConfig } from "../../../__tests__/utils.js";
+import { mockExtra, mockKintoneConfig } from "../../../../__tests__/utils.js";
 
 // Mock the KintoneRestAPIClient
 const mockGetProcessManagement = vi.fn();
