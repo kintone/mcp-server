@@ -26,11 +26,13 @@ kintoneの公式ローカルMCPサーバーです。
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+- [インストール](#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB)
+  - [DXT (Claude Desktop用パッケージ)](#dxt-claude-desktop%E7%94%A8%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8)
+  - [Dockerコンテナイメージ](#docker%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8)
+  - [npmパッケージ](#npm%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8)
 - [利用方法](#%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95)
-  - [設定ファイル](#%E8%A8%AD%E5%AE%9A%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB)
-- [実行](#%E5%AE%9F%E8%A1%8C)
-  - [Docker](#docker)
-  - [npm](#npm)
+  - [設定ファイルのパスの例](#%E8%A8%AD%E5%AE%9A%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E3%83%91%E3%82%B9%E3%81%AE%E4%BE%8B)
+  - [設定ファイルの内容の例](#%E8%A8%AD%E5%AE%9A%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E5%86%85%E5%AE%B9%E3%81%AE%E4%BE%8B)
 - [ツール一覧](#%E3%83%84%E3%83%BC%E3%83%AB%E4%B8%80%E8%A6%A7)
 - [注意事項](#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85)
 - [コントリビューション](#%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AA%E3%83%93%E3%83%A5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3)
@@ -51,8 +53,8 @@ DXTファイルは、Claude Desktopの拡張機能としてインストールで
 3. Claude Desktopを開く
 4. 設定から「デスクトップアプリ」→「拡張機能」のページを開く
 5. ダウンロードした `kintone-mcp-server.dxt` をClaude Desktopの画面にドラッグ＆ドロップ
-7. インストール確認ダイアログが表示されるので「インストール」を選択
-8. 設定ダイアログが表示されるので、必要な情報を入力する
+6. インストール確認ダイアログが表示されるので「インストール」を選択
+7. 設定ダイアログが表示されるので、必要な情報を入力する
    - `Kintone Base URL`: kintoneのベースURL (例: `https://example.cybozu.com`)
    - `Kintone Username`: kintoneのユーザー名
    - `Kintone Password`: kintoneのパスワード
