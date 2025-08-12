@@ -41,6 +41,10 @@
     {
       "name": "kintone-get-form-fields",
       "description": "Get form field settings from a kintone app"
+    },
+    {
+      "name": "kintone-update-statuses",
+      "description": "Update status of multiple records in a kintone app."
     }
   ],
   "user_config": {
