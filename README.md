@@ -23,6 +23,7 @@ NOTE: Cursorのインストールリンク生成は scripts/generate-cursor-inst
 
 kintoneの公式ローカルMCPサーバーです。
 
+<!-- NOTE: TOCはpnpm doc:update-tocで自動生成されます。 -->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
