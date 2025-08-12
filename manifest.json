@@ -28,7 +28,8 @@
       "env": {
         "KINTONE_BASE_URL": "${user_config.kintone_base_url}",
         "KINTONE_USERNAME": "${user_config.kintone_username}",
-        "KINTONE_PASSWORD": "${user_config.kintone_password}"
+        "KINTONE_PASSWORD": "${user_config.kintone_password}",
+        "HTTPS_PROXY": "${user_config.https_proxy}"
       }
     }
   },
@@ -71,6 +72,13 @@
       "description": "Your kintone password for authentication",
       "required": true,
       "sensitive": true
+    },
+    "https_proxy": {
+      "type": "string",
+      "title": "HTTPS Proxy",
+      "description": "HTTPS proxy URL (e.g., http://proxy.example.com:8080)",
+      "required": false,
+      "sensitive": false
     }
   },
   "keywords": [

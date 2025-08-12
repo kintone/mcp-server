@@ -203,6 +203,71 @@ describe("config", () => {
       });
     });
 
+    describe("HTTPS_PROXY configuration", () => {
+      it("should parse HTTPS_PROXY when provided", () => {
+        process.env = {
+          ...originalEnv,
+          ...mockKintoneConfig,
+          HTTPS_PROXY: "http://proxy.example.com:8080",
+        };
+
+        const config = parseKintoneClientConfig();
+
+        expect(config).toEqual({
+          ...mockKintoneConfig,
+          HTTPS_PROXY: "http://proxy.example.com:8080",
+        });
+      });
+
+      it("should work without HTTPS_PROXY (optional field)", () => {
+        process.env = {
+          ...originalEnv,
+          ...mockKintoneConfig,
+        };
+
+        const config = parseKintoneClientConfig();
+
+        expect(config).toEqual(mockKintoneConfig);
+        expect(config.HTTPS_PROXY).toBeUndefined();
+      });
+
+      it("should handle empty HTTPS_PROXY as empty string", () => {
+        process.env = {
+          ...originalEnv,
+          ...mockKintoneConfig,
+          HTTPS_PROXY: "",
+        };
+
+        const config = parseKintoneClientConfig();
+
+        expect(config).toEqual({
+          ...mockKintoneConfig,
+          HTTPS_PROXY: "",
+        });
+        expect(config.HTTPS_PROXY).toBe("");
+      });
+
+      it("should accept various proxy URL formats", () => {
+        const proxyUrls = [
+          "http://proxy.example.com:3128",
+          "https://secure-proxy.example.com:443",
+          "http://user:pass@proxy.example.com:8080",
+        ];
+
+        for (const proxyUrl of proxyUrls) {
+          process.env = {
+            ...originalEnv,
+            ...mockKintoneConfig,
+            HTTPS_PROXY: proxyUrl,
+          };
+
+          const config = parseKintoneClientConfig();
+
+          expect(config.HTTPS_PROXY).toBe(proxyUrl);
+        }
+      });
+    });
+
     describe("edge cases", () => {
       it("should accept http URLs", () => {
         process.env = {
