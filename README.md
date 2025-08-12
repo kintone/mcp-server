@@ -38,12 +38,73 @@ kintoneの公式ローカルMCPサーバーです。
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## インストール
+
+### DXT (Claude Desktop用パッケージ)
+
+DXTファイルは、Claude Desktopの拡張機能としてインストールできます。
+
+以下の手順でインストールしてください。
+
+1. [リリース一覧](https://github.com/kintone/mcp-server/releases) にアクセス
+2. 最新のリリースから `kintone-mcp-server.dxt` をダウンロード
+3. Claude Desktopを開く
+4. 設定から「デスクトップアプリ」→「拡張機能」のページを開く
+5. ダウンロードした `kintone-mcp-server.dxt` をClaude Desktopの画面にドラッグ＆ドロップ
+7. インストール確認ダイアログが表示されるので「インストール」を選択
+8. 設定ダイアログが表示されるので、必要な情報を入力する
+   - `Kintone Base URL`: kintoneのベースURL (例: `https://example.cybozu.com`)
+   - `Kintone Username`: kintoneのユーザー名
+   - `Kintone Password`: kintoneのパスワード
+
+### Dockerコンテナイメージ
+
+[Docker](https://www.docker.com/)のインストールが必要です。
+
+以下のコマンドでコンテナを起動できます。
+
+```shell
+docker run -i --rm ghcr.io/kintone/mcp-server \
+  -e KINTONE_BASE_URL=https://example.cybozu.com \
+  -e KINTONE_USERNAME=(username) \
+  -e KINTONE_PASSWORD=(password)
+```
+
+### npmパッケージ
+
+[Node.js](https://nodejs.org/)のインストールが必要です。
+
+以下のコマンドでインストールできます。
+
+```shell
+npm install -g @kintone/mcp-server
+```
+
+以下のコマンドでサーバーを起動できます。
+
+```shell
+kintone-mcp-server \
+  --kintone-base-url https://example.cybozu.com \
+  --kintone-username (username) \
+  --kintone-password (password)
+
+# `--kintone-base-url`、`--kintone-username`、`--kintone-password` は
+# 環境変数 `KINTONE_BASE_URL`、`KINTONE_USERNAME`、`KINTONE_PASSWORD` でも指定可能です。
+```
+
 ## 利用方法
 
-### 設定ファイル
+DXTファイルをインストールした場合、追加の手順は必要ありません。
 
-- Claude Code (`.mcp.json`) \[[ref](https://docs.anthropic.com/ja/docs/claude-code/mcp)]
-- Cursor (`.cursor/mcp.json`) \[[ref](https://docs.cursor.com/ja/context/mcp)]
+その他の利用方法では、設定ファイルを作成する必要があります。
+設定ファイルの作成方法の詳細は、利用するAIツールのドキュメントを参照してください。
+
+### 設定ファイルのパスの例
+
+- Claude Code: `.mcp.json` \[[ref](https://docs.anthropic.com/ja/docs/claude-code/mcp)]
+- Cursor: `.cursor/mcp.json` \[[ref](https://docs.cursor.com/ja/context/mcp)]
+
+### 設定ファイルの内容の例
 
 ```json
 {
@@ -51,30 +112,27 @@ kintoneの公式ローカルMCPサーバーです。
     "kintone": {
       "type": "stdio",
       "command": "docker",
-      "args": ["run", "-it", "--rm", "ghcr.io/kintone/mcp-server"],
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "KINTONE_BASE_URL",
+        "-e",
+        "KINTONE_USERNAME",
+        "-e",
+        "KINTONE_PASSWORD",
+        "ghcr.io/kintone/mcp-server:latest"
+      ],
       "cwd": "${cwd}",
       "env": {
-        "KINTONE_BASE_URL": "http://localhost",
-        "KINTONE_USERNAME": "cybozu",
-        "KINTONE_PASSWORD": "cybozu"
+        "KINTONE_BASE_URL": "https://example.cybozu.com",
+        "KINTONE_USERNAME": "username",
+        "KINTONE_PASSWORD": "password"
       }
     }
   }
 }
-```
-
-## 実行
-
-### Docker
-
-```shell
-docker run ghcr.io/kintone/mcp-server
-```
-
-### npm
-
-```shell
-npx @kintone/mcp-server
 ```
 
 ## ツール一覧
