@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { createTool } from "../utils.js";
-import { getKintoneClient } from "../../client.js";
-import { parseKintoneClientConfig } from "../../config.js";
+import { createTool } from "../../utils.js";
+import { getKintoneClient } from "../../../client.js";
+import { parseKintoneClientConfig } from "../../../config.js";
 
 const statusRecordSchema = z.object({
   id: z.union([z.number(), z.string()]).describe("Record ID"),
