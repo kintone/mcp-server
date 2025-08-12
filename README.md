@@ -1,13 +1,16 @@
 # kintone MCP Server
 
-kintoneの公式ローカルMCPサーバーです。
-
+[![ci](https://github.com/kintone/mcp-server/actions/workflows/ci.yaml/badge.svg)](https://github.com/kintone/mcp-server/actions/workflows/ci.yaml)
+[![npm version](https://badge.fury.io/js/@kintone%2Fmcp-server.svg)](https://badge.fury.io/js/@kintone%2Fmcp-server)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en/install-mcp?name=kintone&config=eyJjb21tYW5kIjoiZG9ja2VyIiwiZW52Ijp7IktJTlRPTkVfQkFTRV9VUkwiOiJodHRwczovLyhzdWJkb21haW4pLmN5Ym96dS5jb20iLCJLSU5UT05FX1VTRVJOQU1FIjoiKHVzZXJuYW1lKSIsIktJTlRPTkVfUEFTU1dPUkQiOiIocGFzc3dvcmQpIn0sImFyZ3MiOlsicnVuIiwiLWkiLCItLXJtIiwiLWUiLCJLSU5UT05FX0JBU0VfVVJMIiwiLWUiLCJLSU5UT05FX1VTRVJOQU1FIiwiLWUiLCJLSU5UT05FX1BBU1NXT1JEIiwiZ2hjci5pby9raW50b25lL21jcC1zZXJ2ZXI6bGF0ZXN0Il19)
 
 <!--
 NOTE: Cursorのインストールリンク生成は scripts/generate-cursor-install-link.js で生成している
 >>>>>>> 7caf26e (docs: fix cursor deeplink)
 -->
+
+kintoneの公式ローカルMCPサーバーです。
 
 ## 利用方法
 
