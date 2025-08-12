@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { createTool } from "../types.js";
-import { getKintoneClient } from "../../client.js";
-import { parseKintoneClientConfig } from "../../config.js";
-import { recordSchema } from "../../kintone/record/schemas.js";
+import { createTool } from "../../utils.js";
+import { getKintoneClient } from "../../../client.js";
+import { parseKintoneClientConfig } from "../../../config.js";
+import { recordSchema } from "../../../schema/record/records.js";
 
 const filtersSchema = z
   .object({

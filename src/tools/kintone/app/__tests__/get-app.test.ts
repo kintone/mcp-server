@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { getApp } from "../get-app.js";
 import { z } from "zod";
-import { mockExtra } from "../../../__tests__/utils.js";
+import { mockExtra } from "../../../../__tests__/utils.js";
 
 // Mock the KintoneRestAPIClient
 const mockGetApp = vi.fn();
