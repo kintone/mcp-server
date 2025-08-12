@@ -1,0 +1,84 @@
+import { z } from "zod";
+import { createTool } from "../types.js";
+import { getKintoneClient } from "../../client.js";
+import { parseKintoneClientConfig } from "../../config.js";
+
+const statusRecordSchema = z.object({
+  id: z.union([z.number(), z.string()]).describe("Record ID"),
+  action: z
+    .string()
+    .describe(
+      "Action name to execute. Must be specified in the user's display language if multiple languages are configured. If multiple actions with the same name exist for the current status, an error will occur.",
+    ),
+  assignee: z
+    .string()
+    .optional()
+    .describe(
+      "User login name to assign as the assignee. Required when: 1) The destination status has 'Select assignee from these users' enabled and selectable users exist, 2) Setting an assignee for the initial status when returning to it.",
+    ),
+  revision: z
+    .union([z.number(), z.string()])
+    .optional()
+    .describe(
+      "Expected revision number. If it doesn't match the actual revision, an error occurs and status is not updated. Specify -1 or omit to skip revision validation.",
+    ),
+});
+
+const inputSchema = {
+  app: z.union([z.number(), z.string()]).describe("The ID of the app"),
+  records: z
+    .array(statusRecordSchema)
+    .min(1)
+    .max(100)
+    .describe(
+      "Array of records to update status (min 1, max 100). Each record contains id, action, and optionally assignee and revision.",
+    ),
+};
+
+const outputSchema = {
+  records: z
+    .array(
+      z.object({
+        id: z.string().describe("Record ID"),
+        revision: z
+          .string()
+          .describe(
+            "New revision number after status change. The revision increases by 2 (one for action execution, one for status update).",
+          ),
+      }),
+    )
+    .describe("Array of updated record information"),
+};
+
+export const updateStatuses = createTool(
+  "kintone-update-statuses",
+  {
+    description:
+      "Update status of multiple records in a kintone app. Requires process management feature to be enabled. Maximum 100 records can be updated at once.",
+    inputSchema,
+    outputSchema,
+  },
+  async ({ app, records }) => {
+    const config = parseKintoneClientConfig();
+    const client = getKintoneClient(config);
+
+    const response = await client.record.updateRecordsStatus({
+      app,
+      records,
+    });
+
+    const result = {
+      records: response.records,
+    };
+
+    return {
+      structuredContent: result,
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify(result, null, 2),
+        },
+      ],
+    };
+  },
+);
