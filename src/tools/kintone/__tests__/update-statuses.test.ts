@@ -16,7 +16,7 @@ vi.mock("@kintone/rest-api-client", () => ({
 describe("update-statuses tool", () => {
   const originalEnv = process.env;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     vi.clearAllMocks();
     // Set up environment variables for testing
     process.env = {
