@@ -41,7 +41,7 @@ jobs:
     permissions:
       contents: write # To upload release assets
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v3
       - uses: actions/setup-node@v4
         with:
@@ -65,7 +65,7 @@ jobs:
     needs: release-please
     if: needs.release-please.outputs.release_created && false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v3
       - uses: actions/setup-node@v4
         with:

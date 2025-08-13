@@ -16,6 +16,7 @@
   "homepage": "https://github.com/kintone/mcp-server",
   "documentation": "https://github.com/kintone/mcp-server/blob/main/README.md",
   "support": "https://github.com/kintone/mcp-server/issues",
+  "icon": "icon.png",
   "server": {
     "type": "node",
     "entry_point": "dist/index.js",
