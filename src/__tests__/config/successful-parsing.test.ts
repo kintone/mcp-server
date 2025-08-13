@@ -79,6 +79,34 @@ describe("config - successful parsing", () => {
       },
       expected: mockKintoneConfig,
     },
+    {
+      name: "should parse PFX file settings when both are provided",
+      env: {
+        ...mockKintoneConfig,
+        KINTONE_PFX_FILE_PATH: "/path/to/cert.pfx",
+        KINTONE_PFX_FILE_PASSWORD: "pfx-password",
+      },
+      expected: {
+        ...mockKintoneConfig,
+        KINTONE_PFX_FILE_PATH: "/path/to/cert.pfx",
+        KINTONE_PFX_FILE_PASSWORD: "pfx-password",
+      },
+    },
+    {
+      name: "should parse with PFX settings and HTTPS proxy",
+      env: {
+        ...mockKintoneConfig,
+        HTTPS_PROXY: "http://proxy.example.com:8080",
+        KINTONE_PFX_FILE_PATH: "/path/to/cert.pfx",
+        KINTONE_PFX_FILE_PASSWORD: "pfx-password",
+      },
+      expected: {
+        ...mockKintoneConfig,
+        HTTPS_PROXY: "http://proxy.example.com:8080",
+        KINTONE_PFX_FILE_PATH: "/path/to/cert.pfx",
+        KINTONE_PFX_FILE_PASSWORD: "pfx-password",
+      },
+    },
   ])("$name", ({ env, expected }) => {
     process.env = {
       ...originalEnv,

@@ -10,14 +10,23 @@ vi.mock("@kintone/rest-api-client", () => ({
 
 // Mock https-proxy-agent
 vi.mock("https-proxy-agent", () => ({
-  HttpsProxyAgent: vi
-    .fn()
-    .mockImplementation((url) => ({ proxy: url, isProxyAgent: true })),
+  HttpsProxyAgent: vi.fn().mockImplementation((url, options) => ({
+    proxy: url,
+    options,
+    isProxyAgent: true,
+  })),
 }));
 
 // Mock https Agent
 vi.mock("https", () => ({
-  Agent: vi.fn().mockImplementation(() => ({ isHttpsAgent: true })),
+  Agent: vi
+    .fn()
+    .mockImplementation((options) => ({ options, isHttpsAgent: true })),
+}));
+
+// Mock fs
+vi.mock("fs", () => ({
+  readFileSync: vi.fn().mockReturnValue(Buffer.from("mock-pfx-content")),
 }));
 
 describe("client", () => {
@@ -256,6 +265,7 @@ describe("client", () => {
 
         expect(HttpsProxyAgent).toHaveBeenCalledWith(
           "http://proxy.example.com:8080",
+          {},
         );
         expect(KintoneRestAPIClient).toHaveBeenCalledWith({
           baseUrl: mockKintoneConfig.KINTONE_BASE_URL,
@@ -266,6 +276,87 @@ describe("client", () => {
           httpsAgent: expect.objectContaining({
             proxy: "http://proxy.example.com:8080",
             isProxyAgent: true,
+          }),
+        });
+        expect(client).toBe(mockClient);
+      });
+
+      it("should use HttpsProxyAgent with PFX when both HTTPS_PROXY and PFX are set", async () => {
+        const config = {
+          ...mockKintoneConfig,
+          HTTPS_PROXY: "http://proxy.example.com:8080",
+          KINTONE_PFX_FILE_PATH: "/path/to/cert.pfx",
+          KINTONE_PFX_FILE_PASSWORD: "pfx-password",
+        };
+
+        const { KintoneRestAPIClient } = vi.mocked(
+          await import("@kintone/rest-api-client"),
+        );
+        const { HttpsProxyAgent } = vi.mocked(
+          await import("https-proxy-agent"),
+        );
+        const { readFileSync } = vi.mocked(await import("fs"));
+        const mockClient = { app: { getApp: vi.fn() } };
+        (KintoneRestAPIClient as any).mockReturnValue(mockClient);
+
+        const client = getKintoneClient(config);
+
+        expect(readFileSync).toHaveBeenCalledWith("/path/to/cert.pfx");
+        expect(HttpsProxyAgent).toHaveBeenCalledWith(
+          "http://proxy.example.com:8080",
+          {
+            pfx: Buffer.from("mock-pfx-content"),
+            passphrase: "pfx-password",
+          },
+        );
+        expect(KintoneRestAPIClient).toHaveBeenCalledWith({
+          baseUrl: mockKintoneConfig.KINTONE_BASE_URL,
+          auth: {
+            username: mockKintoneConfig.KINTONE_USERNAME,
+            password: mockKintoneConfig.KINTONE_PASSWORD,
+          },
+          httpsAgent: expect.objectContaining({
+            proxy: "http://proxy.example.com:8080",
+            isProxyAgent: true,
+          }),
+        });
+        expect(client).toBe(mockClient);
+      });
+
+      it("should use regular Agent with PFX when only PFX is set", async () => {
+        const config = {
+          ...mockKintoneConfig,
+          KINTONE_PFX_FILE_PATH: "/path/to/cert.pfx",
+          KINTONE_PFX_FILE_PASSWORD: "pfx-password",
+        };
+
+        const { KintoneRestAPIClient } = vi.mocked(
+          await import("@kintone/rest-api-client"),
+        );
+        const { Agent } = vi.mocked(await import("https"));
+        const { readFileSync } = vi.mocked(await import("fs"));
+        const mockClient = { app: { getApp: vi.fn() } };
+        (KintoneRestAPIClient as any).mockReturnValue(mockClient);
+
+        const client = getKintoneClient(config);
+
+        expect(readFileSync).toHaveBeenCalledWith("/path/to/cert.pfx");
+        expect(Agent).toHaveBeenCalledWith({
+          pfx: Buffer.from("mock-pfx-content"),
+          passphrase: "pfx-password",
+        });
+        expect(KintoneRestAPIClient).toHaveBeenCalledWith({
+          baseUrl: mockKintoneConfig.KINTONE_BASE_URL,
+          auth: {
+            username: mockKintoneConfig.KINTONE_USERNAME,
+            password: mockKintoneConfig.KINTONE_PASSWORD,
+          },
+          httpsAgent: expect.objectContaining({
+            options: {
+              pfx: Buffer.from("mock-pfx-content"),
+              passphrase: "pfx-password",
+            },
+            isHttpsAgent: true,
           }),
         });
         expect(client).toBe(mockClient);
@@ -286,7 +377,7 @@ describe("client", () => {
 
         const client = getKintoneClient(config);
 
-        expect(Agent).toHaveBeenCalled();
+        expect(Agent).toHaveBeenCalledWith({});
         expect(HttpsProxyAgent).not.toHaveBeenCalled();
         expect(KintoneRestAPIClient).toHaveBeenCalledWith({
           baseUrl: mockKintoneConfig.KINTONE_BASE_URL,
@@ -326,7 +417,7 @@ describe("client", () => {
 
           getKintoneClient(config);
 
-          expect(HttpsProxyAgent).toHaveBeenCalledWith(proxyUrl);
+          expect(HttpsProxyAgent).toHaveBeenCalledWith(proxyUrl, {});
           expect(KintoneRestAPIClient).toHaveBeenCalledWith({
             baseUrl: mockKintoneConfig.KINTONE_BASE_URL,
             auth: {
@@ -359,7 +450,7 @@ describe("client", () => {
 
         const client = getKintoneClient(config);
 
-        expect(Agent).toHaveBeenCalled();
+        expect(Agent).toHaveBeenCalledWith({});
         expect(HttpsProxyAgent).not.toHaveBeenCalled();
         expect(KintoneRestAPIClient).toHaveBeenCalledWith({
           baseUrl: mockKintoneConfig.KINTONE_BASE_URL,
@@ -416,6 +507,7 @@ describe("client", () => {
         const client1 = getKintoneClient(config1);
         expect(HttpsProxyAgent).toHaveBeenCalledWith(
           "http://proxy1.example.com:8080",
+          {},
         );
 
         resetKintoneClient();
@@ -424,6 +516,7 @@ describe("client", () => {
         const client2 = getKintoneClient(config2);
         expect(HttpsProxyAgent).toHaveBeenCalledWith(
           "http://proxy2.example.com:3128",
+          {},
         );
 
         expect(client1).not.toBe(client2);
