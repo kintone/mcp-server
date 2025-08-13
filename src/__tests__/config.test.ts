@@ -17,294 +17,269 @@ describe("config", () => {
 
   describe("parseKintoneClientConfig", () => {
     describe("successful parsing", () => {
-      it("should parse valid environment variables", () => {
+      it.each([
+        {
+          name: "should parse valid environment variables",
+          env: mockKintoneConfig,
+          expected: mockKintoneConfig,
+        },
+        {
+          name: "should accept different valid URLs",
+          env: {
+            ...mockKintoneConfig,
+            KINTONE_BASE_URL: "https://custom.kintone.com",
+          },
+          expected: {
+            ...mockKintoneConfig,
+            KINTONE_BASE_URL: "https://custom.kintone.com",
+          },
+        },
+        {
+          name: "should accept URLs with paths",
+          env: {
+            ...mockKintoneConfig,
+            KINTONE_BASE_URL: "https://example.cybozu.com/k/",
+          },
+          expected: {
+            ...mockKintoneConfig,
+            KINTONE_BASE_URL: "https://example.cybozu.com/k/",
+          },
+        },
+        {
+          name: "should accept http URLs",
+          env: {
+            ...mockKintoneConfig,
+            KINTONE_BASE_URL: "http://localhost:8080",
+          },
+          expected: {
+            ...mockKintoneConfig,
+            KINTONE_BASE_URL: "http://localhost:8080",
+          },
+        },
+        {
+          name: "should accept very long passwords",
+          env: (() => {
+            const longPassword = "a".repeat(1000);
+            return {
+              ...mockKintoneConfig,
+              KINTONE_PASSWORD: longPassword,
+            };
+          })(),
+          expected: (() => {
+            const longPassword = "a".repeat(1000);
+            return {
+              ...mockKintoneConfig,
+              KINTONE_PASSWORD: longPassword,
+            };
+          })(),
+        },
+        {
+          name: "should ignore extra environment variables",
+          env: {
+            ...mockKintoneConfig,
+            OTHER_VAR: "should be ignored",
+          },
+          expected: mockKintoneConfig,
+        },
+      ])("$name", ({ env, expected }) => {
         process.env = {
           ...originalEnv,
-          ...mockKintoneConfig,
+          ...env,
         };
 
         const config = parseKintoneClientConfig();
 
-        expect(config).toEqual(mockKintoneConfig);
-      });
-
-      it("should accept different valid URLs", () => {
-        process.env = {
-          ...originalEnv,
-          ...mockKintoneConfig,
-          KINTONE_BASE_URL: "https://custom.kintone.com",
-        };
-
-        const config = parseKintoneClientConfig();
-
-        expect(config).toEqual({
-          ...mockKintoneConfig,
-          KINTONE_BASE_URL: "https://custom.kintone.com",
-        });
-      });
-
-      it("should accept URLs with paths", () => {
-        process.env = {
-          ...originalEnv,
-          ...mockKintoneConfig,
-          KINTONE_BASE_URL: "https://example.cybozu.com/k/",
-        };
-
-        const config = parseKintoneClientConfig();
-
-        expect(config).toEqual({
-          ...mockKintoneConfig,
-          KINTONE_BASE_URL: "https://example.cybozu.com/k/",
-        });
+        expect(config).toEqual(expected);
       });
     });
 
     describe("validation errors", () => {
-      it("should throw error when KINTONE_BASE_URL is missing", () => {
+      it.each([
+        {
+          name: "should throw error when KINTONE_BASE_URL is missing",
+          env: {
+            KINTONE_USERNAME: mockKintoneConfig.KINTONE_USERNAME,
+            KINTONE_PASSWORD: mockKintoneConfig.KINTONE_PASSWORD,
+          },
+          expectedErrors: [
+            "Environment variables are missing or invalid",
+            "KINTONE_BASE_URL: Required",
+          ],
+        },
+        {
+          name: "should throw error when KINTONE_BASE_URL is invalid",
+          env: {
+            ...mockKintoneConfig,
+            KINTONE_BASE_URL: "not-a-url",
+          },
+          expectedErrors: [
+            "Environment variables are missing or invalid",
+            "KINTONE_BASE_URL: Invalid url",
+          ],
+        },
+        {
+          name: "should throw error when KINTONE_BASE_URL is empty",
+          env: {
+            ...mockKintoneConfig,
+            KINTONE_BASE_URL: "",
+          },
+          expectedErrors: [
+            "Environment variables are missing or invalid",
+            "KINTONE_BASE_URL: Invalid url",
+          ],
+        },
+        {
+          name: "should throw error when KINTONE_USERNAME is missing",
+          env: {
+            KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
+            KINTONE_PASSWORD: mockKintoneConfig.KINTONE_PASSWORD,
+          },
+          expectedErrors: [
+            "Environment variables are missing or invalid",
+            "KINTONE_USERNAME: Required",
+          ],
+        },
+        {
+          name: "should throw error when KINTONE_USERNAME is empty",
+          env: {
+            ...mockKintoneConfig,
+            KINTONE_USERNAME: "",
+          },
+          expectedErrors: [
+            "Environment variables are missing or invalid",
+            "KINTONE_USERNAME: String must contain at least 1 character(s)",
+          ],
+        },
+        {
+          name: "should throw error when KINTONE_PASSWORD is missing",
+          env: {
+            KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
+            KINTONE_USERNAME: mockKintoneConfig.KINTONE_USERNAME,
+          },
+          expectedErrors: [
+            "Environment variables are missing or invalid",
+            "KINTONE_PASSWORD: Required",
+          ],
+        },
+        {
+          name: "should throw error when KINTONE_PASSWORD is empty",
+          env: {
+            ...mockKintoneConfig,
+            KINTONE_PASSWORD: "",
+          },
+          expectedErrors: [
+            "Environment variables are missing or invalid",
+            "KINTONE_PASSWORD: String must contain at least 1 character(s)",
+          ],
+        },
+        {
+          name: "should report multiple validation errors",
+          env: {
+            KINTONE_BASE_URL: "invalid-url",
+            KINTONE_USERNAME: "",
+            KINTONE_PASSWORD: "",
+          },
+          expectedErrors: [
+            "Environment variables are missing or invalid",
+            "KINTONE_BASE_URL: Invalid url",
+            "KINTONE_USERNAME: String must contain at least 1 character(s)",
+            "KINTONE_PASSWORD: String must contain at least 1 character(s)",
+          ],
+        },
+        {
+          name: "should report all missing environment variables",
+          env: {},
+          expectedErrors: [
+            "Environment variables are missing or invalid",
+            "KINTONE_BASE_URL: Required",
+            "KINTONE_USERNAME: Required",
+            "KINTONE_PASSWORD: Required",
+          ],
+          deleteEnvVars: true,
+        },
+      ])("$name", ({ env, expectedErrors, deleteEnvVars }) => {
         process.env = {
           ...originalEnv,
-          KINTONE_USERNAME: mockKintoneConfig.KINTONE_USERNAME,
-          KINTONE_PASSWORD: mockKintoneConfig.KINTONE_PASSWORD,
+          ...env,
         };
 
-        expect(() => parseKintoneClientConfig()).toThrow(
-          "Environment variables are missing or invalid",
-        );
-        expect(() => parseKintoneClientConfig()).toThrow(
-          "KINTONE_BASE_URL: Required",
-        );
-      });
-
-      it("should throw error when KINTONE_BASE_URL is invalid", () => {
-        process.env = {
-          ...originalEnv,
-          ...mockKintoneConfig,
-          KINTONE_BASE_URL: "not-a-url",
-        };
-
-        expect(() => parseKintoneClientConfig()).toThrow(
-          "Environment variables are missing or invalid",
-        );
-        expect(() => parseKintoneClientConfig()).toThrow(
-          "KINTONE_BASE_URL: Invalid url",
-        );
-      });
-
-      it("should throw error when KINTONE_BASE_URL is empty", () => {
-        process.env = {
-          ...originalEnv,
-          ...mockKintoneConfig,
-          KINTONE_BASE_URL: "",
-        };
-
-        expect(() => parseKintoneClientConfig()).toThrow(
-          "Environment variables are missing or invalid",
-        );
-        expect(() => parseKintoneClientConfig()).toThrow(
-          "KINTONE_BASE_URL: Invalid url",
-        );
-      });
-
-      it("should throw error when KINTONE_USERNAME is missing", () => {
-        process.env = {
-          ...originalEnv,
-          KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
-          KINTONE_PASSWORD: mockKintoneConfig.KINTONE_PASSWORD,
-        };
-
-        expect(() => parseKintoneClientConfig()).toThrow(
-          "Environment variables are missing or invalid",
-        );
-        expect(() => parseKintoneClientConfig()).toThrow(
-          "KINTONE_USERNAME: Required",
-        );
-      });
-
-      it("should throw error when KINTONE_USERNAME is empty", () => {
-        process.env = {
-          ...originalEnv,
-          ...mockKintoneConfig,
-          KINTONE_USERNAME: "",
-        };
-
-        expect(() => parseKintoneClientConfig()).toThrow(
-          "Environment variables are missing or invalid",
-        );
-        expect(() => parseKintoneClientConfig()).toThrow(
-          "KINTONE_USERNAME: String must contain at least 1 character(s)",
-        );
-      });
-
-      it("should throw error when KINTONE_PASSWORD is missing", () => {
-        process.env = {
-          ...originalEnv,
-          KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
-          KINTONE_USERNAME: mockKintoneConfig.KINTONE_USERNAME,
-        };
-
-        expect(() => parseKintoneClientConfig()).toThrow(
-          "Environment variables are missing or invalid",
-        );
-        expect(() => parseKintoneClientConfig()).toThrow(
-          "KINTONE_PASSWORD: Required",
-        );
-      });
-
-      it("should throw error when KINTONE_PASSWORD is empty", () => {
-        process.env = {
-          ...originalEnv,
-          ...mockKintoneConfig,
-          KINTONE_PASSWORD: "",
-        };
-
-        expect(() => parseKintoneClientConfig()).toThrow(
-          "Environment variables are missing or invalid",
-        );
-        expect(() => parseKintoneClientConfig()).toThrow(
-          "KINTONE_PASSWORD: String must contain at least 1 character(s)",
-        );
-      });
-
-      it("should report multiple validation errors", () => {
-        process.env = {
-          ...originalEnv,
-          KINTONE_BASE_URL: "invalid-url",
-          KINTONE_USERNAME: "",
-          KINTONE_PASSWORD: "",
-        };
+        if (deleteEnvVars) {
+          delete process.env.KINTONE_BASE_URL;
+          delete process.env.KINTONE_USERNAME;
+          delete process.env.KINTONE_PASSWORD;
+        }
 
         const errorCall = () => parseKintoneClientConfig();
-        expect(errorCall).toThrow(
-          "Environment variables are missing or invalid",
-        );
-        expect(errorCall).toThrow("KINTONE_BASE_URL: Invalid url");
-        expect(errorCall).toThrow(
-          "KINTONE_USERNAME: String must contain at least 1 character(s)",
-        );
-        expect(errorCall).toThrow(
-          "KINTONE_PASSWORD: String must contain at least 1 character(s)",
-        );
-      });
-
-      it("should report all missing environment variables", () => {
-        process.env = { ...originalEnv };
-        // Remove all kintone-related env vars
-        delete process.env.KINTONE_BASE_URL;
-        delete process.env.KINTONE_USERNAME;
-        delete process.env.KINTONE_PASSWORD;
-
-        const errorCall = () => parseKintoneClientConfig();
-        expect(errorCall).toThrow(
-          "Environment variables are missing or invalid",
-        );
-        expect(errorCall).toThrow("KINTONE_BASE_URL: Required");
-        expect(errorCall).toThrow("KINTONE_USERNAME: Required");
-        expect(errorCall).toThrow("KINTONE_PASSWORD: Required");
+        expectedErrors.forEach((error) => {
+          expect(errorCall).toThrow(error);
+        });
       });
     });
 
     describe("HTTPS_PROXY configuration", () => {
-      it("should parse HTTPS_PROXY when provided", () => {
-        process.env = {
-          ...originalEnv,
-          ...mockKintoneConfig,
-          HTTPS_PROXY: "http://proxy.example.com:8080",
-        };
-
-        const config = parseKintoneClientConfig();
-
-        expect(config).toEqual({
-          ...mockKintoneConfig,
-          HTTPS_PROXY: "http://proxy.example.com:8080",
-        });
-      });
-
-      it("should work without HTTPS_PROXY (optional field)", () => {
-        process.env = {
-          ...originalEnv,
-          ...mockKintoneConfig,
-        };
-
-        const config = parseKintoneClientConfig();
-
-        expect(config).toEqual(mockKintoneConfig);
-        expect(config.HTTPS_PROXY).toBeUndefined();
-      });
-
-      it("should handle empty HTTPS_PROXY as empty string", () => {
-        process.env = {
-          ...originalEnv,
-          ...mockKintoneConfig,
-          HTTPS_PROXY: "",
-        };
-
-        const config = parseKintoneClientConfig();
-
-        expect(config).toEqual({
-          ...mockKintoneConfig,
-          HTTPS_PROXY: "",
-        });
-        expect(config.HTTPS_PROXY).toBe("");
-      });
-
-      it("should accept various proxy URL formats", () => {
-        const proxyUrls = [
-          "http://proxy.example.com:3128",
-          "https://secure-proxy.example.com:443",
-          "http://user:pass@proxy.example.com:8080",
-        ];
-
-        for (const proxyUrl of proxyUrls) {
-          process.env = {
-            ...originalEnv,
+      it.each([
+        {
+          name: "should parse HTTPS_PROXY when provided",
+          env: {
             ...mockKintoneConfig,
-            HTTPS_PROXY: proxyUrl,
-          };
+            HTTPS_PROXY: "http://proxy.example.com:8080",
+          },
+          expected: {
+            ...mockKintoneConfig,
+            HTTPS_PROXY: "http://proxy.example.com:8080",
+          },
+        },
+        {
+          name: "should work without HTTPS_PROXY (optional field)",
+          env: mockKintoneConfig,
+          expected: mockKintoneConfig,
+          checkUndefined: "HTTPS_PROXY",
+        },
+        {
+          name: "should handle empty HTTPS_PROXY as empty string",
+          env: {
+            ...mockKintoneConfig,
+            HTTPS_PROXY: "",
+          },
+          expected: {
+            ...mockKintoneConfig,
+            HTTPS_PROXY: "",
+          },
+          checkEmptyString: "HTTPS_PROXY",
+        },
+      ])("$name", ({ env, expected, checkUndefined, checkEmptyString }) => {
+        process.env = {
+          ...originalEnv,
+          ...env,
+        };
 
-          const config = parseKintoneClientConfig();
+        const config = parseKintoneClientConfig();
 
-          expect(config.HTTPS_PROXY).toBe(proxyUrl);
+        expect(config).toEqual(expected);
+
+        if (checkUndefined) {
+          expect(config[checkUndefined]).toBeUndefined();
+        }
+
+        if (checkEmptyString) {
+          expect(config[checkEmptyString]).toBe("");
         }
       });
-    });
 
-    describe("edge cases", () => {
-      it("should accept http URLs", () => {
+      it.each([
+        "http://proxy.example.com:3128",
+        "https://secure-proxy.example.com:443",
+        "http://user:pass@proxy.example.com:8080",
+      ])("should accept various proxy URL formats: %s", (proxyUrl) => {
         process.env = {
           ...originalEnv,
           ...mockKintoneConfig,
-          KINTONE_BASE_URL: "http://localhost:8080",
+          HTTPS_PROXY: proxyUrl,
         };
 
         const config = parseKintoneClientConfig();
 
-        expect(config.KINTONE_BASE_URL).toBe("http://localhost:8080");
-      });
-
-      it("should accept very long passwords", () => {
-        const longPassword = "a".repeat(1000);
-        process.env = {
-          ...originalEnv,
-          ...mockKintoneConfig,
-          KINTONE_PASSWORD: longPassword,
-        };
-
-        const config = parseKintoneClientConfig();
-
-        expect(config.KINTONE_PASSWORD).toBe(longPassword);
-      });
-
-      it("should handle environment variables with extra properties", () => {
-        process.env = {
-          ...originalEnv,
-          ...mockKintoneConfig,
-          OTHER_VAR: "should be ignored",
-        };
-
-        const config = parseKintoneClientConfig();
-
-        expect(config).toEqual(mockKintoneConfig);
-        expect(config).not.toHaveProperty("OTHER_VAR");
+        expect(config.HTTPS_PROXY).toBe(proxyUrl);
       });
     });
   });
