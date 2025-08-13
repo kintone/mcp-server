@@ -16,7 +16,6 @@
 
 <!--
 NOTE: Cursorのインストールリンク生成は scripts/generate-cursor-install-link.js で生成している
->>>>>>> 7caf26e (docs: fix cursor deeplink)
 -->
 
 日本語 | [English](README_en.md)
