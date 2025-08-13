@@ -153,7 +153,7 @@ Please refer to the documentation of the AI tool you are using for details on ho
 | `kintone-get-apps`               | Get information of multiple apps |
 | `kintone-get-app`                | Get details of a single app      |
 | `kintone-get-form-fields`        | Get app field settings           |
-| `kintone-get-process-management` | Get workflow settings            |
+| `kintone-get-process-management` | Get process management settings  |
 | `kintone-get-records`            | Search and get records           |
 | `kintone-add-records`            | Add new records                  |
 | `kintone-update-records`         | Update existing records          |
