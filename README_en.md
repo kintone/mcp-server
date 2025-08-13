@@ -112,8 +112,8 @@ Please refer to the documentation of the AI tool you are using for details on ho
 
 ### Example Configuration File Path
 
-- Claude Code: `.mcp.json` \[[ref](https://docs.anthropic.com/ja/docs/claude-code/mcp)]
-- Cursor: `.cursor/mcp.json` \[[ref](https://docs.cursor.com/ja/context/mcp)]
+- Claude Code: `.mcp.json` \[[ref](https://docs.anthropic.com/en/docs/claude-code/mcp)]
+- Cursor: `.cursor/mcp.json` \[[ref](https://docs.cursor.com/en/context/mcp)]
 
 ### Example Configuration File Content
 
