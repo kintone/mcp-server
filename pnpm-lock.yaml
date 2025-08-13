@@ -15,7 +15,7 @@ importers:
         specifier: ^1.17.2
         version: 1.17.2
       zod:
-        specifier: ^3.23.8
+        specifier: ^3.25.76
         version: 3.25.76
     devDependencies:
       '@anthropic-ai/dxt':
