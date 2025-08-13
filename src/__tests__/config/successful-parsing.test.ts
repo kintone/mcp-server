@@ -80,6 +80,44 @@ describe("config - successful parsing", () => {
       expected: mockKintoneConfig,
     },
     {
+      name: "should parse HTTPS_PROXY when provided",
+      env: {
+        ...mockKintoneConfig,
+        HTTPS_PROXY: "http://proxy.example.com:8080",
+      },
+      expected: {
+        ...mockKintoneConfig,
+        HTTPS_PROXY: "http://proxy.example.com:8080",
+      },
+    },
+    {
+      name: "should work without HTTPS_PROXY (optional field)",
+      env: mockKintoneConfig,
+      expected: mockKintoneConfig,
+    },
+    {
+      name: "should handle empty HTTPS_PROXY as empty string",
+      env: {
+        ...mockKintoneConfig,
+        HTTPS_PROXY: "",
+      },
+      expected: {
+        ...mockKintoneConfig,
+        HTTPS_PROXY: "",
+      },
+    },
+    {
+      name: "should accept various proxy URL formats",
+      env: {
+        ...mockKintoneConfig,
+        HTTPS_PROXY: "http://user:pass@proxy.example.com:8080",
+      },
+      expected: {
+        ...mockKintoneConfig,
+        HTTPS_PROXY: "http://user:pass@proxy.example.com:8080",
+      },
+    },
+    {
       name: "should parse PFX file settings when both are provided",
       env: {
         ...mockKintoneConfig,
