@@ -28,7 +28,10 @@
       "env": {
         "KINTONE_BASE_URL": "${user_config.kintone_base_url}",
         "KINTONE_USERNAME": "${user_config.kintone_username}",
-        "KINTONE_PASSWORD": "${user_config.kintone_password}"
+        "KINTONE_PASSWORD": "${user_config.kintone_password}",
+        "HTTPS_PROXY": "${user_config.https_proxy}",
+        "KINTONE_PFX_FILE_PATH": "${user_config.kintone_pfx_file_path}",
+        "KINTONE_PFX_FILE_PASSWORD": "${user_config.kintone_pfx_file_password}"
       }
     }
   },
@@ -70,6 +73,27 @@
       "title": "Kintone Password",
       "description": "Your kintone password for authentication",
       "required": true,
+      "sensitive": true
+    },
+    "https_proxy": {
+      "type": "string",
+      "title": "HTTPS Proxy",
+      "description": "HTTPS proxy URL (e.g., http://proxy.example.com:8080)",
+      "required": false,
+      "sensitive": false
+    },
+    "kintone_pfx_file_path": {
+      "type": "string",
+      "title": "PFX File Path",
+      "description": "Path to PFX client certificate file for authentication",
+      "required": false,
+      "sensitive": false
+    },
+    "kintone_pfx_file_password": {
+      "type": "string",
+      "title": "PFX File Password",
+      "description": "Password for PFX client certificate file",
+      "required": false,
       "sensitive": true
     }
   },
