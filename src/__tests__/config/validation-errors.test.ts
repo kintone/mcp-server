@@ -140,6 +140,28 @@ describe("config - validation errors", () => {
         "HTTPS_PROXY: Invalid proxy URL format",
       ],
     },
+    {
+      name: "should throw error when only KINTONE_BASIC_AUTH_USERNAME is provided",
+      env: {
+        ...mockKintoneConfig,
+        KINTONE_BASIC_AUTH_USERNAME: "basic-user",
+      },
+      expectedErrors: [
+        "Environment variables are missing or invalid",
+        "Both KINTONE_BASIC_AUTH_USERNAME and KINTONE_BASIC_AUTH_PASSWORD must be provided together",
+      ],
+    },
+    {
+      name: "should throw error when only KINTONE_BASIC_AUTH_PASSWORD is provided",
+      env: {
+        ...mockKintoneConfig,
+        KINTONE_BASIC_AUTH_PASSWORD: "basic-pass",
+      },
+      expectedErrors: [
+        "Environment variables are missing or invalid",
+        "Both KINTONE_BASIC_AUTH_USERNAME and KINTONE_BASIC_AUTH_PASSWORD must be provided together",
+      ],
+    },
   ])("$name", ({ env, expectedErrors, deleteEnvVars }) => {
     process.env = {
       ...originalEnv,

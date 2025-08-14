@@ -281,6 +281,36 @@ describe("client", () => {
         expect(client).toBe(mockClient);
       });
 
+      it("should include Basic auth when credentials are provided", async () => {
+        const config = {
+          ...mockKintoneConfig,
+          KINTONE_BASIC_AUTH_USERNAME: "basic-user",
+          KINTONE_BASIC_AUTH_PASSWORD: "basic-pass",
+        };
+
+        const { KintoneRestAPIClient } = vi.mocked(
+          await import("@kintone/rest-api-client"),
+        );
+        const mockClient = { app: { getApp: vi.fn() } };
+        (KintoneRestAPIClient as any).mockReturnValue(mockClient);
+
+        const client = getKintoneClient(config);
+
+        expect(KintoneRestAPIClient).toHaveBeenCalledWith({
+          baseUrl: mockKintoneConfig.KINTONE_BASE_URL,
+          auth: {
+            username: mockKintoneConfig.KINTONE_USERNAME,
+            password: mockKintoneConfig.KINTONE_PASSWORD,
+          },
+          basicAuth: {
+            username: "basic-user",
+            password: "basic-pass",
+          },
+          httpsAgent: expect.any(Object),
+        });
+        expect(client).toBe(mockClient);
+      });
+
       it("should use HttpsProxyAgent with PFX when both HTTPS_PROXY and PFX are set", async () => {
         const config = {
           ...mockKintoneConfig,

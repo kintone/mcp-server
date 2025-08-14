@@ -10,6 +10,14 @@ const configSchema = z
       ),
     KINTONE_USERNAME: z.string().min(1).describe("Username for authentication"),
     KINTONE_PASSWORD: z.string().min(1).describe("Password for authentication"),
+    KINTONE_BASIC_AUTH_USERNAME: z
+      .string()
+      .optional()
+      .describe("Username for Basic authentication"),
+    KINTONE_BASIC_AUTH_PASSWORD: z
+      .string()
+      .optional()
+      .describe("Password for Basic authentication"),
     HTTPS_PROXY: z
       .string()
       .optional()
@@ -39,6 +47,22 @@ const configSchema = z
       message:
         "Both KINTONE_PFX_FILE_PATH and KINTONE_PFX_FILE_PASSWORD must be provided together",
       path: ["KINTONE_PFX_FILE_PATH"],
+    },
+  )
+  .refine(
+    (data) => {
+      const hasBasicUsername = data.KINTONE_BASIC_AUTH_USERNAME;
+      const hasBasicPassword = data.KINTONE_BASIC_AUTH_PASSWORD;
+      // Both must be provided together or both must be omitted
+      return (
+        (hasBasicUsername && hasBasicPassword) ||
+        (!hasBasicUsername && !hasBasicPassword)
+      );
+    },
+    {
+      message:
+        "Both KINTONE_BASIC_AUTH_USERNAME and KINTONE_BASIC_AUTH_PASSWORD must be provided together",
+      path: ["KINTONE_BASIC_AUTH_USERNAME"],
     },
   );
 
@@ -80,6 +104,16 @@ export const parseKintoneClientConfig = (): KintoneClientConfig => {
   if (errors.KINTONE_PFX_FILE_PASSWORD?._errors.length) {
     errorMessages.push(
       `KINTONE_PFX_FILE_PASSWORD: ${errors.KINTONE_PFX_FILE_PASSWORD._errors.join(", ")}`,
+    );
+  }
+  if (errors.KINTONE_BASIC_AUTH_USERNAME?._errors.length) {
+    errorMessages.push(
+      `KINTONE_BASIC_AUTH_USERNAME: ${errors.KINTONE_BASIC_AUTH_USERNAME._errors.join(", ")}`,
+    );
+  }
+  if (errors.KINTONE_BASIC_AUTH_PASSWORD?._errors.length) {
+    errorMessages.push(
+      `KINTONE_BASIC_AUTH_PASSWORD: ${errors.KINTONE_BASIC_AUTH_PASSWORD._errors.join(", ")}`,
     );
   }
   // Handle cross-field validation errors

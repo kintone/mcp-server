@@ -17,6 +17,8 @@ export const getKintoneClient = (
     KINTONE_BASE_URL,
     KINTONE_USERNAME,
     KINTONE_PASSWORD,
+    KINTONE_BASIC_AUTH_USERNAME,
+    KINTONE_BASIC_AUTH_PASSWORD,
     HTTPS_PROXY,
     KINTONE_PFX_FILE_PATH,
     KINTONE_PFX_FILE_PASSWORD,
@@ -28,6 +30,10 @@ export const getKintoneClient = (
       username: KINTONE_USERNAME,
       password: KINTONE_PASSWORD,
     },
+    ...buildBasicAuthParam({
+      basicAuthUsername: KINTONE_BASIC_AUTH_USERNAME,
+      basicAuthPassword: KINTONE_BASIC_AUTH_PASSWORD,
+    }),
     httpsAgent: buildHttpsAgent({
       proxy: HTTPS_PROXY,
       pfxFilePath: KINTONE_PFX_FILE_PATH,
@@ -40,6 +46,20 @@ export const getKintoneClient = (
 
 export const resetKintoneClient = (): void => {
   client = null;
+};
+
+const buildBasicAuthParam = (options: {
+  basicAuthUsername?: string;
+  basicAuthPassword?: string;
+}) => {
+  return options.basicAuthUsername && options.basicAuthPassword
+    ? {
+        basicAuth: {
+          username: options.basicAuthUsername,
+          password: options.basicAuthPassword,
+        },
+      }
+    : {};
 };
 
 const buildHttpsAgent = (options: {
