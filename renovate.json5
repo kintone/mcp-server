@@ -13,5 +13,11 @@
       matchUpdateTypes: ["digest"],
       automerge: true,
     },
+    {
+      description: "Automerge devDependencies minor and patch updates",
+      matchDepTypes: ["devDependencies"],
+      matchUpdateTypes: ["minor", "patch"],
+      automerge: true,
+    },
   ],
 }
