@@ -1,24 +1,46 @@
 import { z } from "zod";
 
-const configSchema = z.object({
-  KINTONE_BASE_URL: z
-    .string()
-    .url()
-    .describe(
-      "The base URL of your kintone environment (e.g., https://example.cybozu.com)",
-    ),
-  KINTONE_USERNAME: z.string().min(1).describe("Username for authentication"),
-  KINTONE_PASSWORD: z.string().min(1).describe("Password for authentication"),
-  HTTPS_PROXY: z
-    .string()
-    .optional()
-    .refine(
-      (value) =>
-        !value || value === "" || z.string().url().safeParse(value).success,
-      { message: "Invalid proxy URL format" },
-    )
-    .describe("HTTPS proxy URL (e.g., http://proxy.example.com:8080)"),
-});
+const configSchema = z
+  .object({
+    KINTONE_BASE_URL: z
+      .string()
+      .url()
+      .describe(
+        "The base URL of your kintone environment (e.g., https://example.cybozu.com)",
+      ),
+    KINTONE_USERNAME: z.string().min(1).describe("Username for authentication"),
+    KINTONE_PASSWORD: z.string().min(1).describe("Password for authentication"),
+    HTTPS_PROXY: z
+      .string()
+      .optional()
+      .refine(
+        (value) =>
+          !value || value === "" || z.string().url().safeParse(value).success,
+        { message: "Invalid proxy URL format" },
+      )
+      .describe("HTTPS proxy URL (e.g., http://proxy.example.com:8080)"),
+    KINTONE_PFX_FILE_PATH: z
+      .string()
+      .optional()
+      .describe("Path to PFX client certificate file"),
+    KINTONE_PFX_FILE_PASSWORD: z
+      .string()
+      .optional()
+      .describe("Password for PFX client certificate file"),
+  })
+  .refine(
+    (data) => {
+      const hasPath = data.KINTONE_PFX_FILE_PATH;
+      const hasPassword = data.KINTONE_PFX_FILE_PASSWORD;
+      // Both must be provided together or both must be omitted
+      return (hasPath && hasPassword) || (!hasPath && !hasPassword);
+    },
+    {
+      message:
+        "Both KINTONE_PFX_FILE_PATH and KINTONE_PFX_FILE_PASSWORD must be provided together",
+      path: ["KINTONE_PFX_FILE_PATH"],
+    },
+  );
 
 export type KintoneClientConfig = z.infer<typeof configSchema>;
 
@@ -49,6 +71,20 @@ export const parseKintoneClientConfig = (): KintoneClientConfig => {
   }
   if (errors.HTTPS_PROXY?._errors.length) {
     errorMessages.push(`HTTPS_PROXY: ${errors.HTTPS_PROXY._errors.join(", ")}`);
+  }
+  if (errors.KINTONE_PFX_FILE_PATH?._errors.length) {
+    errorMessages.push(
+      `KINTONE_PFX_FILE_PATH: ${errors.KINTONE_PFX_FILE_PATH._errors.join(", ")}`,
+    );
+  }
+  if (errors.KINTONE_PFX_FILE_PASSWORD?._errors.length) {
+    errorMessages.push(
+      `KINTONE_PFX_FILE_PASSWORD: ${errors.KINTONE_PFX_FILE_PASSWORD._errors.join(", ")}`,
+    );
+  }
+  // Handle cross-field validation errors
+  if (errors._errors?.length) {
+    errorMessages.push(...errors._errors);
   }
 
   throw new Error(

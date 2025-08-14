@@ -118,6 +118,28 @@ describe("config - validation errors", () => {
       ],
       deleteEnvVars: true,
     },
+    {
+      name: "should throw error when HTTPS_PROXY is invalid URL",
+      env: {
+        ...mockKintoneConfig,
+        HTTPS_PROXY: "not-a-valid-url",
+      },
+      expectedErrors: [
+        "Environment variables are missing or invalid",
+        "HTTPS_PROXY: Invalid proxy URL format",
+      ],
+    },
+    {
+      name: "should throw error when HTTPS_PROXY has invalid format",
+      env: {
+        ...mockKintoneConfig,
+        HTTPS_PROXY: "://invalid-format",
+      },
+      expectedErrors: [
+        "Environment variables are missing or invalid",
+        "HTTPS_PROXY: Invalid proxy URL format",
+      ],
+    },
   ])("$name", ({ env, expectedErrors, deleteEnvVars }) => {
     process.env = {
       ...originalEnv,
