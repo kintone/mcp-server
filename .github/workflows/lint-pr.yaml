@@ -24,4 +24,3 @@ jobs:
           TITLE: ${{ github.event.pull_request.title }}
         run: |
           echo "$TITLE" | npm run commitlint
-
