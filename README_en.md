@@ -9,7 +9,7 @@
 [ci-url]: https://github.com/kintone/mcp-server/actions/workflows/ci.yaml
 [npm-badge]: https://badge.fury.io/js/@kintone%2Fmcp-server.svg
 [npm-url]: https://badge.fury.io/js/@kintone%2Fmcp-server
-[license-badge]: https://img.shields.io/badge/License-MIT-yellow.svg
+[license-badge]: https://img.shields.io/badge/License-Apache_2.0-blue.svg
 [license-url]: LICENSE
 [cursor-badge]: https://cursor.com/deeplink/mcp-install-dark.svg
 [cursor-url]: https://cursor.com/en/install-mcp?name=kintone&config=eyJjb21tYW5kIjoiZG9ja2VyIiwiZW52Ijp7IktJTlRPTkVfQkFTRV9VUkwiOiJodHRwczovLyhzdWJkb21haW4pLmN5Ym96dS5jb20iLCJLSU5UT05FX1VTRVJOQU1FIjoiKHVzZXJuYW1lKSIsIktJTlRPTkVfUEFTU1dPUkQiOiIocGFzc3dvcmQpIn0sImFyZ3MiOlsicnVuIiwiLWkiLCItLXJtIiwiLWUiLCJLSU5UT05FX0JBU0VfVVJMIiwiLWUiLCJLSU5UT05FX1VTRVJOQU1FIiwiLWUiLCJLSU5UT05FX1BBU1NXT1JEIiwiZ2hjci5pby9raW50b25lL21jcC1zZXJ2ZXI6bGF0ZXN0Il19
