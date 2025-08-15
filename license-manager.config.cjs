@@ -15,6 +15,7 @@ const config = createConfig({
       "CC0-1.0",
       "CC-BY-3.0",
       "CC-BY-4.0",
+      "(MIT OR Apache-2.0)",
       "(MIT OR CC0-1.0)",
       "(MIT AND Zlib)",
       "(MIT AND BSD-3-Clause)",
