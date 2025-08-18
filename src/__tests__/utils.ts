@@ -12,6 +12,8 @@ export const mockKintoneConfig: KintoneClientConfig = {
   KINTONE_BASE_URL: "https://example.cybozu.com",
   KINTONE_USERNAME: "testuser",
   KINTONE_PASSWORD: "testpass",
+  KINTONE_BASIC_AUTH_USERNAME: undefined,
+  KINTONE_BASIC_AUTH_PASSWORD: undefined,
   HTTPS_PROXY: undefined,
   KINTONE_PFX_FILE_PATH: undefined,
   KINTONE_PFX_FILE_PASSWORD: undefined,

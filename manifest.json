@@ -29,6 +29,8 @@
         "KINTONE_BASE_URL": "${user_config.kintone_base_url}",
         "KINTONE_USERNAME": "${user_config.kintone_username}",
         "KINTONE_PASSWORD": "${user_config.kintone_password}",
+        "KINTONE_BASIC_AUTH_USERNAME": "${user_config.kintone_basic_auth_username}",
+        "KINTONE_BASIC_AUTH_PASSWORD": "${user_config.kintone_basic_auth_password}",
         "HTTPS_PROXY": "${user_config.https_proxy}",
         "KINTONE_PFX_FILE_PATH": "${user_config.kintone_pfx_file_path}",
         "KINTONE_PFX_FILE_PASSWORD": "${user_config.kintone_pfx_file_password}"
@@ -73,6 +75,20 @@
       "title": "Kintone Password",
       "description": "Your kintone password for authentication",
       "required": true,
+      "sensitive": true
+    },
+    "kintone_basic_auth_username": {
+      "type": "string",
+      "title": "Basic Auth Username",
+      "description": "Username for Basic authentication",
+      "required": false,
+      "sensitive": false
+    },
+    "kintone_basic_auth_password": {
+      "type": "string",
+      "title": "Basic Auth Password",
+      "description": "Password for Basic authentication",
+      "required": false,
       "sensitive": true
     },
     "https_proxy": {

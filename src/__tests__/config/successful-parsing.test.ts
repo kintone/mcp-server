@@ -145,6 +145,24 @@ describe("config - successful parsing", () => {
         KINTONE_PFX_FILE_PASSWORD: "pfx-password",
       },
     },
+    {
+      name: "should parse Basic auth settings when both are provided",
+      env: {
+        ...mockKintoneConfig,
+        KINTONE_BASIC_AUTH_USERNAME: "basic-user",
+        KINTONE_BASIC_AUTH_PASSWORD: "basic-pass",
+      },
+      expected: {
+        ...mockKintoneConfig,
+        KINTONE_BASIC_AUTH_USERNAME: "basic-user",
+        KINTONE_BASIC_AUTH_PASSWORD: "basic-pass",
+      },
+    },
+    {
+      name: "should work without Basic auth (optional fields)",
+      env: mockKintoneConfig,
+      expected: mockKintoneConfig,
+    },
   ])("$name", ({ env, expected }) => {
     process.env = {
       ...originalEnv,
