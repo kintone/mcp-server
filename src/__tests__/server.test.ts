@@ -1,15 +1,15 @@
 import { describe, it, expect } from "vitest";
-import { server } from "../server.js";
+import { createServer } from "../server.js";
 
 describe("server", () => {
-  it("should export server instance", () => {
-    expect(server).toBeDefined();
-    expect(server.constructor.name).toBe("McpServer");
+  it("should export createServer function", () => {
+    expect(createServer).toBeDefined();
+    expect(typeof createServer).toBe("function");
   });
 
-  it("should have correct server configuration", () => {
-    // Since McpServer properties are private, we can only verify the instance exists
-    // and trust that it was created with the correct configuration
+  it("should create server instance with correct configuration", () => {
+    const server = createServer();
     expect(server).toBeDefined();
+    expect(server.constructor.name).toBe("McpServer");
   });
 });

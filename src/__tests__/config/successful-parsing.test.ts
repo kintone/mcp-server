@@ -241,8 +241,8 @@ describe("config - successful parsing", () => {
       ...env,
     };
 
-    const config = parseKintoneClientConfig();
+    const result = parseKintoneClientConfig();
 
-    expect(config).toEqual(expected);
+    expect(result.config).toEqual(expected);
   });
 });

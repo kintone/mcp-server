@@ -111,11 +111,16 @@ const configSchema = z
 
 export type KintoneClientConfig = z.infer<typeof configSchema>;
 
-export const parseKintoneClientConfig = (): KintoneClientConfig => {
+export const parseKintoneClientConfig = (): {
+  config: KintoneClientConfig;
+} => {
   const result = configSchema.safeParse(process.env);
 
   if (result.success) {
-    return result.data;
+    const data = result.data;
+    return {
+      config: data,
+    };
   }
 
   const errors = result.error.format();

@@ -6,11 +6,10 @@ import { readFileSync } from "fs";
 import { version } from "./version.js";
 
 let client: KintoneRestAPIClient | null = null;
-let isUsingApiToken = false;
 
-export const getKintoneClient = (
-  config: KintoneClientConfig,
-): KintoneRestAPIClient => {
+export const getKintoneClient = (config: {
+  config: KintoneClientConfig;
+}): KintoneRestAPIClient => {
   if (client) {
     return client;
   }
@@ -25,7 +24,7 @@ export const getKintoneClient = (
     HTTPS_PROXY,
     KINTONE_PFX_FILE_PATH,
     KINTONE_PFX_FILE_PASSWORD,
-  } = config;
+  } = config.config;
 
   const authParams = buildAuthParams({
     username: KINTONE_USERNAME,
@@ -51,13 +50,8 @@ export const getKintoneClient = (
   return client;
 };
 
-export const isApiTokenAuth = (): boolean => {
-  return isUsingApiToken;
-};
-
 export const resetKintoneClient = (): void => {
   client = null;
-  isUsingApiToken = false;
 };
 
 const buildAuthParams = (option: {
