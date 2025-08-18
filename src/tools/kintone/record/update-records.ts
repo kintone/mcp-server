@@ -10,6 +10,12 @@ const updateRecordSchema = z.object({
   record: recordSchemaForParameter.describe(
     "Record data with field codes as keys. Use kintone-get-form-fields tool first to discover available field codes and their types.",
   ),
+  revision: z
+    .union([z.number(), z.string()])
+    .optional()
+    .describe(
+      "Expected revision number. If specified, the update will fail if the current revision doesn't match. Specify -1 or omit to skip revision validation.",
+    ),
 });
 
 const inputSchema = {
