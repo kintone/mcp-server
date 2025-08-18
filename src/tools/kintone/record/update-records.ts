@@ -14,7 +14,7 @@ const updateRecordSchema = z.object({
     .union([z.number(), z.string()])
     .optional()
     .describe(
-      "Expected revision number. If specified, the update will fail if the current revision doesn't match.",
+      "Expected revision number. If specified, the update will fail if the current revision doesn't match. Specify -1 or omit to skip revision validation.",
     ),
 });
 

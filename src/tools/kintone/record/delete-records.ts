@@ -14,7 +14,7 @@ const inputSchema = {
     .array(z.union([z.number(), z.string()]))
     .optional()
     .describe(
-      "Array of expected revision numbers for each record. If specified, must have the same length as ids array. Deletion will fail if current revisions don't match.",
+      "Array of expected revision numbers for each record. If specified, must have the same length as ids array. Deletion will fail if current revisions don't match. Specify -1 or omit to skip revision validation.",
     ),
 };
 
