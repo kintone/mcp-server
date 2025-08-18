@@ -10,6 +10,12 @@ const inputSchema = {
     .describe("Array of record IDs to delete")
     .min(1, "At least one record ID is required")
     .max(100, "Maximum 100 records can be deleted at once"),
+  revisions: z
+    .array(z.union([z.number(), z.string()]))
+    .optional()
+    .describe(
+      "Array of expected revision numbers for each record. If specified, must have the same length as ids array. Deletion will fail if current revisions don't match.",
+    ),
 };
 
 const outputSchema = {};
@@ -22,11 +28,11 @@ export const deleteRecords = createTool(
     inputSchema,
     outputSchema,
   },
-  async ({ app, ids }) => {
+  async ({ app, ids, revisions }) => {
     const config = parseKintoneClientConfig();
     const client = getKintoneClient(config);
 
-    await client.record.deleteRecords({ app, ids });
+    await client.record.deleteRecords({ app, ids, revisions });
 
     return {
       structuredContent: {},
