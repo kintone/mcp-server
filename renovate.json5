@@ -1,3 +1,23 @@
 {
   extends: ["github>cybozu/renovate-config", ":prConcurrentLimitNone"],
+  packageRules: [
+    {
+      description: "Pin Node.js to v22 and automerge",
+      matchPackageNames: ["node"],
+      allowedVersions: "22.x",
+      automerge: true,
+    },
+    {
+      description: "Automerge Docker digest updates",
+      matchDatasources: ["docker"],
+      matchUpdateTypes: ["digest"],
+      automerge: true,
+    },
+    {
+      description: "Automerge devDependencies minor and patch updates",
+      matchDepTypes: ["devDependencies"],
+      matchUpdateTypes: ["minor", "patch"],
+      automerge: true,
+    },
+  ],
 }
