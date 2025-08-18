@@ -6,6 +6,7 @@ import { readFileSync } from "fs";
 import { version } from "./version.js";
 
 let client: KintoneRestAPIClient | null = null;
+let isUsingApiToken = false;
 
 export const getKintoneClient = (
   config: KintoneClientConfig,
@@ -18,6 +19,7 @@ export const getKintoneClient = (
     KINTONE_BASE_URL,
     KINTONE_USERNAME,
     KINTONE_PASSWORD,
+    KINTONE_API_TOKEN,
     KINTONE_BASIC_AUTH_USERNAME,
     KINTONE_BASIC_AUTH_PASSWORD,
     HTTPS_PROXY,
@@ -25,12 +27,15 @@ export const getKintoneClient = (
     KINTONE_PFX_FILE_PASSWORD,
   } = config;
 
+  const authParams = buildAuthParams({
+    username: KINTONE_USERNAME,
+    password: KINTONE_PASSWORD,
+    apiToken: KINTONE_API_TOKEN,
+  });
+
   client = new KintoneRestAPIClient({
     baseUrl: KINTONE_BASE_URL,
-    auth: {
-      username: KINTONE_USERNAME,
-      password: KINTONE_PASSWORD,
-    },
+    ...authParams,
     ...buildBasicAuthParam({
       basicAuthUsername: KINTONE_BASIC_AUTH_USERNAME,
       basicAuthPassword: KINTONE_BASIC_AUTH_PASSWORD,
@@ -46,8 +51,26 @@ export const getKintoneClient = (
   return client;
 };
 
+export const isApiTokenAuth = (): boolean => {
+  return isUsingApiToken;
+};
+
 export const resetKintoneClient = (): void => {
   client = null;
+  isUsingApiToken = false;
+};
+
+const buildAuthParams = (option: {
+  username?: string;
+  password?: string;
+  apiToken?: string;
+}) => {
+  // API_TOKENを使用しているかフラグを設定
+  const usingApiToken = !(option.username && option.password);
+
+  return usingApiToken
+    ? { auth: { apiToken: option.apiToken } }
+    : { auth: { username: option.username, password: option.password } };
 };
 
 const buildBasicAuthParam = (options: {

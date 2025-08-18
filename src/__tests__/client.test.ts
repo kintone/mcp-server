@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { getKintoneClient, resetKintoneClient } from "../client.js";
 import type { KintoneClientConfig } from "../config.js";
-import { mockKintoneConfig } from "./utils.js";
+import { mockKintoneConfig, mockKintoneConfigWithApiToken } from "./utils.js";
 
 // Mock the KintoneRestAPIClient
 vi.mock("@kintone/rest-api-client", () => ({
@@ -151,6 +151,56 @@ describe("client", () => {
         httpsAgent: expect.any(Object),
         userAgent: userAgentMatcher,
       });
+    });
+
+    it("should use API token authentication when provided", async () => {
+      const config = mockKintoneConfigWithApiToken;
+
+      const { KintoneRestAPIClient } = vi.mocked(
+        await import("@kintone/rest-api-client"),
+      );
+      const mockClient = { app: { getApp: vi.fn() } };
+      (KintoneRestAPIClient as any).mockReturnValue(mockClient);
+
+      const client = getKintoneClient(config);
+
+      expect(KintoneRestAPIClient).toHaveBeenCalledWith({
+        baseUrl: mockKintoneConfigWithApiToken.KINTONE_BASE_URL,
+        auth: {
+          apiToken: "token1,token2,token3",
+        },
+        httpsAgent: expect.any(Object),
+      });
+      expect(client).toBe(mockClient);
+    });
+
+    it("should use API token with Basic auth", async () => {
+      const config = {
+        ...mockKintoneConfigWithApiToken,
+        KINTONE_BASIC_AUTH_USERNAME: "basic-user",
+        KINTONE_BASIC_AUTH_PASSWORD: "basic-pass",
+      };
+
+      const { KintoneRestAPIClient } = vi.mocked(
+        await import("@kintone/rest-api-client"),
+      );
+      const mockClient = { app: { getApp: vi.fn() } };
+      (KintoneRestAPIClient as any).mockReturnValue(mockClient);
+
+      const client = getKintoneClient(config);
+
+      expect(KintoneRestAPIClient).toHaveBeenCalledWith({
+        baseUrl: mockKintoneConfigWithApiToken.KINTONE_BASE_URL,
+        auth: {
+          apiToken: "token1,token2,token3",
+        },
+        basicAuth: {
+          username: "basic-user",
+          password: "basic-pass",
+        },
+        httpsAgent: expect.any(Object),
+      });
+      expect(client).toBe(mockClient);
     });
   });
 
