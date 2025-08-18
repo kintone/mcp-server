@@ -119,4 +119,8 @@ export const getApps = createTool(
       ],
     };
   },
+  () => {
+    const { isApiTokenAuth } = parseKintoneClientConfig();
+    return isApiTokenAuth;
+  },
 );

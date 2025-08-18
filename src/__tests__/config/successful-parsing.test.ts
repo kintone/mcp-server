@@ -244,5 +244,8 @@ describe("config - successful parsing", () => {
     const result = parseKintoneClientConfig();
 
     expect(result.config).toEqual(expected);
+    expect(result.isApiTokenAuth).toBe(
+      !(expected.KINTONE_USERNAME && expected.KINTONE_PASSWORD),
+    );
   });
 });

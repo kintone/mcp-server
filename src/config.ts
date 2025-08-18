@@ -111,15 +111,22 @@ const configSchema = z
 
 export type KintoneClientConfig = z.infer<typeof configSchema>;
 
-export const parseKintoneClientConfig = (): {
+export type KintoneClientConfigParseResult = {
   config: KintoneClientConfig;
-} => {
+  isApiTokenAuth: boolean;
+};
+
+export const parseKintoneClientConfig = (): KintoneClientConfigParseResult => {
   const result = configSchema.safeParse(process.env);
 
   if (result.success) {
     const data = result.data;
+    const isApiTokenAuth =
+      !(data.KINTONE_USERNAME && data.KINTONE_PASSWORD) &&
+      !!data.KINTONE_API_TOKEN;
     return {
       config: data,
+      isApiTokenAuth,
     };
   }
 

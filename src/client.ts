@@ -1,5 +1,5 @@
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { PACKAGE_NAME, type KintoneClientConfig } from "./config.js";
+import { PACKAGE_NAME, type KintoneClientConfigParseResult } from "./config.js";
 import { HttpsProxyAgent } from "https-proxy-agent";
 import { Agent, type AgentOptions } from "https";
 import { readFileSync } from "fs";
@@ -7,9 +7,9 @@ import { version } from "./version.js";
 
 let client: KintoneRestAPIClient | null = null;
 
-export const getKintoneClient = (config: {
-  config: KintoneClientConfig;
-}): KintoneRestAPIClient => {
+export const getKintoneClient = (
+  config: KintoneClientConfigParseResult,
+): KintoneRestAPIClient => {
   if (client) {
     return client;
   }
@@ -30,6 +30,7 @@ export const getKintoneClient = (config: {
     username: KINTONE_USERNAME,
     password: KINTONE_PASSWORD,
     apiToken: KINTONE_API_TOKEN,
+    isApiTokenAuth: config.isApiTokenAuth,
   });
 
   client = new KintoneRestAPIClient({
@@ -58,11 +59,9 @@ const buildAuthParams = (option: {
   username?: string;
   password?: string;
   apiToken?: string;
+  isApiTokenAuth?: boolean;
 }) => {
-  // API_TOKENを使用しているかフラグを設定
-  const usingApiToken = !(option.username && option.password);
-
-  return usingApiToken
+  return option.isApiTokenAuth
     ? { auth: { apiToken: option.apiToken } }
     : { auth: { username: option.username, password: option.password } };
 };
