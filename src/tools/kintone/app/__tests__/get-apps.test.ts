@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { getApps } from "../get-apps.js";
 import { z } from "zod";
 import { mockExtra } from "../../../../__tests__/utils.js";
 
@@ -13,7 +12,8 @@ vi.mock("@kintone/rest-api-client", () => ({
   })),
 }));
 
-describe("get-apps tool", () => {
+describe("get-apps tool - main functionality", () => {
+  let getApps: any;
   const originalEnv = process.env;
 
   beforeEach(async () => {
@@ -25,6 +25,11 @@ describe("get-apps tool", () => {
       KINTONE_USERNAME: "testuser",
       KINTONE_PASSWORD: "testpass",
     };
+
+    // Reset modules and re-import to get fresh instance
+    vi.resetModules();
+    const module = await import("../get-apps.js");
+    getApps = module.getApps;
   });
 
   afterEach(() => {
@@ -271,5 +276,59 @@ describe("get-apps tool", () => {
         text: JSON.stringify(mockAppsData, null, 2),
       });
     });
+  });
+});
+
+describe("get-apps tool - disabled functionality", () => {
+  // Mock the config module for disabled tests
+  const mockParseKintoneClientConfig = vi.fn();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.resetModules();
+
+    // Mock the config function
+    vi.doMock("../../../../config.js", () => ({
+      parseKintoneClientConfig: mockParseKintoneClientConfig,
+    }));
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("should not be disabled when using username/password authentication", async () => {
+    mockParseKintoneClientConfig.mockReturnValue({
+      isApiTokenAuth: false,
+    });
+
+    const { getApps } = await import("../get-apps.js");
+    const isDisabled = getApps.disabled?.();
+    expect(isDisabled).toBe(false);
+  });
+
+  it("should be disabled when using API token authentication", async () => {
+    mockParseKintoneClientConfig.mockReturnValue({
+      isApiTokenAuth: true,
+    });
+
+    const { getApps } = await import("../get-apps.js");
+    const isDisabled = getApps.disabled?.();
+    expect(isDisabled).toBe(true);
+  });
+
+  it("should handle disabled function being defined and callable", async () => {
+    mockParseKintoneClientConfig.mockReturnValue({
+      isApiTokenAuth: false,
+    });
+
+    const { getApps } = await import("../get-apps.js");
+
+    // Test that disabled function exists and is callable
+    expect(getApps.disabled).toBeDefined();
+    expect(typeof getApps.disabled).toBe("function");
+
+    // Test that it can be called without error
+    expect(() => getApps.disabled?.()).not.toThrow();
   });
 });
