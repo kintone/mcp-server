@@ -31,7 +31,7 @@ vi.mock("fs", () => ({
 
 // Common matcher for userAgent field
 const userAgentMatcher = expect.stringMatching(
-  /^kintone-mcp-server@\d+\.\d+\.\d+$/,
+  /^@kintone\/mcp-server@\d+\.\d+\.\d+$/,
 );
 
 describe("client", () => {
