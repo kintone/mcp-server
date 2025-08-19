@@ -4,7 +4,7 @@ import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config.js";
 
 const statusRecordSchema = z.object({
-  id: z.union([z.number(), z.string()]).describe("Record ID"),
+  id: z.string().describe("Record ID"),
   action: z
     .string()
     .describe(
@@ -17,7 +17,7 @@ const statusRecordSchema = z.object({
       "User login name to assign as the assignee. Required when: 1) The destination status has 'Select assignee from these users' enabled and selectable users exist, 2) Setting an assignee for the initial status when returning to it.",
     ),
   revision: z
-    .union([z.number(), z.string()])
+    .string()
     .optional()
     .describe(
       "Expected revision number. If it doesn't match the actual revision, an error occurs and status is not updated. Specify -1 or omit to skip revision validation.",
@@ -25,7 +25,7 @@ const statusRecordSchema = z.object({
 });
 
 const inputSchema = {
-  app: z.union([z.number(), z.string()]).describe("The ID of the app"),
+  app: z.string().describe("The ID of the app"),
   records: z
     .array(statusRecordSchema)
     .min(1)

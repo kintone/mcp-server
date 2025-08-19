@@ -11,7 +11,7 @@ const updateRecordSchema = z.object({
     "Record data with field codes as keys. Use kintone-get-form-fields tool first to discover available field codes and their types.",
   ),
   revision: z
-    .union([z.number(), z.string()])
+    .string()
     .optional()
     .describe(
       "Expected revision number. If specified, the update will fail if the current revision doesn't match. Specify -1 or omit to skip revision validation.",
@@ -19,9 +19,7 @@ const updateRecordSchema = z.object({
 });
 
 const inputSchema = {
-  app: z
-    .union([z.number(), z.string()])
-    .describe("The ID of the app to update records in"),
+  app: z.string().describe("The ID of the app to update records in"),
   records: z
     .array(updateRecordSchema)
     .min(1)

@@ -5,9 +5,7 @@ import { parseKintoneClientConfig } from "../../../config.js";
 import { recordSchemaForParameterWithoutFile } from "../../../schema/record/record-for-parameter.js";
 
 const inputSchema = {
-  app: z
-    .union([z.number(), z.string()])
-    .describe("The ID of the app to add records to"),
+  app: z.string().describe("The ID of the app to add records to"),
   records: z
     .array(recordSchemaForParameterWithoutFile)
     .min(1)

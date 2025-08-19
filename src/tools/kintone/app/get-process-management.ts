@@ -5,7 +5,7 @@ import { parseKintoneClientConfig } from "../../../config.js";
 
 const inputSchema = {
   app: z
-    .union([z.number(), z.string()])
+    .string()
     .describe("The ID of the app to retrieve process management settings from"),
   lang: z
     .enum(["ja", "en", "zh", "default", "user"])
