@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const PACKAGE_NAME = "kintone-mcp-server";
+export const PACKAGE_NAME = "@kintone/mcp-server";
 
 const configSchema = z
   .object({
