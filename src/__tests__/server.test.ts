@@ -1,33 +1,47 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { createServer } from "../server.js";
 
-// Create mock tools with spies
+// Create mock tools
 const enabledToolMock = {
   name: "enabledTool",
   config: { description: "Always enabled tool" },
   callback: vi.fn(),
-  disabled: undefined,
 };
 
-const disabledToolMock = {
-  name: "disabledTool",
-  config: { description: "Disabled tool" },
+const excludedToolMock = {
+  name: "excluded-tool",
+  config: { description: "Tool that gets excluded" },
   callback: vi.fn(),
-  disabled: vi.fn(() => true),
 };
 
-const conditionallyDisabledToolMock = {
-  name: "conditionallyDisabledTool",
-  config: { description: "Conditionally disabled tool" },
+const anotherEnabledToolMock = {
+  name: "anotherEnabledTool",
+  config: { description: "Another enabled tool" },
   callback: vi.fn(),
-  disabled: vi.fn(() => false),
 };
 
 // Mock the tools module
 vi.mock("../tools/index.js", () => ({
   get tools() {
-    return [enabledToolMock, disabledToolMock, conditionallyDisabledToolMock];
+    return [enabledToolMock, excludedToolMock, anotherEnabledToolMock];
   },
+}));
+
+// Mock the config module
+vi.mock("../config.js", () => {
+  const mockParseKintoneClientConfig = vi.fn();
+  return {
+    PACKAGE_NAME: "test-package",
+    parseKintoneClientConfig: mockParseKintoneClientConfig,
+  };
+});
+
+// Mock the tool-filters module
+vi.mock("../tool-filters.js", () => ({
+  shouldEnableTool: vi.fn((toolName) => {
+    // Mock filter logic for tests - exclude specific tool regardless of config
+    return toolName !== "excluded-tool";
+  }),
 }));
 
 // Mock McpServer to track registerTool calls
@@ -43,41 +57,39 @@ describe("server", () => {
     vi.clearAllMocks();
   });
 
-  it("should create server and register only enabled tools", () => {
-    const server = createServer();
+  it("should register only non-excluded tools", async () => {
+    // Import and get the mocked function
+    const { parseKintoneClientConfig } = await import("../config.js");
+    const mockParseKintoneClientConfig = parseKintoneClientConfig as any;
+    mockParseKintoneClientConfig.mockReturnValue({ isApiTokenAuth: false });
 
-    expect(disabledToolMock.disabled).toHaveBeenCalledTimes(1);
-    expect(conditionallyDisabledToolMock.disabled).toHaveBeenCalledTimes(1);
+    const server = createServer();
 
     // Verify server was created correctly
     expect(server).toBeDefined();
     expect(createServer).toBeDefined();
     expect(typeof createServer).toBe("function");
 
-    // Verify disabled functions were called
-    expect(disabledToolMock.disabled).toHaveBeenCalledOnce();
-    expect(conditionallyDisabledToolMock.disabled).toHaveBeenCalledOnce();
-
-    // Verify enabled tools were registered (including tools without disabled function)
+    // Verify only non-excluded tools were registered
     expect(mockRegisterTool).toHaveBeenCalledWith(
       "enabledTool",
       enabledToolMock.config,
       enabledToolMock.callback,
     );
     expect(mockRegisterTool).toHaveBeenCalledWith(
-      "conditionallyDisabledTool",
-      conditionallyDisabledToolMock.config,
-      conditionallyDisabledToolMock.callback,
+      "anotherEnabledTool",
+      anotherEnabledToolMock.config,
+      anotherEnabledToolMock.callback,
     );
 
-    // Verify disabled tool was not registered
+    // Verify excluded-tool was not registered
     expect(mockRegisterTool).not.toHaveBeenCalledWith(
-      "disabledTool",
-      disabledToolMock.config,
-      disabledToolMock.callback,
+      "excluded-tool",
+      excludedToolMock.config,
+      excludedToolMock.callback,
     );
 
-    // Verify total number of registerTool calls (2 enabled tools)
+    // Verify total number of registerTool calls (2 tools)
     expect(mockRegisterTool).toHaveBeenCalledTimes(2);
   });
 });

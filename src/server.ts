@@ -1,7 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { tools } from "./tools/index.js";
 import { version } from "./version.js";
-import { PACKAGE_NAME, type KintoneClientConfigParseResult } from "./config.js";
+import { PACKAGE_NAME, parseKintoneClientConfig } from "./config.js";
+import { shouldEnableTool } from "./tool-filters.js";
 
 export const createServer = (): McpServer => {
   const server = new McpServer(
@@ -16,8 +17,10 @@ export const createServer = (): McpServer => {
     },
   );
 
+  const config = parseKintoneClientConfig();
+
   tools
-    .filter((tool) => !tool.disabled?.())
+    .filter((tool) => shouldEnableTool(tool.name, config))
     .forEach((tool) =>
       server.registerTool(tool.name, tool.config, tool.callback),
     );

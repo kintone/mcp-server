@@ -24,7 +24,6 @@ export type Tool<
   name: string;
   config: ToolConfig<InputArgs, OutputArgs>;
   callback: ToolCallback<InputArgs>;
-  disabled?: () => boolean;
 };
 
 // Tool creation helper function
@@ -35,12 +34,10 @@ export function createTool<
   name: string,
   config: ToolConfig<InputArgs, OutputArgs>,
   callback: ToolCallback<InputArgs>,
-  disabled?: () => boolean,
 ): Tool<InputArgs, OutputArgs> {
   return {
     name,
     config,
     callback,
-    disabled,
   };
 }
