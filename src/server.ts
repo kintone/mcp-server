@@ -1,10 +1,11 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { tools } from "./tools/index.js";
 import { version } from "./version.js";
+import { PACKAGE_NAME } from "./config.js";
 
 const server = new McpServer(
   {
-    name: "kintone-mcp-server",
+    name: PACKAGE_NAME,
     version,
   },
   {

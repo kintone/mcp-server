@@ -1,8 +1,9 @@
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import type { KintoneClientConfig } from "./config.js";
+import { PACKAGE_NAME, type KintoneClientConfig } from "./config.js";
 import { HttpsProxyAgent } from "https-proxy-agent";
 import { Agent, type AgentOptions } from "https";
 import { readFileSync } from "fs";
+import { version } from "./version.js";
 
 let client: KintoneRestAPIClient | null = null;
 
@@ -34,6 +35,7 @@ export const getKintoneClient = (
       basicAuthUsername: KINTONE_BASIC_AUTH_USERNAME,
       basicAuthPassword: KINTONE_BASIC_AUTH_PASSWORD,
     }),
+    userAgent: `${PACKAGE_NAME}@${version}`,
     httpsAgent: buildHttpsAgent({
       proxy: HTTPS_PROXY,
       pfxFilePath: KINTONE_PFX_FILE_PATH,

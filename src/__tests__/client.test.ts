@@ -29,6 +29,11 @@ vi.mock("fs", () => ({
   readFileSync: vi.fn().mockReturnValue(Buffer.from("mock-pfx-content")),
 }));
 
+// Common matcher for userAgent field
+const userAgentMatcher = expect.stringMatching(
+  /^@kintone\/mcp-server@\d+\.\d+\.\d+$/,
+);
+
 describe("client", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -54,6 +59,7 @@ describe("client", () => {
           password: mockKintoneConfig.KINTONE_PASSWORD,
         },
         httpsAgent: expect.any(Object),
+        userAgent: userAgentMatcher,
       });
       expect(client).toBe(mockClient);
     });
@@ -92,6 +98,7 @@ describe("client", () => {
           password: mockKintoneConfig.KINTONE_PASSWORD,
         },
         httpsAgent: expect.any(Object),
+        userAgent: userAgentMatcher,
       });
       expect(client).toBe(mockClient);
     });
@@ -117,6 +124,7 @@ describe("client", () => {
           password: mockKintoneConfig.KINTONE_PASSWORD,
         },
         httpsAgent: expect.any(Object),
+        userAgent: userAgentMatcher,
       });
     });
 
@@ -141,6 +149,7 @@ describe("client", () => {
           password: mockKintoneConfig.KINTONE_PASSWORD,
         },
         httpsAgent: expect.any(Object),
+        userAgent: userAgentMatcher,
       });
     });
   });
@@ -195,6 +204,7 @@ describe("client", () => {
           password: mockKintoneConfig.KINTONE_PASSWORD,
         },
         httpsAgent: expect.any(Object),
+        userAgent: userAgentMatcher,
       });
 
       resetKintoneClient();
@@ -207,6 +217,7 @@ describe("client", () => {
           password: mockKintoneConfig.KINTONE_PASSWORD,
         },
         httpsAgent: expect.any(Object),
+        userAgent: userAgentMatcher,
       });
 
       expect(client1).not.toBe(client2);
@@ -277,6 +288,7 @@ describe("client", () => {
             proxy: "http://proxy.example.com:8080",
             isProxyAgent: true,
           }),
+          userAgent: userAgentMatcher,
         });
         expect(client).toBe(mockClient);
       });
@@ -307,6 +319,7 @@ describe("client", () => {
             password: "basic-pass",
           },
           httpsAgent: expect.any(Object),
+          userAgent: userAgentMatcher,
         });
         expect(client).toBe(mockClient);
       });
@@ -349,6 +362,7 @@ describe("client", () => {
             proxy: "http://proxy.example.com:8080",
             isProxyAgent: true,
           }),
+          userAgent: userAgentMatcher,
         });
         expect(client).toBe(mockClient);
       });
@@ -388,6 +402,7 @@ describe("client", () => {
             },
             isHttpsAgent: true,
           }),
+          userAgent: userAgentMatcher,
         });
         expect(client).toBe(mockClient);
       });
@@ -416,6 +431,7 @@ describe("client", () => {
             password: mockKintoneConfig.KINTONE_PASSWORD,
           },
           httpsAgent: expect.objectContaining({ isHttpsAgent: true }),
+          userAgent: userAgentMatcher,
         });
         expect(client).toBe(mockClient);
       });
@@ -458,6 +474,7 @@ describe("client", () => {
               proxy: proxyUrl,
               isProxyAgent: true,
             }),
+            userAgent: userAgentMatcher,
           });
         }
       });
@@ -489,6 +506,7 @@ describe("client", () => {
             password: mockKintoneConfig.KINTONE_PASSWORD,
           },
           httpsAgent: expect.objectContaining({ isHttpsAgent: true }),
+          userAgent: userAgentMatcher,
         });
         expect(client).toBe(mockClient);
       });
