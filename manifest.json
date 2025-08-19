@@ -43,10 +43,6 @@
       "description": "Get app settings from kintone"
     },
     {
-      "name": "kintone-get-apps",
-      "description": "Get multiple app settings from kintone"
-    },
-    {
       "name": "kintone-get-form-fields",
       "description": "Get form field settings from a kintone app"
     },
@@ -55,6 +51,7 @@
       "description": "Update status of multiple records in a kintone app."
     }
   ],
+  "tools_generated": true,
   "user_config": {
     "kintone_base_url": {
       "type": "string",
