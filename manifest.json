@@ -39,6 +39,10 @@
   },
   "tools": [
     {
+      "name": "kintone-add-app",
+      "description": "Create app in kintone"
+    },
+    {
       "name": "kintone-get-app",
       "description": "Get app settings from kintone"
     },

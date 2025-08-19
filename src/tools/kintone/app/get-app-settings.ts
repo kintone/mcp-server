@@ -2,12 +2,11 @@ import { z } from "zod";
 import { createTool } from "../../utils.js";
 import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config.js";
-import { fieldPropertySchema } from "../../../schema/field-schemas.js";
 
 const inputSchema = {
   app: z
     .union([z.number(), z.string()])
-    .describe("The ID of the app to retrieve form fields from"),
+    .describe("The ID of the app to retrieve settings from"),
   lang: z
     .enum(["ja", "en", "zh", "default", "user"])
     .optional()
@@ -15,16 +14,22 @@ const inputSchema = {
 };
 
 const outputSchema = {
-  properties: z
-    .record(fieldPropertySchema)
-    .describe("Object containing field configurations"),
-  revision: z.string().describe("App configuration revision number"),
+  name: z.string().describe("The app name"),
+  description: z.string().describe("The app description"),
+  icon: z
+    .object({
+      type: z.string().describe("Icon type"),
+      key: z.string().describe("Icon key"),
+    })
+    .describe("App icon settings"),
+  theme: z.string().describe("App theme"),
+  revision: z.string().describe("App revision number"),
 };
 
-export const getFormFields = createTool(
-  "kintone-get-form-fields",
+export const getAppSettings = createTool(
+  "kintone-get-app-settings",
   {
-    description: "Get form field settings from a kintone app",
+    description: "Get general settings from a kintone app",
     inputSchema,
     outputSchema,
   },
@@ -32,13 +37,16 @@ export const getFormFields = createTool(
     const config = parseKintoneClientConfig();
     const client = getKintoneClient(config);
 
-    const response = await client.app.getFormFields({
+    const response = await client.app.getAppSettings({
       app,
       lang,
     });
 
     const result = {
-      properties: response.properties,
+      name: response.name,
+      description: response.description,
+      icon: response.icon,
+      theme: response.theme,
       revision: response.revision,
     };
 

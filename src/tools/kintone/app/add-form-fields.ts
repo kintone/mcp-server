@@ -7,38 +7,43 @@ import { fieldPropertySchema } from "../../../schema/field-schemas.js";
 const inputSchema = {
   app: z
     .union([z.number(), z.string()])
-    .describe("The ID of the app to retrieve form fields from"),
-  lang: z
-    .enum(["ja", "en", "zh", "default", "user"])
+    .describe("The ID of the app to add fields to"),
+  properties: z
+    .record(fieldPropertySchema)
+    .describe("Object containing field configurations to add"),
+  revision: z
+    .string()
     .optional()
-    .describe("The language for field names"),
+    .describe("App revision number for optimistic locking"),
 };
 
 const outputSchema = {
-  properties: z
-    .record(fieldPropertySchema)
-    .describe("Object containing field configurations"),
-  revision: z.string().describe("App configuration revision number"),
+  revision: z.string().describe("Updated app revision number"),
 };
 
-export const getFormFields = createTool(
-  "kintone-get-form-fields",
+export const addFormFields = createTool(
+  "kintone-add-form-fields",
   {
-    description: "Get form field settings from a kintone app",
+    description: "Add form fields to a kintone app",
     inputSchema,
     outputSchema,
   },
-  async ({ app, lang }) => {
+  async ({ app, properties, revision }) => {
     const config = parseKintoneClientConfig();
     const client = getKintoneClient(config);
 
-    const response = await client.app.getFormFields({
+    const params: any = {
       app,
-      lang,
-    });
+      properties,
+    };
+
+    if (revision !== undefined) {
+      params.revision = revision;
+    }
+
+    const response = await client.app.addFormFields(params);
 
     const result = {
-      properties: response.properties,
       revision: response.revision,
     };
 
