@@ -4,7 +4,11 @@ import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config.js";
 
 const inputSchema = {
-  app: z.string().describe("The ID of the app to retrieve form fields from"),
+  app: z
+    .string()
+    .describe(
+      "The ID of the app to retrieve form fields from (numeric value as string)",
+    ),
   lang: z
     .enum(["ja", "en", "zh", "default", "user"])
     .optional()

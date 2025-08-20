@@ -82,7 +82,11 @@ const orderBySchema = z
   .describe("Sort order for results");
 
 const inputSchema = {
-  app: z.string().describe("The ID of the app to retrieve records from"),
+  app: z
+    .string()
+    .describe(
+      "The ID of the app to retrieve records from (numeric value as string)",
+    ),
   filters: filtersSchema,
   fields: z
     .array(z.string())
