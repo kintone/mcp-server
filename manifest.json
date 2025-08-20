@@ -29,6 +29,7 @@
         "KINTONE_BASE_URL": "${user_config.kintone_base_url}",
         "KINTONE_USERNAME": "${user_config.kintone_username}",
         "KINTONE_PASSWORD": "${user_config.kintone_password}",
+        "KINTONE_API_TOKEN": "${user_config.kintone_api_token}",
         "KINTONE_BASIC_AUTH_USERNAME": "${user_config.kintone_basic_auth_username}",
         "KINTONE_BASIC_AUTH_PASSWORD": "${user_config.kintone_basic_auth_password}",
         "HTTPS_PROXY": "${user_config.https_proxy}",
@@ -43,10 +44,6 @@
       "description": "Get app settings from kintone"
     },
     {
-      "name": "kintone-get-apps",
-      "description": "Get multiple app settings from kintone"
-    },
-    {
       "name": "kintone-get-form-fields",
       "description": "Get form field settings from a kintone app"
     },
@@ -55,6 +52,7 @@
       "description": "Update status of multiple records in a kintone app."
     }
   ],
+  "tools_generated": true,
   "user_config": {
     "kintone_base_url": {
       "type": "string",
@@ -67,14 +65,21 @@
       "type": "string",
       "title": "Kintone Username",
       "description": "Your kintone username for authentication",
-      "required": true,
+      "required": false,
       "sensitive": false
     },
     "kintone_password": {
       "type": "string",
       "title": "Kintone Password",
       "description": "Your kintone password for authentication",
-      "required": true,
+      "required": false,
+      "sensitive": true
+    },
+    "kintone_api_token": {
+      "type": "string",
+      "title": "Kintone API Token",
+      "description": "API token for authentication (comma-separated for multiple tokens). If both API token and username/password are provided, username/password will take priority.",
+      "required": false,
       "sensitive": true
     },
     "kintone_basic_auth_username": {

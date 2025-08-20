@@ -10,8 +10,36 @@ const configSchema = z
       .describe(
         "The base URL of your kintone environment (e.g., https://example.cybozu.com)",
       ),
-    KINTONE_USERNAME: z.string().min(1).describe("Username for authentication"),
-    KINTONE_PASSWORD: z.string().min(1).describe("Password for authentication"),
+    KINTONE_USERNAME: z
+      .string()
+      .min(1)
+      .optional()
+      .describe("Username for authentication"),
+    KINTONE_PASSWORD: z
+      .string()
+      .min(1)
+      .optional()
+      .describe("Password for authentication"),
+    KINTONE_API_TOKEN: z
+      .string()
+      .optional()
+      .refine(
+        (value) => {
+          if (!value) return true;
+          const tokens = value.split(",").map((t) => t.trim());
+          return (
+            tokens.length <= 9 &&
+            tokens.every((token) => /^[a-zA-Z0-9]+$/.test(token))
+          );
+        },
+        {
+          message:
+            "API tokens must be comma-separated alphanumeric strings (max 9 tokens)",
+        },
+      )
+      .describe(
+        "API tokens for authentication (comma-separated, max 9 alphanumeric tokens)",
+      ),
     KINTONE_BASIC_AUTH_USERNAME: z
       .string()
       .optional()
@@ -38,6 +66,19 @@ const configSchema = z
       .optional()
       .describe("Password for PFX client certificate file"),
   })
+  .refine(
+    (data) => {
+      // Either username/password or API token must be provided
+      const hasUserAuth = data.KINTONE_USERNAME && data.KINTONE_PASSWORD;
+      const hasApiToken = data.KINTONE_API_TOKEN;
+      return hasUserAuth || hasApiToken;
+    },
+    {
+      message:
+        "Either KINTONE_USERNAME/KINTONE_PASSWORD or KINTONE_API_TOKEN must be provided",
+      path: [],
+    },
+  )
   .refine(
     (data) => {
       const hasPath = data.KINTONE_PFX_FILE_PATH;
@@ -70,11 +111,23 @@ const configSchema = z
 
 export type KintoneClientConfig = z.infer<typeof configSchema>;
 
-export const parseKintoneClientConfig = (): KintoneClientConfig => {
+export type KintoneClientConfigParseResult = {
+  config: KintoneClientConfig;
+  isApiTokenAuth: boolean;
+};
+
+export const parseKintoneClientConfig = (): KintoneClientConfigParseResult => {
   const result = configSchema.safeParse(process.env);
 
   if (result.success) {
-    return result.data;
+    const data = result.data;
+    const isApiTokenAuth =
+      !(data.KINTONE_USERNAME && data.KINTONE_PASSWORD) &&
+      !!data.KINTONE_API_TOKEN;
+    return {
+      config: data,
+      isApiTokenAuth,
+    };
   }
 
   const errors = result.error.format();
@@ -93,6 +146,11 @@ export const parseKintoneClientConfig = (): KintoneClientConfig => {
   if (errors.KINTONE_PASSWORD?._errors.length) {
     errorMessages.push(
       `KINTONE_PASSWORD: ${errors.KINTONE_PASSWORD._errors.join(", ")}`,
+    );
+  }
+  if (errors.KINTONE_API_TOKEN?._errors.length) {
+    errorMessages.push(
+      `KINTONE_API_TOKEN: ${errors.KINTONE_API_TOKEN._errors.join(", ")}`,
     );
   }
   if (errors.HTTPS_PROXY?._errors.length) {

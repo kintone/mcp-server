@@ -57,7 +57,7 @@ describe("config - validation errors", () => {
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
-        "KINTONE_USERNAME: Required",
+        "Either KINTONE_USERNAME/KINTONE_PASSWORD or KINTONE_API_TOKEN must be provided",
       ],
     },
     {
@@ -79,7 +79,7 @@ describe("config - validation errors", () => {
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
-        "KINTONE_PASSWORD: Required",
+        "Either KINTONE_USERNAME/KINTONE_PASSWORD or KINTONE_API_TOKEN must be provided",
       ],
     },
     {
@@ -113,8 +113,6 @@ describe("config - validation errors", () => {
       expectedErrors: [
         "Environment variables are missing or invalid",
         "KINTONE_BASE_URL: Required",
-        "KINTONE_USERNAME: Required",
-        "KINTONE_PASSWORD: Required",
       ],
       deleteEnvVars: true,
     },
@@ -162,6 +160,60 @@ describe("config - validation errors", () => {
         "Both KINTONE_BASIC_AUTH_USERNAME and KINTONE_BASIC_AUTH_PASSWORD must be provided together",
       ],
     },
+    {
+      name: "should throw error when neither username/password nor API token is provided",
+      env: {
+        KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
+      },
+      expectedErrors: [
+        "Environment variables are missing or invalid",
+        "Either KINTONE_USERNAME/KINTONE_PASSWORD or KINTONE_API_TOKEN must be provided",
+      ],
+    },
+    {
+      name: "should throw error when API token has more than 9 tokens",
+      env: {
+        KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
+        KINTONE_API_TOKEN: "t1,t2,t3,t4,t5,t6,t7,t8,t9,t10",
+      },
+      expectedErrors: [
+        "Environment variables are missing or invalid",
+        "KINTONE_API_TOKEN: API tokens must be comma-separated alphanumeric strings (max 9 tokens)",
+      ],
+    },
+    {
+      name: "should throw error when API token contains non-alphanumeric characters",
+      env: {
+        KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
+        KINTONE_API_TOKEN: "token-with-dash,token_with_underscore",
+      },
+      expectedErrors: [
+        "Environment variables are missing or invalid",
+        "KINTONE_API_TOKEN: API tokens must be comma-separated alphanumeric strings (max 9 tokens)",
+      ],
+    },
+    {
+      name: "should throw error when only username is provided without password",
+      env: {
+        KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
+        KINTONE_USERNAME: mockKintoneConfig.KINTONE_USERNAME,
+      },
+      expectedErrors: [
+        "Environment variables are missing or invalid",
+        "Either KINTONE_USERNAME/KINTONE_PASSWORD or KINTONE_API_TOKEN must be provided",
+      ],
+    },
+    {
+      name: "should throw error when only password is provided without username",
+      env: {
+        KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
+        KINTONE_PASSWORD: mockKintoneConfig.KINTONE_PASSWORD,
+      },
+      expectedErrors: [
+        "Environment variables are missing or invalid",
+        "Either KINTONE_USERNAME/KINTONE_PASSWORD or KINTONE_API_TOKEN must be provided",
+      ],
+    },
   ])("$name", ({ env, expectedErrors, deleteEnvVars }) => {
     process.env = {
       ...originalEnv,
@@ -172,11 +224,20 @@ describe("config - validation errors", () => {
       delete process.env.KINTONE_BASE_URL;
       delete process.env.KINTONE_USERNAME;
       delete process.env.KINTONE_PASSWORD;
+      delete process.env.KINTONE_API_TOKEN;
     }
 
     const errorCall = () => parseKintoneClientConfig();
-    expectedErrors.forEach((error) => {
-      expect(errorCall).toThrow(error);
-    });
+    try {
+      errorCall();
+      throw new Error("Expected to throw but didn't");
+    } catch (error) {
+      const errorMessage = (error as Error).message;
+      console.error(errorMessage);
+
+      expectedErrors.forEach((expectedError) => {
+        expect(errorMessage).toContain(expectedError);
+      });
+    }
   });
 });

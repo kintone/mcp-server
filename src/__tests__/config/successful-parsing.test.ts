@@ -163,14 +163,89 @@ describe("config - successful parsing", () => {
       env: mockKintoneConfig,
       expected: mockKintoneConfig,
     },
+    {
+      name: "should parse with API token instead of username/password",
+      env: {
+        KINTONE_BASE_URL: "https://example.cybozu.com",
+        KINTONE_API_TOKEN: "abc123",
+      },
+      expected: {
+        KINTONE_BASE_URL: "https://example.cybozu.com",
+        KINTONE_API_TOKEN: "abc123",
+        KINTONE_USERNAME: undefined,
+        KINTONE_PASSWORD: undefined,
+        KINTONE_BASIC_AUTH_USERNAME: undefined,
+        KINTONE_BASIC_AUTH_PASSWORD: undefined,
+        HTTPS_PROXY: undefined,
+        KINTONE_PFX_FILE_PATH: undefined,
+        KINTONE_PFX_FILE_PASSWORD: undefined,
+      },
+    },
+    {
+      name: "should parse multiple API tokens (comma-separated)",
+      env: {
+        KINTONE_BASE_URL: "https://example.cybozu.com",
+        KINTONE_API_TOKEN: "token1,token2,token3",
+      },
+      expected: {
+        KINTONE_BASE_URL: "https://example.cybozu.com",
+        KINTONE_API_TOKEN: "token1,token2,token3",
+        KINTONE_USERNAME: undefined,
+        KINTONE_PASSWORD: undefined,
+        KINTONE_BASIC_AUTH_USERNAME: undefined,
+        KINTONE_BASIC_AUTH_PASSWORD: undefined,
+        HTTPS_PROXY: undefined,
+        KINTONE_PFX_FILE_PATH: undefined,
+        KINTONE_PFX_FILE_PASSWORD: undefined,
+      },
+    },
+    {
+      name: "should accept up to 9 API tokens",
+      env: {
+        KINTONE_BASE_URL: "https://example.cybozu.com",
+        KINTONE_API_TOKEN: "t1,t2,t3,t4,t5,t6,t7,t8,t9",
+      },
+      expected: {
+        KINTONE_BASE_URL: "https://example.cybozu.com",
+        KINTONE_API_TOKEN: "t1,t2,t3,t4,t5,t6,t7,t8,t9",
+        KINTONE_USERNAME: undefined,
+        KINTONE_PASSWORD: undefined,
+        KINTONE_BASIC_AUTH_USERNAME: undefined,
+        KINTONE_BASIC_AUTH_PASSWORD: undefined,
+        HTTPS_PROXY: undefined,
+        KINTONE_PFX_FILE_PATH: undefined,
+        KINTONE_PFX_FILE_PASSWORD: undefined,
+      },
+    },
+    {
+      name: "should handle API tokens with spaces around commas",
+      env: {
+        KINTONE_BASE_URL: "https://example.cybozu.com",
+        KINTONE_API_TOKEN: "token1 , token2 , token3",
+      },
+      expected: {
+        KINTONE_BASE_URL: "https://example.cybozu.com",
+        KINTONE_API_TOKEN: "token1 , token2 , token3",
+        KINTONE_USERNAME: undefined,
+        KINTONE_PASSWORD: undefined,
+        KINTONE_BASIC_AUTH_USERNAME: undefined,
+        KINTONE_BASIC_AUTH_PASSWORD: undefined,
+        HTTPS_PROXY: undefined,
+        KINTONE_PFX_FILE_PATH: undefined,
+        KINTONE_PFX_FILE_PASSWORD: undefined,
+      },
+    },
   ])("$name", ({ env, expected }) => {
     process.env = {
       ...originalEnv,
       ...env,
     };
 
-    const config = parseKintoneClientConfig();
+    const result = parseKintoneClientConfig();
 
-    expect(config).toEqual(expected);
+    expect(result.config).toEqual(expected);
+    expect(result.isApiTokenAuth).toBe(
+      !(expected.KINTONE_USERNAME && expected.KINTONE_PASSWORD),
+    );
   });
 });
