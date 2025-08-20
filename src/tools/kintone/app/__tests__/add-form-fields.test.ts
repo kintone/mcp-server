@@ -13,9 +13,18 @@ vi.mock("@kintone/rest-api-client", () => ({
 
 vi.mock("../../../../config.js", () => ({
   parseKintoneClientConfig: vi.fn().mockReturnValue({
-    KINTONE_BASE_URL: "https://example.cybozu.com",
-    KINTONE_USERNAME: "test-user",
-    KINTONE_PASSWORD: "test-password",
+    config: {
+      KINTONE_BASE_URL: "https://example.cybozu.com",
+      KINTONE_USERNAME: "test-user",
+      KINTONE_PASSWORD: "test-password",
+      KINTONE_API_TOKEN: undefined,
+      KINTONE_BASIC_AUTH_USERNAME: undefined,
+      KINTONE_BASIC_AUTH_PASSWORD: undefined,
+      HTTPS_PROXY: undefined,
+      KINTONE_PFX_FILE_PATH: undefined,
+      KINTONE_PFX_FILE_PASSWORD: undefined,
+    },
+    isApiTokenAuth: false,
   }),
   PACKAGE_NAME: "@kintone/mcp-server",
 }));
