@@ -2,34 +2,6 @@ import { z } from "zod";
 import { createTool } from "../../utils.js";
 import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config.js";
-import {
-  singleLineTextField,
-  multiLineTextField,
-  richTextField,
-  numberField,
-  calcField,
-  radioButtonField,
-  checkBoxField,
-  multiSelectField,
-  dropDownField,
-  dateField,
-  timeField,
-  dateTimeField,
-  fileField,
-  linkField,
-  userSelectField,
-  organizationSelectField,
-  groupSelectField,
-  referenceTableField,
-  lookupField,
-  groupField,
-  spacerField,
-  hrField,
-  labelField,
-  categoryField,
-  statusField,
-  createSubTableField,
-} from "../../../schema/app/form/fields.js";
 
 const inputSchema = {
   app: z

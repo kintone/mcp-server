@@ -34,7 +34,7 @@ export const deployApp = createTool(
     const config = parseKintoneClientConfig();
     const client = getKintoneClient(config);
 
-    const params: any = { apps };
+    const params: Parameters<typeof client.app.deployApp>[0] = { apps };
 
     if (revert !== undefined) {
       params.revert = revert;

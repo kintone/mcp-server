@@ -76,13 +76,6 @@ describe("update-app-settings tool", () => {
           description: "app with description",
         },
         {
-          input: {
-            app: 123,
-            icon: { type: "PRESET", key: "APP72" },
-          },
-          description: "app with icon",
-        },
-        {
           input: { app: 123, theme: "BLUE" },
           description: "app with theme",
         },
@@ -95,7 +88,6 @@ describe("update-app-settings tool", () => {
             app: 456,
             name: "Complete Update",
             description: "Full update with all fields",
-            icon: { type: "FILE", key: "custom-icon" },
             theme: "RED",
             revision: "3",
           },
@@ -116,18 +108,6 @@ describe("update-app-settings tool", () => {
         {
           input: { app: 123, description: true },
           description: "description as boolean",
-        },
-        {
-          input: { app: 123, icon: "invalid" },
-          description: "icon as string instead of object",
-        },
-        {
-          input: { app: 123, icon: { type: "PRESET" } },
-          description: "icon missing key field",
-        },
-        {
-          input: { app: 123, icon: { key: "APP72" } },
-          description: "icon missing type field",
         },
         { input: { app: 123, theme: 123 }, description: "theme as number" },
         {
@@ -209,8 +189,7 @@ describe("update-app-settings tool", () => {
         app: "456",
         name: "Completely Updated App",
         description: "This app has been fully updated",
-        icon: { type: "FILE", key: "new-custom-icon" },
-        theme: "GREEN",
+        theme: "GREEN" as const,
         revision: "7",
       };
 
@@ -220,7 +199,6 @@ describe("update-app-settings tool", () => {
         app: "456",
         name: "Completely Updated App",
         description: "This app has been fully updated",
-        icon: { type: "FILE", key: "new-custom-icon" },
         theme: "GREEN",
         revision: "7",
       });
@@ -234,7 +212,7 @@ describe("update-app-settings tool", () => {
       const input = {
         app: 789,
         description: "Updated description only",
-        theme: "YELLOW",
+        theme: "YELLOW" as const,
       };
 
       const result = await updateAppSettings.callback(input, mockExtra);

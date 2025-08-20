@@ -22,7 +22,11 @@ const outputSchema = {
       key: z.string().describe("Icon key"),
     })
     .describe("App icon settings"),
-  theme: z.string().describe("App theme"),
+  theme: z
+    .enum(["WHITE", "RED", "GREEN", "BLUE", "YELLOW", "BLACK"])
+    .describe(
+      "App theme (WHITE: 初期設定, RED: レッド, GREEN: グリーン, BLUE: ブルー, YELLOW: イエロー, BLACK: ブラック)",
+    ),
   revision: z.string().describe("App revision number"),
 };
 

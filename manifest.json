@@ -52,6 +52,26 @@
       "description": "Get form field settings from a kintone app"
     },
     {
+      "name": "kintone-add-form-fields",
+      "description": "Add form fields to a kintone app"
+    },
+    {
+      "name": "kintone-delete-form-fields",
+      "description": "Delete form fields from a kintone app"
+    },
+    {
+      "name": "kintone-deploy-app",
+      "description": "Deploy app settings to make them live in kintone"
+    },
+    {
+      "name": "kintone-get-app-settings",
+      "description": "Get general settings from a kintone app"
+    },
+    {
+      "name": "kintone-update-app-settings",
+      "description": "Update general settings for a kintone app"
+    },
+    {
       "name": "kintone-update-statuses",
       "description": "Update status of multiple records in a kintone app."
     }

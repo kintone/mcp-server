@@ -27,7 +27,7 @@ import {
 } from "../../../schema/app/form/fields.js";
 
 // Schema for add-form-fields (excludes system fields like CATEGORY/STATUS)
-const addableFieldPropertySchema: z.ZodType<any> = z.lazy(() =>
+const addableFieldPropertySchema: z.ZodTypeAny = z.lazy(() =>
   z.union([
     groupField,
     groupSelectField,
@@ -81,7 +81,7 @@ export const addFormFields = createTool(
     const config = parseKintoneClientConfig();
     const client = getKintoneClient(config);
 
-    const params: any = {
+    const params: Parameters<typeof client.app.addFormFields>[0] = {
       app,
       properties,
     };

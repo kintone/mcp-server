@@ -9,14 +9,12 @@ const inputSchema = {
     .describe("The ID of the app to update settings for"),
   name: z.string().optional().describe("The app name"),
   description: z.string().optional().describe("The app description"),
-  icon: z
-    .object({
-      type: z.string().describe("Icon type"),
-      key: z.string().describe("Icon key"),
-    })
+  theme: z
+    .enum(["WHITE", "RED", "GREEN", "BLUE", "YELLOW", "BLACK"])
     .optional()
-    .describe("App icon settings"),
-  theme: z.string().optional().describe("App theme"),
+    .describe(
+      "App theme (WHITE: 初期設定, RED: レッド, GREEN: グリーン, BLUE: ブルー, YELLOW: イエロー, BLACK: ブラック)",
+    ),
   revision: z
     .string()
     .optional()
@@ -34,15 +32,16 @@ export const updateAppSettings = createTool(
     inputSchema,
     outputSchema,
   },
-  async ({ app, name, description, icon, theme, revision }) => {
+  async ({ app, name, description, theme, revision }) => {
     const config = parseKintoneClientConfig();
     const client = getKintoneClient(config);
 
-    const updateParams: any = { app };
+    const updateParams: Parameters<typeof client.app.updateAppSettings>[0] = {
+      app,
+    };
 
     if (name !== undefined) updateParams.name = name;
     if (description !== undefined) updateParams.description = description;
-    if (icon !== undefined) updateParams.icon = icon;
     if (theme !== undefined) updateParams.theme = theme;
     if (revision !== undefined) updateParams.revision = revision;
 

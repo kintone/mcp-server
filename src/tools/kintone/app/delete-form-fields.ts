@@ -29,7 +29,7 @@ export const deleteFormFields = createTool(
     const config = parseKintoneClientConfig();
     const client = getKintoneClient(config);
 
-    const params: any = {
+    const params: Parameters<typeof client.app.deleteFormFields>[0] = {
       app,
       fields,
     };
