@@ -47,7 +47,7 @@ describe("update-records tool", () => {
       it.each([
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 id: "1",
@@ -77,7 +77,7 @@ describe("update-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 id: "1",
@@ -97,7 +97,7 @@ describe("update-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 id: "1",
@@ -111,7 +111,7 @@ describe("update-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 id: "1",
@@ -127,7 +127,7 @@ describe("update-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 id: "1",
@@ -143,7 +143,7 @@ describe("update-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 id: "1",
@@ -167,7 +167,7 @@ describe("update-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 id: "1",
@@ -188,7 +188,7 @@ describe("update-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 id: "1",
@@ -203,7 +203,7 @@ describe("update-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 id: "1",
@@ -227,25 +227,26 @@ describe("update-records tool", () => {
         { input: { app: true }, description: "app as boolean" },
         { input: { app: null }, description: "app as null" },
         { input: { app: [] }, description: "app as array" },
+        { input: { app: 123 }, description: "app as number" },
         {
-          input: { app: 123 },
+          input: { app: "123" },
           description: "missing required records field",
         },
         {
-          input: { app: 123, records: null },
+          input: { app: "123", records: null },
           description: "records as null",
         },
         {
-          input: { app: 123, records: "not an array" },
+          input: { app: "123", records: "not an array" },
           description: "records as string",
         },
         {
-          input: { app: 123, records: [] },
+          input: { app: "123", records: [] },
           description: "empty records array",
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: Array(101).fill({
               id: "1",
               record: { title: { value: "test" } },
@@ -255,7 +256,7 @@ describe("update-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 record: { title: { value: "test" } },
@@ -266,7 +267,7 @@ describe("update-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 id: 123,
@@ -278,7 +279,7 @@ describe("update-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 id: "1",
@@ -364,7 +365,7 @@ describe("update-records tool", () => {
       mockUpdateRecords.mockResolvedValueOnce(mockResponse);
 
       const input = {
-        app: 123,
+        app: "123",
         records: [
           {
             id: "123",
@@ -379,7 +380,7 @@ describe("update-records tool", () => {
       const result = await updateRecords.callback(input, mockExtra);
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
-        app: 123,
+        app: "123",
         records: [
           {
             id: "123",
@@ -479,7 +480,7 @@ describe("update-records tool", () => {
       mockUpdateRecords.mockResolvedValueOnce(mockResponse);
 
       const input = {
-        app: 123,
+        app: "123",
         records: [
           {
             id: "123",
@@ -515,7 +516,7 @@ describe("update-records tool", () => {
       const result = await updateRecords.callback(input, mockExtra);
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
-        app: 123,
+        app: "123",
         records: [
           {
             id: "123",
@@ -559,7 +560,7 @@ describe("update-records tool", () => {
       mockUpdateRecords.mockResolvedValueOnce(mockResponse);
 
       const input = {
-        app: 123,
+        app: "123",
         records: [
           {
             id: "123",
@@ -573,7 +574,7 @@ describe("update-records tool", () => {
       await updateRecords.callback(input, mockExtra);
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
-        app: 123,
+        app: "123",
         records: [
           {
             id: "123",
@@ -591,7 +592,7 @@ describe("update-records tool", () => {
       mockUpdateRecords.mockRejectedValueOnce(mockError);
 
       const input = {
-        app: 123,
+        app: "123",
         records: [
           {
             id: "999",
@@ -607,7 +608,7 @@ describe("update-records tool", () => {
       );
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
-        app: 123,
+        app: "123",
         records: [
           {
             id: "999",

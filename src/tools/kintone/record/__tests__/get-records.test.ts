@@ -45,11 +45,10 @@ describe("get-records tool", () => {
 
     describe("input schema validation with valid inputs", () => {
       it.each([
-        { input: { app: 123 }, description: "app as number only" },
         { input: { app: "123" }, description: "app as string" },
         {
           input: {
-            app: 123,
+            app: "123",
             filters: {
               textContains: [{ field: "title", value: "meeting" }],
             },
@@ -58,11 +57,11 @@ describe("get-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             filters: {
               equals: [
                 { field: "status", value: "approved" },
-                { field: "count", value: 10 },
+                { field: "count", value: "10" },
               ],
             },
           },
@@ -70,7 +69,7 @@ describe("get-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             filters: {
               dateRange: [
                 { field: "created", from: "2025-01-01", to: "2025-12-31" },
@@ -81,7 +80,7 @@ describe("get-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             filters: {
               numberRange: [
                 { field: "price", min: 100, max: 1000 },
@@ -93,7 +92,7 @@ describe("get-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             filters: {
               inValues: [{ field: "status", values: ["pending", "approved"] }],
             },
@@ -102,7 +101,7 @@ describe("get-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             filters: {
               notInValues: [
                 { field: "status", values: ["rejected", "cancelled"] },
@@ -113,7 +112,7 @@ describe("get-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             filters: {
               textContains: [{ field: "title", value: "meeting" }],
               equals: [{ field: "creator", value: "user@example.com" }],
@@ -124,21 +123,21 @@ describe("get-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             fields: ["title", "status", "created"],
           },
           description: "with fields array",
         },
         {
           input: {
-            app: 123,
+            app: "123",
             orderBy: [{ field: "created", order: "desc" }, { field: "title" }],
           },
           description: "with orderBy",
         },
         {
           input: {
-            app: 123,
+            app: "123",
             limit: 100,
             offset: 50,
             totalCount: true,
@@ -156,9 +155,10 @@ describe("get-records tool", () => {
         { input: { app: true }, description: "app as boolean" },
         { input: { app: null }, description: "app as null" },
         { input: { app: [] }, description: "app as array" },
+        { input: { app: 123 }, description: "app as number" },
         {
           input: {
-            app: 123,
+            app: "123",
             filters: {
               textContains: [{ field: "title" }],
             },
@@ -167,7 +167,7 @@ describe("get-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             filters: {
               equals: [{ value: "test" }],
             },
@@ -176,7 +176,7 @@ describe("get-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             filters: {
               numberRange: [{ field: "price", min: "100" }],
             },
@@ -185,7 +185,7 @@ describe("get-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             filters: {
               inValues: [{ field: "status", values: "pending" }],
             },
@@ -194,28 +194,28 @@ describe("get-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             orderBy: [{ field: "created", order: "invalid" }],
           },
           description: "invalid order value",
         },
         {
           input: {
-            app: 123,
+            app: "123",
             limit: 600,
           },
           description: "limit exceeds maximum",
         },
         {
           input: {
-            app: 123,
+            app: "123",
             limit: 0,
           },
           description: "limit below minimum",
         },
         {
           input: {
-            app: 123,
+            app: "123",
             offset: -1,
           },
           description: "negative offset",
@@ -317,7 +317,7 @@ describe("get-records tool", () => {
 
       const result = await getRecords.callback(
         {
-          app: 123,
+          app: "123",
           filters: {
             textContains: [{ field: "title", value: "Test" }],
           },
@@ -326,7 +326,7 @@ describe("get-records tool", () => {
       );
 
       expect(mockGetRecords).toHaveBeenCalledWith({
-        app: 123,
+        app: "123",
         query: 'title like "Test"',
         fields: undefined,
         totalCount: true,
@@ -345,12 +345,12 @@ describe("get-records tool", () => {
 
       await getRecords.callback(
         {
-          app: 123,
+          app: "123",
           filters: {
             textContains: [{ field: "title", value: "meeting" }],
             equals: [
               { field: "status", value: "approved" },
-              { field: "priority", value: 1 },
+              { field: "priority", value: "1" },
             ],
             dateRange: [
               { field: "created", from: "2025-01-01", to: "2025-12-31" },
@@ -367,9 +367,9 @@ describe("get-records tool", () => {
       );
 
       expect(mockGetRecords).toHaveBeenCalledWith({
-        app: 123,
+        app: "123",
         query:
-          'title like "meeting" and status = "approved" and priority = 1 and created >= "2025-01-01" and created <= "2025-12-31" and price >= 100 and price <= 1000 and category in ("A", "B", "C") and type not in ("X", "Y") order by created desc, title asc limit 50 offset 100',
+          'title like "meeting" and status = "approved" and priority = "1" and created >= "2025-01-01" and created <= "2025-12-31" and price >= 100 and price <= 1000 and category in ("A", "B", "C") and type not in ("X", "Y") order by created desc, title asc limit 50 offset 100',
         fields: undefined,
         totalCount: true,
       });
@@ -381,14 +381,14 @@ describe("get-records tool", () => {
 
       await getRecords.callback(
         {
-          app: 123,
+          app: "123",
           filters: {},
         },
         mockExtra,
       );
 
       expect(mockGetRecords).toHaveBeenCalledWith({
-        app: 123,
+        app: "123",
         query: undefined,
         fields: undefined,
         totalCount: true,
@@ -401,14 +401,14 @@ describe("get-records tool", () => {
 
       await getRecords.callback(
         {
-          app: 123,
+          app: "123",
           orderBy: [{ field: "created", order: "desc" }],
         },
         mockExtra,
       );
 
       expect(mockGetRecords).toHaveBeenCalledWith({
-        app: 123,
+        app: "123",
         query: "order by created desc",
         fields: undefined,
         totalCount: true,
@@ -424,13 +424,13 @@ describe("get-records tool", () => {
 
       const result = await getRecords.callback(
         {
-          app: 123,
+          app: "123",
         },
         mockExtra,
       );
 
       expect(mockGetRecords).toHaveBeenCalledWith({
-        app: 123,
+        app: "123",
         query: undefined,
         fields: undefined,
         totalCount: true,

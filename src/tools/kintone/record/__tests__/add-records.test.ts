@@ -5,7 +5,7 @@ import { mockExtra, mockKintoneConfig } from "../../../../__tests__/utils.js";
 
 // Add-records inputの型を定義
 type AddRecordsInput = {
-  app: string | number;
+  app: string;
   records: Array<Record<string, any>>;
 };
 
@@ -53,7 +53,7 @@ describe("add-records tool", () => {
       it.each([
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 title: { value: "Test Record" },
@@ -76,7 +76,7 @@ describe("add-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 title: { value: "Record 1" },
@@ -90,7 +90,7 @@ describe("add-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 multi_select: { value: ["option1", "option2"] },
@@ -101,7 +101,7 @@ describe("add-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 user_field: {
@@ -114,7 +114,7 @@ describe("add-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 subtable_field: {
@@ -135,7 +135,7 @@ describe("add-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 date_field: { value: "2025-01-01" },
@@ -153,7 +153,7 @@ describe("add-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 nullable_field: { value: null },
@@ -165,7 +165,7 @@ describe("add-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 lookup_text_key: { value: "Code001" },
@@ -177,7 +177,7 @@ describe("add-records tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 creator_field: { value: { code: "user001" } },
@@ -200,32 +200,33 @@ describe("add-records tool", () => {
         { input: { app: true }, description: "app as boolean" },
         { input: { app: null }, description: "app as null" },
         { input: { app: [] }, description: "app as array" },
+        { input: { app: 123 }, description: "app as number" },
         {
-          input: { app: 123 },
+          input: { app: "123" },
           description: "missing required records field",
         },
         {
-          input: { app: 123, records: null },
+          input: { app: "123", records: null },
           description: "records as null",
         },
         {
-          input: { app: 123, records: "not an array" },
+          input: { app: "123", records: "not an array" },
           description: "records as string",
         },
         {
-          input: { app: 123, records: [] },
+          input: { app: "123", records: [] },
           description: "empty records array",
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: Array(101).fill({ title: { value: "test" } }),
           },
           description: "too many records (over 100)",
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 file_field: {
@@ -315,7 +316,7 @@ describe("add-records tool", () => {
       mockAddRecords.mockResolvedValueOnce(mockResponse);
 
       const input = {
-        app: 123,
+        app: "123",
         records: [
           {
             title: { value: "Test Record" },
@@ -327,7 +328,7 @@ describe("add-records tool", () => {
       const result = await addRecords.callback(input, mockExtra);
 
       expect(mockAddRecords).toHaveBeenCalledWith({
-        app: 123,
+        app: "123",
         records: [
           {
             title: { value: "Test Record" },
@@ -400,7 +401,7 @@ describe("add-records tool", () => {
       mockAddRecords.mockResolvedValueOnce(mockResponse);
 
       const input = {
-        app: 123,
+        app: "123",
         records: [
           {
             title: { value: "Complex Record" },
@@ -430,7 +431,7 @@ describe("add-records tool", () => {
       const result = await addRecords.callback(input, mockExtra);
 
       expect(mockAddRecords).toHaveBeenCalledWith({
-        app: 123,
+        app: "123",
         records: [
           {
             title: { value: "Complex Record" },
@@ -464,7 +465,7 @@ describe("add-records tool", () => {
       mockAddRecords.mockRejectedValueOnce(mockError);
 
       const input = {
-        app: 123,
+        app: "123",
         records: [
           {
             invalid_field: { value: "test" },
@@ -477,7 +478,7 @@ describe("add-records tool", () => {
       );
 
       expect(mockAddRecords).toHaveBeenCalledWith({
-        app: 123,
+        app: "123",
         records: [
           {
             invalid_field: { value: "test" },

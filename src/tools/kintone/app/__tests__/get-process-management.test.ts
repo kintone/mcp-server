@@ -45,16 +45,15 @@ describe("get-process-management tool", () => {
 
     describe("input schema validation with valid inputs", () => {
       it.each([
-        { input: { app: 123 }, description: "app as number" },
         { input: { app: "123" }, description: "app as string" },
-        { input: { app: 456, lang: "ja" }, description: "with lang ja" },
-        { input: { app: 456, lang: "en" }, description: "with lang en" },
-        { input: { app: 456, lang: "zh" }, description: "with lang zh" },
+        { input: { app: "456", lang: "ja" }, description: "with lang ja" },
+        { input: { app: "456", lang: "en" }, description: "with lang en" },
+        { input: { app: "456", lang: "zh" }, description: "with lang zh" },
         {
-          input: { app: 456, lang: "default" },
+          input: { app: "456", lang: "default" },
           description: "with lang default",
         },
-        { input: { app: 456, lang: "user" }, description: "with lang user" },
+        { input: { app: "456", lang: "user" }, description: "with lang user" },
       ])("accepts $description", ({ input }) => {
         expect(() => inputSchema.parse(input)).not.toThrow();
       });
@@ -66,9 +65,13 @@ describe("get-process-management tool", () => {
         { input: { app: true }, description: "app as boolean" },
         { input: { app: null }, description: "app as null" },
         { input: { app: [] }, description: "app as array" },
-        { input: { app: 123, lang: 123 }, description: "lang as number" },
-        { input: { app: 123, lang: "fr" }, description: "invalid lang value" },
-        { input: { app: 123, lang: null }, description: "lang as null" },
+        { input: { app: 123 }, description: "app as number" },
+        { input: { app: "123", lang: 123 }, description: "lang as number" },
+        {
+          input: { app: "123", lang: "fr" },
+          description: "invalid lang value",
+        },
+        { input: { app: "123", lang: null }, description: "lang as null" },
       ])("rejects $description", ({ input }) => {
         expect(() => inputSchema.parse(input)).toThrow();
       });
@@ -282,12 +285,12 @@ describe("get-process-management tool", () => {
       mockGetProcessManagement.mockResolvedValueOnce(mockData);
 
       const result = await getProcessManagement.callback(
-        { app: 123, lang: "ja" },
+        { app: "123", lang: "ja" },
         mockExtra,
       );
 
       expect(mockGetProcessManagement).toHaveBeenCalledWith({
-        app: 123,
+        app: "123",
         lang: "ja",
       });
       expect(result.structuredContent).toEqual(mockData);
