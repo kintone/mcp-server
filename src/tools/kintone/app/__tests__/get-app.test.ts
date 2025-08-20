@@ -46,7 +46,7 @@ describe("get-app tool", () => {
 
       // Valid input
       const validInput = {
-        appId: 123,
+        appId: "123",
       };
       expect(() => schema.parse(validInput)).not.toThrow();
 
@@ -56,7 +56,7 @@ describe("get-app tool", () => {
       // Invalid input - wrong types
       expect(() =>
         schema.parse({
-          appId: "123", // should be number
+          appId: 123, // should be string
         }),
       ).toThrow();
     });
@@ -128,11 +128,11 @@ describe("get-app tool", () => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const schema = z.object(getApp.config.inputSchema!);
       const params = schema.parse({
-        appId: 123,
+        appId: "123",
       });
       const result = await getApp.callback(params, mockExtra);
 
-      expect(mockGetApp).toHaveBeenCalledWith({ id: 123 });
+      expect(mockGetApp).toHaveBeenCalledWith({ id: "123" });
       expect(result.structuredContent).toEqual(mockAppData);
       expect(result.content).toHaveLength(1);
       expect(result.content[0]).toEqual({
