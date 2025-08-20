@@ -2,14 +2,63 @@ import { z } from "zod";
 import { createTool } from "../../utils.js";
 import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config.js";
-import { fieldPropertySchema } from "../../../schema/field-schemas.js";
+import {
+  singleLineTextField,
+  multiLineTextField,
+  richTextField,
+  numberField,
+  calcField,
+  radioButtonField,
+  checkBoxField,
+  multiSelectField,
+  dropDownField,
+  dateField,
+  timeField,
+  dateTimeField,
+  fileField,
+  linkField,
+  userSelectField,
+  organizationSelectField,
+  groupSelectField,
+  referenceTableField,
+  lookupField,
+  groupField,
+  createSubTableField,
+} from "../../../schema/app/form/fields.js";
+
+// Schema for add-form-fields (excludes system fields like CATEGORY/STATUS)
+const addableFieldPropertySchema: z.ZodType<any> = z.lazy(() =>
+  z.union([
+    groupField,
+    groupSelectField,
+    checkBoxField,
+    createSubTableField(addableFieldPropertySchema),
+    dropDownField,
+    userSelectField,
+    radioButtonField,
+    richTextField,
+    linkField,
+    referenceTableField,
+    calcField,
+    timeField,
+    numberField,
+    organizationSelectField,
+    fileField,
+    dateTimeField,
+    dateField,
+    multiSelectField,
+    singleLineTextField,
+    multiLineTextField,
+    lookupField,
+  ]),
+);
 
 const inputSchema = {
   app: z
     .union([z.number(), z.string()])
     .describe("The ID of the app to add fields to"),
   properties: z
-    .record(fieldPropertySchema)
+    .record(addableFieldPropertySchema)
     .describe("Object containing field configurations to add"),
   revision: z
     .string()
