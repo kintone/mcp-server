@@ -34,7 +34,7 @@ export const addApp = createTool(
     const config = parseKintoneClientConfig();
     const client = getKintoneClient(config);
 
-    const params: { name: string; space?: number; thread?: number } = { name };
+    const params: Parameters<typeof client.app.addApp>[0] = { name };
     if (space !== undefined) params.space = space;
     if (thread !== undefined) params.thread = thread;
 
