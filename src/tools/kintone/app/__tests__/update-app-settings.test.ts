@@ -65,27 +65,26 @@ describe("update-app-settings tool", () => {
 
     describe("input schema validation with valid inputs", () => {
       it.each([
-        { input: { app: 123 }, description: "app only as number" },
         { input: { app: "123" }, description: "app only as string" },
         {
-          input: { app: 123, name: "Updated App Name" },
+          input: { app: "123", name: "Updated App Name" },
           description: "app with name",
         },
         {
-          input: { app: 123, description: "Updated description" },
+          input: { app: "123", description: "Updated description" },
           description: "app with description",
         },
         {
-          input: { app: 123, theme: "BLUE" },
+          input: { app: "123", theme: "BLUE" },
           description: "app with theme",
         },
         {
-          input: { app: 123, revision: "5" },
+          input: { app: "123", revision: "5" },
           description: "app with revision",
         },
         {
           input: {
-            app: 456,
+            app: "456",
             name: "Complete Update",
             description: "Full update with all fields",
             theme: "RED",
@@ -104,14 +103,15 @@ describe("update-app-settings tool", () => {
         { input: { app: true }, description: "app as boolean" },
         { input: { app: null }, description: "app as null" },
         { input: { app: [] }, description: "app as array" },
-        { input: { app: 123, name: 123 }, description: "name as number" },
+        { input: { app: 123 }, description: "app as number" },
+        { input: { app: "123", name: 123 }, description: "name as number" },
         {
-          input: { app: 123, description: true },
+          input: { app: "123", description: true },
           description: "description as boolean",
         },
-        { input: { app: 123, theme: 123 }, description: "theme as number" },
+        { input: { app: "123", theme: 123 }, description: "theme as number" },
         {
-          input: { app: 123, revision: 5 },
+          input: { app: "123", revision: 5 },
           description: "revision as number instead of string",
         },
       ])("rejects $description", ({ input }) => {

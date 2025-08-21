@@ -4,9 +4,7 @@ import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config.js";
 
 const inputSchema = {
-  app: z
-    .union([z.number(), z.string()])
-    .describe("The ID of the app to update settings for"),
+  app: z.string().describe("The ID of the app to update settings for"),
   name: z.string().optional().describe("The app name"),
   description: z.string().optional().describe("The app description"),
   theme: z

@@ -7,7 +7,7 @@ const inputSchema = {
   apps: z
     .array(
       z.object({
-        app: z.union([z.number(), z.string()]).describe("The app ID"),
+        app: z.string().describe("The app ID"),
         revision: z
           .string()
           .optional()

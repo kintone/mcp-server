@@ -67,7 +67,7 @@ describe("add-form-fields tool", () => {
       it.each([
         {
           input: {
-            app: 123,
+            app: "123",
             properties: {
               text_field: {
                 type: "SINGLE_LINE_TEXT",
@@ -103,7 +103,7 @@ describe("add-form-fields tool", () => {
         },
         {
           input: {
-            app: 456,
+            app: "456",
             properties: {
               dropdown_field: {
                 type: "DROP_DOWN",

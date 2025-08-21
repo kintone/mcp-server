@@ -66,19 +66,19 @@ describe("delete-form-fields tool", () => {
     describe("input schema validation with valid inputs", () => {
       it.each([
         {
-          input: { app: 123, fields: ["field1"] },
-          description: "app as number with single field",
+          input: { app: "123", fields: ["field1"] },
+          description: "app as string with single field",
         },
         {
           input: { app: "123", fields: ["field1", "field2"] },
           description: "app as string with multiple fields",
         },
         {
-          input: { app: 456, fields: ["field1"], revision: "5" },
+          input: { app: "456", fields: ["field1"], revision: "5" },
           description: "with revision number",
         },
         {
-          input: { app: 789, fields: [] },
+          input: { app: "789", fields: [] },
           description: "with empty fields array",
         },
       ])("accepts $description", ({ input }) => {

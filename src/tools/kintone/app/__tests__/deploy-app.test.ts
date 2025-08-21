@@ -66,29 +66,25 @@ describe("deploy-app tool", () => {
     describe("input schema validation with valid inputs", () => {
       it.each([
         {
-          input: { apps: [{ app: 123 }] },
+          input: { apps: [{ app: "123" }] },
           description: "single app without revision",
         },
         {
-          input: { apps: [{ app: "123" }] },
-          description: "single app as string",
-        },
-        {
-          input: { apps: [{ app: 123, revision: "5" }] },
+          input: { apps: [{ app: "123", revision: "5" }] },
           description: "single app with revision",
         },
         {
           input: {
-            apps: [{ app: 123, revision: "5" }, { app: 456 }],
+            apps: [{ app: "123", revision: "5" }, { app: "456" }],
           },
           description: "multiple apps with mixed revision settings",
         },
         {
-          input: { apps: [{ app: 123 }], revert: true },
+          input: { apps: [{ app: "123" }], revert: true },
           description: "with revert flag true",
         },
         {
-          input: { apps: [{ app: 123 }], revert: false },
+          input: { apps: [{ app: "123" }], revert: false },
           description: "with revert flag false",
         },
         {
@@ -115,15 +111,19 @@ describe("deploy-app tool", () => {
           description: "app as boolean",
         },
         {
+          input: { apps: [{ app: 123 }] },
+          description: "app as number",
+        },
+        {
           input: { apps: [{}] },
           description: "app object missing required app field",
         },
         {
-          input: { apps: [{ app: 123, revision: 5 }] },
+          input: { apps: [{ app: "123", revision: 5 }] },
           description: "revision as number instead of string",
         },
         {
-          input: { apps: [{ app: 123 }], revert: "true" },
+          input: { apps: [{ app: "123" }], revert: "true" },
           description: "revert as string instead of boolean",
         },
       ])("rejects $description", ({ input }) => {

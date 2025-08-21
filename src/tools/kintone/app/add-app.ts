@@ -9,11 +9,11 @@ const inputSchema = {
     .max(64)
     .describe("The name of the app to create (max 64 characters)"),
   space: z
-    .number()
+    .string()
     .optional()
     .describe("The space ID where the app will be created (optional)"),
   thread: z
-    .number()
+    .string()
     .optional()
     .describe("The thread ID where the app will be created (optional)"),
 };
@@ -35,8 +35,8 @@ export const addApp = createTool(
     const client = getKintoneClient(config);
 
     const params: Parameters<typeof client.app.addApp>[0] = { name };
-    if (space !== undefined) params.space = space;
-    if (thread !== undefined) params.thread = thread;
+    if (space !== undefined) params.space = Number(space);
+    if (thread !== undefined) params.thread = Number(thread);
 
     const result = await client.app.addApp(params);
 

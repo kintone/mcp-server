@@ -4,9 +4,7 @@ import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config.js";
 
 const inputSchema = {
-  app: z
-    .union([z.number(), z.string()])
-    .describe("The ID of the app to delete fields from"),
+  app: z.string().describe("The ID of the app to delete fields from"),
   fields: z.array(z.string()).describe("Array of field codes to delete"),
   revision: z
     .string()

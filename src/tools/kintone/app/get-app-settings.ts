@@ -4,9 +4,7 @@ import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config.js";
 
 const inputSchema = {
-  app: z
-    .union([z.number(), z.string()])
-    .describe("The ID of the app to retrieve settings from"),
+  app: z.string().describe("The ID of the app to retrieve settings from"),
   lang: z
     .enum(["ja", "en", "zh", "default", "user"])
     .optional()
