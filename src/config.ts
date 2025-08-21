@@ -1,27 +1,27 @@
-import { z } from "zod";
 import { parseArgs } from "node:util";
+import { z } from "zod";
 
 export const PACKAGE_NAME = "@kintone/mcp-server";
 
 const configSchema = z
   .object({
-    kintoneBaseUrl: z
+    KINTONE_BASE_URL: z
       .string()
       .url()
       .describe(
         "The base URL of your kintone environment (e.g., https://example.cybozu.com)",
       ),
-    kintoneUsername: z
+    KINTONE_USERNAME: z
       .string()
       .min(1)
       .optional()
       .describe("Username for authentication"),
-    kintonePassword: z
+    KINTONE_PASSWORD: z
       .string()
       .min(1)
       .optional()
       .describe("Password for authentication"),
-    kintoneApiToken: z
+    KINTONE_API_TOKEN: z
       .string()
       .optional()
       .refine(
@@ -41,15 +41,15 @@ const configSchema = z
       .describe(
         "API tokens for authentication (comma-separated, max 9 alphanumeric tokens)",
       ),
-    kintoneBasicAuthUsername: z
+    KINTONE_BASIC_AUTH_USERNAME: z
       .string()
       .optional()
       .describe("Username for Basic authentication"),
-    kintoneBasicAuthPassword: z
+    KINTONE_BASIC_AUTH_PASSWORD: z
       .string()
       .optional()
       .describe("Password for Basic authentication"),
-    httpsProxy: z
+    HTTPS_PROXY: z
       .string()
       .optional()
       .refine(
@@ -58,11 +58,11 @@ const configSchema = z
         { message: "Invalid proxy URL format" },
       )
       .describe("HTTPS proxy URL (e.g., http://proxy.example.com:8080)"),
-    kintonePfxFilePath: z
+    KINTONE_PFX_FILE_PATH: z
       .string()
       .optional()
       .describe("Path to PFX client certificate file"),
-    kintonePfxFilePassword: z
+    KINTONE_PFX_FILE_PASSWORD: z
       .string()
       .optional()
       .describe("Password for PFX client certificate file"),
@@ -70,8 +70,8 @@ const configSchema = z
   .refine(
     (data) => {
       // Either username/password or API token must be provided
-      const hasUserAuth = data.kintoneUsername && data.kintonePassword;
-      const hasApiToken = data.kintoneApiToken;
+      const hasUserAuth = data.KINTONE_USERNAME && data.KINTONE_PASSWORD;
+      const hasApiToken = data.KINTONE_API_TOKEN;
       return hasUserAuth || hasApiToken;
     },
     {
@@ -82,21 +82,21 @@ const configSchema = z
   )
   .refine(
     (data) => {
-      const hasPath = data.kintonePfxFilePath;
-      const hasPassword = data.kintonePfxFilePassword;
+      const hasPath = data.KINTONE_PFX_FILE_PATH;
+      const hasPassword = data.KINTONE_PFX_FILE_PASSWORD;
       // Both must be provided together or both must be omitted
       return (hasPath && hasPassword) || (!hasPath && !hasPassword);
     },
     {
       message:
         "Both KINTONE_PFX_FILE_PATH and KINTONE_PFX_FILE_PASSWORD must be provided together",
-      path: ["kintonePfxFilePath"],
+      path: ["KINTONE_PFX_FILE_PATH"],
     },
   )
   .refine(
     (data) => {
-      const hasBasicUsername = data.kintoneBasicAuthUsername;
-      const hasBasicPassword = data.kintoneBasicAuthPassword;
+      const hasBasicUsername = data.KINTONE_BASIC_AUTH_USERNAME;
+      const hasBasicPassword = data.KINTONE_BASIC_AUTH_PASSWORD;
       // Both must be provided together or both must be omitted
       return (
         (hasBasicUsername && hasBasicPassword) ||
@@ -106,7 +106,7 @@ const configSchema = z
     {
       message:
         "Both KINTONE_BASIC_AUTH_USERNAME and KINTONE_BASIC_AUTH_PASSWORD must be provided together",
-      path: ["kintoneBasicAuthUsername"],
+      path: ["KINTONE_BASIC_AUTH_USERNAME"],
     },
   );
 
@@ -215,19 +215,19 @@ const mergeEnvAndCmdArgs = (env: Record<string, string | undefined>) => {
 
   // 一箇所でまとめて変換
   return {
-    kintoneBaseUrl: cmdArgs["kintone-base-url"] ?? env.KINTONE_BASE_URL,
-    kintoneUsername: cmdArgs["kintone-username"] ?? env.KINTONE_USERNAME,
-    kintonePassword: cmdArgs["kintone-password"] ?? env.KINTONE_PASSWORD,
-    kintoneApiToken: cmdArgs["kintone-api-token"] ?? env.KINTONE_API_TOKEN,
-    kintoneBasicAuthUsername:
+    KINTONE_BASE_URL: cmdArgs["kintone-base-url"] ?? env.KINTONE_BASE_URL,
+    KINTONE_USERNAME: cmdArgs["kintone-username"] ?? env.KINTONE_USERNAME,
+    KINTONE_PASSWORD: cmdArgs["kintone-password"] ?? env.KINTONE_PASSWORD,
+    KINTONE_API_TOKEN: cmdArgs["kintone-api-token"] ?? env.KINTONE_API_TOKEN,
+    KINTONE_BASIC_AUTH_USERNAME:
       cmdArgs["kintone-basic-auth-username"] ?? env.KINTONE_BASIC_AUTH_USERNAME,
-    kintoneBasicAuthPassword:
+    KINTONE_BASIC_AUTH_PASSWORD:
       cmdArgs["kintone-basic-auth-password"] ?? env.KINTONE_BASIC_AUTH_PASSWORD,
-    kintonePfxFilePath:
+    KINTONE_PFX_FILE_PATH:
       cmdArgs["kintone-pfx-file-path"] ?? env.KINTONE_PFX_FILE_PATH,
-    kintonePfxFilePassword:
+    KINTONE_PFX_FILE_PASSWORD:
       cmdArgs["kintone-pfx-file-password"] ?? env.KINTONE_PFX_FILE_PASSWORD,
-    httpsProxy: cmdArgs["https-proxy"] ?? env.HTTPS_PROXY ?? env.https_proxy,
+    HTTPS_PROXY: cmdArgs["https-proxy"] ?? env.HTTPS_PROXY ?? env.https_proxy,
   };
 };
 
@@ -240,7 +240,8 @@ export const parseKintoneClientConfig = (): KintoneClientConfigParseResult => {
   if (result.success) {
     const data = result.data;
     const isApiTokenAuth =
-      !(data.kintoneUsername && data.kintonePassword) && !!data.kintoneApiToken;
+      !(data.KINTONE_USERNAME && data.KINTONE_PASSWORD) &&
+      !!data.KINTONE_API_TOKEN;
     return {
       config: data,
       isApiTokenAuth,
@@ -250,47 +251,47 @@ export const parseKintoneClientConfig = (): KintoneClientConfigParseResult => {
   const errors = result.error.format();
   const errorMessages: string[] = [];
 
-  if (errors.kintoneBaseUrl?._errors.length) {
+  if (errors.KINTONE_BASE_URL?._errors.length) {
     errorMessages.push(
-      `KINTONE_BASE_URL: ${errors.kintoneBaseUrl._errors.join(", ")}`,
+      `KINTONE_BASE_URL: ${errors.KINTONE_BASE_URL._errors.join(", ")}`,
     );
   }
-  if (errors.kintoneUsername?._errors.length) {
+  if (errors.KINTONE_USERNAME?._errors.length) {
     errorMessages.push(
-      `KINTONE_USERNAME: ${errors.kintoneUsername._errors.join(", ")}`,
+      `KINTONE_USERNAME: ${errors.KINTONE_USERNAME._errors.join(", ")}`,
     );
   }
-  if (errors.kintonePassword?._errors.length) {
+  if (errors.KINTONE_PASSWORD?._errors.length) {
     errorMessages.push(
-      `KINTONE_PASSWORD: ${errors.kintonePassword._errors.join(", ")}`,
+      `KINTONE_PASSWORD: ${errors.KINTONE_PASSWORD._errors.join(", ")}`,
     );
   }
-  if (errors.kintoneApiToken?._errors.length) {
+  if (errors.KINTONE_API_TOKEN?._errors.length) {
     errorMessages.push(
-      `KINTONE_API_TOKEN: ${errors.kintoneApiToken._errors.join(", ")}`,
+      `KINTONE_API_TOKEN: ${errors.KINTONE_API_TOKEN._errors.join(", ")}`,
     );
   }
-  if (errors.httpsProxy?._errors.length) {
-    errorMessages.push(`HTTPS_PROXY: ${errors.httpsProxy._errors.join(", ")}`);
+  if (errors.HTTPS_PROXY?._errors.length) {
+    errorMessages.push(`HTTPS_PROXY: ${errors.HTTPS_PROXY._errors.join(", ")}`);
   }
-  if (errors.kintonePfxFilePath?._errors.length) {
+  if (errors.KINTONE_PFX_FILE_PATH?._errors.length) {
     errorMessages.push(
-      `KINTONE_PFX_FILE_PATH: ${errors.kintonePfxFilePath._errors.join(", ")}`,
+      `KINTONE_PFX_FILE_PATH: ${errors.KINTONE_PFX_FILE_PATH._errors.join(", ")}`,
     );
   }
-  if (errors.kintonePfxFilePassword?._errors.length) {
+  if (errors.KINTONE_PFX_FILE_PASSWORD?._errors.length) {
     errorMessages.push(
-      `KINTONE_PFX_FILE_PASSWORD: ${errors.kintonePfxFilePassword._errors.join(", ")}`,
+      `KINTONE_PFX_FILE_PASSWORD: ${errors.KINTONE_PFX_FILE_PASSWORD._errors.join(", ")}`,
     );
   }
-  if (errors.kintoneBasicAuthUsername?._errors.length) {
+  if (errors.KINTONE_BASIC_AUTH_USERNAME?._errors.length) {
     errorMessages.push(
-      `KINTONE_BASIC_AUTH_USERNAME: ${errors.kintoneBasicAuthUsername._errors.join(", ")}`,
+      `KINTONE_BASIC_AUTH_USERNAME: ${errors.KINTONE_BASIC_AUTH_USERNAME._errors.join(", ")}`,
     );
   }
-  if (errors.kintoneBasicAuthPassword?._errors.length) {
+  if (errors.KINTONE_BASIC_AUTH_PASSWORD?._errors.length) {
     errorMessages.push(
-      `KINTONE_BASIC_AUTH_PASSWORD: ${errors.kintoneBasicAuthPassword._errors.join(", ")}`,
+      `KINTONE_BASIC_AUTH_PASSWORD: ${errors.KINTONE_BASIC_AUTH_PASSWORD._errors.join(", ")}`,
     );
   }
   // Handle cross-field validation errors
