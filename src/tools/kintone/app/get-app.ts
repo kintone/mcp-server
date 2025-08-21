@@ -4,7 +4,9 @@ import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config.js";
 
 const inputSchema = {
-  appId: z.number().describe("The ID of the app to retrieve"),
+  appId: z
+    .string()
+    .describe("The ID of the app to retrieve (numeric value as string)"),
 };
 
 const outputSchema = {

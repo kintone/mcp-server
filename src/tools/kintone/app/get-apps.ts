@@ -5,10 +5,10 @@ import { parseKintoneClientConfig } from "../../../config.js";
 
 const inputSchema = {
   ids: z
-    .array(z.number())
+    .array(z.string())
     .max(100)
     .optional()
-    .describe("Array of app IDs (max 100)"),
+    .describe("Array of app IDs (numeric values as strings, max 100)"),
   codes: z
     .array(z.string().max(64))
     .max(100)
@@ -20,10 +20,10 @@ const inputSchema = {
     .optional()
     .describe("App name for partial match search"),
   spaceIds: z
-    .array(z.number())
+    .array(z.string())
     .max(100)
     .optional()
-    .describe("Array of space IDs (max 100)"),
+    .describe("Array of space IDs (numeric values as strings, max 100)"),
   offset: z
     .number()
     .min(0)

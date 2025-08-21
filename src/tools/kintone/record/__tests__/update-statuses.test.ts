@@ -47,13 +47,6 @@ describe("update-statuses tool", () => {
       it.each([
         {
           input: {
-            app: 123,
-            records: [{ id: "1", action: "申請する" }],
-          },
-          description: "basic record with app as number",
-        },
-        {
-          input: {
             app: "123",
             records: [{ id: "1", action: "申請する" }],
           },
@@ -61,13 +54,13 @@ describe("update-statuses tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               {
                 id: "1",
                 action: "申請する",
                 assignee: "user1",
-                revision: 1,
+                revision: "1",
               },
             ],
           },
@@ -75,7 +68,7 @@ describe("update-statuses tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: Array.from({ length: 100 }, (_, i) => ({
               id: String(i + 1),
               action: "申請する",
@@ -85,7 +78,7 @@ describe("update-statuses tool", () => {
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [
               { id: "1", action: "申請する" },
               { id: "2", action: "承認", assignee: "user2" },
@@ -95,14 +88,14 @@ describe("update-statuses tool", () => {
         },
         {
           input: {
-            app: 123,
-            records: [{ id: 123, action: "申請する" }],
+            app: "123",
+            records: [{ id: "123", action: "申請する" }],
           },
           description: "record id as number",
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [{ id: "1", action: "申請する", revision: "1" }],
           },
           description: "revision as string",
@@ -118,8 +111,9 @@ describe("update-statuses tool", () => {
           input: {},
           description: "missing all required fields",
         },
+        { input: { app: 123 }, description: "app as number" },
         {
-          input: { app: 123 },
+          input: { app: "123" },
           description: "missing records field",
         },
         {
@@ -139,12 +133,12 @@ describe("update-statuses tool", () => {
           description: "app as array",
         },
         {
-          input: { app: 123, records: [] },
+          input: { app: "123", records: [] },
           description: "empty records array",
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: Array.from({ length: 101 }, (_, i) => ({
               id: String(i + 1),
               action: "申請する",
@@ -153,23 +147,23 @@ describe("update-statuses tool", () => {
           description: "more than 100 records",
         },
         {
-          input: { app: 123, records: [{ action: "申請する" }] },
+          input: { app: "123", records: [{ action: "申請する" }] },
           description: "record missing id field",
         },
         {
-          input: { app: 123, records: [{ id: "1" }] },
+          input: { app: "123", records: [{ id: "1" }] },
           description: "record missing action field",
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [{ id: "1", action: 123 }],
           },
           description: "record action as number",
         },
         {
           input: {
-            app: 123,
+            app: "123",
             records: [{ id: "1", action: "申請する", assignee: 123 }],
           },
           description: "assignee as number",
@@ -283,7 +277,7 @@ describe("update-statuses tool", () => {
       mockUpdateRecordsStatus.mockResolvedValueOnce(mockData);
 
       const input = {
-        app: 123,
+        app: "123",
         records: [
           {
             id: "1",
@@ -297,7 +291,7 @@ describe("update-statuses tool", () => {
       const result = await updateStatuses.callback(input, mockExtra);
 
       expect(mockUpdateRecordsStatus).toHaveBeenCalledWith({
-        app: 123,
+        app: "123",
         records: [
           {
             id: "1",
@@ -355,7 +349,7 @@ describe("update-statuses tool", () => {
       mockUpdateRecordsStatus.mockRejectedValueOnce(error);
 
       const input = {
-        app: 123,
+        app: "123",
         records: [{ id: "1", action: "申請する" }],
       };
 

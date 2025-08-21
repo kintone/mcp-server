@@ -6,8 +6,8 @@ import { recordSchemaForParameterWithoutFile } from "../../../schema/record/reco
 
 const inputSchema = {
   app: z
-    .union([z.number(), z.string()])
-    .describe("The ID of the app to add records to"),
+    .string()
+    .describe("The ID of the app to add records to (numeric value as string)"),
   records: z
     .array(recordSchemaForParameterWithoutFile)
     .min(1)

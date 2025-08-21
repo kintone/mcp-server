@@ -6,22 +6,24 @@ import { recordSchemaForParameter } from "../../../schema/record/record-for-para
 
 const updateRecordSchema = z.object({
   // updateKey指定は対象外
-  id: z.string().describe("Record ID to update"),
+  id: z.string().describe("Record ID to update (numeric value as string)"),
   record: recordSchemaForParameter.describe(
     "Record data with field codes as keys. Use kintone-get-form-fields tool first to discover available field codes and their types.",
   ),
   revision: z
-    .union([z.number(), z.string()])
+    .string()
     .optional()
     .describe(
-      "Expected revision number. If specified, the update will fail if the current revision doesn't match. Specify -1 or omit to skip revision validation.",
+      "Expected revision number (numeric value as string). If specified, the update will fail if the current revision doesn't match. Specify -1 or omit to skip revision validation.",
     ),
 });
 
 const inputSchema = {
   app: z
-    .union([z.number(), z.string()])
-    .describe("The ID of the app to update records in"),
+    .string()
+    .describe(
+      "The ID of the app to update records in (numeric value as string)",
+    ),
   records: z
     .array(updateRecordSchema)
     .min(1)

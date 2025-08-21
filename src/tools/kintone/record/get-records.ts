@@ -19,9 +19,7 @@ const filtersSchema = z
       .array(
         z.object({
           field: z.string().describe("Field code"),
-          value: z
-            .union([z.string(), z.number()])
-            .describe("Exact value to match"),
+          value: z.string().describe("Exact value to match"),
         }),
       )
       .optional()
@@ -85,8 +83,10 @@ const orderBySchema = z
 
 const inputSchema = {
   app: z
-    .union([z.number(), z.string()])
-    .describe("The ID of the app to retrieve records from"),
+    .string()
+    .describe(
+      "The ID of the app to retrieve records from (numeric value as string)",
+    ),
   filters: filtersSchema,
   fields: z
     .array(z.string())
