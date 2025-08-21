@@ -15,36 +15,36 @@ export const getKintoneClient = (
   }
 
   const {
-    KINTONE_BASE_URL,
-    KINTONE_USERNAME,
-    KINTONE_PASSWORD,
-    KINTONE_API_TOKEN,
-    KINTONE_BASIC_AUTH_USERNAME,
-    KINTONE_BASIC_AUTH_PASSWORD,
-    HTTPS_PROXY,
-    KINTONE_PFX_FILE_PATH,
-    KINTONE_PFX_FILE_PASSWORD,
+    kintoneBaseUrl,
+    kintoneUsername,
+    kintonePassword,
+    kintoneApiToken,
+    kintoneBasicAuthUsername,
+    kintoneBasicAuthPassword,
+    httpsProxy,
+    kintonePfxFilePath,
+    kintonePfxFilePassword,
   } = config.config;
 
   const authParams = buildAuthParams({
-    username: KINTONE_USERNAME,
-    password: KINTONE_PASSWORD,
-    apiToken: KINTONE_API_TOKEN,
+    username: kintoneUsername,
+    password: kintonePassword,
+    apiToken: kintoneApiToken,
     isApiTokenAuth: config.isApiTokenAuth,
   });
 
   client = new KintoneRestAPIClient({
-    baseUrl: KINTONE_BASE_URL,
+    baseUrl: kintoneBaseUrl,
     ...authParams,
     ...buildBasicAuthParam({
-      basicAuthUsername: KINTONE_BASIC_AUTH_USERNAME,
-      basicAuthPassword: KINTONE_BASIC_AUTH_PASSWORD,
+      basicAuthUsername: kintoneBasicAuthUsername,
+      basicAuthPassword: kintoneBasicAuthPassword,
     }),
     userAgent: `${PACKAGE_NAME}@${version}`,
     httpsAgent: buildHttpsAgent({
-      proxy: HTTPS_PROXY,
-      pfxFilePath: KINTONE_PFX_FILE_PATH,
-      pfxPassword: KINTONE_PFX_FILE_PASSWORD,
+      proxy: httpsProxy,
+      pfxFilePath: kintonePfxFilePath,
+      pfxPassword: kintonePfxFilePassword,
     }),
   });
 
