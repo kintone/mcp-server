@@ -48,43 +48,43 @@ describe("delete-records tool", () => {
 
       // Valid input
       const validInput = {
-        app: 123,
-        ids: [100, 200, 300],
+        app: "123",
+        ids: ["100", "200", "300"],
       };
       expect(() => schema.parse(validInput)).not.toThrow();
 
       // Invalid input - missing fields
-      expect(() => schema.parse({ app: 123 })).toThrow();
-      expect(() => schema.parse({ ids: [100] })).toThrow();
+      expect(() => schema.parse({ app: "123" })).toThrow();
+      expect(() => schema.parse({ ids: ["100"] })).toThrow();
 
       // Invalid input - wrong types
       expect(() =>
         schema.parse({
-          app: "123", // should be number
-          ids: [100],
+          app: 123, // should be string
+          ids: ["100"],
         }),
       ).toThrow();
 
       expect(() =>
         schema.parse({
-          app: 123,
-          ids: ["100"], // should be array of numbers
+          app: "123",
+          ids: [100], // should be array of strings
         }),
       ).toThrow();
 
       // Invalid input - empty array
       expect(() =>
         schema.parse({
-          app: 123,
+          app: "123",
           ids: [],
         }),
       ).toThrow();
 
       // Invalid input - too many records (>100)
-      const tooManyIds = Array.from({ length: 101 }, (_, i) => i + 1);
+      const tooManyIds = Array.from({ length: 101 }, (_, i) => `${i + 1}`);
       expect(() =>
         schema.parse({
-          app: 123,
+          app: "123",
           ids: tooManyIds,
         }),
       ).toThrow();
@@ -98,14 +98,14 @@ describe("delete-records tool", () => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const schema = z.object(deleteRecords.config.inputSchema!);
       const params = schema.parse({
-        app: 123,
-        ids: [100, 200, 300],
+        app: "123",
+        ids: ["100", "200", "300"],
       });
       const result = await deleteRecords.callback(params, mockExtra);
 
       expect(mockDeleteRecords).toHaveBeenCalledWith({
-        app: 123,
-        ids: [100, 200, 300],
+        app: "123",
+        ids: ["100", "200", "300"],
       });
       expect(result.content).toEqual([]);
     });

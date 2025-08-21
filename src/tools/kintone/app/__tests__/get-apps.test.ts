@@ -53,10 +53,10 @@ describe("get-apps tool - main functionality", () => {
 
       // Valid input - all fields
       const validInput = {
-        ids: [1, 2, 3],
+        ids: ["1", "2", "3"],
         codes: ["APP1", "APP2"],
         name: "Test",
-        spaceIds: [10, 20],
+        spaceIds: ["10", "20"],
         offset: 0,
         limit: 50,
       };
@@ -75,7 +75,7 @@ describe("get-apps tool - main functionality", () => {
       // Invalid input - wrong types
       expect(() =>
         schema.parse({
-          ids: ["1", "2"], // should be numbers
+          ids: [1, 2], // should be strings
         }),
       ).toThrow();
 
@@ -254,7 +254,7 @@ describe("get-apps tool - main functionality", () => {
           ids: [789],
           codes: ["APP789"],
           name: "Filtered",
-          spaceIds: [30],
+          spaceIds: ["30"],
           offset: 10,
           limit: 50,
         },
@@ -265,7 +265,7 @@ describe("get-apps tool - main functionality", () => {
         ids: [789],
         codes: ["APP789"],
         name: "Filtered",
-        spaceIds: [30],
+        spaceIds: ["30"],
         offset: 10,
         limit: 50,
       });

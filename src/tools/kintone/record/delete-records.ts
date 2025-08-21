@@ -4,17 +4,17 @@ import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config.js";
 
 const inputSchema = {
-  app: z.number().describe("The ID of the app"),
+  app: z.string().describe("The ID of the app (numeric value as string)"),
   ids: z
-    .array(z.number())
-    .describe("Array of record IDs to delete")
+    .array(z.string())
+    .describe("Array of record IDs to delete (numeric values as strings)")
     .min(1, "At least one record ID is required")
     .max(100, "Maximum 100 records can be deleted at once"),
   revisions: z
-    .array(z.union([z.number(), z.string()]))
+    .array(z.string())
     .optional()
     .describe(
-      "Array of expected revision numbers for each record. If specified, must have the same length as ids array. Deletion will fail if current revisions don't match. Specify -1 or omit to skip revision validation.",
+      "Array of expected revision numbers for each record (numeric values as strings). If specified, must have the same length as ids array. Deletion will fail if current revisions don't match. Specify -1 or omit to skip revision validation.",
     ),
 };
 
