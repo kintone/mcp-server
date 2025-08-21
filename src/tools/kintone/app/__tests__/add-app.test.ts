@@ -54,14 +54,13 @@ describe("addApp", () => {
     mockAddApp.mockResolvedValue(mockResponse);
 
     const result = await addApp.callback(
-      { name: "Test App with Space", space: 10, thread: 20 },
+      { name: "Test App with Space", space: "10" },
       mockExtra,
     );
 
     expect(mockAddApp).toHaveBeenCalledWith({
       name: "Test App with Space",
       space: 10,
-      thread: 20,
     });
     expect(result.structuredContent).toEqual(mockResponse);
   });

@@ -30,13 +30,12 @@ export const addApp = createTool(
     inputSchema,
     outputSchema,
   },
-  async ({ name, space, thread }) => {
+  async ({ name, space }) => {
     const config = parseKintoneClientConfig();
     const client = getKintoneClient(config);
 
     const params: Parameters<typeof client.app.addApp>[0] = { name };
     if (space !== undefined) params.space = Number(space);
-    if (thread !== undefined) params.thread = Number(thread);
 
     const result = await client.app.addApp(params);
 
