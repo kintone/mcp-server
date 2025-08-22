@@ -195,45 +195,55 @@ export const commonOptions = {
 };
 // TODO: ↓いい感じにequivalentほしい
 // } satisfies Parameters<yargs.Argv["options"]>[0];
-
-const mergeEnvAndCmdArgs = (env: Record<string, string | undefined>) => {
-  const { values: cmdArgs } = parseArgs({
-    args: process.argv.slice(2), // process.argv[0]はnode、[1]はスクリプトパスなので除外
+export const parseCmdArgs = (args: string[]) => {
+  const { values } = parseArgs({
+    args: args.slice(2), // process.argv[0]はnode、[1]はスクリプトパスなので除外
     allowPositionals: true,
     options: {
-      "kintone-base-url": { type: "string" },
-      "kintone-username": { type: "string" },
-      "kintone-password": { type: "string" },
-      "kintone-api-token": { type: "string" },
-      "kintone-basic-auth-username": { type: "string" },
-      "kintone-basic-auth-password": { type: "string" },
-      "kintone-pfx-file-path": { type: "string" },
-      "kintone-pfx-file-password": { type: "string" },
-      "https-proxy": { type: "string" },
+      "base-url": { type: "string" },
+      username: { type: "string" },
+      password: { type: "string" },
+      "api-token": { type: "string" },
+      "basic-auth-username": { type: "string" },
+      "basic-auth-password": { type: "string" },
+      "pfx-file-path": { type: "string" },
+      "pfx-file-password": { type: "string" },
+      proxy: { type: "string" },
     },
   });
 
+  return values;
+};
+
+// TODO: 関数の設計がヘン？
+// ※argsにはrawのargvを期待
+export const mergeEnvAndCmdArgs = (
+  env: Record<string, string | undefined>,
+  // args: string[],
+  args: Record<string, string | undefined>,
+) => {
   // 一箇所でまとめて変換
   return {
-    KINTONE_BASE_URL: cmdArgs["kintone-base-url"] ?? env.KINTONE_BASE_URL,
-    KINTONE_USERNAME: cmdArgs["kintone-username"] ?? env.KINTONE_USERNAME,
-    KINTONE_PASSWORD: cmdArgs["kintone-password"] ?? env.KINTONE_PASSWORD,
-    KINTONE_API_TOKEN: cmdArgs["kintone-api-token"] ?? env.KINTONE_API_TOKEN,
+    KINTONE_BASE_URL: args["base-url"] ?? env.KINTONE_BASE_URL,
+    KINTONE_USERNAME: args.username ?? env.KINTONE_USERNAME,
+    KINTONE_PASSWORD: args.password ?? env.KINTONE_PASSWORD,
+    KINTONE_API_TOKEN: args["api-token"] ?? env.KINTONE_API_TOKEN,
     KINTONE_BASIC_AUTH_USERNAME:
-      cmdArgs["kintone-basic-auth-username"] ?? env.KINTONE_BASIC_AUTH_USERNAME,
+      args["basic-auth-username"] ?? env.KINTONE_BASIC_AUTH_USERNAME,
     KINTONE_BASIC_AUTH_PASSWORD:
-      cmdArgs["kintone-basic-auth-password"] ?? env.KINTONE_BASIC_AUTH_PASSWORD,
-    KINTONE_PFX_FILE_PATH:
-      cmdArgs["kintone-pfx-file-path"] ?? env.KINTONE_PFX_FILE_PATH,
+      args["basic-auth-password"] ?? env.KINTONE_BASIC_AUTH_PASSWORD,
+    KINTONE_PFX_FILE_PATH: args["pfx-file-path"] ?? env.KINTONE_PFX_FILE_PATH,
     KINTONE_PFX_FILE_PASSWORD:
-      cmdArgs["kintone-pfx-file-password"] ?? env.KINTONE_PFX_FILE_PASSWORD,
-    HTTPS_PROXY: cmdArgs["https-proxy"] ?? env.HTTPS_PROXY ?? env.https_proxy,
+      args["pfx-file-password"] ?? env.KINTONE_PFX_FILE_PASSWORD,
+    HTTPS_PROXY: args.proxy ?? env.HTTPS_PROXY ?? env.https_proxy,
   };
 };
 
 // TODO: もしかしたら命名変更?
 export const parseKintoneClientConfig = (): KintoneClientConfigParseResult => {
-  const mergedEnv = mergeEnvAndCmdArgs(process.env);
+  const values = parseCmdArgs(process.argv);
+
+  const mergedEnv = mergeEnvAndCmdArgs(process.env, values);
 
   const result = configSchema.safeParse(mergedEnv);
 
