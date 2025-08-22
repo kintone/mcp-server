@@ -1,5 +1,11 @@
 import { parseArgs } from "node:util";
 
+/**
+ * コマンドライン引数をパースします。
+ * 通常は process.argv をそのまま渡してください。
+ * （process.argv[0]はnode、[1]はスクリプトパスなので除外されます）
+ * @param args process.argv で取得した値
+ */
 export const parseCommandLineOptions = (args: string[]) => {
   const { values } = parseArgs({
     args: args.slice(2), // process.argv[0]はnode、[1]はスクリプトパスなので除外

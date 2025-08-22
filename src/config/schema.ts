@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const PACKAGE_NAME = "@kintone/mcp-server";
 
-const configSchema = z
+export const configSchema = z
   .object({
     KINTONE_BASE_URL: z
       .string()
@@ -115,5 +115,3 @@ export type KintoneClientConfigParseResult = {
   config: KintoneClientConfig;
   isApiTokenAuth: boolean;
 };
-
-export { configSchema };

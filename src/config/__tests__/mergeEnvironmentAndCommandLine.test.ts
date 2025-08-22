@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { mergeEnvironmentAndCommandLine } from "../index.js";
 
-describe("mergeEnvAndCmdArgs", () => {
+describe("mergeEnvironmentAndCommandLine", () => {
   it("should use environment variables when no command line arguments are provided", () => {
     const env = {
       KINTONE_BASE_URL: "https://env.example.com",

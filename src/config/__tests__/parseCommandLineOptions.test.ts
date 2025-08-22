@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { parseCommandLineOptions } from "../index.js";
 
-describe("parseCmdArgs", () => {
+describe("parseCommandLineOptions", () => {
   it("should parse empty command line arguments", () => {
     const args = ["node", "script.js"];
     const result = parseCommandLineOptions(args);

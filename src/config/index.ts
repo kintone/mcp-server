@@ -1,4 +1,8 @@
-import { configSchema, type KintoneClientConfigParseResult } from "./schema.js";
+import {
+  configSchema,
+  type KintoneClientConfig,
+  type KintoneClientConfigParseResult,
+} from "./schema.js";
 import { parseCommandLineOptions } from "./command-line.js";
 
 export {
@@ -11,7 +15,7 @@ export { parseCommandLineOptions } from "./command-line.js";
 export const mergeEnvironmentAndCommandLine = (
   env: Record<string, string | undefined>,
   args: Record<string, string | undefined>,
-) => {
+): Partial<KintoneClientConfig> => {
   // 同等の変数の指定があればコマンドライン引数を優先
   return {
     KINTONE_BASE_URL: args["base-url"] ?? env.KINTONE_BASE_URL,
@@ -30,11 +34,11 @@ export const mergeEnvironmentAndCommandLine = (
 };
 
 export const parseKintoneClientConfig = (): KintoneClientConfigParseResult => {
-  const values = parseCommandLineOptions(process.argv);
+  const cmdArgs = parseCommandLineOptions(process.argv);
 
-  const mergedEnv = mergeEnvironmentAndCommandLine(process.env, values);
+  const mergedConfig = mergeEnvironmentAndCommandLine(process.env, cmdArgs);
 
-  const result = configSchema.safeParse(mergedEnv);
+  const result = configSchema.safeParse(mergedConfig);
 
   if (result.success) {
     const data = result.data;
