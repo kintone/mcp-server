@@ -30,6 +30,7 @@ The official local MCP server for kintone.
   - [Example Configuration File Content](#example-configuration-file-content)
 - [Tools](#tools)
 - [Limitations](#limitations)
+- [Support Policy](#support-policy)
 - [Contribution](#contribution)
 - [License](#license)
 
@@ -164,6 +165,12 @@ Please refer to the documentation of the AI tool you are using for details on ho
 
 As of 2025/08/05, attachment fields cannot be specified in the record add/update tool.
 Also, for user selection fields, organization selection fields, and group selection fields, add/update is only possible if choices are set.
+
+## Support Policy
+
+This tool is not covered by the API support desk.
+
+Please report bugs or request features via [Issues](https://github.com/kintone/mcp-server/issues/new/choose).
 
 ## Contribution
 
