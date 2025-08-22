@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { parseCmdArgs } from "../../config";
+import { parseCommandLineOptions } from "../index.js";
 
 describe("parseCmdArgs", () => {
   it("should parse empty command line arguments", () => {
     const args = ["node", "script.js"];
-    const result = parseCmdArgs(args);
+    const result = parseCommandLineOptions(args);
 
     expect(result).toEqual({});
   });
@@ -24,7 +24,7 @@ describe("parseCmdArgs", () => {
       "--proxy=http://proxy.example.com:8080",
     ];
 
-    const result = parseCmdArgs(args);
+    const result = parseCommandLineOptions(args);
 
     expect(result).toEqual({
       "base-url": "https://example.com",

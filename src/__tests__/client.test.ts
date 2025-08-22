@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { getKintoneClient, resetKintoneClient } from "../client.js";
-import type { KintoneClientConfig } from "../config.js";
+import type { KintoneClientConfig } from "../config/index.js";
 import { mockKintoneConfig, mockKintoneConfigWithApiToken } from "./utils.js";
 
 // Mock the KintoneRestAPIClient

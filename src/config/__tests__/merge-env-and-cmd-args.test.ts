@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { mergeEnvAndCmdArgs } from "../../config";
+import { mergeEnvironmentAndCommandLine } from "../index.js";
 
 describe("mergeEnvAndCmdArgs", () => {
   it("should use environment variables when no command line arguments are provided", () => {
@@ -17,7 +17,7 @@ describe("mergeEnvAndCmdArgs", () => {
 
     const cmdArgs = {};
 
-    const result = mergeEnvAndCmdArgs(env, cmdArgs);
+    const result = mergeEnvironmentAndCommandLine(env, cmdArgs);
 
     expect(result).toEqual({
       KINTONE_BASE_URL: "https://env.example.com",
@@ -57,7 +57,7 @@ describe("mergeEnvAndCmdArgs", () => {
       proxy: "http://cmd-proxy.example.com:8080",
     };
 
-    const result = mergeEnvAndCmdArgs(env, cmdArgs);
+    const result = mergeEnvironmentAndCommandLine(env, cmdArgs);
 
     expect(result).toEqual({
       KINTONE_BASE_URL: "https://cmd.example.com",

@@ -1,14 +1,12 @@
-import {
-  configSchema,
-  type KintoneClientConfigParseResult,
-} from "./config/schema.js";
-import { parseCommandLineOptions } from "./config/command-line.js";
+import { configSchema, type KintoneClientConfigParseResult } from "./schema.js";
+import { parseCommandLineOptions } from "./command-line.js";
 
 export {
   PACKAGE_NAME,
   type KintoneClientConfigParseResult,
-} from "./config/schema.js";
-export { parseCommandLineOptions } from "./config/command-line.js";
+  type KintoneClientConfig,
+} from "./schema.js";
+export { parseCommandLineOptions } from "./command-line.js";
 
 export const mergeEnvironmentAndCommandLine = (
   env: Record<string, string | undefined>,
