@@ -34,6 +34,8 @@ The official local MCP server for kintone.
 - [Tools](#tools)
 - [Documentation](#documentation)
 - [Limitations](#limitations)
+  - [Record Operation Limitations](#record-operation-limitations)
+  - [Feature Limitations](#feature-limitations)
 - [Support Policy](#support-policy)
 - [Contribution](#contribution)
 - [License](#license)
@@ -208,8 +210,15 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 
 ## Limitations
 
-As of 2025/08/05, attachment fields cannot be specified in the record add/update tool.
-Also, for user selection fields, organization selection fields, and group selection fields, add/update is only possible if choices are set.
+### Record Operation Limitations
+
+- **Attachment fields**: Attachment fields cannot be specified in the record add/update tool
+- **Selection fields**: For user selection fields, organization selection fields, and group selection fields, add/update is only possible if choices are set
+
+### Feature Limitations
+
+- **Guest space not supported**: Cannot access apps within guest spaces
+- **Preview not supported**: App preview functionality is not available
 
 ## Support Policy
 
