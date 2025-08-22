@@ -28,7 +28,7 @@ vi.mock("../tools/index.js", () => ({
 }));
 
 // Mock the config module
-vi.mock("../config.js", () => {
+vi.mock("../config/index.js", () => {
   const mockParseKintoneClientConfig = vi.fn();
   return {
     PACKAGE_NAME: "test-package",
@@ -59,7 +59,7 @@ describe("server", () => {
 
   it("should register only non-excluded tools", async () => {
     // Import and get the mocked function
-    const { parseKintoneClientConfig } = await import("../config.js");
+    const { parseKintoneClientConfig } = await import("../config/index.js");
     const mockParseKintoneClientConfig = parseKintoneClientConfig as any;
     mockParseKintoneClientConfig.mockReturnValue({ isApiTokenAuth: false });
 
