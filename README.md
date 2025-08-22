@@ -33,7 +33,11 @@ kintoneの公式ローカルMCPサーバーです。
 - [利用方法](#%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95)
   - [設定ファイルのパスの例](#%E8%A8%AD%E5%AE%9A%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E3%83%91%E3%82%B9%E3%81%AE%E4%BE%8B)
   - [設定ファイルの内容の例](#%E8%A8%AD%E5%AE%9A%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E5%86%85%E5%AE%B9%E3%81%AE%E4%BE%8B)
+- [設定](#%E8%A8%AD%E5%AE%9A)
+  - [設定オプション一覧](#%E8%A8%AD%E5%AE%9A%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3%E4%B8%80%E8%A6%A7)
+  - [プロキシ設定](#%E3%83%97%E3%83%AD%E3%82%AD%E3%82%B7%E8%A8%AD%E5%AE%9A)
 - [ツール一覧](#%E3%83%84%E3%83%BC%E3%83%AB%E4%B8%80%E8%A6%A7)
+- [ドキュメント](#%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88)
 - [注意事項](#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85)
 - [サポート方針](#%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88%E6%96%B9%E9%87%9D)
 - [コントリビューション](#%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AA%E3%83%93%E3%83%A5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3)
@@ -139,6 +143,42 @@ DXTファイルをインストールした場合、追加の手順は必要あ�
 }
 ```
 
+## 設定
+
+### 設定オプション一覧
+
+| 環境変数                      | コマンドライン引数      | 説明                                                       | 必須 |
+| ----------------------------- | ----------------------- | ---------------------------------------------------------- | ---- |
+| `KINTONE_BASE_URL`            | `--base-url`            | kintone環境のベースURL（例: `https://example.cybozu.com`） | ✓    |
+| `KINTONE_USERNAME`            | `--username`            | kintoneのログインユーザー名                                | ※1   |
+| `KINTONE_PASSWORD`            | `--password`            | kintoneのログインパスワード                                | ※1   |
+| `KINTONE_API_TOKEN`           | `--api-token`           | APIトークン（カンマ区切りで最大9個まで指定可能）           | ※1   |
+| `KINTONE_BASIC_AUTH_USERNAME` | `--basic-auth-username` | Basic認証のユーザー名                                      | -    |
+| `KINTONE_BASIC_AUTH_PASSWORD` | `--basic-auth-password` | Basic認証のパスワード                                      | -    |
+| `KINTONE_PFX_FILE_PATH`       | `--pfx-file-path`       | PFXファイルのパス（クライアント証明書認証用）              | -    |
+| `KINTONE_PFX_FILE_PASSWORD`   | `--pfx-file-password`   | PFXファイルのパスワード                                    | -    |
+| `HTTPS_PROXY`                 | `--proxy`               | HTTPSプロキシのURL（例: `http://proxy.example.com:8080`）  | -    |
+
+※1: `KINTONE_USERNAME`/`KINTONE_PASSWORD` または `KINTONE_API_TOKEN` のいずれかが必須
+
+**注意事項:**
+
+- クライアント証明書認証を使用する場合、URLのドメインは `.s.cybozu.com` となります（例: `https://example.s.cybozu.com`）
+- ユーザー名/パスワード認証とAPIトークン認証を同時に指定した場合、ユーザー名/パスワード認証が優先されます
+- コマンドライン引数と環境変数を同時に指定した場合、コマンドライン引数が優先されます
+- 詳細な認証設定については [認証設定ガイド](./docs/ja/authentication.md) を参照してください
+
+### プロキシ設定
+
+企業環境などでプロキシサーバーを経由する必要がある場合は、`HTTPS_PROXY` 環境変数を設定してください。
+
+```bash
+export HTTPS_PROXY="http://proxy.example.com:8080"
+
+# 認証が必要な場合
+export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
+```
+
 ## ツール一覧
 
 | ツール名                         | 説明                         |
@@ -152,6 +192,10 @@ DXTファイルをインストールした場合、追加の手順は必要あ�
 | `kintone-update-records`         | 既存レコードを更新           |
 | `kintone-delete-records`         | レコードを削除               |
 | `kintone-update-statuses`        | レコードのステータスを変更   |
+
+## ドキュメント
+
+- [認証設定ガイド](./docs/ja/authentication.md) - 認証方法の詳細と設定例
 
 ## 注意事項
 

@@ -28,7 +28,11 @@ The official local MCP server for kintone.
 - [Usage](#usage)
   - [Example Configuration File Path](#example-configuration-file-path)
   - [Example Configuration File Content](#example-configuration-file-content)
+- [Configuration](#configuration)
+  - [Configuration Options](#configuration-options)
+  - [Proxy Configuration](#proxy-configuration)
 - [Tools](#tools)
+- [Documentation](#documentation)
 - [Limitations](#limitations)
 - [Support Policy](#support-policy)
 - [Contribution](#contribution)
@@ -148,6 +152,42 @@ Please refer to the documentation of the AI tool you are using for details on ho
 }
 ```
 
+## Configuration
+
+### Configuration Options
+
+| Environment Variable          | Command-line Argument   | Description                                                               | Required |
+| ----------------------------- | ----------------------- | ------------------------------------------------------------------------- | -------- |
+| `KINTONE_BASE_URL`            | `--base-url`            | Base URL of your kintone environment (e.g., `https://example.cybozu.com`) | ✓        |
+| `KINTONE_USERNAME`            | `--username`            | kintone login username                                                    | ※1       |
+| `KINTONE_PASSWORD`            | `--password`            | kintone login password                                                    | ※1       |
+| `KINTONE_API_TOKEN`           | `--api-token`           | API token (comma-separated, max 9 tokens)                                 | ※1       |
+| `KINTONE_BASIC_AUTH_USERNAME` | `--basic-auth-username` | Basic authentication username                                             | -        |
+| `KINTONE_BASIC_AUTH_PASSWORD` | `--basic-auth-password` | Basic authentication password                                             | -        |
+| `KINTONE_PFX_FILE_PATH`       | `--pfx-file-path`       | Path to PFX file (for client certificate authentication)                  | -        |
+| `KINTONE_PFX_FILE_PASSWORD`   | `--pfx-file-password`   | PFX file password                                                         | -        |
+| `HTTPS_PROXY`                 | `--proxy`               | HTTPS proxy URL (e.g., `http://proxy.example.com:8080`)                   | -        |
+
+※1: Either `KINTONE_USERNAME`/`KINTONE_PASSWORD` or `KINTONE_API_TOKEN` is required
+
+**Notes:**
+
+- When using client certificate authentication, the URL domain must be `.s.cybozu.com` (e.g., `https://example.s.cybozu.com`)
+- When username/password authentication and API token authentication are specified simultaneously, username/password authentication takes priority
+- When both command-line arguments and environment variables are specified, command-line arguments take priority
+- For detailed authentication configuration, refer to the [Authentication Configuration Guide](./docs/en/authentication.md)
+
+### Proxy Configuration
+
+If you need to connect through a proxy server in corporate environments, set the `HTTPS_PROXY` environment variable.
+
+```bash
+export HTTPS_PROXY="http://proxy.example.com:8080"
+
+# If authentication is required
+export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
+```
+
 ## Tools
 
 | Tool Name                        | Description                      |
@@ -161,6 +201,10 @@ Please refer to the documentation of the AI tool you are using for details on ho
 | `kintone-update-records`         | Update existing records          |
 | `kintone-delete-records`         | Delete records                   |
 | `kintone-update-statuses`        | Change record statuses           |
+
+## Documentation
+
+- [Authentication Configuration Guide](./docs/en/authentication.md) - Detailed authentication methods and examples
 
 ## Limitations
 

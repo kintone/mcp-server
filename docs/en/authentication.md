@@ -1,0 +1,190 @@
+# Authentication Configuration
+
+The kintone MCP Server supports multiple authentication methods. Configure the appropriate authentication method using environment variables.
+
+**Configuration Priority:**
+
+- Authentication methods: When username/password authentication and API token authentication are specified simultaneously, username/password authentication takes priority
+- Configuration values: When both command-line arguments and environment variables are specified, command-line arguments take priority
+
+## Authentication Methods
+
+### 1. Username/Password Authentication
+
+Authenticate using kintone login credentials.
+
+| Environment Variable | Command-line Argument | Description            | Required |
+| -------------------- | --------------------- | ---------------------- | -------- |
+| `KINTONE_USERNAME`   | `--username`          | kintone login username | ✓        |
+| `KINTONE_PASSWORD`   | `--password`          | kintone login password | ✓        |
+
+**Configuration Example:**
+
+Environment variables:
+
+```bash
+export KINTONE_BASE_URL="https://example.cybozu.com"
+export KINTONE_USERNAME="user@example.com"
+export KINTONE_PASSWORD="your-password"
+```
+
+Command-line arguments:
+
+```bash
+kintone-mcp-server \
+  --base-url="https://example.cybozu.com" \
+  --username="user@example.com" \
+  --password="your-password"
+```
+
+### 2. API Token Authentication
+
+Authenticate using API tokens issued per application.
+
+| Environment Variable | Command-line Argument | Description                               | Required |
+| -------------------- | --------------------- | ----------------------------------------- | -------- |
+| `KINTONE_API_TOKEN`  | `--api-token`         | API token (comma-separated, max 9 tokens) | ✓        |
+
+**Configuration Example:**
+
+Environment variables:
+
+```bash
+export KINTONE_BASE_URL="https://example.cybozu.com"
+export KINTONE_API_TOKEN="token1,token2,token3"
+```
+
+Command-line arguments:
+
+```bash
+kintone-mcp-server \
+  --base-url="https://example.cybozu.com" \
+  --api-token="token1,token2,token3"
+```
+
+**Notes:**
+
+- API tokens must consist of alphanumeric characters only
+- Multiple API tokens can be specified separated by commas
+- Maximum of 9 tokens can be specified
+
+### 3. Basic Authentication (Additional Authentication)
+
+Use when Basic authentication is configured in your kintone environment. Must be configured in conjunction with one of the above authentication methods.
+
+| Environment Variable          | Command-line Argument   | Description                   | Required              |
+| ----------------------------- | ----------------------- | ----------------------------- | --------------------- |
+| `KINTONE_BASIC_AUTH_USERNAME` | `--basic-auth-username` | Basic authentication username | When using Basic auth |
+| `KINTONE_BASIC_AUTH_PASSWORD` | `--basic-auth-password` | Basic authentication password | When using Basic auth |
+
+**Configuration Example:**
+
+Environment variables:
+
+```bash
+# API Token Authentication + Basic Authentication
+export KINTONE_BASE_URL="https://example.cybozu.com"
+export KINTONE_API_TOKEN="your-api-token"
+export KINTONE_BASIC_AUTH_USERNAME="basic-user"
+export KINTONE_BASIC_AUTH_PASSWORD="basic-password"
+```
+
+Command-line arguments:
+
+```bash
+kintone-mcp-server \
+  --base-url="https://example.cybozu.com" \
+  --api-token="your-api-token" \
+  --basic-auth-username="basic-user" \
+  --basic-auth-password="basic-password"
+```
+
+### 4. Client Certificate Authentication
+
+Authenticate using a client certificate in PFX format. When using client certificate authentication, you must use the secure access URL.
+
+| Environment Variable        | Command-line Argument | Description       | Required                    |
+| --------------------------- | --------------------- | ----------------- | --------------------------- |
+| `KINTONE_PFX_FILE_PATH`     | `--pfx-file-path`     | Path to PFX file  | When using certificate auth |
+| `KINTONE_PFX_FILE_PASSWORD` | `--pfx-file-password` | PFX file password | When using certificate auth |
+
+**Configuration Example:**
+
+Environment variables:
+
+```bash
+# API Token Authentication + Client Certificate
+# Note: Use .s.cybozu.com domain for client certificate authentication
+export KINTONE_BASE_URL="https://example.s.cybozu.com"
+export KINTONE_API_TOKEN="your-api-token"
+export KINTONE_PFX_FILE_PATH="/path/to/certificate.pfx"
+export KINTONE_PFX_FILE_PASSWORD="certificate-password"
+```
+
+Command-line arguments:
+
+```bash
+kintone-mcp-server \
+  --base-url="https://example.s.cybozu.com" \
+  --api-token="your-api-token" \
+  --pfx-file-path="/path/to/certificate.pfx" \
+  --pfx-file-password="certificate-password"
+```
+
+**Notes:**
+
+- When using client certificate authentication, the URL domain must be `.s.cybozu.com` (e.g., `https://example.s.cybozu.com`)
+- Client certificate authentication cannot be used with the regular `.cybozu.com` domain
+
+## Network Configuration
+
+### Proxy Configuration
+
+Use when you need to connect through a proxy server in corporate environments.
+
+| Environment Variable | Command-line Argument | Description      | Required |
+| -------------------- | --------------------- | ---------------- | -------- |
+| `HTTPS_PROXY`        | `--proxy`             | Proxy server URL | -        |
+
+**Configuration Example:**
+
+Environment variables:
+
+```bash
+export HTTPS_PROXY="http://proxy.example.com:8080"
+
+# If authentication is required
+export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
+```
+
+Command-line arguments:
+
+```bash
+kintone-mcp-server \
+  --base-url="https://example.cybozu.com" \
+  --api-token="your-api-token" \
+  --proxy="http://proxy.example.com:8080"
+```
+
+## Troubleshooting
+
+### Common Errors
+
+**Error: "Either KINTONE_USERNAME/KINTONE_PASSWORD or KINTONE_API_TOKEN must be provided"**
+
+- Cause: Authentication credentials not configured
+- Solution: Configure either username/password or API token
+
+**Error: "Both KINTONE_PFX_FILE_PATH and KINTONE_PFX_FILE_PASSWORD must be provided together"**
+
+- Cause: Only one of the client certificate path or password is configured
+- Solution: Configure both environment variables or remove both
+
+**Error: "API tokens must be comma-separated alphanumeric strings (max 9 tokens)"**
+
+- Cause: Invalid API token format
+- Solution: Use tokens consisting only of alphanumeric characters and limit to 9 or fewer
+
+## Related Documentation
+
+- [How to Issue kintone API Tokens](https://jp.cybozu.help/k/en/app/api/api_token.html)
