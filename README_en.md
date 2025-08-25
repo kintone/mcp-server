@@ -21,24 +21,30 @@ The official local MCP server for Kintone.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Installation](#installation)
-  - [DXT (Claude Desktop Package)](#dxt-claude-desktop-package)
-  - [Docker Container Image](#docker-container-image)
-  - [npm Package](#npm-package)
-- [Usage](#usage)
-  - [Example Configuration File Path](#example-configuration-file-path)
-  - [Example Configuration File Content](#example-configuration-file-content)
-- [Configuration](#configuration)
-  - [Configuration Options](#configuration-options)
-  - [Proxy Configuration](#proxy-configuration)
-- [Tools](#tools)
-- [Documentation](#documentation)
-- [Limitations](#limitations)
-  - [Record Operation Limitations](#record-operation-limitations)
-  - [Feature Limitations](#feature-limitations)
-- [Support Policy](#support-policy)
-- [Contribution](#contribution)
-- [License](#license)
+- [Kintone MCP Server](#kintone-mcp-server)
+  - [Installation](#installation)
+    - [DXT (Claude Desktop Package)](#dxt-claude-desktop-package)
+    - [Docker Container Image](#docker-container-image)
+      - [Prerequisites](#prerequisites)
+      - [Run Image](#run-image)
+    - [npm Package](#npm-package)
+      - [Prerequisites](#prerequisites-1)
+      - [Install Package](#install-package)
+      - [Run Server](#run-server)
+  - [Usage](#usage)
+    - [Example Configuration File Path](#example-configuration-file-path)
+    - [Example Configuration File Content](#example-configuration-file-content)
+  - [Configuration](#configuration)
+    - [Configuration Options](#configuration-options)
+    - [Proxy Configuration](#proxy-configuration)
+  - [Tools](#tools)
+  - [Documentation](#documentation)
+  - [Limitations](#limitations)
+    - [Record Operation Limitations](#record-operation-limitations)
+    - [Feature Limitations](#feature-limitations)
+  - [Support Policy](#support-policy)
+  - [Contribution](#contribution)
+  - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -103,11 +109,11 @@ To run the MCP server, use the following command:
 
 ```bash
 kintone-mcp-server \
-  --kintone-base-url https://example.cybozu.com \
-  --kintone-username (username) \
-  --kintone-password (password)
+  --base-url https://example.cybozu.com \
+  --username (username) \
+  --password (password)
 
-# `--kintone-base-url`, `--kintone-username`, and `--kintone-password` can also be specified using environment variables:
+# `--base-url`, `--username`, and `--password` can also be specified using environment variables:
 # KINTONE_BASE_URL, KINTONE_USERNAME, and KINTONE_PASSWORD.
 ```
 

@@ -94,11 +94,11 @@ npm install -g @kintone/mcp-server
 
 ```shell
 kintone-mcp-server \
-  --kintone-base-url https://example.cybozu.com \
-  --kintone-username (username) \
-  --kintone-password (password)
+  --base-url https://example.cybozu.com \
+  --username (username) \
+  --password (password)
 
-# `--kintone-base-url`、`--kintone-username`、`--kintone-password` は
+# `--base-url`、`--username`、`--password` は
 # 環境変数 `KINTONE_BASE_URL`、`KINTONE_USERNAME`、`KINTONE_PASSWORD` でも指定可能です。
 ```
 
