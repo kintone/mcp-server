@@ -168,7 +168,7 @@ Also, for user selection fields, organization selection fields, and group select
 
 ## Support Policy
 
-This tool is not covered by the API support desk.
+The kintone local MCP server is not covered by the API support desk.
 
 Please report bugs or request features via [Issues](https://github.com/kintone/mcp-server/issues/new/choose).
 
