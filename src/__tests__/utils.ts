@@ -1,5 +1,5 @@
 import { vi } from "vitest";
-import type { KintoneClientConfig } from "../config.js";
+import type { KintoneClientConfig } from "../config/index.js";
 
 export const mockExtra = {
   signal: new AbortController().signal,

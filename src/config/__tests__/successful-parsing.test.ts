@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { parseKintoneClientConfig } from "../../config.js";
-import { mockKintoneConfig } from "../utils.js";
+import { parseKintoneClientConfig } from "../index.js";
+import { mockKintoneConfig } from "../../__tests__/utils.js";
 
 describe("config - successful parsing", () => {
   const originalEnv = process.env;
