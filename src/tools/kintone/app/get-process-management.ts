@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createTool } from "../../utils.js";
 import { getKintoneClient } from "../../../client.js";
-import { parseKintoneClientConfig } from "../../../config.js";
+import { parseKintoneClientConfig } from "../../../config/index.js";
 
 const inputSchema = {
   app: z

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const PACKAGE_NAME = "@kintone/mcp-server";
 
-const configSchema = z
+export const configSchema = z
   .object({
     KINTONE_BASE_URL: z
       .string()
@@ -114,74 +114,4 @@ export type KintoneClientConfig = z.infer<typeof configSchema>;
 export type KintoneClientConfigParseResult = {
   config: KintoneClientConfig;
   isApiTokenAuth: boolean;
-};
-
-export const parseKintoneClientConfig = (): KintoneClientConfigParseResult => {
-  const result = configSchema.safeParse(process.env);
-
-  if (result.success) {
-    const data = result.data;
-    const isApiTokenAuth =
-      !(data.KINTONE_USERNAME && data.KINTONE_PASSWORD) &&
-      !!data.KINTONE_API_TOKEN;
-    return {
-      config: data,
-      isApiTokenAuth,
-    };
-  }
-
-  const errors = result.error.format();
-  const errorMessages: string[] = [];
-
-  if (errors.KINTONE_BASE_URL?._errors.length) {
-    errorMessages.push(
-      `KINTONE_BASE_URL: ${errors.KINTONE_BASE_URL._errors.join(", ")}`,
-    );
-  }
-  if (errors.KINTONE_USERNAME?._errors.length) {
-    errorMessages.push(
-      `KINTONE_USERNAME: ${errors.KINTONE_USERNAME._errors.join(", ")}`,
-    );
-  }
-  if (errors.KINTONE_PASSWORD?._errors.length) {
-    errorMessages.push(
-      `KINTONE_PASSWORD: ${errors.KINTONE_PASSWORD._errors.join(", ")}`,
-    );
-  }
-  if (errors.KINTONE_API_TOKEN?._errors.length) {
-    errorMessages.push(
-      `KINTONE_API_TOKEN: ${errors.KINTONE_API_TOKEN._errors.join(", ")}`,
-    );
-  }
-  if (errors.HTTPS_PROXY?._errors.length) {
-    errorMessages.push(`HTTPS_PROXY: ${errors.HTTPS_PROXY._errors.join(", ")}`);
-  }
-  if (errors.KINTONE_PFX_FILE_PATH?._errors.length) {
-    errorMessages.push(
-      `KINTONE_PFX_FILE_PATH: ${errors.KINTONE_PFX_FILE_PATH._errors.join(", ")}`,
-    );
-  }
-  if (errors.KINTONE_PFX_FILE_PASSWORD?._errors.length) {
-    errorMessages.push(
-      `KINTONE_PFX_FILE_PASSWORD: ${errors.KINTONE_PFX_FILE_PASSWORD._errors.join(", ")}`,
-    );
-  }
-  if (errors.KINTONE_BASIC_AUTH_USERNAME?._errors.length) {
-    errorMessages.push(
-      `KINTONE_BASIC_AUTH_USERNAME: ${errors.KINTONE_BASIC_AUTH_USERNAME._errors.join(", ")}`,
-    );
-  }
-  if (errors.KINTONE_BASIC_AUTH_PASSWORD?._errors.length) {
-    errorMessages.push(
-      `KINTONE_BASIC_AUTH_PASSWORD: ${errors.KINTONE_BASIC_AUTH_PASSWORD._errors.join(", ")}`,
-    );
-  }
-  // Handle cross-field validation errors
-  if (errors._errors?.length) {
-    errorMessages.push(...errors._errors);
-  }
-
-  throw new Error(
-    `Environment variables are missing or invalid:\n${errorMessages.join("\n")}`,
-  );
 };

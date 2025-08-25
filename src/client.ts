@@ -1,5 +1,8 @@
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import { PACKAGE_NAME, type KintoneClientConfigParseResult } from "./config.js";
+import {
+  PACKAGE_NAME,
+  type KintoneClientConfigParseResult,
+} from "./config/index.js";
 import { HttpsProxyAgent } from "https-proxy-agent";
 import { Agent, type AgentOptions } from "https";
 import { readFileSync } from "fs";

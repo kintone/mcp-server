@@ -1,4 +1,4 @@
-import type { KintoneClientConfigParseResult } from "./config.js";
+import type { KintoneClientConfigParseResult } from "./config/index.js";
 
 export type FilterRule = {
   condition: (config: KintoneClientConfigParseResult) => boolean;

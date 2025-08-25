@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { tools } from "./tools/index.js";
 import { version } from "./version.js";
-import { PACKAGE_NAME, parseKintoneClientConfig } from "./config.js";
+import { PACKAGE_NAME, parseKintoneClientConfig } from "./config/index.js";
 import { shouldEnableTool } from "./tool-filters.js";
 
 export const createServer = (): McpServer => {
