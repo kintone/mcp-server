@@ -283,7 +283,7 @@ describe("update-statuses tool", () => {
             id: "1",
             action: "申請する",
             assignee: "user1",
-            revision: 1,
+            revision: "1",
           },
         ],
       };
@@ -297,7 +297,7 @@ describe("update-statuses tool", () => {
             id: "1",
             action: "申請する",
             assignee: "user1",
-            revision: 1,
+            revision: "1",
           },
         ],
       });

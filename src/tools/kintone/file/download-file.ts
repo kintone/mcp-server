@@ -1,7 +1,14 @@
 import { z } from "zod";
+import fs from "node:fs";
 import { createTool } from "../../utils.js";
 import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config.js";
+import {
+  generateSafeFilename,
+  generateUniqueFilePath,
+  ensureDirectoryExists,
+  validateDownloadDirectory,
+} from "../../../utils/file.js";
 
 const inputSchema = {
   fileKey: z
@@ -12,23 +19,29 @@ const inputSchema = {
 };
 
 const outputSchema = {
-  type: z.string().describe("File type (image, audio, text, etc.)"),
-  data: z.string().describe("Base64 encoded file content"),
+  filePath: z.string().describe("Absolute path to the downloaded file"),
   mimeType: z.string().describe("MIME type of the downloaded file"),
-  fileKey: z.string().describe("Original file key"),
+  fileSize: z.number().describe("File size in bytes"),
 };
 
 export const downloadFile = createTool(
   "kintone-download-file",
   {
     description:
-      "Download a file from kintone using its fileKey. You can either save it to a specified path or get the file content as base64. Requires app record viewing permission and permission to view the field containing the file.",
+      "Download a file from kintone using its fileKey and save it to the configured download directory. Returns the absolute path to the saved file. Requires KINTONE_DOWNLOAD_DIR environment variable to be set, app record viewing permission, and permission to view the field containing the file.",
     inputSchema,
     outputSchema,
   },
   async ({ fileKey }) => {
-    const config = parseKintoneClientConfig();
-    const client = getKintoneClient(config);
+    const configResult = parseKintoneClientConfig();
+    const client = getKintoneClient(configResult);
+
+    // Check if download directory is configured
+    if (!configResult.config.KINTONE_DOWNLOAD_DIR) {
+      throw new Error(
+        "KINTONE_DOWNLOAD_DIR environment variable must be set to use file download feature",
+      );
+    }
 
     const buffer = await client.file.downloadFile({ fileKey });
     // Detect MIME type from buffer magic bytes
@@ -83,27 +96,35 @@ export const downloadFile = createTool(
     };
 
     const mimeType = detectMimeType(buffer);
-    const type = mimeType.split("/")[0];
 
-    // Return file content as base64
-    const base64Content = Buffer.from(buffer).toString("base64");
+    // TODO: こいつはconfig.tsのrefineに移動
+    // Validate and prepare download directory
+    const downloadDir = validateDownloadDirectory(
+      configResult.config.KINTONE_DOWNLOAD_DIR,
+    );
+    ensureDirectoryExists(downloadDir);
+
+    // Generate safe filename and unique file path
+    const safeFilename = generateSafeFilename(fileKey);
+    const uniqueFilePath = generateUniqueFilePath(downloadDir, safeFilename);
+
+    // Save file to local directory
+    const bufferData = Buffer.from(buffer);
+    fs.writeFileSync(uniqueFilePath, bufferData);
 
     const result = {
-      type,
-      data: base64Content,
+      filePath: uniqueFilePath,
       mimeType,
-      fileKey,
+      fileSize: bufferData.length,
     };
 
     return {
       structuredContent: result,
       content: [
-        type === "image" || type === "audio"
-          ? { type, data: base64Content, mimeType, fileKey }
-          : {
-              type: "text",
-              text: `File: ${fileKey}\nMIME: ${mimeType}\nData: [Base64 ${base64Content.length} chars]`,
-            },
+        {
+          type: "text",
+          text: JSON.stringify(result, null, 2),
+        },
       ],
     };
   },
