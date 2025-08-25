@@ -90,56 +90,64 @@
       "title": "Kintone Username",
       "description": "Your kintone username for authentication",
       "required": false,
-      "sensitive": false
+      "sensitive": false,
+      "default": ""
     },
     "kintone_password": {
       "type": "string",
       "title": "Kintone Password",
       "description": "Your kintone password for authentication",
       "required": false,
-      "sensitive": true
+      "sensitive": true,
+      "default": ""
     },
     "kintone_api_token": {
       "type": "string",
       "title": "Kintone API Token",
       "description": "API token for authentication (comma-separated for multiple tokens). If both API token and username/password are provided, username/password will take priority.",
       "required": false,
-      "sensitive": true
+      "sensitive": true,
+      "default": ""
     },
     "kintone_basic_auth_username": {
       "type": "string",
       "title": "Basic Auth Username",
       "description": "Username for Basic authentication",
       "required": false,
-      "sensitive": false
+      "sensitive": false,
+      "default": ""
     },
     "kintone_basic_auth_password": {
       "type": "string",
       "title": "Basic Auth Password",
       "description": "Password for Basic authentication",
       "required": false,
-      "sensitive": true
+      "sensitive": true,
+      "default": ""
     },
     "https_proxy": {
       "type": "string",
       "title": "HTTPS Proxy",
       "description": "HTTPS proxy URL (e.g., http://proxy.example.com:8080)",
       "required": false,
-      "sensitive": false
+      "sensitive": false,
+      "default": ""
     },
     "kintone_pfx_file_path": {
       "type": "string",
       "title": "PFX File Path",
       "description": "Path to PFX client certificate file for authentication",
       "required": false,
-      "sensitive": false
+      "sensitive": false,
+      "default": ""
     },
     "kintone_pfx_file_password": {
       "type": "string",
       "title": "PFX File Password",
       "description": "Password for PFX client certificate file",
       "required": false,
-      "sensitive": true
+      "sensitive": true,
+      "default": ""
     }
   },
   "keywords": [
