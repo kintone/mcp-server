@@ -1,6 +1,6 @@
 # Authentication Configuration
 
-The kintone MCP Server supports multiple authentication methods. Configure the appropriate authentication method using environment variables.
+The Kintone MCP Server supports multiple authentication methods. Configure the appropriate authentication method using environment variables.
 
 **Configuration Priority:**
 
@@ -11,12 +11,12 @@ The kintone MCP Server supports multiple authentication methods. Configure the a
 
 ### 1. Username/Password Authentication
 
-Authenticate using kintone login credentials.
+Authenticate using Kintone login credentials.
 
 | Environment Variable | Command-line Argument | Description            | Required |
 | -------------------- | --------------------- | ---------------------- | -------- |
-| `KINTONE_USERNAME`   | `--username`          | kintone login username | ✓        |
-| `KINTONE_PASSWORD`   | `--password`          | kintone login password | ✓        |
+| `KINTONE_USERNAME`   | `--username`          | Kintone login username | ✓        |
+| `KINTONE_PASSWORD`   | `--password`          | Kintone login password | ✓        |
 
 **Configuration Example:**
 
@@ -70,7 +70,7 @@ kintone-mcp-server \
 
 ### 3. Basic Authentication (Additional Authentication)
 
-Use when Basic authentication is configured in your kintone environment. Must be configured in conjunction with one of the above authentication methods.
+Use when Basic authentication is configured in your Kintone environment. Must be configured in conjunction with one of the above authentication methods.
 
 | Environment Variable          | Command-line Argument   | Description                   | Required              |
 | ----------------------------- | ----------------------- | ----------------------------- | --------------------- |
@@ -187,4 +187,4 @@ kintone-mcp-server \
 
 ## Related Documentation
 
-- [How to Issue kintone API Tokens](https://jp.cybozu.help/k/en/app/api/api_token.html)
+- [How to Issue Kintone API Tokens](https://jp.cybozu.help/k/en/app/api/api_token.html)

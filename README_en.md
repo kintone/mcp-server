@@ -1,4 +1,4 @@
-# kintone MCP Server
+# Kintone MCP Server
 
 [![ci][ci-badge]][ci-url]
 [![npm version][npm-badge]][npm-url]
@@ -16,7 +16,7 @@
 
 [日本語](README.md) | English
 
-The official local MCP server for kintone.
+The official local MCP server for Kintone.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -56,9 +56,9 @@ Follow these steps to install:
 5. Drag and drop the downloaded `kintone-mcp-server.dxt` file onto the Claude Desktop screen
 6. A confirmation dialog will appear, select "Install"
 7. A settings dialog will appear, enter the required information:
-   - `Kintone Base URL`: The base URL of your kintone (e.g., `https://example.cybozu.com`)
-   - `Kintone Username`: Your kintone username
-   - `Kintone Password`: Your kintone password
+   - `Kintone Base URL`: The base URL of your Kintone (e.g., `https://example.cybozu.com`)
+   - `Kintone Username`: Your Kintone username
+   - `Kintone Password`: Your Kintone password
 
 ### Docker Container Image
 
@@ -160,9 +160,9 @@ Please refer to the documentation of the AI tool you are using for details on ho
 
 | Environment Variable          | Command-line Argument   | Description                                                               | Required |
 | ----------------------------- | ----------------------- | ------------------------------------------------------------------------- | -------- |
-| `KINTONE_BASE_URL`            | `--base-url`            | Base URL of your kintone environment (e.g., `https://example.cybozu.com`) | ✓        |
-| `KINTONE_USERNAME`            | `--username`            | kintone login username                                                    | ※1       |
-| `KINTONE_PASSWORD`            | `--password`            | kintone login password                                                    | ※1       |
+| `KINTONE_BASE_URL`            | `--base-url`            | Base URL of your Kintone environment (e.g., `https://example.cybozu.com`) | ✓        |
+| `KINTONE_USERNAME`            | `--username`            | Kintone login username                                                    | ※1       |
+| `KINTONE_PASSWORD`            | `--password`            | Kintone login password                                                    | ※1       |
 | `KINTONE_API_TOKEN`           | `--api-token`           | API token (comma-separated, max 9 tokens)                                 | ※1       |
 | `KINTONE_BASIC_AUTH_USERNAME` | `--basic-auth-username` | Basic authentication username                                             | -        |
 | `KINTONE_BASIC_AUTH_PASSWORD` | `--basic-auth-password` | Basic authentication password                                             | -        |
@@ -222,7 +222,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 
 ## Support Policy
 
-The kintone local MCP server is not covered by the API support desk.
+The Kintone local MCP server is not covered by the API support desk.
 
 Please report bugs or request features via [Issues](https://github.com/kintone/mcp-server/issues/new/choose).
 
