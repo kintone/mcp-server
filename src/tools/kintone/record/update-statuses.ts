@@ -53,6 +53,7 @@ const outputSchema = {
 export const updateStatuses = createTool(
   "kintone-update-statuses",
   {
+    title: "Update Statuses",
     description:
       "Update status of multiple records in a kintone app. Requires process management feature to be enabled. Maximum 100 records can be updated at once.",
     inputSchema,

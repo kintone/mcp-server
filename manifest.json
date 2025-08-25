@@ -57,7 +57,7 @@
     },
     {
       "name": "kintone-get-records",
-      "description": "Get records from a kintone app"
+      "description": "Get multiple records from a kintone app"
     },
     {
       "name": "kintone-add-records",

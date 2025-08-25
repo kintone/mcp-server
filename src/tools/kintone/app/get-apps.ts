@@ -77,6 +77,7 @@ const outputSchema = {
 export const getApps = createTool(
   "kintone-get-apps",
   {
+    title: "Get Apps",
     description: "Get multiple app settings from kintone",
     inputSchema,
     outputSchema,
