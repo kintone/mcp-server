@@ -159,7 +159,7 @@ DXTファイルをインストールした場合、追加の手順は必要あ�
 
 ## サポート方針
 
-こちらのツールは、APIサポート窓口の対象外です。
+kintoneローカルMCPサーバーは、APIサポート窓口の対象外です。
 
 バグ報告・機能要望は[Issues](https://github.com/kintone/mcp-server/issues/new/choose)から登録をお願いします。
 
