@@ -183,17 +183,17 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 
 ## ツール一覧
 
-| ツール名                         | 説明                         |
-| -------------------------------- | ---------------------------- |
-| `kintone-get-apps`               | 複数のアプリ情報を取得       |
-| `kintone-get-app`                | 単一アプリの詳細情報を取得   |
-| `kintone-get-form-fields`        | アプリのフィールド設定を取得 |
-| `kintone-get-process-management` | プロセス管理設定を取得       |
-| `kintone-get-records`            | レコードを検索・取得         |
-| `kintone-add-records`            | 新規レコードを追加           |
-| `kintone-update-records`         | 既存レコードを更新           |
-| `kintone-delete-records`         | レコードを削除               |
-| `kintone-update-statuses`        | レコードのステータスを変更   |
+| ツール名                         | 説明                             |
+| -------------------------------- | -------------------------------- |
+| `kintone-get-apps`               | 複数のアプリ情報を取得           |
+| `kintone-get-app`                | 単一アプリの詳細情報を取得       |
+| `kintone-get-form-fields`        | アプリのフィールド設定を取得     |
+| `kintone-get-process-management` | プロセス管理設定を取得           |
+| `kintone-get-records`            | 複数のレコードを取得             |
+| `kintone-add-records`            | 複数のレコードを追加             |
+| `kintone-update-records`         | 複数のレコードを更新             |
+| `kintone-delete-records`         | 複数のレコードを削除             |
+| `kintone-update-statuses`        | 複数のレコードのステータスを更新 |
 
 ## ドキュメント
 

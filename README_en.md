@@ -192,17 +192,17 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 
 ## Tools
 
-| Tool Name                        | Description                      |
-| -------------------------------- | -------------------------------- |
-| `kintone-get-apps`               | Get information of multiple apps |
-| `kintone-get-app`                | Get details of a single app      |
-| `kintone-get-form-fields`        | Get app field settings           |
-| `kintone-get-process-management` | Get process management settings  |
-| `kintone-get-records`            | Search and get records           |
-| `kintone-add-records`            | Add new records                  |
-| `kintone-update-records`         | Update existing records          |
-| `kintone-delete-records`         | Delete records                   |
-| `kintone-update-statuses`        | Change record statuses           |
+| Tool Name                        | Description                       |
+| -------------------------------- | --------------------------------- |
+| `kintone-get-apps`               | Get information of multiple apps  |
+| `kintone-get-app`                | Get details of a single app       |
+| `kintone-get-form-fields`        | Get app field settings            |
+| `kintone-get-process-management` | Get process management settings   |
+| `kintone-get-records`            | Get multiple records              |
+| `kintone-add-records`            | Add multiple records              |
+| `kintone-update-records`         | Update multiple records           |
+| `kintone-delete-records`         | Delete multiple records           |
+| `kintone-update-statuses`        | Update status of multiple records |
 
 ## Documentation
 
