@@ -218,7 +218,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 ### Feature Limitations
 
 - **Guest space not supported**: Cannot access apps within guest spaces
-- **Preview not supported**: App preview functionality is not available
+- **Preview not supported**: The app preview environment (a test environment where you can verify app settings before activating them in production) is not available
 
 ## Support Policy
 
