@@ -2,7 +2,6 @@ import { z } from "zod";
 import { createTool } from "../../utils.js";
 import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config.js";
-import { writeFileSync } from "fs";
 
 const inputSchema = {
   fileKey: z
@@ -10,7 +9,6 @@ const inputSchema = {
     .describe(
       "The unique file key to download (obtained from record retrieval or file upload)",
     ),
-  filepath: z.string().describe("The path to save the downloaded file"),
 };
 
 const outputSchema = {
@@ -28,7 +26,7 @@ export const downloadFile = createTool(
     inputSchema,
     outputSchema,
   },
-  async ({ fileKey, filepath }) => {
+  async ({ fileKey }) => {
     const config = parseKintoneClientConfig();
     const client = getKintoneClient(config);
 
@@ -86,10 +84,6 @@ export const downloadFile = createTool(
 
     const mimeType = detectMimeType(buffer);
     const type = mimeType.split("/")[0];
-
-    if (filepath) {
-      writeFileSync(filepath, Buffer.from(buffer));
-    }
 
     // Return file content as base64
     const base64Content = Buffer.from(buffer).toString("base64");
