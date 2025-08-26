@@ -1,4 +1,4 @@
-# kintone MCP Server
+# Kintone MCP Server
 
 [![ci][ci-badge]][ci-url]
 [![npm version][npm-badge]][npm-url]
@@ -16,23 +16,35 @@
 
 [日本語](README.md) | English
 
-The official local MCP server for kintone.
+The official local MCP server for Kintone.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Installation](#installation)
-  - [DXT (Claude Desktop Package)](#dxt-claude-desktop-package)
-  - [Docker Container Image](#docker-container-image)
-  - [npm Package](#npm-package)
-- [Usage](#usage)
-  - [Example Configuration File Path](#example-configuration-file-path)
-  - [Example Configuration File Content](#example-configuration-file-content)
-- [Tools](#tools)
-- [Limitations](#limitations)
-- [Support Policy](#support-policy)
-- [Contribution](#contribution)
-- [License](#license)
+- [Kintone MCP Server](#kintone-mcp-server)
+  - [Installation](#installation)
+    - [DXT (Claude Desktop Package)](#dxt-claude-desktop-package)
+    - [Docker Container Image](#docker-container-image)
+      - [Prerequisites](#prerequisites)
+      - [Run Image](#run-image)
+    - [npm Package](#npm-package)
+      - [Prerequisites](#prerequisites-1)
+      - [Install Package](#install-package)
+      - [Run Server](#run-server)
+  - [Usage](#usage)
+    - [Example Configuration File Path](#example-configuration-file-path)
+    - [Example Configuration File Content](#example-configuration-file-content)
+  - [Configuration](#configuration)
+    - [Configuration Options](#configuration-options)
+    - [Proxy Configuration](#proxy-configuration)
+  - [Tools](#tools)
+  - [Documentation](#documentation)
+  - [Limitations](#limitations)
+    - [Record Operation Limitations](#record-operation-limitations)
+    - [Other Limitations](#other-limitations)
+  - [Support Policy](#support-policy)
+  - [Contribution](#contribution)
+  - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -50,9 +62,9 @@ Follow these steps to install:
 5. Drag and drop the downloaded `kintone-mcp-server.dxt` file onto the Claude Desktop screen
 6. A confirmation dialog will appear, select "Install"
 7. A settings dialog will appear, enter the required information:
-   - `Kintone Base URL`: The base URL of your kintone (e.g., `https://example.cybozu.com`)
-   - `Kintone Username`: Your kintone username
-   - `Kintone Password`: Your kintone password
+   - `Kintone Base URL`: The base URL of your Kintone (e.g., `https://example.cybozu.com`)
+   - `Kintone Username`: Your Kintone username
+   - `Kintone Password`: Your Kintone password
 
 ### Docker Container Image
 
@@ -97,11 +109,11 @@ To run the MCP server, use the following command:
 
 ```bash
 kintone-mcp-server \
-  --kintone-base-url https://example.cybozu.com \
-  --kintone-username (username) \
-  --kintone-password (password)
+  --base-url https://example.cybozu.com \
+  --username (username) \
+  --password (password)
 
-# `--kintone-base-url`, `--kintone-username`, and `--kintone-password` can also be specified using environment variables:
+# `--base-url`, `--username`, and `--password` can also be specified using environment variables:
 # KINTONE_BASE_URL, KINTONE_USERNAME, and KINTONE_PASSWORD.
 ```
 
@@ -148,28 +160,75 @@ Please refer to the documentation of the AI tool you are using for details on ho
 }
 ```
 
+## Configuration
+
+### Configuration Options
+
+| Command-line Argument   | Environment Variable          | Description                                                               | Required |
+| ----------------------- | ----------------------------- | ------------------------------------------------------------------------- | -------- |
+| `--base-url`            | `KINTONE_BASE_URL`            | Base URL of your Kintone environment (e.g., `https://example.cybozu.com`) | ✓        |
+| `--username`            | `KINTONE_USERNAME`            | Kintone login username                                                    | ※1       |
+| `--password`            | `KINTONE_PASSWORD`            | Kintone login password                                                    | ※1       |
+| `--api-token`           | `KINTONE_API_TOKEN`           | API token (comma-separated, max 9 tokens)                                 | ※1       |
+| `--basic-auth-username` | `KINTONE_BASIC_AUTH_USERNAME` | Basic authentication username                                             | -        |
+| `--basic-auth-password` | `KINTONE_BASIC_AUTH_PASSWORD` | Basic authentication password                                             | -        |
+| `--pfx-file-path`       | `KINTONE_PFX_FILE_PATH`       | Path to PFX file (for client certificate authentication)                  | -        |
+| `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFX file password                                                         | -        |
+| `--proxy`               | `HTTPS_PROXY`                 | HTTPS proxy URL (e.g., `http://proxy.example.com:8080`)                   | -        |
+
+※1: Either `KINTONE_USERNAME` & `KINTONE_PASSWORD` or `KINTONE_API_TOKEN` is required
+
+**Notes:**
+
+- When using client certificate authentication, the URL domain must be `.s.cybozu.com` (e.g., `https://example.s.cybozu.com`)
+- When password authentication and API token authentication are specified simultaneously, password authentication takes priority
+- When both command-line arguments and environment variables are specified, command-line arguments take priority
+- For detailed authentication configuration, refer to the [Authentication Configuration Guide](./docs/en/authentication.md)
+
+### Proxy Configuration
+
+If you need to connect through a proxy server in corporate environments, set the `HTTPS_PROXY` environment variable.
+
+```bash
+export HTTPS_PROXY="http://proxy.example.com:8080"
+
+# If authentication is required
+export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
+```
+
 ## Tools
 
-| Tool Name                        | Description                      |
-| -------------------------------- | -------------------------------- |
-| `kintone-get-apps`               | Get information of multiple apps |
-| `kintone-get-app`                | Get details of a single app      |
-| `kintone-get-form-fields`        | Get app field settings           |
-| `kintone-get-process-management` | Get process management settings  |
-| `kintone-get-records`            | Search and get records           |
-| `kintone-add-records`            | Add new records                  |
-| `kintone-update-records`         | Update existing records          |
-| `kintone-delete-records`         | Delete records                   |
-| `kintone-update-statuses`        | Change record statuses           |
+| Tool Name                        | Description                       |
+| -------------------------------- | --------------------------------- |
+| `kintone-get-apps`               | Get information of multiple apps  |
+| `kintone-get-app`                | Get details of a single app       |
+| `kintone-get-form-fields`        | Get app field settings            |
+| `kintone-get-process-management` | Get process management settings   |
+| `kintone-get-records`            | Get multiple records              |
+| `kintone-add-records`            | Add multiple records              |
+| `kintone-update-records`         | Update multiple records           |
+| `kintone-delete-records`         | Delete multiple records           |
+| `kintone-update-statuses`        | Update status of multiple records |
+
+## Documentation
+
+- [Authentication Configuration Guide](./docs/en/authentication.md) - Detailed authentication methods and examples
 
 ## Limitations
 
-As of 2025/08/05, attachment fields cannot be specified in the record add/update tool.
-Also, for user selection fields, organization selection fields, and group selection fields, add/update is only possible if choices are set.
+### Record Operation Limitations
+
+- **Attachment fields**: Attachment fields cannot be specified in the record add/update tool
+- **Selection fields**: For user selection fields, organization selection fields, and group selection fields, add/update is only possible if choices are set
+
+### Other Limitations
+
+- **Guest space not supported**: Cannot access apps within guest spaces
+- **Preview not supported**: The app preview environment (a test environment where you can verify app settings before activating them in production) is not available
 
 ## Support Policy
 
-The kintone local MCP server is not covered by the API support desk.
+The Kintone local MCP server is not covered by the API support desk.
 
 Please report bugs or request features via [Issues](https://github.com/kintone/mcp-server/issues/new/choose).
 

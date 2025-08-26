@@ -33,8 +33,14 @@ kintoneの公式ローカルMCPサーバーです。
 - [利用方法](#%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95)
   - [設定ファイルのパスの例](#%E8%A8%AD%E5%AE%9A%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E3%83%91%E3%82%B9%E3%81%AE%E4%BE%8B)
   - [設定ファイルの内容の例](#%E8%A8%AD%E5%AE%9A%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E5%86%85%E5%AE%B9%E3%81%AE%E4%BE%8B)
+- [設定](#%E8%A8%AD%E5%AE%9A)
+  - [設定オプション一覧](#%E8%A8%AD%E5%AE%9A%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3%E4%B8%80%E8%A6%A7)
+  - [プロキシ設定](#%E3%83%97%E3%83%AD%E3%82%AD%E3%82%B7%E8%A8%AD%E5%AE%9A)
 - [ツール一覧](#%E3%83%84%E3%83%BC%E3%83%AB%E4%B8%80%E8%A6%A7)
-- [注意事項](#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85)
+- [ドキュメント](#%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88)
+- [制限事項](#%E5%88%B6%E9%99%90%E4%BA%8B%E9%A0%85)
+  - [レコード操作の制限](#%E3%83%AC%E3%82%B3%E3%83%BC%E3%83%89%E6%93%8D%E4%BD%9C%E3%81%AE%E5%88%B6%E9%99%90)
+  - [機能制限](#%E6%A9%9F%E8%83%BD%E5%88%B6%E9%99%90)
 - [サポート方針](#%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88%E6%96%B9%E9%87%9D)
 - [コントリビューション](#%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AA%E3%83%93%E3%83%A5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3)
 - [ライセンス](#%E3%83%A9%E3%82%A4%E3%82%BB%E3%83%B3%E3%82%B9)
@@ -88,11 +94,11 @@ npm install -g @kintone/mcp-server
 
 ```shell
 kintone-mcp-server \
-  --kintone-base-url https://example.cybozu.com \
-  --kintone-username (username) \
-  --kintone-password (password)
+  --base-url https://example.cybozu.com \
+  --username (username) \
+  --password (password)
 
-# `--kintone-base-url`、`--kintone-username`、`--kintone-password` は
+# `--base-url`、`--username`、`--password` は
 # 環境変数 `KINTONE_BASE_URL`、`KINTONE_USERNAME`、`KINTONE_PASSWORD` でも指定可能です。
 ```
 
@@ -139,24 +145,71 @@ DXTファイルをインストールした場合、追加の手順は必要あ�
 }
 ```
 
+## 設定
+
+### 設定オプション一覧
+
+| コマンドライン引数      | 環境変数                      | 説明                                                       | 必須 |
+| ----------------------- | ----------------------------- | ---------------------------------------------------------- | ---- |
+| `--base-url`            | `KINTONE_BASE_URL`            | kintone環境のベースURL（例: `https://example.cybozu.com`） | ✓    |
+| `--username`            | `KINTONE_USERNAME`            | kintoneのログインユーザー名                                | ※1   |
+| `--password`            | `KINTONE_PASSWORD`            | kintoneのログインパスワード                                | ※1   |
+| `--api-token`           | `KINTONE_API_TOKEN`           | APIトークン（カンマ区切りで最大9個まで指定可能）           | ※1   |
+| `--basic-auth-username` | `KINTONE_BASIC_AUTH_USERNAME` | Basic認証のユーザー名                                      | -    |
+| `--basic-auth-password` | `KINTONE_BASIC_AUTH_PASSWORD` | Basic認証のパスワード                                      | -    |
+| `--pfx-file-path`       | `KINTONE_PFX_FILE_PATH`       | PFXファイルのパス（クライアント証明書認証用）              | -    |
+| `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFXファイルのパスワード                                    | -    |
+| `--proxy`               | `HTTPS_PROXY`                 | HTTPSプロキシのURL（例: `http://proxy.example.com:8080`）  | -    |
+
+※1: `KINTONE_USERNAME` & `KINTONE_PASSWORD` または `KINTONE_API_TOKEN` のいずれかが必須
+
+**注意事項:**
+
+- クライアント証明書認証を使用する場合、URLのドメインは `.s.cybozu.com` となります（例: `https://example.s.cybozu.com`）
+- パスワード認証とAPIトークン認証を同時に指定した場合、パスワード認証が優先されます
+- コマンドライン引数と環境変数を同時に指定した場合、コマンドライン引数が優先されます
+- 詳細な認証設定については [認証設定ガイド](./docs/ja/authentication.md) を参照してください
+
+### プロキシ設定
+
+企業環境などでプロキシサーバーを経由する必要がある場合は、`HTTPS_PROXY` 環境変数を設定してください。
+
+```bash
+export HTTPS_PROXY="http://proxy.example.com:8080"
+
+# 認証が必要な場合
+export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
+```
+
 ## ツール一覧
 
-| ツール名                         | 説明                         |
-| -------------------------------- | ---------------------------- |
-| `kintone-get-apps`               | 複数のアプリ情報を取得       |
-| `kintone-get-app`                | 単一アプリの詳細情報を取得   |
-| `kintone-get-form-fields`        | アプリのフィールド設定を取得 |
-| `kintone-get-process-management` | プロセス管理設定を取得       |
-| `kintone-get-records`            | レコードを検索・取得         |
-| `kintone-add-records`            | 新規レコードを追加           |
-| `kintone-update-records`         | 既存レコードを更新           |
-| `kintone-delete-records`         | レコードを削除               |
-| `kintone-update-statuses`        | レコードのステータスを変更   |
+| ツール名                         | 説明                             |
+| -------------------------------- | -------------------------------- |
+| `kintone-get-apps`               | 複数のアプリ情報を取得           |
+| `kintone-get-app`                | 単一アプリの詳細情報を取得       |
+| `kintone-get-form-fields`        | アプリのフィールド設定を取得     |
+| `kintone-get-process-management` | プロセス管理設定を取得           |
+| `kintone-get-records`            | 複数のレコードを取得             |
+| `kintone-add-records`            | 複数のレコードを追加             |
+| `kintone-update-records`         | 複数のレコードを更新             |
+| `kintone-delete-records`         | 複数のレコードを削除             |
+| `kintone-update-statuses`        | 複数のレコードのステータスを更新 |
 
-## 注意事項
+## ドキュメント
 
-レコード登録更新ツールにおいて、添付ファイルフィールドは2025/08/05時点で指定できません。
-また、ユーザー選択フィールド、組織選択フィールド、グループ選択フィールドは、選択肢を設定している場合のみ登録更新が可能です。
+- [認証設定ガイド](./docs/ja/authentication.md) - 認証方法の詳細と設定例
+
+## 制限事項
+
+### レコード操作の制限
+
+- **添付ファイルフィールド**: レコード登録更新ツールにおいて、添付ファイルフィールドは指定できません
+- **選択フィールド**: ユーザー選択フィールド、組織選択フィールド、グループ選択フィールドは、選択肢を設定している場合のみ登録更新が可能です
+
+### その他の制限
+
+- **ゲストスペースに非対応**: ゲストスペース内のアプリにはアクセスできません
+- **動作テスト環境に非対応**: アプリの動作テスト環境（アプリ設定を本番環境に反映する前に検証できる環境）は利用できません
 
 ## サポート方針
 
