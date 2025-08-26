@@ -7,7 +7,7 @@ import {
   generateSafeFilename,
   generateUniqueFilePath,
   ensureDirectoryExists,
-  validateDownloadDirectory,
+  getExtensionFromMimeType,
 } from "../../../utils/file.js";
 
 const inputSchema = {
@@ -97,15 +97,13 @@ export const downloadFile = createTool(
 
     const mimeType = detectMimeType(buffer);
 
-    // TODO: こいつはconfig.tsのrefineに移動
-    // Validate and prepare download directory
-    const downloadDir = validateDownloadDirectory(
-      configResult.config.KINTONE_DOWNLOAD_DIR,
-    );
+    const downloadDir = configResult.config.KINTONE_DOWNLOAD_DIR;
+
     ensureDirectoryExists(downloadDir);
 
     // Generate safe filename and unique file path
-    const safeFilename = generateSafeFilename(fileKey);
+    const ext = getExtensionFromMimeType(mimeType);
+    const safeFilename = generateSafeFilename(fileKey, ext);
     const uniqueFilePath = generateUniqueFilePath(downloadDir, safeFilename);
 
     // Save file to local directory

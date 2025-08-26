@@ -69,10 +69,7 @@ export const configSchema = z
     KINTONE_DOWNLOAD_DIR: z
       .string()
       .optional()
-      .describe("Directory path for downloading files from kintone")
-      .refine((value) => {
-
-      }),
+      .describe("Directory path for downloading files from kintone"),
   })
   .refine(
     (data) => {

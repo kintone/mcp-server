@@ -12,13 +12,12 @@ export const replaceSpecialCharacters = (filename: string): string => {
 /**
  * Generate a safe filename from fileKey and original filename
  */
-export const generateSafeFilename = (fileKey: string): string => {
+export const generateSafeFilename = (fileKey: string, ext: string): string => {
   const timestamp = Date.now();
   const randomId = Math.random().toString(36).substring(2, 8);
 
   // Create generic name
   const baseName = fileKey;
-  const ext = path.extname(baseName);
   const nameWithoutExt = path.basename(baseName, ext);
 
   // Create safe filename with fileKey prefix for uniqueness
@@ -64,20 +63,68 @@ export const ensureDirectoryExists = (dirPath: string): void => {
   }
 };
 
-// TODO: これはconfig.tsのzod refineに移植
 /**
- * Validate and normalize download directory path
+ * Get file extension from MIME type
  */
-export const validateDownloadDirectory = (downloadDir: string): string => {
-  // Convert to absolute path
-  const absolutePath = path.resolve(downloadDir);
+export const getExtensionFromMimeType = (mimeType: string): string => {
+  // TODO: これどないするー
+  const mimeToExt: Record<string, string> = {
+    // Images
+    "image/png": ".png",
+    "image/jpeg": ".jpg",
+    "image/jpg": ".jpg",
+    "image/gif": ".gif",
+    "image/webp": ".webp",
+    "image/svg+xml": ".svg",
+    "image/bmp": ".bmp",
+    "image/tiff": ".tiff",
+    "image/tif": ".tif",
 
-  // Basic path traversal protection - ensure it's under allowed directory
-  const normalizedPath = path.normalize(absolutePath);
+    // Documents
+    "application/pdf": ".pdf",
+    "application/msword": ".doc",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+      ".docx",
+    "application/vnd.ms-excel": ".xls",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+      ".xlsx",
+    "application/vnd.ms-powerpoint": ".ppt",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+      ".pptx",
+    "text/plain": ".txt",
+    "text/html": ".html",
+    "text/css": ".css",
+    "text/javascript": ".js",
+    "application/json": ".json",
+    "application/xml": ".xml",
 
-  if (normalizedPath !== absolutePath) {
-    throw new Error("Invalid download directory path");
-  }
+    // Audio
+    "audio/mpeg": ".mp3",
+    "audio/mp3": ".mp3",
+    "audio/wav": ".wav",
+    "audio/ogg": ".ogg",
+    "audio/aac": ".aac",
+    "audio/flac": ".flac",
 
-  return absolutePath;
+    // Video
+    "video/mp4": ".mp4",
+    "video/avi": ".avi",
+    "video/mov": ".mov",
+    "video/wmv": ".wmv",
+    "video/flv": ".flv",
+    "video/webm": ".webm",
+
+    // Archives
+    "application/zip": ".zip",
+    "application/x-rar-compressed": ".rar",
+    "application/x-7z-compressed": ".7z",
+    "application/gzip": ".gz",
+    "application/x-tar": ".tar",
+
+    // Other common types
+    "application/octet-stream": ".bin",
+    "application/x-binary": ".bin",
+  };
+
+  return mimeToExt[mimeType.toLowerCase()] || "";
 };
