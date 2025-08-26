@@ -27,4 +27,5 @@ COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/LICENSE ./LICENSE
 COPY --from=build /app/NOTICE ./NOTICE
 
+# NOTE: Using ENTRYPOINT to include index.js because specifying index.js with CMD would be overwritten when CLI arguments are used
 ENTRYPOINT [ "/nodejs/bin/node", "dist/index.js"]
