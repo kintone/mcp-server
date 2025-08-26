@@ -27,7 +27,4 @@ COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/LICENSE ./LICENSE
 COPY --from=build /app/NOTICE ./NOTICE
 
-# Entrypointにnodeが指定されているため、CMDにはオプション・ファイル名を指定する
-# ref. https://github.com/GoogleContainerTools/distroless/tree/main/nodejs#usage
-# > The entrypoint of this image is set to "node", so this image expects users to supply a path to a .js file in the CMD.
-CMD ["dist/index.js"]
+ENTRYPOINT [ "/nodejs/bin/node", "dist/index.js"]
