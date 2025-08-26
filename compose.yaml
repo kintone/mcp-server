@@ -1,7 +1,0 @@
-services:
-  mcp-server:
-    build:
-      context: .
-      dockerfile: ./docker/Dockerfile
-    volumes:
-      - "./dist:/app/dist"

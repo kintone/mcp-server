@@ -47,6 +47,7 @@ const outputSchema = {
 export const updateRecords = createTool(
   "kintone-update-records",
   {
+    title: "Update Records",
     description:
       "Update multiple records in a kintone app. Use kintone-get-form-fields tool first to discover available field codes and their required formats. Note: Some fields cannot be updated (LOOKUP copies, STATUS, CATEGORY, CALC, ASSIGNEE, auto-calculated fields).",
     inputSchema,

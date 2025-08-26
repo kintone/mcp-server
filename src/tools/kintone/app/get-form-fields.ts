@@ -128,6 +128,7 @@ const outputSchema = {
 export const getFormFields = createTool(
   "kintone-get-form-fields",
   {
+    title: "Get Form Fields",
     description: "Get form field settings from a kintone app",
     inputSchema,
     outputSchema,

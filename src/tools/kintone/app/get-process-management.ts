@@ -77,6 +77,7 @@ const outputSchema = {
 export const getProcessManagement = createTool(
   "kintone-get-process-management",
   {
+    title: "Get Process Management",
     description: "Get process management settings from a kintone app",
     inputSchema,
     outputSchema,
