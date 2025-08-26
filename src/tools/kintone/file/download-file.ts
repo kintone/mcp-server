@@ -3,12 +3,9 @@ import fs from "node:fs";
 import { createTool } from "../../utils.js";
 import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config.js";
-import {
-  generateSafeFilename,
-  generateUniqueFilePath,
-  ensureDirectoryExists,
-  getExtensionFromMimeType,
-} from "../../../utils/file.js";
+import { ensureDirectoryExists } from "../../../utils/file.js";
+import { fileTypeFromBuffer } from "file-type";
+import path from "node:path";
 
 const inputSchema = {
   fileKey: z
@@ -22,6 +19,16 @@ const outputSchema = {
   filePath: z.string().describe("Absolute path to the downloaded file"),
   mimeType: z.string().describe("MIME type of the downloaded file"),
   fileSize: z.number().describe("File size in bytes"),
+};
+
+const generateFileName = (fileKey: string, ext?: string) => {
+  const extWithDot = ext ? `.${ext}` : "";
+  return `${fileKey}${extWithDot}`;
+};
+
+const generateFilePath = (downloadDir: string, filename: string): string => {
+  const filePath = path.join(downloadDir, filename);
+  return filePath;
 };
 
 export const downloadFile = createTool(
@@ -44,74 +51,22 @@ export const downloadFile = createTool(
     }
 
     const buffer = await client.file.downloadFile({ fileKey });
-    // Detect MIME type from buffer magic bytes
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    const detectMimeType = (buffer: ArrayBuffer): string => {
-      const bytes = new Uint8Array(buffer.slice(0, 12));
-
-      // PNG: 89 50 4E 47
-      if (
-        bytes[0] === 0x89 &&
-        bytes[1] === 0x50 &&
-        bytes[2] === 0x4e &&
-        bytes[3] === 0x47
-      ) {
-        return "image/png";
-      }
-      // JPEG: FF D8 FF
-      if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) {
-        return "image/jpeg";
-      }
-      // GIF: 47 49 46
-      if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46) {
-        return "image/gif";
-      }
-      // PDF: 25 50 44 46
-      if (
-        bytes[0] === 0x25 &&
-        bytes[1] === 0x50 &&
-        bytes[2] === 0x44 &&
-        bytes[3] === 0x46
-      ) {
-        return "application/pdf";
-      }
-      // MP3: FF FB or ID3
-      if (
-        (bytes[0] === 0xff && (bytes[1] & 0xe0) === 0xe0) ||
-        (bytes[0] === 0x49 && bytes[1] === 0x44 && bytes[2] === 0x33)
-      ) {
-        return "audio/mpeg";
-      }
-      // WAV: 52 49 46 46
-      if (
-        bytes[0] === 0x52 &&
-        bytes[1] === 0x49 &&
-        bytes[2] === 0x46 &&
-        bytes[3] === 0x46
-      ) {
-        return "audio/wav";
-      }
-
-      return "application/octet-stream";
-    };
-
-    const mimeType = detectMimeType(buffer);
 
     const downloadDir = configResult.config.KINTONE_DOWNLOAD_DIR;
-
     ensureDirectoryExists(downloadDir);
 
-    // Generate safe filename and unique file path
-    const ext = getExtensionFromMimeType(mimeType);
-    const safeFilename = generateSafeFilename(fileKey, ext);
-    const uniqueFilePath = generateUniqueFilePath(downloadDir, safeFilename);
+    const fileTypeResult = await fileTypeFromBuffer(buffer);
+    const mimeType = fileTypeResult?.mime;
+    const ext = fileTypeResult?.ext;
 
-    // Save file to local directory
+    const fileName = generateFileName(fileKey, ext);
+    const filePath = generateFilePath(downloadDir, fileName);
+
     const bufferData = Buffer.from(buffer);
-    fs.writeFileSync(uniqueFilePath, bufferData);
+    fs.writeFileSync(filePath, bufferData);
 
     const result = {
-      filePath: uniqueFilePath,
+      filePath,
       mimeType,
       fileSize: bufferData.length,
     };
