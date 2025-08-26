@@ -164,17 +164,17 @@ Please refer to the documentation of the AI tool you are using for details on ho
 
 ### Configuration Options
 
-| Environment Variable          | Command-line Argument   | Description                                                               | Required |
-| ----------------------------- | ----------------------- | ------------------------------------------------------------------------- | -------- |
-| `KINTONE_BASE_URL`            | `--base-url`            | Base URL of your Kintone environment (e.g., `https://example.cybozu.com`) | ✓        |
-| `KINTONE_USERNAME`            | `--username`            | Kintone login username                                                    | ※1       |
-| `KINTONE_PASSWORD`            | `--password`            | Kintone login password                                                    | ※1       |
-| `KINTONE_API_TOKEN`           | `--api-token`           | API token (comma-separated, max 9 tokens)                                 | ※1       |
-| `KINTONE_BASIC_AUTH_USERNAME` | `--basic-auth-username` | Basic authentication username                                             | -        |
-| `KINTONE_BASIC_AUTH_PASSWORD` | `--basic-auth-password` | Basic authentication password                                             | -        |
-| `KINTONE_PFX_FILE_PATH`       | `--pfx-file-path`       | Path to PFX file (for client certificate authentication)                  | -        |
-| `KINTONE_PFX_FILE_PASSWORD`   | `--pfx-file-password`   | PFX file password                                                         | -        |
-| `HTTPS_PROXY`                 | `--proxy`               | HTTPS proxy URL (e.g., `http://proxy.example.com:8080`)                   | -        |
+| Command-line Argument   | Environment Variable          | Description                                                               | Required |
+| ----------------------- | ----------------------------- | ------------------------------------------------------------------------- | -------- |
+| `--base-url`            | `KINTONE_BASE_URL`            | Base URL of your Kintone environment (e.g., `https://example.cybozu.com`) | ✓        |
+| `--username`            | `KINTONE_USERNAME`            | Kintone login username                                                    | ※1       |
+| `--password`            | `KINTONE_PASSWORD`            | Kintone login password                                                    | ※1       |
+| `--api-token`           | `KINTONE_API_TOKEN`           | API token (comma-separated, max 9 tokens)                                 | ※1       |
+| `--basic-auth-username` | `KINTONE_BASIC_AUTH_USERNAME` | Basic authentication username                                             | -        |
+| `--basic-auth-password` | `KINTONE_BASIC_AUTH_PASSWORD` | Basic authentication password                                             | -        |
+| `--pfx-file-path`       | `KINTONE_PFX_FILE_PATH`       | Path to PFX file (for client certificate authentication)                  | -        |
+| `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFX file password                                                         | -        |
+| `--proxy`               | `HTTPS_PROXY`                 | HTTPS proxy URL (e.g., `http://proxy.example.com:8080`)                   | -        |
 
 ※1: Either `KINTONE_USERNAME` & `KINTONE_PASSWORD` or `KINTONE_API_TOKEN` is required
 

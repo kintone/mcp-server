@@ -13,10 +13,10 @@ The Kintone MCP Server provides multiple authentication methods. Configure the a
 
 Authenticate using Kintone login credentials.
 
-| Environment Variable | Command-line Argument | Description            | Required |
-| -------------------- | --------------------- | ---------------------- | -------- |
-| `KINTONE_USERNAME`   | `--username`          | Kintone login username | ✓        |
-| `KINTONE_PASSWORD`   | `--password`          | Kintone login password | ✓        |
+| Command-line Argument | Environment Variable | Description            | Required |
+| --------------------- | -------------------- | ---------------------- | -------- |
+| `--username`          | `KINTONE_USERNAME`   | Kintone login username | ✓        |
+| `--password`          | `KINTONE_PASSWORD`   | Kintone login password | ✓        |
 
 **Configuration Example:**
 
@@ -41,9 +41,9 @@ kintone-mcp-server \
 
 Authenticate using API tokens issued per application.
 
-| Environment Variable | Command-line Argument | Description                               | Required |
-| -------------------- | --------------------- | ----------------------------------------- | -------- |
-| `KINTONE_API_TOKEN`  | `--api-token`         | API token (comma-separated, max 9 tokens) | ✓        |
+| Command-line Argument | Environment Variable | Description                               | Required |
+| --------------------- | -------------------- | ----------------------------------------- | -------- |
+| `--api-token`         | `KINTONE_API_TOKEN`  | API token (comma-separated, max 9 tokens) | ✓        |
 
 **Configuration Example:**
 
@@ -72,10 +72,10 @@ kintone-mcp-server \
 
 Use when Basic authentication is configured in your Kintone environment. Must be configured in conjunction with one of the above authentication methods.
 
-| Environment Variable          | Command-line Argument   | Description                   | Required              |
-| ----------------------------- | ----------------------- | ----------------------------- | --------------------- |
-| `KINTONE_BASIC_AUTH_USERNAME` | `--basic-auth-username` | Basic authentication username | When using Basic auth |
-| `KINTONE_BASIC_AUTH_PASSWORD` | `--basic-auth-password` | Basic authentication password | When using Basic auth |
+| Command-line Argument   | Environment Variable          | Description                   | Required              |
+| ----------------------- | ----------------------------- | ----------------------------- | --------------------- |
+| `--basic-auth-username` | `KINTONE_BASIC_AUTH_USERNAME` | Basic authentication username | When using Basic auth |
+| `--basic-auth-password` | `KINTONE_BASIC_AUTH_PASSWORD` | Basic authentication password | When using Basic auth |
 
 **Configuration Example:**
 
@@ -103,10 +103,10 @@ kintone-mcp-server \
 
 Authenticate using a client certificate in PFX format. When using client certificate authentication, you must use the secure access URL.
 
-| Environment Variable        | Command-line Argument | Description       | Required                    |
-| --------------------------- | --------------------- | ----------------- | --------------------------- |
-| `KINTONE_PFX_FILE_PATH`     | `--pfx-file-path`     | Path to PFX file  | When using certificate auth |
-| `KINTONE_PFX_FILE_PASSWORD` | `--pfx-file-password` | PFX file password | When using certificate auth |
+| Command-line Argument | Environment Variable        | Description       | Required                    |
+| --------------------- | --------------------------- | ----------------- | --------------------------- |
+| `--pfx-file-path`     | `KINTONE_PFX_FILE_PATH`     | Path to PFX file  | When using certificate auth |
+| `--pfx-file-password` | `KINTONE_PFX_FILE_PASSWORD` | PFX file password | When using certificate auth |
 
 **Configuration Example:**
 
@@ -142,9 +142,9 @@ kintone-mcp-server \
 
 Use when you need to connect through a proxy server in corporate environments.
 
-| Environment Variable | Command-line Argument | Description      | Required |
-| -------------------- | --------------------- | ---------------- | -------- |
-| `HTTPS_PROXY`        | `--proxy`             | Proxy server URL | -        |
+| Command-line Argument | Environment Variable | Description      | Required |
+| --------------------- | -------------------- | ---------------- | -------- |
+| `--proxy`             | `HTTPS_PROXY`        | Proxy server URL | -        |
 
 **Configuration Example:**
 

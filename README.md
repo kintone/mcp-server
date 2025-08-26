@@ -149,17 +149,17 @@ DXTファイルをインストールした場合、追加の手順は必要あ�
 
 ### 設定オプション一覧
 
-| 環境変数                      | コマンドライン引数      | 説明                                                       | 必須 |
-| ----------------------------- | ----------------------- | ---------------------------------------------------------- | ---- |
-| `KINTONE_BASE_URL`            | `--base-url`            | kintone環境のベースURL（例: `https://example.cybozu.com`） | ✓    |
-| `KINTONE_USERNAME`            | `--username`            | kintoneのログインユーザー名                                | ※1   |
-| `KINTONE_PASSWORD`            | `--password`            | kintoneのログインパスワード                                | ※1   |
-| `KINTONE_API_TOKEN`           | `--api-token`           | APIトークン（カンマ区切りで最大9個まで指定可能）           | ※1   |
-| `KINTONE_BASIC_AUTH_USERNAME` | `--basic-auth-username` | Basic認証のユーザー名                                      | -    |
-| `KINTONE_BASIC_AUTH_PASSWORD` | `--basic-auth-password` | Basic認証のパスワード                                      | -    |
-| `KINTONE_PFX_FILE_PATH`       | `--pfx-file-path`       | PFXファイルのパス（クライアント証明書認証用）              | -    |
-| `KINTONE_PFX_FILE_PASSWORD`   | `--pfx-file-password`   | PFXファイルのパスワード                                    | -    |
-| `HTTPS_PROXY`                 | `--proxy`               | HTTPSプロキシのURL（例: `http://proxy.example.com:8080`）  | -    |
+| コマンドライン引数      | 環境変数                      | 説明                                                       | 必須 |
+| ----------------------- | ----------------------------- | ---------------------------------------------------------- | ---- |
+| `--base-url`            | `KINTONE_BASE_URL`            | kintone環境のベースURL（例: `https://example.cybozu.com`） | ✓    |
+| `--username`            | `KINTONE_USERNAME`            | kintoneのログインユーザー名                                | ※1   |
+| `--password`            | `KINTONE_PASSWORD`            | kintoneのログインパスワード                                | ※1   |
+| `--api-token`           | `KINTONE_API_TOKEN`           | APIトークン（カンマ区切りで最大9個まで指定可能）           | ※1   |
+| `--basic-auth-username` | `KINTONE_BASIC_AUTH_USERNAME` | Basic認証のユーザー名                                      | -    |
+| `--basic-auth-password` | `KINTONE_BASIC_AUTH_PASSWORD` | Basic認証のパスワード                                      | -    |
+| `--pfx-file-path`       | `KINTONE_PFX_FILE_PATH`       | PFXファイルのパス（クライアント証明書認証用）              | -    |
+| `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFXファイルのパスワード                                    | -    |
+| `--proxy`               | `HTTPS_PROXY`                 | HTTPSプロキシのURL（例: `http://proxy.example.com:8080`）  | -    |
 
 ※1: `KINTONE_USERNAME` & `KINTONE_PASSWORD` または `KINTONE_API_TOKEN` のいずれかが必須
 
