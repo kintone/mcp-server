@@ -14,7 +14,7 @@ RUN pnpm license:extract
 RUN pnpm install --prod
 
 
-FROM gcr.io/distroless/nodejs22-debian12:nonroot@sha256:8929dbab735ee399ff886ba7d81419dbe7df002993a7d69715e1c16b7d41c531
+FROM gcr.io/distroless/nodejs22-debian12:nonroot@sha256:be2a15ca96352149634f43fcca8d01c78b1beb6b95f31c25e53c8abb52903da8
 # ref. https://docs.github.com/ja/packages/working-with-a-github-packages-registry/working-with-the-container-registry#labelling-container-images
 LABEL org.opencontainers.image.source=https://github.com/kintone/mcp-server
 LABEL org.opencontainers.image.description="The official MCP Server for kintone"
@@ -27,7 +27,5 @@ COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/LICENSE ./LICENSE
 COPY --from=build /app/NOTICE ./NOTICE
 
-# Entrypointにnodeが指定されているため、CMDにはオプション・ファイル名を指定する
-# ref. https://github.com/GoogleContainerTools/distroless/tree/main/nodejs#usage
-# > The entrypoint of this image is set to "node", so this image expects users to supply a path to a .js file in the CMD.
-CMD ["dist/index.js"]
+# NOTE: Using ENTRYPOINT to include index.js because specifying index.js with CMD would be overwritten when CLI arguments are used
+ENTRYPOINT [ "/nodejs/bin/node", "dist/index.js"]

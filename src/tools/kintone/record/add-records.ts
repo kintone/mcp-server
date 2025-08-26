@@ -27,6 +27,7 @@ const outputSchema = {
 export const addRecords = createTool(
   "kintone-add-records",
   {
+    title: "Add Records",
     description:
       "Add multiple records to a kintone app. Use kintone-get-form-fields tool first to discover available field codes and their required formats. Note: Some fields cannot be registered (LOOKUP copies, STATUS, CATEGORY, CALC, ASSIGNEE, auto-calculated fields).",
     inputSchema,

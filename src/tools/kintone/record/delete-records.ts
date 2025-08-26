@@ -23,6 +23,7 @@ const outputSchema = {};
 export const deleteRecords = createTool(
   "kintone-delete-records",
   {
+    title: "Delete Records",
     description:
       "Delete multiple records from a kintone app. Maximum 100 records can be deleted at once.",
     inputSchema,

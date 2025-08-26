@@ -154,6 +154,7 @@ function buildQueryFromFilters(
 export const getRecords = createTool(
   "kintone-get-records",
   {
+    title: "Get Records",
     description:
       "Get multiple records from a kintone app with structured filtering. Use kintone-get-form-fields tool first to discover available fields and their types.",
     inputSchema,
