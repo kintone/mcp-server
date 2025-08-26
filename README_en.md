@@ -68,10 +68,11 @@ You can run the MCP server using Docker.
 To run the MCP server using Docker, use the following command:
 
 ```bash
-docker run -i --rm ghcr.io/kintone/mcp-server \
+docker run -i --rm \
   -e KINTONE_BASE_URL=https://example.cybozu.com \
   -e KINTONE_USERNAME=(username) \
-  -e KINTONE_PASSWORD=(password)
+  -e KINTONE_PASSWORD=(password) \
+  ghcr.io/kintone/mcp-server
 ```
 
 ### npm Package
