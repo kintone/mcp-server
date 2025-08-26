@@ -3,8 +3,8 @@
   "name": "@kintone/mcp-server",
   "display_name": "Kintone MCP Server",
   "version": "0.0.1",
-  "description": "The official MCP Server for kintone",
-  "long_description": "This extension provides Model Context Protocol (MCP) server capabilities for kintone, allowing AI assistants to interact with your kintone applications.",
+  "description": "The official MCP Server for Kintone",
+  "long_description": "This extension provides Model Context Protocol (MCP) server capabilities for Kintone, allowing AI assistants to interact with your Kintone applications.",
   "author": {
     "name": "Cybozu, Inc.",
     "url": "https://cybozu-global.com/"
@@ -41,39 +41,39 @@
   "tools": [
     {
       "name": "kintone-get-app",
-      "description": "Get app settings from kintone"
+      "description": "Get app settings from Kintone"
     },
     {
       "name": "kintone-get-apps",
-      "description": "Get multiple app settings from kintone"
+      "description": "Get multiple app settings from Kintone"
     },
     {
       "name": "kintone-get-form-fields",
-      "description": "Get form field settings from a kintone app"
+      "description": "Get form field settings from a Kintone app"
     },
     {
       "name": "kintone-get-process-management",
-      "description": "Get process management settings from a kintone app"
+      "description": "Get process management settings from a Kintone app"
     },
     {
       "name": "kintone-get-records",
-      "description": "Get multiple records from a kintone app"
+      "description": "Get multiple records from a Kintone app"
     },
     {
       "name": "kintone-add-records",
-      "description": "Add multiple records to a kintone app"
+      "description": "Add multiple records to a Kintone app"
     },
     {
       "name": "kintone-update-records",
-      "description": "Update multiple records in a kintone app"
+      "description": "Update multiple records in a Kintone app"
     },
     {
       "name": "kintone-delete-records",
-      "description": "Delete multiple records from a kintone app"
+      "description": "Delete multiple records from a Kintone app"
     },
     {
       "name": "kintone-update-statuses",
-      "description": "Update status of multiple records in a kintone app"
+      "description": "Update status of multiple records in a Kintone app"
     }
   ],
   "tools_generated": true,
@@ -81,14 +81,14 @@
     "kintone_base_url": {
       "type": "string",
       "title": "Kintone Base URL",
-      "description": "The base URL of your kintone environment (e.g., https://example.cybozu.com)",
+      "description": "The base URL of your Kintone environment (e.g., https://example.cybozu.com)",
       "required": true,
       "sensitive": false
     },
     "kintone_username": {
       "type": "string",
       "title": "Kintone Username",
-      "description": "Your kintone username for authentication",
+      "description": "Your Kintone username for authentication",
       "required": false,
       "sensitive": false,
       "default": ""
@@ -96,7 +96,7 @@
     "kintone_password": {
       "type": "string",
       "title": "Kintone Password",
-      "description": "Your kintone password for authentication",
+      "description": "Your Kintone password for authentication",
       "required": false,
       "sensitive": true,
       "default": ""
