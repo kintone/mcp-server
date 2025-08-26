@@ -161,7 +161,7 @@ DXTファイルをインストールした場合、追加の手順は必要あ�
 | `KINTONE_PFX_FILE_PASSWORD`   | `--pfx-file-password`   | PFXファイルのパスワード                                    | -    |
 | `HTTPS_PROXY`                 | `--proxy`               | HTTPSプロキシのURL（例: `http://proxy.example.com:8080`）  | -    |
 
-※1: `KINTONE_USERNAME`/`KINTONE_PASSWORD` または `KINTONE_API_TOKEN` のいずれかが必須
+※1: `KINTONE_USERNAME` & `KINTONE_PASSWORD` または `KINTONE_API_TOKEN` のいずれかが必須
 
 **注意事項:**
 
@@ -206,7 +206,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 - **添付ファイルフィールド**: レコード登録更新ツールにおいて、添付ファイルフィールドは指定できません
 - **選択フィールド**: ユーザー選択フィールド、組織選択フィールド、グループ選択フィールドは、選択肢を設定している場合のみ登録更新が可能です
 
-### 機能制限
+### その他の制限
 
 - **ゲストスペースに非対応**: ゲストスペース内のアプリにはアクセスできません
 - **動作テスト環境に非対応**: アプリの動作テスト環境（アプリ設定を本番環境に反映する前に検証できる環境）は利用できません

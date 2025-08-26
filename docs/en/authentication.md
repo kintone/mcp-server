@@ -1,6 +1,6 @@
 # Authentication Configuration
 
-The Kintone MCP Server supports multiple authentication methods. Configure the appropriate authentication method using environment variables.
+The Kintone MCP Server provides multiple authentication methods. Configure the appropriate authentication method using environment variables.
 
 **Configuration Priority:**
 

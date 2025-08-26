@@ -41,7 +41,7 @@ The official local MCP server for Kintone.
   - [Documentation](#documentation)
   - [Limitations](#limitations)
     - [Record Operation Limitations](#record-operation-limitations)
-    - [Feature Limitations](#feature-limitations)
+    - [Other Limitations](#other-limitations)
   - [Support Policy](#support-policy)
   - [Contribution](#contribution)
   - [License](#license)
@@ -176,7 +176,7 @@ Please refer to the documentation of the AI tool you are using for details on ho
 | `KINTONE_PFX_FILE_PASSWORD`   | `--pfx-file-password`   | PFX file password                                                         | -        |
 | `HTTPS_PROXY`                 | `--proxy`               | HTTPS proxy URL (e.g., `http://proxy.example.com:8080`)                   | -        |
 
-※1: Either `KINTONE_USERNAME`/`KINTONE_PASSWORD` or `KINTONE_API_TOKEN` is required
+※1: Either `KINTONE_USERNAME` & `KINTONE_PASSWORD` or `KINTONE_API_TOKEN` is required
 
 **Notes:**
 
@@ -221,7 +221,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 - **Attachment fields**: Attachment fields cannot be specified in the record add/update tool
 - **Selection fields**: For user selection fields, organization selection fields, and group selection fields, add/update is only possible if choices are set
 
-### Feature Limitations
+### Other Limitations
 
 - **Guest space not supported**: Cannot access apps within guest spaces
 - **Preview not supported**: The app preview environment (a test environment where you can verify app settings before activating them in production) is not available
