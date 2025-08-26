@@ -181,7 +181,7 @@ Please refer to the documentation of the AI tool you are using for details on ho
 **Notes:**
 
 - When using client certificate authentication, the URL domain must be `.s.cybozu.com` (e.g., `https://example.s.cybozu.com`)
-- When username/password authentication and API token authentication are specified simultaneously, username/password authentication takes priority
+- When password authentication and API token authentication are specified simultaneously, password authentication takes priority
 - When both command-line arguments and environment variables are specified, command-line arguments take priority
 - For detailed authentication configuration, refer to the [Authentication Configuration Guide](./docs/en/authentication.md)
 

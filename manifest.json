@@ -104,7 +104,7 @@
     "kintone_api_token": {
       "type": "string",
       "title": "Kintone API Token",
-      "description": "API token for authentication (comma-separated for multiple tokens, max 9 tokens). If both API token and username/password are provided, username/password will take priority.",
+      "description": "API token for authentication (comma-separated for multiple tokens, max 9 tokens). If both API token and username & password are provided, username & password will take priority.",
       "required": false,
       "sensitive": true,
       "default": ""

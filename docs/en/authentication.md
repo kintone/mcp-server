@@ -4,12 +4,12 @@ The Kintone MCP Server provides multiple authentication methods. Configure the a
 
 **Configuration Priority:**
 
-- Authentication methods: When username/password authentication and API token authentication are specified simultaneously, username/password authentication takes priority
+- Authentication methods: When password authentication and API token authentication are specified simultaneously, password authentication takes priority
 - Configuration values: When both command-line arguments and environment variables are specified, command-line arguments take priority
 
 ## Authentication Methods
 
-### 1. Username/Password Authentication
+### 1. Password Authentication
 
 Authenticate using Kintone login credentials.
 
@@ -173,7 +173,7 @@ kintone-mcp-server \
 **Error: "Either KINTONE_USERNAME/KINTONE_PASSWORD or KINTONE_API_TOKEN must be provided"**
 
 - Cause: Authentication credentials not configured
-- Solution: Configure either username/password or API token
+- Solution: Configure either username & password or API token
 
 **Error: "Both KINTONE_PFX_FILE_PATH and KINTONE_PFX_FILE_PASSWORD must be provided together"**
 
