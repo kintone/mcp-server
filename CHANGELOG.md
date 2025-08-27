@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://github.com/kintone/mcp-server/compare/0.1.0...1.0.0) (2025-08-27)
+
+
+### Miscellaneous Chores
+
+* enable npm package publishing ([#88](https://github.com/kintone/mcp-server/issues/88)) ([198b33d](https://github.com/kintone/mcp-server/commit/198b33db58179675c89a87e37f10129d826507f9))
+
 ## [0.1.0](https://github.com/kintone/mcp-server/compare/0.0.1...0.1.0) (2025-08-26)
 
 
