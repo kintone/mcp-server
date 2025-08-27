@@ -2,7 +2,7 @@ import { z } from "zod";
 import fs from "node:fs";
 import { createTool } from "../../utils.js";
 import { getKintoneClient } from "../../../client.js";
-import { parseKintoneClientConfig } from "../../../config.js";
+import { parseKintoneClientConfig } from "../../../config/index.js";
 import { ensureDirectoryExists } from "../../../utils/file.js";
 import { fileTypeFromBuffer } from "file-type";
 import path from "node:path";
