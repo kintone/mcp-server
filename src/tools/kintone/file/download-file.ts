@@ -35,7 +35,7 @@ export const downloadFile = createTool(
   "kintone-download-file",
   {
     description:
-      "Download a file from kintone using its fileKey and save it to the configured download directory. Returns the absolute path to the saved file. Requires KINTONE_DOWNLOAD_DIR environment variable to be set, app record viewing permission, and permission to view the field containing the file.",
+      "Download a file from kintone using its fileKey and save it to the configured download directory. Returns the absolute path to the saved file. Requires KINTONE_ATTACHMENTS_DIR environment variable to be set, app record viewing permission, and permission to view the field containing the file.",
     inputSchema,
     outputSchema,
   },
@@ -44,15 +44,15 @@ export const downloadFile = createTool(
     const client = getKintoneClient(configResult);
 
     // Check if download directory is configured
-    if (!configResult.config.KINTONE_DOWNLOAD_DIR) {
+    if (!configResult.config.KINTONE_ATTACHMENTS_DIR) {
       throw new Error(
-        "KINTONE_DOWNLOAD_DIR environment variable must be set to use file download feature",
+        "KINTONE_ATTACHMENTS_DIR environment variable must be set to use file download feature",
       );
     }
 
     const buffer = await client.file.downloadFile({ fileKey });
 
-    const downloadDir = configResult.config.KINTONE_DOWNLOAD_DIR;
+    const downloadDir = configResult.config.KINTONE_ATTACHMENTS_DIR;
     ensureDirectoryExists(downloadDir);
 
     const fileTypeResult = await fileTypeFromBuffer(buffer);

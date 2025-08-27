@@ -65,8 +65,7 @@ export const configSchema = z
       .string()
       .optional()
       .describe("Password for PFX client certificate file"),
-    // TODO: もしかしてKINTONE_ATTACHMENTS_DIRでもいいかも
-    KINTONE_DOWNLOAD_DIR: z
+    KINTONE_ATTACHMENTS_DIR: z
       .string()
       .optional()
       .describe("Directory path for downloading files from kintone"),
