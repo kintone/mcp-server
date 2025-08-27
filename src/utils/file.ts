@@ -1,3 +1,4 @@
+import { fileTypeFromBuffer } from "file-type";
 import fs from "node:fs";
 
 /**
@@ -15,4 +16,17 @@ export const ensureDirectoryExists = (dirPath: string): void => {
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
   }
+};
+
+export const writeFileSyncFromArrayBuffer = (
+  filePath: string,
+  arrayBuffer: ArrayBuffer,
+) => {
+  const buffer = Buffer.from(arrayBuffer);
+  fs.writeFileSync(filePath, buffer);
+};
+
+export const getFileTypeFromArrayBuffer = async (arrayBuffer: ArrayBuffer) => {
+  const fileTypeResult = await fileTypeFromBuffer(arrayBuffer);
+  return fileTypeResult;
 };

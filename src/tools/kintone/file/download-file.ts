@@ -3,8 +3,11 @@ import fs from "node:fs";
 import { createTool } from "../../utils.js";
 import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config/index.js";
-import { ensureDirectoryExists } from "../../../utils/file.js";
-import { fileTypeFromBuffer } from "file-type";
+import {
+  ensureDirectoryExists,
+  getFileTypeFromArrayBuffer,
+  writeFileSyncFromArrayBuffer,
+} from "../../../utils/file.js";
 import path from "node:path";
 
 const inputSchema = {
@@ -53,22 +56,22 @@ export const downloadFile = createTool(
     const buffer = await client.file.downloadFile({ fileKey });
 
     const downloadDir = configResult.config.KINTONE_ATTACHMENTS_DIR;
+    // vi.mockする
     ensureDirectoryExists(downloadDir);
 
-    const fileTypeResult = await fileTypeFromBuffer(buffer);
-    const mimeType = fileTypeResult?.mime;
-    const ext = fileTypeResult?.ext;
+    // vi.mock fileTypeFromBuffer
+    // ↓実際のファイルない。mockできればいいが
+    const fileTypeResult = await getFileTypeFromArrayBuffer(buffer);
 
-    const fileName = generateFileName(fileKey, ext);
+    const fileName = generateFileName(fileKey, fileTypeResult?.ext);
     const filePath = generateFilePath(downloadDir, fileName);
 
-    const bufferData = Buffer.from(buffer);
-    fs.writeFileSync(filePath, bufferData);
+    writeFileSyncFromArrayBuffer(filePath, buffer);
 
     const result = {
       filePath,
-      mimeType,
-      fileSize: bufferData.length,
+      mimeType: fileTypeResult?.mime,
+      fileSize: buffer.byteLength,
     };
 
     return {
