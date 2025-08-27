@@ -10,24 +10,24 @@ import { version } from "./version.js";
 
 let client: KintoneRestAPIClient | null = null;
 
+export type KintoneClientConfig = {
+  KINTONE_BASE_URL?: string;
+  KINTONE_USERNAME?: string;
+  KINTONE_PASSWORD?: string;
+  KINTONE_API_TOKEN?: string;
+  KINTONE_BASIC_AUTH_USERNAME?: string;
+  KINTONE_BASIC_AUTH_PASSWORD?: string;
+  HTTPS_PROXY?: string;
+  KINTONE_PFX_FILE_PATH?: string;
+  KINTONE_PFX_FILE_PASSWORD?: string;
+};
+
 export const getKintoneClient = (
-  config: KintoneClientConfigParseResult,
+  config: ClientConfig,
 ): KintoneRestAPIClient => {
   if (client) {
     return client;
   }
-
-  const {
-    KINTONE_BASE_URL,
-    KINTONE_USERNAME,
-    KINTONE_PASSWORD,
-    KINTONE_API_TOKEN,
-    KINTONE_BASIC_AUTH_USERNAME,
-    KINTONE_BASIC_AUTH_PASSWORD,
-    HTTPS_PROXY,
-    KINTONE_PFX_FILE_PATH,
-    KINTONE_PFX_FILE_PASSWORD,
-  } = config.config;
 
   const authParams = buildAuthParams({
     username: KINTONE_USERNAME,

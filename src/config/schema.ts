@@ -109,9 +109,9 @@ export const configSchema = z
     },
   );
 
-export type KintoneClientConfig = z.infer<typeof configSchema>;
+export type McpConfig = z.infer<typeof configSchema>;
 
-export type KintoneClientConfigParseResult = {
-  config: KintoneClientConfig;
+export type McpConfigParseResult = {
+  config: McpConfig;
   isApiTokenAuth: boolean;
 };

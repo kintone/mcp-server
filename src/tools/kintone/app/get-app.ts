@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createTool } from "../../utils.js";
-import { getKintoneClient } from "../../../client.js";
-import { parseKintoneClientConfig } from "../../../config/index.js";
+import { createKintoneClient } from "../../../client.js";
+import { getKintoneClientConfig, parseKintoneClientConfig } from "../../../config/index.js";
 
 const inputSchema = {
   appId: z
@@ -49,8 +49,7 @@ export const getApp = createTool(
     outputSchema,
   },
   async ({ appId }) => {
-    const config = parseKintoneClientConfig();
-    const client = getKintoneClient(config);
+    const client = createKintoneClient(getKintoneClientConfig());
     const app = await client.app.getApp({ id: appId });
     const result = {
       appId: app.appId,
