@@ -1,7 +1,6 @@
 {
   "name": "@kintone/mcp-server",
   "version": "0.1.0",
-  "private": true,
   "description": "The official MCP Server for kintone",
   "keywords": [
     "kintone",
