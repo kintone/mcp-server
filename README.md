@@ -7,7 +7,7 @@
 
 [ci-badge]: https://github.com/kintone/mcp-server/actions/workflows/ci.yaml/badge.svg
 [ci-url]: https://github.com/kintone/mcp-server/actions/workflows/ci.yaml
-[npm-badge]: https://badge.fury.io/js/@kintone%2Fmcp-server.svg
+[npm-badge]: https://badge.fury.io/js/@kintone%2Fmcp-server.svg?icon=si%3Anpm
 [npm-url]: https://badge.fury.io/js/@kintone%2Fmcp-server
 [license-badge]: https://img.shields.io/badge/License-Apache_2.0-blue.svg
 [license-url]: LICENSE
