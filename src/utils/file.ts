@@ -27,6 +27,5 @@ export const writeFileSyncFromArrayBuffer = (
 };
 
 export const getFileTypeFromArrayBuffer = async (arrayBuffer: ArrayBuffer) => {
-  const fileTypeResult = await fileTypeFromBuffer(arrayBuffer);
-  return fileTypeResult;
+  return fileTypeFromBuffer(arrayBuffer);
 };

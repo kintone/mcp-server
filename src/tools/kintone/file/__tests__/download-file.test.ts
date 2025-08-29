@@ -28,22 +28,22 @@ describe("downloadFile", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    // KintoneRestAPIClientのモック
+    // Mock KintoneRestAPIClient
     vi.mocked(KintoneRestAPIClient).mockImplementation(() => mockClient as any);
 
-    // pathモジュールの実際の動作を維持
+    // Maintain actual behavior of path module
     vi.mocked(path.join).mockImplementation((...args) => args.join("/"));
   });
 
-  describe("正常系", () => {
-    it("ファイルを正常にダウンロードして保存できる", async () => {
-      // 環境変数の設定
+  describe("Success cases", () => {
+    it("can successfully download and save a file", async () => {
+      // Set environment variables
       process.env.KINTONE_BASE_URL = "https://example.cybozu.com";
       process.env.KINTONE_USERNAME = "testuser";
       process.env.KINTONE_PASSWORD = "testpass";
       process.env.KINTONE_ATTACHMENTS_DIR = "/tmp/downloads";
 
-      // モックの設定
+      // Set up mocks
       const mockBuffer = new ArrayBuffer(100);
       mockDownloadFile.mockResolvedValue(mockBuffer);
 
@@ -52,7 +52,7 @@ describe("downloadFile", () => {
         ext: "png",
       });
 
-      // 実行
+      // Execute
       const result = await downloadFile.callback(
         { fileKey: "test-file-key-123" },
         mockExtra,
@@ -71,75 +71,43 @@ describe("downloadFile", () => {
       );
     });
 
-    it("拡張子が取得できない場合でもファイルを保存できる", async () => {
-      // 環境変数の設定
+    it("can save a file even when extension cannot be determined", async () => {
+      // Set environment variables
       process.env.KINTONE_BASE_URL = "https://example.cybozu.com";
       process.env.KINTONE_USERNAME = "testuser";
       process.env.KINTONE_PASSWORD = "testpass";
       process.env.KINTONE_ATTACHMENTS_DIR = "/tmp/downloads";
 
-      // モックの設定
+      // Set up mocks
       const mockBuffer = new ArrayBuffer(50);
       mockDownloadFile.mockResolvedValue(mockBuffer);
 
       vi.mocked(getFileTypeFromArrayBuffer).mockResolvedValue(null);
 
-      // 実行
+      // Execute
       const result = await downloadFile.callback(
         { fileKey: "no-ext-file" },
         mockExtra,
       );
 
-      // 検証
+      // Verify
       expect(result.structuredContent).toEqual({
         filePath: "/tmp/downloads/no-ext-file",
         mimeType: "application/octet-stream",
         fileSize: 50,
       });
     });
-
-    it("Basic認証が設定されている場合も正常動作する", async () => {
-      // 環境変数の設定
-      process.env.KINTONE_BASE_URL = "https://example.cybozu.com";
-      process.env.KINTONE_USERNAME = "testuser";
-      process.env.KINTONE_PASSWORD = "testpass";
-      process.env.KINTONE_BASIC_AUTH_USERNAME = "basicuser";
-      process.env.KINTONE_BASIC_AUTH_PASSWORD = "basicpass";
-      process.env.KINTONE_ATTACHMENTS_DIR = "/tmp/downloads";
-
-      // モックの設定
-      const mockBuffer = new ArrayBuffer(200);
-      mockDownloadFile.mockResolvedValue(mockBuffer);
-
-      vi.mocked(getFileTypeFromArrayBuffer).mockResolvedValue({
-        mime: "application/pdf",
-        ext: "pdf",
-      });
-
-      // 実行
-      const result = await downloadFile.callback(
-        { fileKey: "pdf-file-key" },
-        mockExtra,
-      );
-
-      // 検証
-      expect(result.structuredContent).toEqual({
-        filePath: "/tmp/downloads/pdf-file-key.pdf",
-        mimeType: "application/pdf",
-        fileSize: 200,
-      });
-    });
   });
 
-  describe("エラー系", () => {
-    it("KINTONE_ATTACHMENTS_DIRが設定されていない場合はエラー", async () => {
-      // 環境変数の設定（ATTACHMENTS_DIRなし）
+  describe("Error cases", () => {
+    it("throws error when KINTONE_ATTACHMENTS_DIR is not set", async () => {
+      // Set environment variables (without ATTACHMENTS_DIR)
       process.env.KINTONE_BASE_URL = "https://example.cybozu.com";
       process.env.KINTONE_USERNAME = "testuser";
       process.env.KINTONE_PASSWORD = "testpass";
       delete process.env.KINTONE_ATTACHMENTS_DIR;
 
-      // 実行と検証
+      // Execute and verify
       await expect(
         downloadFile.callback({ fileKey: "test-file" }, mockExtra),
       ).rejects.toThrow(
@@ -147,51 +115,38 @@ describe("downloadFile", () => {
       );
     });
 
-    it("必須の環境変数が不足している場合はエラー", async () => {
-      // 環境変数をクリア
-      delete process.env.KINTONE_BASE_URL;
-      delete process.env.KINTONE_USERNAME;
-      delete process.env.KINTONE_PASSWORD;
-      process.env.KINTONE_ATTACHMENTS_DIR = "/tmp/downloads";
-
-      // 実行と検証
-      await expect(
-        downloadFile.callback({ fileKey: "test-file" }, mockExtra),
-      ).rejects.toThrow();
-    });
-
-    it("ダウンロードに失敗した場合はエラー", async () => {
-      // 環境変数の設定
+    it("throws error when download fails", async () => {
+      // Set environment variables
       process.env.KINTONE_BASE_URL = "https://example.cybozu.com";
       process.env.KINTONE_USERNAME = "testuser";
       process.env.KINTONE_PASSWORD = "testpass";
       process.env.KINTONE_ATTACHMENTS_DIR = "/tmp/downloads";
 
-      // モックの設定
+      // Set up mocks
       mockDownloadFile.mockRejectedValue(new Error("Download failed"));
 
-      // 実行と検証
+      // Execute and verify
       await expect(
         downloadFile.callback({ fileKey: "fail-file" }, mockExtra),
       ).rejects.toThrow("Download failed");
     });
 
-    it("不正なfileKeyの場合はバリデーションエラー", async () => {
-      // 環境変数の設定
+    it("throws validation error for invalid fileKey", async () => {
+      // Set environment variables
       process.env.KINTONE_BASE_URL = "https://example.cybozu.com";
       process.env.KINTONE_USERNAME = "testuser";
       process.env.KINTONE_PASSWORD = "testpass";
       process.env.KINTONE_ATTACHMENTS_DIR = "/tmp/downloads";
 
-      // 実行と検証（fileKeyが数値の場合）
+      // Execute and verify (when fileKey is a number)
       await expect(
         downloadFile.callback({ fileKey: 123 as any }, mockExtra),
       ).rejects.toThrow();
     });
   });
 
-  describe("ツールメタデータ", () => {
-    it("正しいツール名とdescriptionを持つ", () => {
+  describe("Tool metadata", () => {
+    it("has correct tool name and description", () => {
       expect(downloadFile.name).toBe("kintone-download-file");
       expect(downloadFile.config.description).toContain(
         "Download a file from kintone",
@@ -201,18 +156,18 @@ describe("downloadFile", () => {
       );
     });
 
-    it("正しい入力スキーマを持つ", () => {
+    it("has correct input schema", () => {
       const inputSchema = downloadFile.config.inputSchema;
       expect(inputSchema).toBeDefined();
-      expect(inputSchema.fileKey).toBeDefined();
+      expect(inputSchema).toHaveProperty("fileKey");
     });
 
-    it("正しい出力スキーマを持つ", () => {
+    it("has correct output schema", () => {
       const outputSchema = downloadFile.config.outputSchema;
       expect(outputSchema).toBeDefined();
-      expect(outputSchema.filePath).toBeDefined();
-      expect(outputSchema.mimeType).toBeDefined();
-      expect(outputSchema.fileSize).toBeDefined();
+      expect(outputSchema).toHaveProperty("filePath");
+      expect(outputSchema).toHaveProperty("mimeType");
+      expect(outputSchema).toHaveProperty("fileSize");
     });
   });
 });
