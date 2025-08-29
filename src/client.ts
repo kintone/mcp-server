@@ -8,7 +8,10 @@ import { Agent, type AgentOptions } from "https";
 import { readFileSync } from "fs";
 import { version } from "./version.js";
 
-let client: KintoneRestAPIClient | null = null;
+let instance: { client?: KintoneRestAPIClient; error?: KintoneClientError } = {
+  client: undefined,
+  error: undefined,
+};
 
 export type KintoneClientConfig = {
   KINTONE_BASE_URL?: string;
@@ -20,42 +23,43 @@ export type KintoneClientConfig = {
   HTTPS_PROXY?: string;
   KINTONE_PFX_FILE_PATH?: string;
   KINTONE_PFX_FILE_PASSWORD?: string;
+  isApiTokenAuth?: boolean;
+};
+
+export type KintoneClientError = {
+  message: string;
 };
 
 export const getKintoneClient = (
-  config: ClientConfig,
-): KintoneRestAPIClient => {
-  if (client) {
-    return client;
+  config: KintoneClientConfig,
+): { client?: KintoneRestAPIClient; error?: KintoneClientError } => {
+  if (instance) {
+    return instance;
   }
 
   const authParams = buildAuthParams({
-    username: KINTONE_USERNAME,
-    password: KINTONE_PASSWORD,
-    apiToken: KINTONE_API_TOKEN,
+    username: config.KINTONE_USERNAME,
+    password: config.KINTONE_PASSWORD,
+    apiToken: config.KINTONE_API_TOKEN,
     isApiTokenAuth: config.isApiTokenAuth,
   });
 
-  client = new KintoneRestAPIClient({
-    baseUrl: KINTONE_BASE_URL,
+  const client = new KintoneRestAPIClient({
+    baseUrl: config.KINTONE_BASE_URL,
     ...authParams,
     ...buildBasicAuthParam({
-      basicAuthUsername: KINTONE_BASIC_AUTH_USERNAME,
-      basicAuthPassword: KINTONE_BASIC_AUTH_PASSWORD,
+      basicAuthUsername: config.KINTONE_BASIC_AUTH_USERNAME,
+      basicAuthPassword: config.KINTONE_BASIC_AUTH_PASSWORD,
     }),
     userAgent: `${PACKAGE_NAME}@${version}`,
     httpsAgent: buildHttpsAgent({
-      proxy: HTTPS_PROXY,
-      pfxFilePath: KINTONE_PFX_FILE_PATH,
-      pfxPassword: KINTONE_PFX_FILE_PASSWORD,
+      proxy: config.HTTPS_PROXY,
+      pfxFilePath: config.KINTONE_PFX_FILE_PATH,
+      pfxPassword: config.KINTONE_PFX_FILE_PASSWORD,
     }),
   });
 
-  return client;
-};
-
-export const resetKintoneClient = (): void => {
-  client = null;
+  return { client, error: undefined };
 };
 
 const buildAuthParams = (option: {

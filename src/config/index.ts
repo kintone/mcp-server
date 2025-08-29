@@ -29,5 +29,6 @@ export const getKintoneClientConfig = (): KintoneClientConfig => {
     KINTONE_PFX_FILE_PATH: mcpConfig.KINTONE_PFX_FILE_PATH,
     KINTONE_PFX_FILE_PASSWORD: mcpConfig.KINTONE_PFX_FILE_PASSWORD,
     KINTONE_API_TOKEN: mcpConfig.KINTONE_API_TOKEN,
+    isApiTokenAuth: isApiTokenAuth(),
   };
 }

@@ -1,7 +1,8 @@
 import { z } from "zod";
+import type { ZodRawShape } from "zod";
 import { createTool } from "../../utils.js";
-import { createKintoneClient } from "../../../client.js";
-import { getKintoneClientConfig, parseKintoneClientConfig } from "../../../config/index.js";
+import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
+import type { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 const inputSchema = {
   appId: z
@@ -40,38 +41,39 @@ const outputSchema = {
     .describe("The modifier information"),
 };
 
-export const getApp = createTool(
-  "kintone-get-app",
-  {
-    title: "Get App",
-    description: "Get app settings from kintone",
-    inputSchema,
-    outputSchema,
-  },
-  async ({ appId }) => {
-    const client = createKintoneClient(getKintoneClientConfig());
-    const app = await client.app.getApp({ id: appId });
-    const result = {
-      appId: app.appId,
-      code: app.code,
-      name: app.name,
-      description: app.description,
-      spaceId: app.spaceId,
-      threadId: app.threadId,
-      createdAt: app.createdAt,
-      creator: app.creator,
-      modifiedAt: app.modifiedAt,
-      modifier: app.modifier,
-    };
+export const createGetAppTool = (client: KintoneRestAPIClient) => {
+  return createTool(
+    "kintone-get-app",
+    {
+      title: "Get App",
+      description: "Get app settings from kintone",
+      inputSchema,
+      outputSchema,
+    },
+    async ({ appId }) => {
+      const app = await client.app.getApp({ id: appId });
+      const result = {
+        appId: app.appId,
+        code: app.code,
+        name: app.name,
+        description: app.description,
+        spaceId: app.spaceId,
+        threadId: app.threadId,
+        createdAt: app.createdAt,
+        creator: app.creator,
+        modifiedAt: app.modifiedAt,
+        modifier: app.modifier,
+      };
 
-    return {
-      structuredContent: result,
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(result, null, 2),
-        },
-      ],
-    };
-  },
-);
+      return {
+        structuredContent: result,
+        content: [
+          {
+            type: "text" as const,
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      };
+    },
+  );
+};

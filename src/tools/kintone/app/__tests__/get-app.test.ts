@@ -1,34 +1,22 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { getApp } from "../get-app.js";
+import { createGetAppTool } from "../get-app.js";
 import { z } from "zod";
 import { mockExtra } from "../../../../__tests__/utils.js";
 
-// Mock the KintoneRestAPIClient
+// Mock client
 const mockGetApp = vi.fn();
-vi.mock("@kintone/rest-api-client", () => ({
-  KintoneRestAPIClient: vi.fn().mockImplementation(() => ({
-    app: {
-      getApp: mockGetApp,
-    },
-  })),
-}));
+const mockClient = {
+  app: {
+    getApp: mockGetApp,
+  },
+} as any;
 
 describe("get-app tool", () => {
-  const originalEnv = process.env;
+  let getApp: ReturnType<typeof createGetAppTool>;
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    // Set up environment variables for testing
-    process.env = {
-      ...originalEnv,
-      KINTONE_BASE_URL: "https://example.cybozu.com",
-      KINTONE_USERNAME: "testuser",
-      KINTONE_PASSWORD: "testpass",
-    };
-  });
-
-  afterEach(() => {
-    process.env = originalEnv;
+    getApp = createGetAppTool(mockClient);
   });
 
   describe("tool configuration", () => {
