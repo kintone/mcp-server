@@ -28,6 +28,15 @@ const config = createConfig({
   extract: {
     output: "./NOTICE",
   },
+  overrideLicenseText: (dep) => {
+    if (dep.name === "@tokenizer/token") {
+      return {
+        // License text is written in README.md
+        licenseText: "See https://github.com/Borewit/tokenizer-token#licence",
+      };
+    }
+    return undefined;
+  },
   packageManager: "pnpm",
 });
 
