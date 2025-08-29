@@ -160,6 +160,7 @@ DXTファイルをインストールした場合、追加の手順は必要あ�
 | `--pfx-file-path`       | `KINTONE_PFX_FILE_PATH`       | PFXファイルのパス（クライアント証明書認証用）              | -    |
 | `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFXファイルのパスワード                                    | -    |
 | `--proxy`               | `HTTPS_PROXY`                 | HTTPSプロキシのURL（例: `http://proxy.example.com:8080`）  | -    |
+| `--attachments-dir`     | `KINTONE_ATTACHMENTS_DIR`     | ダウンロードしたファイルの保存先                           | -    |
 
 ※1: `KINTONE_USERNAME` & `KINTONE_PASSWORD` または `KINTONE_API_TOKEN` のいずれかが必須
 
@@ -168,7 +169,7 @@ DXTファイルをインストールした場合、追加の手順は必要あ�
 - クライアント証明書認証を使用する場合、URLのドメインは `.s.cybozu.com` となります（例: `https://example.s.cybozu.com`）
 - パスワード認証とAPIトークン認証を同時に指定した場合、パスワード認証が優先されます
 - コマンドライン引数と環境変数を同時に指定した場合、コマンドライン引数が優先されます
-- 詳細な認証設定については [認証設定ガイド](./docs/ja/authentication.md) を参照してください
+- 詳細な認証設定については [認証設定ガイド] を参照してください
 
 ### プロキシ設定
 
@@ -183,17 +184,18 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 
 ## ツール一覧
 
-| ツール名                         | 説明                             |
-| -------------------------------- | -------------------------------- |
-| `kintone-get-apps`               | 複数のアプリ情報を取得           |
-| `kintone-get-app`                | 単一アプリの詳細情報を取得       |
-| `kintone-get-form-fields`        | アプリのフィールド設定を取得     |
-| `kintone-get-process-management` | プロセス管理設定を取得           |
-| `kintone-get-records`            | 複数のレコードを取得             |
-| `kintone-add-records`            | 複数のレコードを追加             |
-| `kintone-update-records`         | 複数のレコードを更新             |
-| `kintone-delete-records`         | 複数のレコードを削除             |
-| `kintone-update-statuses`        | 複数のレコードのステータスを更新 |
+| ツール名                         | 説明                                   |
+| -------------------------------- | -------------------------------------- |
+| `kintone-get-apps`               | 複数のアプリ情報を取得                 |
+| `kintone-get-app`                | 単一アプリの詳細情報を取得             |
+| `kintone-get-form-fields`        | アプリのフィールド設定を取得           |
+| `kintone-get-process-management` | プロセス管理設定を取得                 |
+| `kintone-get-records`            | 複数のレコードを取得                   |
+| `kintone-add-records`            | 複数のレコードを追加                   |
+| `kintone-update-records`         | 複数のレコードを更新                   |
+| `kintone-delete-records`         | 複数のレコードを削除                   |
+| `kintone-update-statuses`        | 複数のレコードのステータスを更新       |
+| `kintone-download-file`          | 添付ファイルフィールドのファイルを保存 |
 
 ## ドキュメント
 

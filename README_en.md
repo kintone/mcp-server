@@ -175,6 +175,7 @@ Please refer to the documentation of the AI tool you are using for details on ho
 | `--pfx-file-path`       | `KINTONE_PFX_FILE_PATH`       | Path to PFX file (for client certificate authentication)                  | -        |
 | `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFX file password                                                         | -        |
 | `--proxy`               | `HTTPS_PROXY`                 | HTTPS proxy URL (e.g., `http://proxy.example.com:8080`)                   | -        |
+| `--attachments-dir`     | `KINTONE_ATTACHMENTS_DIR`     | Directory to save downloaded files                                        | -        |
 
 ※1: Either `KINTONE_USERNAME` & `KINTONE_PASSWORD` or `KINTONE_API_TOKEN` is required
 
@@ -198,17 +199,18 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 
 ## Tools
 
-| Tool Name                        | Description                       |
-| -------------------------------- | --------------------------------- |
-| `kintone-get-apps`               | Get information of multiple apps  |
-| `kintone-get-app`                | Get details of a single app       |
-| `kintone-get-form-fields`        | Get app field settings            |
-| `kintone-get-process-management` | Get process management settings   |
-| `kintone-get-records`            | Get multiple records              |
-| `kintone-add-records`            | Add multiple records              |
-| `kintone-update-records`         | Update multiple records           |
-| `kintone-delete-records`         | Delete multiple records           |
-| `kintone-update-statuses`        | Update status of multiple records |
+| Tool Name                        | Description                                       |
+| -------------------------------- | ------------------------------------------------- |
+| `kintone-get-apps`               | Get information of multiple apps                  |
+| `kintone-get-app`                | Get details of a single app                       |
+| `kintone-get-form-fields`        | Get app field settings                            |
+| `kintone-get-process-management` | Get process management settings                   |
+| `kintone-get-records`            | Get multiple records                              |
+| `kintone-add-records`            | Add multiple records                              |
+| `kintone-update-records`         | Update multiple records                           |
+| `kintone-delete-records`         | Delete multiple records                           |
+| `kintone-update-statuses`        | Update status of multiple records                 |
+| `kintone-download-file`          | Download and save a file from an attachment field |
 
 ## Documentation
 
