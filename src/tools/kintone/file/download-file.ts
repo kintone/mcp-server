@@ -1,5 +1,4 @@
 import { z } from "zod";
-import fs from "node:fs";
 import { createTool } from "../../utils.js";
 import { getKintoneClient } from "../../../client.js";
 import { parseKintoneClientConfig } from "../../../config/index.js";
@@ -56,11 +55,8 @@ export const downloadFile = createTool(
     const buffer = await client.file.downloadFile({ fileKey });
 
     const downloadDir = configResult.config.KINTONE_ATTACHMENTS_DIR;
-    // vi.mockする
     ensureDirectoryExists(downloadDir);
 
-    // vi.mock fileTypeFromBuffer
-    // ↓実際のファイルない。mockできればいいが
     const fileTypeResult = await getFileTypeFromArrayBuffer(buffer);
 
     const fileName = generateFileName(fileKey, fileTypeResult?.ext);
@@ -70,7 +66,7 @@ export const downloadFile = createTool(
 
     const result = {
       filePath,
-      mimeType: fileTypeResult?.mime,
+      mimeType: fileTypeResult?.mime || "application/octet-stream",
       fileSize: buffer.byteLength,
     };
 
