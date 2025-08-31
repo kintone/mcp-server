@@ -70,7 +70,7 @@
     "@types/node": "^22.18.0",
     "doctoc": "^2.2.1",
     "eslint": "^9.34.0",
-    "eslint-plugin-package-json": "^0.56.0",
+    "eslint-plugin-package-json": "^0.56.1",
     "globals": "^16.3.0",
     "prettier": "^3.6.2",
     "tsx": "^4.20.5",
