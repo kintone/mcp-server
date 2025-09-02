@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const recordValueSchema = z.union([
+const recordValueSchema = z.union([
   z.object({
     type: z.literal("SINGLE_LINE_TEXT"),
     value: z.string().nullable(),
@@ -195,5 +195,3 @@ export const recordValueSchema = z.union([
 
 export const recordSchema = z.record(recordValueSchema);
 
-export type RecordValue = z.infer<typeof recordValueSchema>;
-export type Record = z.infer<typeof recordSchema>;

@@ -1,8 +1,7 @@
 import { z } from "zod";
-import { createTool } from "../../utils.js";
-import { getKintoneClient } from "../../../client.js";
-import { parseKintoneClientConfig } from "../../../config/index.js";
-import { recordSchemaForParameterWithoutFile } from "../../../schema/record/record-for-parameter.js";
+import type { KintoneToolCallback } from "../../schema.js";
+import { createTool } from "../../factory.js";
+import { recordSchemaForParameterWithoutFile } from "../../../schema/record/index.js";
 
 const inputSchema = {
   app: z
@@ -24,37 +23,38 @@ const outputSchema = {
     .describe("Array of revision numbers of the created records"),
 };
 
-export const addRecords = createTool(
-  "kintone-add-records",
-  {
-    title: "Add Records",
-    description:
-      "Add multiple records to a kintone app. Use kintone-get-form-fields tool first to discover available field codes and their required formats. Note: Some fields cannot be registered (LOOKUP copies, STATUS, CATEGORY, CALC, ASSIGNEE, auto-calculated fields).",
-    inputSchema,
-    outputSchema,
-  },
-  async ({ app, records }) => {
-    const config = parseKintoneClientConfig();
-    const client = getKintoneClient(config);
+const toolName = "kintone-add-records";
+const toolConfig = {
+  title: "Add Records",
+  description:
+    "Add multiple records to a kintone app. Use kintone-get-form-fields tool first to discover available field codes and their required formats. Note: Some fields cannot be registered (LOOKUP copies, STATUS, CATEGORY, CALC, ASSIGNEE, auto-calculated fields).",
+  inputSchema,
+  outputSchema,
+};
 
-    const response = await client.record.addRecords({
-      app,
-      records,
-    });
+const callback: KintoneToolCallback<typeof inputSchema> = async (
+  { app, records },
+  { client },
+) => {
+  const response = await client.record.addRecords({
+    app,
+    records,
+  });
 
-    const result = {
-      ids: response.ids,
-      revisions: response.revisions,
-    };
+  const result = {
+    ids: response.ids,
+    revisions: response.revisions,
+  };
 
-    return {
-      structuredContent: result,
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(result, null, 2),
-        },
-      ],
-    };
-  },
-);
+  return {
+    structuredContent: result,
+    content: [
+      {
+        type: "text",
+        text: JSON.stringify(result, null, 2),
+      },
+    ],
+  };
+};
+
+export const addRecords = createTool(toolName, toolConfig, callback);

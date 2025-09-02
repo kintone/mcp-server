@@ -1,7 +1,6 @@
 import { z } from "zod";
-import { createTool } from "../../utils.js";
-import { getKintoneClient } from "../../../client.js";
-import { parseKintoneClientConfig } from "../../../config/index.js";
+import type { KintoneToolCallback } from "../../schema.js";
+import { createTool } from "../../factory.js";
 
 const inputSchema = {
   app: z
@@ -74,31 +73,32 @@ const outputSchema = {
   revision: z.string().describe("App settings revision number"),
 };
 
-export const getProcessManagement = createTool(
-  "kintone-get-process-management",
-  {
-    title: "Get Process Management",
-    description: "Get process management settings from a kintone app",
-    inputSchema,
-    outputSchema,
-  },
-  async ({ app, lang }) => {
-    const config = parseKintoneClientConfig();
-    const client = getKintoneClient(config);
+const toolName = "kintone-get-process-management";
+const toolConfig = {
+  title: "Get Process Management",
+  description: "Get process management settings from a kintone app",
+  inputSchema,
+  outputSchema,
+};
 
-    const response = await client.app.getProcessManagement({
-      app,
-      lang,
-    });
+const callback: KintoneToolCallback<typeof inputSchema> = async (
+  { app, lang },
+  { client },
+) => {
+  const response = await client.app.getProcessManagement({
+    app,
+    lang,
+  });
 
-    return {
-      structuredContent: response,
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(response, null, 2),
-        },
-      ],
-    };
-  },
-);
+  return {
+    structuredContent: response,
+    content: [
+      {
+        type: "text",
+        text: JSON.stringify(response, null, 2),
+      },
+    ],
+  };
+};
+
+export const getProcessManagement = createTool(toolName, toolConfig, callback);

@@ -1,7 +1,6 @@
 import { z } from "zod";
-import { createTool } from "../../utils.js";
-import { getKintoneClient } from "../../../client.js";
-import { parseKintoneClientConfig } from "../../../config/index.js";
+import type { KintoneToolCallback } from "../../schema.js";
+import { createTool } from "../../factory.js";
 
 const inputSchema = {
   app: z
@@ -125,36 +124,37 @@ const outputSchema = {
   revision: z.string().describe("App configuration revision number"),
 };
 
-export const getFormFields = createTool(
-  "kintone-get-form-fields",
-  {
-    title: "Get Form Fields",
-    description: "Get form field settings from a kintone app",
-    inputSchema,
-    outputSchema,
-  },
-  async ({ app, lang }) => {
-    const config = parseKintoneClientConfig();
-    const client = getKintoneClient(config);
+const toolName = "kintone-get-form-fields";
+const toolConfig = {
+  title: "Get Form Fields",
+  description: "Get form field settings from a kintone app",
+  inputSchema,
+  outputSchema,
+};
 
-    const response = await client.app.getFormFields({
-      app,
-      lang,
-    });
+const callback: KintoneToolCallback<typeof inputSchema> = async (
+  { app, lang },
+  { client },
+) => {
+  const response = await client.app.getFormFields({
+    app,
+    lang,
+  });
 
-    const result = {
-      properties: response.properties,
-      revision: response.revision,
-    };
+  const result = {
+    properties: response.properties,
+    revision: response.revision,
+  };
 
-    return {
-      structuredContent: result,
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(result, null, 2),
-        },
-      ],
-    };
-  },
-);
+  return {
+    structuredContent: result,
+    content: [
+      {
+        type: "text",
+        text: JSON.stringify(result, null, 2),
+      },
+    ],
+  };
+};
+
+export const getFormFields = createTool(toolName, toolConfig, callback);

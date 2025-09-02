@@ -1,8 +1,7 @@
 import { z } from "zod";
-import { createTool } from "../../utils.js";
-import { getKintoneClient } from "../../../client.js";
-import { parseKintoneClientConfig } from "../../../config/index.js";
-import { recordSchema } from "../../../schema/record/records.js";
+import type { KintoneToolCallback } from "../../schema.js";
+import { createTool } from "../../factory.js";
+import { recordSchema } from "../../../schema/record/index.js";
 
 const filtersSchema = z
   .object({
@@ -151,58 +150,59 @@ function buildQueryFromFilters(
   return conditions.length > 0 ? conditions.join(" and ") : undefined;
 }
 
-export const getRecords = createTool(
-  "kintone-get-records",
-  {
-    title: "Get Records",
-    description:
-      "Get multiple records from a kintone app with structured filtering. Use kintone-get-form-fields tool first to discover available fields and their types.",
-    inputSchema,
-    outputSchema,
-  },
-  async ({ app, filters, fields, orderBy, limit, offset }) => {
-    const config = parseKintoneClientConfig();
-    const client = getKintoneClient(config);
+const toolName = "kintone-get-records";
+const toolConfig = {
+  title: "Get Records",
+  description:
+    "Get multiple records from a kintone app with structured filtering. Use kintone-get-form-fields tool first to discover available fields and their types.",
+  inputSchema,
+  outputSchema,
+};
 
-    let query = filters ? buildQueryFromFilters(filters) : undefined;
+const callback: KintoneToolCallback<typeof inputSchema> = async (
+  { app, filters, fields, orderBy, limit, offset },
+  { client },
+) => {
+  let query = filters ? buildQueryFromFilters(filters) : undefined;
 
-    if (orderBy && orderBy.length > 0) {
-      const orderClauses = orderBy
-        .map((o) => `${o.field} ${o.order || "asc"}`)
-        .join(", ");
-      query = query
-        ? `${query} order by ${orderClauses}`
-        : `order by ${orderClauses}`;
-    }
+  if (orderBy && orderBy.length > 0) {
+    const orderClauses = orderBy
+      .map((o) => `${o.field} ${o.order || "asc"}`)
+      .join(", ");
+    query = query
+      ? `${query} order by ${orderClauses}`
+      : `order by ${orderClauses}`;
+  }
 
-    if (limit !== undefined) {
-      query = query ? `${query} limit ${limit}` : `limit ${limit}`;
-    }
+  if (limit !== undefined) {
+    query = query ? `${query} limit ${limit}` : `limit ${limit}`;
+  }
 
-    if (offset !== undefined) {
-      query = query ? `${query} offset ${offset}` : `offset ${offset}`;
-    }
+  if (offset !== undefined) {
+    query = query ? `${query} offset ${offset}` : `offset ${offset}`;
+  }
 
-    const response = await client.record.getRecords({
-      app,
-      query,
-      fields,
-      totalCount: true,
-    });
+  const response = await client.record.getRecords({
+    app,
+    query,
+    fields,
+    totalCount: true,
+  });
 
-    const result = {
-      records: response.records,
-      totalCount: response.totalCount,
-    };
+  const result = {
+    records: response.records,
+    totalCount: response.totalCount,
+  };
 
-    return {
-      structuredContent: result,
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(result, null, 2),
-        },
-      ],
-    };
-  },
-);
+  return {
+    structuredContent: result,
+    content: [
+      {
+        type: "text",
+        text: JSON.stringify(result, null, 2),
+      },
+    ],
+  };
+};
+
+export const getRecords = createTool(toolName, toolConfig, callback);

@@ -1,7 +1,6 @@
 import { z } from "zod";
-import { createTool } from "../../utils.js";
-import { getKintoneClient } from "../../../client.js";
-import { parseKintoneClientConfig } from "../../../config/index.js";
+import type { KintoneToolCallback } from "../../schema.js";
+import { createTool } from "../../factory.js";
 
 const statusRecordSchema = z.object({
   id: z.string().describe("Record ID (numeric value as string)"),
@@ -50,36 +49,37 @@ const outputSchema = {
     .describe("Array of updated record information"),
 };
 
-export const updateStatuses = createTool(
-  "kintone-update-statuses",
-  {
-    title: "Update Statuses",
-    description:
-      "Update status of multiple records in a kintone app. Requires process management feature to be enabled. Maximum 100 records can be updated at once.",
-    inputSchema,
-    outputSchema,
-  },
-  async ({ app, records }) => {
-    const config = parseKintoneClientConfig();
-    const client = getKintoneClient(config);
+const toolName = "kintone-update-statuses";
+const toolConfig = {
+  title: "Update Statuses",
+  description:
+    "Update status of multiple records in a kintone app. Requires process management feature to be enabled. Maximum 100 records can be updated at once.",
+  inputSchema,
+  outputSchema,
+};
 
-    const response = await client.record.updateRecordsStatus({
-      app,
-      records,
-    });
+const callback: KintoneToolCallback<typeof inputSchema> = async (
+  { app, records },
+  { client },
+) => {
+  const response = await client.record.updateRecordsStatus({
+    app,
+    records,
+  });
 
-    const result = {
-      records: response.records,
-    };
+  const result = {
+    records: response.records,
+  };
 
-    return {
-      structuredContent: result,
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(result, null, 2),
-        },
-      ],
-    };
-  },
-);
+  return {
+    structuredContent: result,
+    content: [
+      {
+        type: "text",
+        text: JSON.stringify(result, null, 2),
+      },
+    ],
+  };
+};
+
+export const updateStatuses = createTool(toolName, toolConfig, callback);

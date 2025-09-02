@@ -1,4 +1,4 @@
-type Condition = {
+export type Condition = {
   isApiTokenAuth: boolean;
 };
 type FilterRule = {
@@ -8,7 +8,7 @@ type FilterRule = {
 
 const filterRules: FilterRule[] = [
   {
-    condition: (condition) => condition.isApiTokenAuth,
+    condition: (condition: Condition) => condition.isApiTokenAuth,
     excludeTools: ["kintone-get-apps"],
   },
 ];

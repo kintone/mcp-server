@@ -1,17 +1,15 @@
 import { KintoneRestAPIClient } from "@kintone/rest-api-client";
-import {
-  PACKAGE_NAME,
-  type KintoneClientConfigParseResult,
-} from "./config/index.js";
 import { HttpsProxyAgent } from "https-proxy-agent";
 import { Agent, type AgentOptions } from "https";
 import { readFileSync } from "fs";
-import { version } from "./version.js";
+import type { KintoneClientConfig } from "./schema.js";
 
 let client: KintoneRestAPIClient | null = null;
 
+export type { KintoneClientConfig } from "./schema.js";
+
 export const getKintoneClient = (
-  config: KintoneClientConfigParseResult,
+  config: KintoneClientConfig,
 ): KintoneRestAPIClient => {
   if (client) {
     return client;
@@ -27,13 +25,13 @@ export const getKintoneClient = (
     HTTPS_PROXY,
     KINTONE_PFX_FILE_PATH,
     KINTONE_PFX_FILE_PASSWORD,
-  } = config.config;
+    USER_AGENT,
+  } = config;
 
   const authParams = buildAuthParams({
     username: KINTONE_USERNAME,
     password: KINTONE_PASSWORD,
     apiToken: KINTONE_API_TOKEN,
-    isApiTokenAuth: config.isApiTokenAuth,
   });
 
   client = new KintoneRestAPIClient({
@@ -43,7 +41,7 @@ export const getKintoneClient = (
       basicAuthUsername: KINTONE_BASIC_AUTH_USERNAME,
       basicAuthPassword: KINTONE_BASIC_AUTH_PASSWORD,
     }),
-    userAgent: `${PACKAGE_NAME}@${version}`,
+    userAgent: USER_AGENT,
     httpsAgent: buildHttpsAgent({
       proxy: HTTPS_PROXY,
       pfxFilePath: KINTONE_PFX_FILE_PATH,
@@ -54,17 +52,14 @@ export const getKintoneClient = (
   return client;
 };
 
-export const resetKintoneClient = (): void => {
-  client = null;
-};
-
 const buildAuthParams = (option: {
   username?: string;
   password?: string;
   apiToken?: string;
-  isApiTokenAuth?: boolean;
 }) => {
-  return option.isApiTokenAuth
+  const isApiTokenAuth =
+    !(option.username && option.password) && !!option.apiToken;
+  return isApiTokenAuth
     ? { auth: { apiToken: option.apiToken } }
     : { auth: { username: option.username, password: option.password } };
 };

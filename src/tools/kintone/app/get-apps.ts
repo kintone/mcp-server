@@ -1,7 +1,6 @@
 import { z } from "zod";
-import { createTool } from "../../utils.js";
-import { getKintoneClient } from "../../../client.js";
-import { parseKintoneClientConfig } from "../../../config/index.js";
+import type { KintoneToolCallback } from "../../schema.js";
+import { createTool } from "../../factory.js";
 
 const inputSchema = {
   ids: z
@@ -74,18 +73,18 @@ const outputSchema = {
   apps: z.array(appSchema).describe("Array of app information"),
 };
 
-export const getApps = createTool(
-  "kintone-get-apps",
-  {
-    title: "Get Apps",
-    description: "Get multiple app settings from kintone",
-    inputSchema,
-    outputSchema,
-  },
-  async ({ ids, codes, name, spaceIds, offset, limit }) => {
-    const config = parseKintoneClientConfig();
-    const client = getKintoneClient(config);
+const toolName = "kintone-get-apps";
+const toolConfig = {
+  title: "Get Apps",
+  description: "Get multiple app settings from kintone",
+  inputSchema,
+  outputSchema,
+};
 
+const callback: KintoneToolCallback<typeof inputSchema> = async (
+  { ids, codes, name, spaceIds, offset, limit },
+  { client },
+) => {
     const response = await client.app.getApps({
       ids,
       codes,
@@ -119,5 +118,6 @@ export const getApps = createTool(
         },
       ],
     };
-  },
-);
+  };
+
+export const getApps = createTool(toolName, toolConfig, callback);
