@@ -1,7 +1,29 @@
 import { vi } from "vitest";
 import type { KintoneClientConfig } from "../config/index.js";
 
-export const mockExtra = {
+const mockClient = {
+  record: {
+    getRecords: vi.fn(),
+    addRecords: vi.fn(),
+    updateRecords: vi.fn(),
+    deleteRecords: vi.fn(),
+    updateStatus: vi.fn(),
+  },
+  app: {
+    getApp: vi.fn(),
+    getApps: vi.fn(),
+    getFormFields: vi.fn(),
+    getProcessManagement: vi.fn(),
+  },
+};
+
+export function mockExtra() {
+  return {
+    client: mockClient,
+  };
+}
+
+export const mockExtraFlat = {
   signal: new AbortController().signal,
   requestId: "test-request-123",
   sendNotification: vi.fn().mockResolvedValue(undefined),

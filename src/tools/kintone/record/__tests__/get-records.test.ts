@@ -322,7 +322,7 @@ describe("get-records tool", () => {
             textContains: [{ field: "title", value: "Test" }],
           },
         },
-        mockExtra,
+        { client: { record: { getRecords: mockGetRecords } } },
       );
 
       expect(mockGetRecords).toHaveBeenCalledWith({
@@ -363,7 +363,7 @@ describe("get-records tool", () => {
           limit: 50,
           offset: 100,
         },
-        mockExtra,
+        { client: { record: { getRecords: mockGetRecords } } },
       );
 
       expect(mockGetRecords).toHaveBeenCalledWith({
@@ -384,7 +384,7 @@ describe("get-records tool", () => {
           app: "123",
           filters: {},
         },
-        mockExtra,
+        { client: { record: { getRecords: mockGetRecords } } },
       );
 
       expect(mockGetRecords).toHaveBeenCalledWith({
@@ -404,7 +404,7 @@ describe("get-records tool", () => {
           app: "123",
           orderBy: [{ field: "created", order: "desc" }],
         },
-        mockExtra,
+        { client: { record: { getRecords: mockGetRecords } } },
       );
 
       expect(mockGetRecords).toHaveBeenCalledWith({
@@ -426,7 +426,7 @@ describe("get-records tool", () => {
         {
           app: "123",
         },
-        mockExtra,
+        { client: { record: { getRecords: mockGetRecords } } },
       );
 
       expect(mockGetRecords).toHaveBeenCalledWith({

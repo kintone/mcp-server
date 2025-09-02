@@ -1,4 +1,4 @@
-import type {  Tool } from "./schema.js";
+import type { Tool } from "./schema.js";
 import { addRecords } from "./kintone/record/add-records.js";
 import { deleteRecords } from "./kintone/record/delete-records.js";
 import { getRecords } from "./kintone/record/get-records.js";
@@ -24,5 +24,4 @@ const tools: Array<Tool<any, any>> = [
 
 export const getTools = (): Array<Tool<any, any>> => {
   return tools;
-}
-
+};

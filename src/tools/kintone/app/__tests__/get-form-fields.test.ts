@@ -213,7 +213,7 @@ describe("get-form-fields tool", () => {
 
       const result = await getFormFields.callback(
         { app: "123", lang: "ja" },
-        mockExtra,
+        { client: { app: { getFormFields: mockGetFormFields } } },
       );
 
       expect(mockGetFormFields).toHaveBeenCalledWith({

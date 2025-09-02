@@ -85,39 +85,39 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
   { ids, codes, name, spaceIds, offset, limit },
   { client },
 ) => {
-    const response = await client.app.getApps({
-      ids,
-      codes,
-      name,
-      spaceIds,
-      offset,
-      limit,
-    });
+  const response = await client.app.getApps({
+    ids,
+    codes,
+    name,
+    spaceIds,
+    offset,
+    limit,
+  });
 
-    const result = {
-      apps: response.apps.map((app) => ({
-        appId: app.appId,
-        code: app.code,
-        name: app.name,
-        description: app.description,
-        spaceId: app.spaceId,
-        threadId: app.threadId,
-        createdAt: app.createdAt,
-        creator: app.creator,
-        modifiedAt: app.modifiedAt,
-        modifier: app.modifier,
-      })),
-    };
-
-    return {
-      structuredContent: result,
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(result, null, 2),
-        },
-      ],
-    };
+  const result = {
+    apps: response.apps.map((app) => ({
+      appId: app.appId,
+      code: app.code,
+      name: app.name,
+      description: app.description,
+      spaceId: app.spaceId,
+      threadId: app.threadId,
+      createdAt: app.createdAt,
+      creator: app.creator,
+      modifiedAt: app.modifiedAt,
+      modifier: app.modifier,
+    })),
   };
+
+  return {
+    structuredContent: result,
+    content: [
+      {
+        type: "text",
+        text: JSON.stringify(result, null, 2),
+      },
+    ],
+  };
+};
 
 export const getApps = createTool(toolName, toolConfig, callback);

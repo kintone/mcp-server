@@ -101,7 +101,9 @@ describe("delete-records tool", () => {
         app: "123",
         ids: ["100", "200", "300"],
       });
-      const result = await deleteRecords.callback(params, mockExtra);
+      const result = await deleteRecords.callback(params, {
+        client: { record: { deleteRecords: mockDeleteRecords } },
+      });
 
       expect(mockDeleteRecords).toHaveBeenCalledWith({
         app: "123",

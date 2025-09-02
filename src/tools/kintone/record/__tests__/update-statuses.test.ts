@@ -288,7 +288,9 @@ describe("update-statuses tool", () => {
         ],
       };
 
-      const result = await updateStatuses.callback(input, mockExtra);
+      const result = await updateStatuses.callback(input, {
+        client: { record: { updateRecordsStatus: mockUpdateRecordsStatus } },
+      });
 
       expect(mockUpdateRecordsStatus).toHaveBeenCalledWith({
         app: "123",
@@ -327,7 +329,9 @@ describe("update-statuses tool", () => {
         ],
       };
 
-      const result = await updateStatuses.callback(input, mockExtra);
+      const result = await updateStatuses.callback(input, {
+        client: { record: { updateRecordsStatus: mockUpdateRecordsStatus } },
+      });
 
       expect(mockUpdateRecordsStatus).toHaveBeenCalledWith({
         app: "456",
@@ -353,9 +357,11 @@ describe("update-statuses tool", () => {
         records: [{ id: "1", action: "申請する" }],
       };
 
-      await expect(updateStatuses.callback(input, mockExtra)).rejects.toThrow(
-        "API Error",
-      );
+      await expect(
+        updateStatuses.callback(input, {
+          client: { record: { updateRecordsStatus: mockUpdateRecordsStatus } },
+        }),
+      ).rejects.toThrow("API Error");
     });
   });
 });

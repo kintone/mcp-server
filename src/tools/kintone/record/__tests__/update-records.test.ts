@@ -377,7 +377,9 @@ describe("update-records tool", () => {
         ],
       };
 
-      const result = await updateRecords.callback(input, mockExtra);
+      const result = await updateRecords.callback(input, {
+        client: { record: { updateRecords: mockUpdateRecords } },
+      });
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
         app: "123",
@@ -439,7 +441,9 @@ describe("update-records tool", () => {
         ],
       };
 
-      const result = await updateRecords.callback(input, mockExtra);
+      const result = await updateRecords.callback(input, {
+        client: { record: { updateRecords: mockUpdateRecords } },
+      });
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
         app: "456",
@@ -513,7 +517,9 @@ describe("update-records tool", () => {
         ],
       };
 
-      const result = await updateRecords.callback(input, mockExtra);
+      const result = await updateRecords.callback(input, {
+        client: { record: { updateRecords: mockUpdateRecords } },
+      });
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
         app: "123",
@@ -571,7 +577,9 @@ describe("update-records tool", () => {
         ],
       };
 
-      await updateRecords.callback(input, mockExtra);
+      await updateRecords.callback(input, {
+        client: { record: { updateRecords: mockUpdateRecords } },
+      });
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
         app: "123",
@@ -603,9 +611,11 @@ describe("update-records tool", () => {
         ],
       };
 
-      await expect(updateRecords.callback(input, mockExtra)).rejects.toThrow(
-        "API Error: Record not found",
-      );
+      await expect(
+        updateRecords.callback(input, {
+          client: { record: { updateRecords: mockUpdateRecords } },
+        }),
+      ).rejects.toThrow("API Error: Record not found");
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
         app: "123",

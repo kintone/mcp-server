@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { parseKintoneClientConfig } from "../index.js";
+import { parseKintoneClientConfig } from "../parser.js";
 import { mockKintoneConfig } from "../../__tests__/utils.js";
 
 describe("config - successful parsing", () => {
@@ -236,10 +236,18 @@ describe("config - successful parsing", () => {
       },
     },
   ])("$name", ({ env, expected }) => {
+    // Clear process.env of any existing Kintone-related variables
     process.env = {
-      ...originalEnv,
-      ...env,
+      PATH: originalEnv.PATH,
+      NODE_ENV: originalEnv.NODE_ENV,
     };
+
+    // Set test-specific env vars
+    Object.entries(env).forEach(([key, value]) => {
+      if (value !== undefined) {
+        process.env[key] = String(value);
+      }
+    });
 
     const result = parseKintoneClientConfig();
 

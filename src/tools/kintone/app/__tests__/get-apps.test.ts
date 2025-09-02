@@ -212,7 +212,9 @@ describe("get-apps tool - main functionality", () => {
       const schema = z.object(getApps.config.inputSchema!);
       const params = schema.parse({});
 
-      const result = await getApps.callback(params, mockExtra);
+      const result = await getApps.callback(params, {
+        client: { app: { getApps: mockGetApps } },
+      });
 
       expect(mockGetApps).toHaveBeenCalledWith({ limit: 100, offset: 0 });
       expect(result.structuredContent).toEqual(mockAppsData);
@@ -258,7 +260,7 @@ describe("get-apps tool - main functionality", () => {
           offset: 10,
           limit: 50,
         },
-        mockExtra,
+        { client: { app: { getApps: mockGetApps } } },
       );
 
       expect(mockGetApps).toHaveBeenCalledWith({

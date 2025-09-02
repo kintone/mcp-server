@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { mergeEnvironmentAndCommandLine } from "../index.js";
+import { mergeEnvironmentAndCommandLine } from "../parser.js";
 
 describe("mergeEnvironmentAndCommandLine", () => {
   it("should use environment variables when no command line arguments are provided", () => {

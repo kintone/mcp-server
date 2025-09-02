@@ -57,8 +57,9 @@ export class ServerBuilder {
 
     const client = getKintoneClient(this.apiClientConfig);
     const tools = getTools();
+    const toolCondition = this.toolConditionConfig; // Already validated above
     tools
-      .filter((tool) => shouldEnableTool(tool.name, this.toolConditionConfig!))
+      .filter((tool) => shouldEnableTool(tool.name, toolCondition))
       .forEach((tool) =>
         server.registerTool(
           tool.name,

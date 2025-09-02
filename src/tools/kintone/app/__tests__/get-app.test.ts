@@ -130,7 +130,9 @@ describe("get-app tool", () => {
       const params = schema.parse({
         appId: "123",
       });
-      const result = await getApp.callback(params, mockExtra);
+      const result = await getApp.callback(params, {
+        client: { app: { getApp: mockGetApp } },
+      });
 
       expect(mockGetApp).toHaveBeenCalledWith({ id: "123" });
       expect(result.structuredContent).toEqual(mockAppData);

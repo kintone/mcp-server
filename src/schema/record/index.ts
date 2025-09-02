@@ -1,3 +1,5 @@
-export { recordSchemaForParameter, recordSchemaForParameterWithoutFile } from "./record-for-parameter.js";
-export {recordSchema} from "./records.js";
-
+export {
+  recordSchemaForParameter,
+  recordSchemaForParameterWithoutFile,
+} from "./record-for-parameter.js";
+export { recordSchema } from "./records.js";

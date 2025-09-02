@@ -9,4 +9,4 @@ export type KintoneClientConfig = {
   KINTONE_PFX_FILE_PATH?: string;
   KINTONE_PFX_FILE_PASSWORD?: string;
   USER_AGENT?: string;
-}
+};

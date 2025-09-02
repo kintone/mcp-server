@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { ServerBuilder } from "./server/index.js";
-import { getMcpServerConfig, getKintoneClientConfig, getToolConditionCOnfig } from "./config/index.js";
+import {
+  getMcpServerConfig,
+  getKintoneClientConfig,
+  getToolConditionCOnfig,
+} from "./config/index.js";
 
 const main = async () => {
   const transport = new StdioServerTransport();

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { parseKintoneClientConfig } from "../index.js";
+import { parseKintoneClientConfig } from "../parser.js";
 import { mockKintoneConfig } from "../../__tests__/utils.js";
 
 describe("config - validation errors", () => {
@@ -215,10 +215,18 @@ describe("config - validation errors", () => {
       ],
     },
   ])("$name", ({ env, expectedErrors, deleteEnvVars }) => {
+    // Clear process.env of any existing Kintone-related variables
     process.env = {
-      ...originalEnv,
-      ...env,
+      PATH: originalEnv.PATH,
+      NODE_ENV: originalEnv.NODE_ENV,
     };
+
+    // Set test-specific env vars
+    Object.entries(env).forEach(([key, value]) => {
+      if (value !== undefined) {
+        process.env[key] = String(value);
+      }
+    });
 
     if (deleteEnvVars) {
       delete process.env.KINTONE_BASE_URL;

@@ -286,7 +286,7 @@ describe("get-process-management tool", () => {
 
       const result = await getProcessManagement.callback(
         { app: "123", lang: "ja" },
-        mockExtra,
+        { client: { app: { getProcessManagement: mockGetProcessManagement } } },
       );
 
       expect(mockGetProcessManagement).toHaveBeenCalledWith({

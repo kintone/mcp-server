@@ -8,15 +8,15 @@ export const getMcpServerConfig = () => {
   return {
     name: PACKAGE_NAME,
     version: version,
-    };
-}
+  };
+};
 
 export const getKintoneClientConfig = () => {
   return {
     ...config.config,
     userAgent: config.userAgent,
   };
-}
+};
 
 export const getToolConditionCOnfig = () => {
   return {

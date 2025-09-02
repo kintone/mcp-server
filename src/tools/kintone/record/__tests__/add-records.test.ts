@@ -325,7 +325,9 @@ describe("add-records tool", () => {
         ],
       };
 
-      const result = await addRecords.callback(input, mockExtra);
+      const result = await addRecords.callback(input, {
+        client: { record: { addRecords: mockAddRecords } },
+      });
 
       expect(mockAddRecords).toHaveBeenCalledWith({
         app: "123",
@@ -370,7 +372,9 @@ describe("add-records tool", () => {
         ],
       };
 
-      const result = await addRecords.callback(input, mockExtra);
+      const result = await addRecords.callback(input, {
+        client: { record: { addRecords: mockAddRecords } },
+      });
 
       expect(mockAddRecords).toHaveBeenCalledWith({
         app: "456",
@@ -428,7 +432,9 @@ describe("add-records tool", () => {
         ],
       };
 
-      const result = await addRecords.callback(input, mockExtra);
+      const result = await addRecords.callback(input, {
+        client: { record: { addRecords: mockAddRecords } },
+      });
 
       expect(mockAddRecords).toHaveBeenCalledWith({
         app: "123",
@@ -473,9 +479,11 @@ describe("add-records tool", () => {
         ],
       };
 
-      await expect(addRecords.callback(input, mockExtra)).rejects.toThrow(
-        "API Error: Invalid field value",
-      );
+      await expect(
+        addRecords.callback(input, {
+          client: { record: { addRecords: mockAddRecords } },
+        }),
+      ).rejects.toThrow("API Error: Invalid field value");
 
       expect(mockAddRecords).toHaveBeenCalledWith({
         app: "123",
