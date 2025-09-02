@@ -1,17 +1,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { deleteRecords } from "../delete-records.js";
 import { z } from "zod";
-import { mockExtra } from "../../../../__tests__/utils.js";
+import { createMockClient } from "../../../../__tests__/utils.js";
 
-// Mock the KintoneRestAPIClient
+// Mock function for deleteRecords API call
 const mockDeleteRecords = vi.fn();
-vi.mock("@kintone/rest-api-client", () => ({
-  KintoneRestAPIClient: vi.fn().mockImplementation(() => ({
-    record: {
-      deleteRecords: mockDeleteRecords,
-    },
-  })),
-}));
 
 describe("delete-records tool", () => {
   const originalEnv = process.env;
@@ -101,8 +94,12 @@ describe("delete-records tool", () => {
         app: "123",
         ids: ["100", "200", "300"],
       });
+
+      const mockClient = createMockClient();
+      mockClient.record.deleteRecords = mockDeleteRecords;
+
       const result = await deleteRecords.callback(params, {
-        client: { record: { deleteRecords: mockDeleteRecords } },
+        client: mockClient,
       });
 
       expect(mockDeleteRecords).toHaveBeenCalledWith({

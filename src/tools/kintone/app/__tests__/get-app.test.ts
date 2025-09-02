@@ -1,17 +1,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { getApp } from "../get-app.js";
 import { z } from "zod";
-import { mockExtra } from "../../../../__tests__/utils.js";
+import { createMockClient } from "../../../../__tests__/utils.js";
 
-// Mock the KintoneRestAPIClient
+// Mock function for getApp API call
 const mockGetApp = vi.fn();
-vi.mock("@kintone/rest-api-client", () => ({
-  KintoneRestAPIClient: vi.fn().mockImplementation(() => ({
-    app: {
-      getApp: mockGetApp,
-    },
-  })),
-}));
 
 describe("get-app tool", () => {
   const originalEnv = process.env;
@@ -130,8 +123,12 @@ describe("get-app tool", () => {
       const params = schema.parse({
         appId: "123",
       });
+
+      const mockClient = createMockClient();
+      mockClient.app.getApp = mockGetApp;
+
       const result = await getApp.callback(params, {
-        client: { app: { getApp: mockGetApp } },
+        client: mockClient,
       });
 
       expect(mockGetApp).toHaveBeenCalledWith({ id: "123" });

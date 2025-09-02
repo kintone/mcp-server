@@ -1,25 +1,28 @@
 import { vi } from "vitest";
-import type { KintoneClientConfig } from "../config/index.js";
+import type { KintoneClientConfig } from "../client/schema.js";
+import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 
-const mockClient = {
-  record: {
-    getRecords: vi.fn(),
-    addRecords: vi.fn(),
-    updateRecords: vi.fn(),
-    deleteRecords: vi.fn(),
-    updateStatus: vi.fn(),
-  },
-  app: {
-    getApp: vi.fn(),
-    getApps: vi.fn(),
-    getFormFields: vi.fn(),
-    getProcessManagement: vi.fn(),
-  },
-};
+export const createMockClient = (): KintoneRestAPIClient =>
+  ({
+    record: {
+      getRecords: vi.fn(),
+      addRecords: vi.fn(),
+      updateRecords: vi.fn(),
+      deleteRecords: vi.fn(),
+      updateStatus: vi.fn(),
+      updateRecordsStatus: vi.fn(),
+    },
+    app: {
+      getApp: vi.fn(),
+      getApps: vi.fn(),
+      getFormFields: vi.fn(),
+      getProcessManagement: vi.fn(),
+    },
+  }) as unknown as KintoneRestAPIClient;
 
-export function mockExtra() {
+export function mockExtra(client?: KintoneRestAPIClient) {
   return {
-    client: mockClient,
+    client: client || createMockClient(),
   };
 }
 

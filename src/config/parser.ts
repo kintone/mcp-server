@@ -37,7 +37,6 @@ export const mergeEnvironmentAndCommandLine = (
   env: Record<string, string | undefined>,
   args: Record<string, string | undefined>,
 ): Partial<KintoneClientConfig> => {
-  // 同等の変数の指定があればコマンドライン引数を優先
   return {
     KINTONE_BASE_URL: args["base-url"] ?? env.KINTONE_BASE_URL,
     KINTONE_USERNAME: args.username ?? env.KINTONE_USERNAME,

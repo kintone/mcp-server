@@ -1,17 +1,13 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { getProcessManagement } from "../get-process-management.js";
 import { z } from "zod";
-import { mockExtra, mockKintoneConfig } from "../../../../__tests__/utils.js";
+import {
+  createMockClient,
+  mockKintoneConfig,
+} from "../../../../__tests__/utils.js";
 
-// Mock the KintoneRestAPIClient
+// Mock function for getProcessManagement API call
 const mockGetProcessManagement = vi.fn();
-vi.mock("@kintone/rest-api-client", () => ({
-  KintoneRestAPIClient: vi.fn().mockImplementation(() => ({
-    app: {
-      getProcessManagement: mockGetProcessManagement,
-    },
-  })),
-}));
 
 describe("get-process-management tool", () => {
   const originalEnv = process.env;
@@ -284,9 +280,12 @@ describe("get-process-management tool", () => {
 
       mockGetProcessManagement.mockResolvedValueOnce(mockData);
 
+      const mockClient = createMockClient();
+      mockClient.app.getProcessManagement = mockGetProcessManagement;
+
       const result = await getProcessManagement.callback(
         { app: "123", lang: "ja" },
-        { client: { app: { getProcessManagement: mockGetProcessManagement } } },
+        { client: mockClient },
       );
 
       expect(mockGetProcessManagement).toHaveBeenCalledWith({

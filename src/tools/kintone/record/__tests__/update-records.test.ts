@@ -1,17 +1,14 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { updateRecords } from "../update-records.js";
 import { z } from "zod";
-import { mockExtra, mockKintoneConfig } from "../../../../__tests__/utils.js";
+import {
+  createMockClient,
+  mockExtra,
+  mockKintoneConfig,
+} from "../../../../__tests__/utils.js";
 
-// Mock the KintoneRestAPIClient
+// Mock function for updateRecords API call
 const mockUpdateRecords = vi.fn();
-vi.mock("@kintone/rest-api-client", () => ({
-  KintoneRestAPIClient: vi.fn().mockImplementation(() => ({
-    record: {
-      updateRecords: mockUpdateRecords,
-    },
-  })),
-}));
 
 describe("update-records tool", () => {
   const originalEnv = process.env;
@@ -377,9 +374,10 @@ describe("update-records tool", () => {
         ],
       };
 
-      const result = await updateRecords.callback(input, {
-        client: { record: { updateRecords: mockUpdateRecords } },
-      });
+      const mockClient = createMockClient();
+      mockClient.record.updateRecords = mockUpdateRecords;
+
+      const result = await updateRecords.callback(input, mockExtra(mockClient));
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
         app: "123",
@@ -441,9 +439,13 @@ describe("update-records tool", () => {
         ],
       };
 
-      const result = await updateRecords.callback(input, {
-        client: { record: { updateRecords: mockUpdateRecords } },
-      });
+      const mockClient = createMockClient();
+      mockClient.record.updateRecords = mockUpdateRecords;
+
+      const result = await updateRecords.callback(
+        input as any,
+        mockExtra(mockClient),
+      );
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
         app: "456",
@@ -517,9 +519,10 @@ describe("update-records tool", () => {
         ],
       };
 
-      const result = await updateRecords.callback(input, {
-        client: { record: { updateRecords: mockUpdateRecords } },
-      });
+      const mockClient = createMockClient();
+      mockClient.record.updateRecords = mockUpdateRecords;
+
+      const result = await updateRecords.callback(input, mockExtra(mockClient));
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
         app: "123",
@@ -577,9 +580,10 @@ describe("update-records tool", () => {
         ],
       };
 
-      await updateRecords.callback(input, {
-        client: { record: { updateRecords: mockUpdateRecords } },
-      });
+      const mockClient = createMockClient();
+      mockClient.record.updateRecords = mockUpdateRecords;
+
+      await updateRecords.callback(input, mockExtra(mockClient));
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
         app: "123",
@@ -611,10 +615,11 @@ describe("update-records tool", () => {
         ],
       };
 
+      const mockClient = createMockClient();
+      mockClient.record.updateRecords = mockUpdateRecords;
+
       await expect(
-        updateRecords.callback(input, {
-          client: { record: { updateRecords: mockUpdateRecords } },
-        }),
+        updateRecords.callback(input as any, mockExtra(mockClient)),
       ).rejects.toThrow("API Error: Record not found");
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({

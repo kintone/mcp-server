@@ -1,16 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { z } from "zod";
-import { mockExtra } from "../../../../__tests__/utils.js";
+import { createMockClient } from "../../../../__tests__/utils.js";
 
-// Mock the KintoneRestAPIClient
+// Mock function for getApps API call
 const mockGetApps = vi.fn();
-vi.mock("@kintone/rest-api-client", () => ({
-  KintoneRestAPIClient: vi.fn().mockImplementation(() => ({
-    app: {
-      getApps: mockGetApps,
-    },
-  })),
-}));
 
 describe("get-apps tool - main functionality", () => {
   let getApps: any;
@@ -212,8 +205,11 @@ describe("get-apps tool - main functionality", () => {
       const schema = z.object(getApps.config.inputSchema!);
       const params = schema.parse({});
 
+      const mockClient = createMockClient();
+      mockClient.app.getApps = mockGetApps;
+
       const result = await getApps.callback(params, {
-        client: { app: { getApps: mockGetApps } },
+        client: mockClient,
       });
 
       expect(mockGetApps).toHaveBeenCalledWith({ limit: 100, offset: 0 });
@@ -251,6 +247,9 @@ describe("get-apps tool - main functionality", () => {
 
       mockGetApps.mockResolvedValueOnce(mockAppsData);
 
+      const mockClientFiltered = createMockClient();
+      mockClientFiltered.app.getApps = mockGetApps;
+
       const result = await getApps.callback(
         {
           ids: [789],
@@ -260,7 +259,7 @@ describe("get-apps tool - main functionality", () => {
           offset: 10,
           limit: 50,
         },
-        { client: { app: { getApps: mockGetApps } } },
+        { client: mockClientFiltered },
       );
 
       expect(mockGetApps).toHaveBeenCalledWith({

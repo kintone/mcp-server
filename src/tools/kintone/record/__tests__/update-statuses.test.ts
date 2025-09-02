@@ -1,17 +1,14 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { updateStatuses } from "../update-statuses.js";
 import { z } from "zod";
-import { mockExtra, mockKintoneConfig } from "../../../../__tests__/utils.js";
+import {
+  createMockClient,
+  mockExtra,
+  mockKintoneConfig,
+} from "../../../../__tests__/utils.js";
 
-// Mock the KintoneRestAPIClient
+// Mock function for updateRecordsStatus API call
 const mockUpdateRecordsStatus = vi.fn();
-vi.mock("@kintone/rest-api-client", () => ({
-  KintoneRestAPIClient: vi.fn().mockImplementation(() => ({
-    record: {
-      updateRecordsStatus: mockUpdateRecordsStatus,
-    },
-  })),
-}));
 
 describe("update-statuses tool", () => {
   const originalEnv = process.env;
@@ -283,14 +280,18 @@ describe("update-statuses tool", () => {
             id: "1",
             action: "申請する",
             assignee: "user1",
-            revision: 1,
+            revision: "1",
           },
         ],
       };
 
-      const result = await updateStatuses.callback(input, {
-        client: { record: { updateRecordsStatus: mockUpdateRecordsStatus } },
-      });
+      const mockClient = createMockClient();
+      mockClient.record.updateRecordsStatus = mockUpdateRecordsStatus;
+
+      const result = await updateStatuses.callback(
+        input,
+        mockExtra(mockClient),
+      );
 
       expect(mockUpdateRecordsStatus).toHaveBeenCalledWith({
         app: "123",
@@ -299,7 +300,7 @@ describe("update-statuses tool", () => {
             id: "1",
             action: "申請する",
             assignee: "user1",
-            revision: 1,
+            revision: "1",
           },
         ],
       });
@@ -329,9 +330,13 @@ describe("update-statuses tool", () => {
         ],
       };
 
-      const result = await updateStatuses.callback(input, {
-        client: { record: { updateRecordsStatus: mockUpdateRecordsStatus } },
-      });
+      const mockClient = createMockClient();
+      mockClient.record.updateRecordsStatus = mockUpdateRecordsStatus;
+
+      const result = await updateStatuses.callback(
+        input,
+        mockExtra(mockClient),
+      );
 
       expect(mockUpdateRecordsStatus).toHaveBeenCalledWith({
         app: "456",
@@ -357,9 +362,12 @@ describe("update-statuses tool", () => {
         records: [{ id: "1", action: "申請する" }],
       };
 
+      const mockClient = createMockClient();
+      mockClient.record.updateRecordsStatus = mockUpdateRecordsStatus;
+
       await expect(
         updateStatuses.callback(input, {
-          client: { record: { updateRecordsStatus: mockUpdateRecordsStatus } },
+          client: mockClient,
         }),
       ).rejects.toThrow("API Error");
     });
