@@ -39,7 +39,7 @@ export type KintoneToolCallback<InputArgs extends ZodRawShape> = (
 
 export function createTool<
   InputArgs extends ZodRawShape,
-  OutputArgs extends ZodRawShape = ZodRawShape,
+  OutputArgs extends ZodRawShape,
 >(
   name: string,
   config: ToolConfig<InputArgs, OutputArgs>,
