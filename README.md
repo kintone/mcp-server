@@ -169,7 +169,7 @@ DXTファイルをインストールした場合、追加の手順は必要あ�
 - クライアント証明書認証を使用する場合、URLのドメインは `.s.cybozu.com` となります（例: `https://example.s.cybozu.com`）
 - パスワード認証とAPIトークン認証を同時に指定した場合、パスワード認証が優先されます
 - コマンドライン引数と環境変数を同時に指定した場合、コマンドライン引数が優先されます
-- 詳細な認証設定については [認証設定ガイド] を参照してください
+- 詳細な認証設定については [認証設定ガイド](./docs/ja/authentication.md) を参照してください
 
 ### プロキシ設定
 
@@ -200,6 +200,14 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 ## ドキュメント
 
 - [認証設定ガイド](./docs/ja/authentication.md) - 認証方法の詳細と設定例
+
+## 特記事項
+
+### `kintone-download-file`ツールの注意点
+
+- ダウンロードしたファイルは、`--attachments-dir`または`KINTONE_ATTACHMENTS_DIR`で指定したディレクトリに保存されます。
+- `--attachments-dir`または`KINTONE_ATTACHMENTS_DIR`を指定しない場合はツール実行時にエラーになります。
+- `--attachments-dir`または`KINTONE_ATTACHMENTS_DIR`に、存在しないディレクトリを指定した場合は、ディレクトリを新規作成してからそこに保存されます。
 
 ## 制限事項
 

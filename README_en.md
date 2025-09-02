@@ -216,6 +216,14 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 
 - [Authentication Configuration Guide](./docs/en/authentication.md) - Detailed authentication methods and examples
 
+## Notes
+
+### `kintone-download-file` Tool
+
+- Downloaded files are saved to the directory specified by `--attachments-dir` or `KINTONE_ATTACHMENTS_DIR`.
+- If `--attachments-dir` or `KINTONE_ATTACHMENTS_DIR` is not specified, an error will occur when executing the tool.
+- If a non-existent directory is specified for `--attachments-dir` or `KINTONE_ATTACHMENTS_DIR`, a new directory will be created and files will be saved there.
+
 ## Limitations
 
 ### Record Operation Limitations
