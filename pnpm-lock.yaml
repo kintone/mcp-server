@@ -12,8 +12,8 @@ importers:
         specifier: ^5.7.4
         version: 5.7.4
       '@modelcontextprotocol/sdk':
-        specifier: ^1.17.4
-        version: 1.17.4
+        specifier: ^1.17.5
+        version: 1.17.5
       https-proxy-agent:
         specifier: ^7.0.6
         version: 7.0.6
@@ -472,8 +472,8 @@ packages:
     resolution: {integrity: sha512-R6FFVMs2pFwaMdgt+GOCdjnA/J9q5dH9zD5iJLIeCA8sZrDna5sUtLvaapcKUhMHd2Ls6T1TZ+sXZ+nGksGOKw==}
     engines: {node: '>=18'}
 
-  '@modelcontextprotocol/sdk@1.17.4':
-    resolution: {integrity: sha512-zq24hfuAmmlNZvik0FLI58uE5sriN0WWsQzIlYnzSuKDAHFqJtBFrl/LfB1NLgJT5Y7dEBzaX4yAKqOPrcetaw==}
+  '@modelcontextprotocol/sdk@1.17.5':
+    resolution: {integrity: sha512-QakrKIGniGuRVfWBdMsDea/dx1PNE739QJ7gCM41s9q+qaCYTHCdsIBXQVVXry3mfWAiaM9kT22Hyz53Uw8mfg==}
     engines: {node: '>=18'}
 
   '@napi-rs/wasm-runtime@0.2.12':
@@ -3395,7 +3395,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@modelcontextprotocol/sdk@1.17.4':
+  '@modelcontextprotocol/sdk@1.17.5':
     dependencies:
       ajv: 6.12.6
       content-type: 1.0.5
