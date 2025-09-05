@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/kintone/mcp-server/compare/1.0.0...1.0.1) (2025-09-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @modelcontextprotocol/sdk to ^1.17.5 ([#100](https://github.com/kintone/mcp-server/issues/100)) ([ad8ce6e](https://github.com/kintone/mcp-server/commit/ad8ce6e2557c4ccbf10f2d0895ceaebbde3d5083))
+
 ## [1.0.0](https://github.com/kintone/mcp-server/compare/0.1.0...1.0.0) (2025-08-27)
 
 
