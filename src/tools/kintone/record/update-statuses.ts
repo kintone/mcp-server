@@ -1,6 +1,6 @@
 import { z } from "zod";
-import type { KintoneToolCallback } from "../../schema.js";
 import { createTool } from "../../factory.js";
+import type { KintoneToolCallback } from "../../types/tool.js";
 
 const statusRecordSchema = z.object({
   id: z.string().describe("Record ID (numeric value as string)"),

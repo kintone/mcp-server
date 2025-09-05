@@ -2,11 +2,11 @@ import { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import { HttpsProxyAgent } from "https-proxy-agent";
 import { Agent, type AgentOptions } from "https";
 import { readFileSync } from "fs";
-import type { KintoneClientConfig } from "./schema.js";
+import type { KintoneClientConfig } from "./types/client.js";
 
 let client: KintoneRestAPIClient | null = null;
 
-export type { KintoneClientConfig } from "./schema.js";
+export type { KintoneClientConfig };
 
 export const getKintoneClient = (
   config: KintoneClientConfig,

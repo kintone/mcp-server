@@ -1,16 +1,12 @@
 import type { ZodError } from "zod/v4";
-import { parseCommandLineOptions } from "./command-line.js";
-import {
-  type KintoneClientConfig,
-  type KintoneClientConfigParseResult,
-  PACKAGE_NAME,
-  configSchema,
-} from "./schema.js";
+import { parse } from "./command-line.js";
+import { PACKAGE_NAME, configSchema } from "./schema.js";
 import { version } from "../version.js";
+import type { ParsedConfig, ProvidedConfig } from "./types/config.js";
 
-export const parseKintoneClientConfig = (): KintoneClientConfigParseResult => {
-  const cmdArgs = parseCommandLineOptions(process.argv);
-  const mergedConfig = mergeEnvironmentAndCommandLine(process.env, cmdArgs);
+export const parseKintoneMcpServerConfig = (): ParsedConfig => {
+  const cmdArgs = parse(process.argv);
+  const mergedConfig = merge(process.env, cmdArgs);
 
   const result = configSchema.safeParse(mergedConfig);
 
@@ -33,10 +29,10 @@ export const parseKintoneClientConfig = (): KintoneClientConfigParseResult => {
   );
 };
 
-export const mergeEnvironmentAndCommandLine = (
+export const merge = (
   env: Record<string, string | undefined>,
   args: Record<string, string | undefined>,
-): Partial<KintoneClientConfig> => {
+): Partial<ProvidedConfig> => {
   return {
     KINTONE_BASE_URL: args["base-url"] ?? env.KINTONE_BASE_URL,
     KINTONE_USERNAME: args.username ?? env.KINTONE_USERNAME,

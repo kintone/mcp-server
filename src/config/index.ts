@@ -1,24 +1,28 @@
 import { version } from "../version.js";
-import { parseKintoneClientConfig } from "./parser.js";
+import { parseKintoneMcpServerConfig } from "./parser.js";
 import { PACKAGE_NAME } from "./schema.js";
+import type {
+  KintoneClientConfig,
+  KintoneMcpServerConfig,
+} from "./types/config.js";
 
-const config = parseKintoneClientConfig();
+const config = parseKintoneMcpServerConfig();
 
-export const getMcpServerConfig = () => {
+export const getMcpServerConfig = (): KintoneMcpServerConfig => {
   return {
     name: PACKAGE_NAME,
     version: version,
   };
 };
 
-export const getKintoneClientConfig = () => {
+export const getKintoneClientConfig = (): KintoneClientConfig => {
   return {
     ...config.config,
-    userAgent: config.userAgent,
+    USER_AGENT: config.userAgent,
   };
 };
 
-export const getToolConditionCOnfig = () => {
+export const getToolConditionConfig = () => {
   return {
     isApiTokenAuth: config.isApiTokenAuth,
   };

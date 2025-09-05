@@ -1,6 +1,9 @@
 import { vi } from "vitest";
-import type { KintoneClientConfig } from "../client/schema.js";
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
+import type {
+  KintoneClientConfig,
+  ProvidedConfig,
+} from "../config/types/config";
 
 export const createMockClient = (): KintoneRestAPIClient =>
   ({
@@ -20,18 +23,12 @@ export const createMockClient = (): KintoneRestAPIClient =>
     },
   }) as unknown as KintoneRestAPIClient;
 
-export function mockExtra(client?: KintoneRestAPIClient) {
+export function mockToolCallbackOptions(client?: KintoneRestAPIClient) {
   return {
     client: client || createMockClient(),
+    version: "1.0.0",
   };
 }
-
-export const mockExtraFlat = {
-  signal: new AbortController().signal,
-  requestId: "test-request-123",
-  sendNotification: vi.fn().mockResolvedValue(undefined),
-  sendRequest: vi.fn().mockResolvedValue({}),
-};
 
 export const mockKintoneConfig: KintoneClientConfig = {
   KINTONE_BASE_URL: "https://example.cybozu.com",
@@ -43,9 +40,35 @@ export const mockKintoneConfig: KintoneClientConfig = {
   HTTPS_PROXY: undefined,
   KINTONE_PFX_FILE_PATH: undefined,
   KINTONE_PFX_FILE_PASSWORD: undefined,
+  USER_AGENT: "@kintone/mcp-server@1.0.0",
 };
 
 export const mockKintoneConfigWithApiToken: KintoneClientConfig = {
+  KINTONE_BASE_URL: "https://example.cybozu.com",
+  KINTONE_USERNAME: undefined,
+  KINTONE_PASSWORD: undefined,
+  KINTONE_API_TOKEN: "token1,token2,token3",
+  KINTONE_BASIC_AUTH_USERNAME: undefined,
+  KINTONE_BASIC_AUTH_PASSWORD: undefined,
+  HTTPS_PROXY: undefined,
+  KINTONE_PFX_FILE_PATH: undefined,
+  KINTONE_PFX_FILE_PASSWORD: undefined,
+  USER_AGENT: "@kintone/mcp-server@1.0.0",
+};
+
+export const mockProvidedConfig: ProvidedConfig = {
+  KINTONE_BASE_URL: "https://example.cybozu.com",
+  KINTONE_USERNAME: "testuser",
+  KINTONE_PASSWORD: "testpass",
+  KINTONE_API_TOKEN: undefined,
+  KINTONE_BASIC_AUTH_USERNAME: undefined,
+  KINTONE_BASIC_AUTH_PASSWORD: undefined,
+  HTTPS_PROXY: undefined,
+  KINTONE_PFX_FILE_PATH: undefined,
+  KINTONE_PFX_FILE_PASSWORD: undefined,
+};
+
+export const mockProvidedConfigWithApiToken: ProvidedConfig = {
   KINTONE_BASE_URL: "https://example.cybozu.com",
   KINTONE_USERNAME: undefined,
   KINTONE_PASSWORD: undefined,

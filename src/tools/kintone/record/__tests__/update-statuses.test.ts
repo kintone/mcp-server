@@ -3,7 +3,7 @@ import { updateStatuses } from "../update-statuses.js";
 import { z } from "zod";
 import {
   createMockClient,
-  mockExtra,
+  mockToolCallbackOptions,
   mockKintoneConfig,
 } from "../../../../__tests__/utils.js";
 
@@ -290,7 +290,7 @@ describe("update-statuses tool", () => {
 
       const result = await updateStatuses.callback(
         input,
-        mockExtra(mockClient),
+        mockToolCallbackOptions(mockClient),
       );
 
       expect(mockUpdateRecordsStatus).toHaveBeenCalledWith({
@@ -335,7 +335,7 @@ describe("update-statuses tool", () => {
 
       const result = await updateStatuses.callback(
         input,
-        mockExtra(mockClient),
+        mockToolCallbackOptions(mockClient),
       );
 
       expect(mockUpdateRecordsStatus).toHaveBeenCalledWith({

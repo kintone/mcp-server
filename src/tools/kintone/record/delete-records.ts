@@ -1,6 +1,6 @@
 import { z } from "zod";
-import type { KintoneToolCallback } from "../../schema.js";
 import { createTool } from "../../factory.js";
+import type { KintoneToolCallback } from "../../types/tool.js";
 
 const inputSchema = {
   app: z.string().describe("The ID of the app (numeric value as string)"),

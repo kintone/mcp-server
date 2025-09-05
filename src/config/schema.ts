@@ -108,11 +108,3 @@ export const configSchema = z
       path: ["KINTONE_BASIC_AUTH_USERNAME"],
     },
   );
-
-export type KintoneClientConfig = z.infer<typeof configSchema>;
-
-export type KintoneClientConfigParseResult = {
-  config: KintoneClientConfig;
-  userAgent: string;
-  isApiTokenAuth: boolean;
-};

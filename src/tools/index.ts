@@ -1,4 +1,4 @@
-import type { Tool } from "./schema.js";
+import type { Tool } from "./types/tool.js";
 import { addRecords } from "./kintone/record/add-records.js";
 import { deleteRecords } from "./kintone/record/delete-records.js";
 import { getRecords } from "./kintone/record/get-records.js";
@@ -10,7 +10,7 @@ import { getProcessManagement } from "./kintone/app/get-process-management.js";
 import { updateStatuses } from "./kintone/record/update-statuses.js";
 
 export { createToolCallback } from "./factory.js";
-const tools: Array<Tool<any, any>> = [
+export const tools: Array<Tool<any, any>> = [
   getApp,
   getApps,
   getFormFields,
@@ -20,8 +20,4 @@ const tools: Array<Tool<any, any>> = [
   deleteRecords,
   getRecords,
   updateRecords,
-];
-
-export const getTools = (): Array<Tool<any, any>> => {
-  return tools;
-};
+] as const;

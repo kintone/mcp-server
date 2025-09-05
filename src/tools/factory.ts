@@ -1,5 +1,10 @@
 import type { z, ZodRawShape, ZodTypeAny } from "zod";
-import type { Extra, KintoneToolCallback, Tool, ToolConfig } from "./schema.js";
+import type {
+  ToolConfig,
+  KintoneToolCallback,
+  Tool,
+  ToolCallbackOptions,
+} from "./types/tool.js";
 
 export const createTool = <
   InputArgs extends ZodRawShape,
@@ -18,8 +23,8 @@ export const createTool = <
 
 export const createToolCallback = <InputArgs extends ZodRawShape>(
   callback: KintoneToolCallback<InputArgs>,
-  extra: Extra,
+  options: ToolCallbackOptions,
 ) => {
   return (args: z.objectOutputType<InputArgs, ZodTypeAny>) =>
-    callback(args, extra);
+    callback(args, options);
 };

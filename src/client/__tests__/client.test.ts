@@ -1,9 +1,9 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
-import type { KintoneClientConfig } from "../schema.js";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 import {
   mockKintoneConfig,
   mockKintoneConfigWithApiToken,
 } from "../../__tests__/utils.js";
+import type { KintoneClientConfig } from "../index.js";
 
 // Mock KintoneRestAPIClient
 const mockKintoneClient = vi.fn();

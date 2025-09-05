@@ -3,7 +3,7 @@ import { updateRecords } from "../update-records.js";
 import { z } from "zod";
 import {
   createMockClient,
-  mockExtra,
+  mockToolCallbackOptions,
   mockKintoneConfig,
 } from "../../../../__tests__/utils.js";
 
@@ -377,7 +377,10 @@ describe("update-records tool", () => {
       const mockClient = createMockClient();
       mockClient.record.updateRecords = mockUpdateRecords;
 
-      const result = await updateRecords.callback(input, mockExtra(mockClient));
+      const result = await updateRecords.callback(
+        input,
+        mockToolCallbackOptions(mockClient),
+      );
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
         app: "123",
@@ -444,7 +447,7 @@ describe("update-records tool", () => {
 
       const result = await updateRecords.callback(
         input as any,
-        mockExtra(mockClient),
+        mockToolCallbackOptions(mockClient),
       );
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
@@ -522,7 +525,10 @@ describe("update-records tool", () => {
       const mockClient = createMockClient();
       mockClient.record.updateRecords = mockUpdateRecords;
 
-      const result = await updateRecords.callback(input, mockExtra(mockClient));
+      const result = await updateRecords.callback(
+        input,
+        mockToolCallbackOptions(mockClient),
+      );
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
         app: "123",
@@ -583,7 +589,7 @@ describe("update-records tool", () => {
       const mockClient = createMockClient();
       mockClient.record.updateRecords = mockUpdateRecords;
 
-      await updateRecords.callback(input, mockExtra(mockClient));
+      await updateRecords.callback(input, mockToolCallbackOptions(mockClient));
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({
         app: "123",
@@ -619,7 +625,10 @@ describe("update-records tool", () => {
       mockClient.record.updateRecords = mockUpdateRecords;
 
       await expect(
-        updateRecords.callback(input as any, mockExtra(mockClient)),
+        updateRecords.callback(
+          input as any,
+          mockToolCallbackOptions(mockClient),
+        ),
       ).rejects.toThrow("API Error: Record not found");
 
       expect(mockUpdateRecords).toHaveBeenCalledWith({

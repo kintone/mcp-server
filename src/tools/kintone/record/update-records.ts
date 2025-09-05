@@ -1,7 +1,7 @@
 import { z } from "zod";
-import type { KintoneToolCallback } from "../../schema.js";
 import { createTool } from "../../factory.js";
 import { recordSchemaForParameter } from "../../../schema/record/index.js";
+import type { KintoneToolCallback } from "../../types/tool.js";
 
 const updateRecordSchema = z.object({
   // updateKey指定は対象外

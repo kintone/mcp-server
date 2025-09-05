@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { ServerBuilder } from "./server/index.js";
+import { createServer, type KintoneMcpServerOptions } from "./server/index.js";
 import {
-  getMcpServerConfig,
   getKintoneClientConfig,
-  getToolConditionCOnfig,
+  getMcpServerConfig,
+  getToolConditionConfig,
 } from "./config/index.js";
 
 const main = async () => {
@@ -13,14 +13,17 @@ const main = async () => {
 
   const mcpServerConfig = getMcpServerConfig();
   const apiClientConfig = getKintoneClientConfig();
-  const toolConditionConfig = getToolConditionCOnfig();
+  const toolConditionConfig = getToolConditionConfig();
 
-  const server = new ServerBuilder()
-    .withPackageName(mcpServerConfig.name)
-    .withVersion(mcpServerConfig.version)
-    .withApiClientConfig(apiClientConfig)
-    .withToolConditionConfig(toolConditionConfig)
-    .build();
+  const serverConfig: KintoneMcpServerOptions = {
+    name: mcpServerConfig.name,
+    version: mcpServerConfig.version,
+    config: {
+      clientConfig: apiClientConfig,
+      toolConditionConfig,
+    },
+  };
+  const server = createServer(serverConfig);
 
   await server.connect(transport);
 };

@@ -1,73 +1,27 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { shouldEnableTool, type Condition } from "./tool-filters.js";
-import { getKintoneClient, type KintoneClientConfig } from "../client/index.js";
-import { createToolCallback, getTools } from "../tools/index.js";
+import { shouldEnableTool } from "./tool-filters.js";
+import { getKintoneClient } from "../client/index.js";
+import { createToolCallback, tools } from "../tools/index.js";
+import type { KintoneMcpServerOptions } from "./types/server.js";
 
-export class ServerBuilder {
-  private packageName: string | undefined = undefined;
-  private version: string | undefined = undefined;
-  private apiClientConfig: KintoneClientConfig | undefined = undefined;
-  private toolConditionConfig: Condition | undefined = undefined;
+export type { KintoneMcpServerOptions } from "./types/server.js";
+export const createServer = (options: KintoneMcpServerOptions): McpServer => {
+  const server = new McpServer({
+    name: options.name,
+    version: options.version,
+  });
 
-  withPackageName(name: string): ServerBuilder {
-    this.packageName = name;
-    return this;
-  }
-
-  withVersion(version: string): ServerBuilder {
-    this.version = version;
-    return this;
-  }
-
-  withApiClientConfig(apiClientConfig: KintoneClientConfig): ServerBuilder {
-    this.apiClientConfig = apiClientConfig;
-    return this;
-  }
-
-  withToolConditionConfig(toolConditionConfig: Condition): ServerBuilder {
-    this.toolConditionConfig = toolConditionConfig;
-    return this;
-  }
-
-  build(): McpServer {
-    if (!this.apiClientConfig) {
-      throw new Error("Server config is not set.");
-    }
-    if (!this.toolConditionConfig) {
-      throw new Error("Tool condition config is not set.");
-    }
-    if (!this.packageName) {
-      throw new Error("Package name is not set.");
-    }
-    if (!this.version) {
-      throw new Error("Version is not set.");
-    }
-
-    const server = new McpServer(
-      {
-        name: this.packageName,
-        version: this.version,
-      },
-      {
-        capabilities: {
-          tools: {},
-        },
-      },
+  const client = getKintoneClient(options.config.clientConfig);
+  const toolCondition = options.config.toolConditionConfig;
+  tools
+    .filter((tool) => shouldEnableTool(tool.name, toolCondition))
+    .forEach((tool) =>
+      server.registerTool(
+        tool.name,
+        tool.config,
+        createToolCallback(tool.callback, { client }),
+      ),
     );
 
-    const client = getKintoneClient(this.apiClientConfig);
-    const tools = getTools();
-    const toolCondition = this.toolConditionConfig; // Already validated above
-    tools
-      .filter((tool) => shouldEnableTool(tool.name, toolCondition))
-      .forEach((tool) =>
-        server.registerTool(
-          tool.name,
-          tool.config,
-          createToolCallback(tool.callback, { client }),
-        ),
-      );
-
-    return server;
-  }
-}
+  return server;
+};

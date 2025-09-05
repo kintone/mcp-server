@@ -1,7 +1,7 @@
 import { z } from "zod";
-import type { KintoneToolCallback } from "../../schema.js";
 import { createTool } from "../../factory.js";
 import { recordSchemaForParameterWithoutFile } from "../../../schema/record/index.js";
+import type { KintoneToolCallback } from "../../types/tool.js";
 
 const inputSchema = {
   app: z
