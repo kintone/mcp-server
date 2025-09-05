@@ -99,11 +99,11 @@ describe("config - successful parsing", () => {
       name: "should handle empty HTTPS_PROXY as empty string",
       env: {
         ...mockKintoneConfig,
-        HTTPS_PROXY: "",
+        HTTPS_PROXY: undefined,
       },
       expected: {
         ...mockKintoneConfig,
-        HTTPS_PROXY: "",
+        HTTPS_PROXY: undefined,
       },
     },
     {

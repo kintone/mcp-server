@@ -12,7 +12,8 @@ vi.mock("@kintone/rest-api-client", () => ({
 vi.mock("../../../../utils/file.js", () => ({
   ensureDirectoryExists: vi.fn(),
   getFileTypeFromArrayBuffer: vi.fn(),
-  writeFileSyncFromArrayBuffer: vi.fn(),
+  writeFileSyncWithoutOverwrite: vi.fn(),
+  replaceSpecialCharacters: vi.fn((str) => str),
 }));
 
 vi.mock("node:path");
