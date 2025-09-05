@@ -54,12 +54,12 @@ describe("downloadFile", () => {
 
       // Execute
       const result = await downloadFile.callback(
-        { fileKey: "test-file-key-123" },
+        { fileKey: "test-file-key-123", fileName: "test-file.png" },
         mockExtra,
       );
 
       expect(result.structuredContent).toEqual({
-        filePath: "/tmp/downloads/test-file-key-123.png",
+        filePath: "/tmp/downloads/test-file.png.png",
         mimeType: "image/png",
         fileSize: 100,
       });
@@ -86,7 +86,7 @@ describe("downloadFile", () => {
 
       // Execute
       const result = await downloadFile.callback(
-        { fileKey: "no-ext-file" },
+        { fileKey: "no-ext-file", fileName: "no-ext-file" },
         mockExtra,
       );
 
@@ -109,7 +109,10 @@ describe("downloadFile", () => {
 
       // Execute and verify
       await expect(
-        downloadFile.callback({ fileKey: "test-file" }, mockExtra),
+        downloadFile.callback(
+          { fileKey: "test-file", fileName: "test-file" },
+          mockExtra,
+        ),
       ).rejects.toThrow(
         "KINTONE_ATTACHMENTS_DIR environment variable must be set to use file download feature",
       );
@@ -127,7 +130,10 @@ describe("downloadFile", () => {
 
       // Execute and verify
       await expect(
-        downloadFile.callback({ fileKey: "fail-file" }, mockExtra),
+        downloadFile.callback(
+          { fileKey: "fail-file", fileName: "fail-file" },
+          mockExtra,
+        ),
       ).rejects.toThrow("Download failed");
     });
 
@@ -140,7 +146,10 @@ describe("downloadFile", () => {
 
       // Execute and verify (when fileKey is a number)
       await expect(
-        downloadFile.callback({ fileKey: 123 as any }, mockExtra),
+        downloadFile.callback(
+          { fileKey: 123 as any, fileName: "test" },
+          mockExtra,
+        ),
       ).rejects.toThrow();
     });
   });
@@ -160,6 +169,7 @@ describe("downloadFile", () => {
       const inputSchema = downloadFile.config.inputSchema;
       expect(inputSchema).toBeDefined();
       expect(inputSchema).toHaveProperty("fileKey");
+      expect(inputSchema).toHaveProperty("fileName");
     });
 
     it("has correct output schema", () => {

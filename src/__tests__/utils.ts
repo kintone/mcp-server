@@ -18,6 +18,7 @@ export const mockKintoneConfig: KintoneClientConfig = {
   HTTPS_PROXY: undefined,
   KINTONE_PFX_FILE_PATH: undefined,
   KINTONE_PFX_FILE_PASSWORD: undefined,
+  KINTONE_ATTACHMENTS_DIR: undefined,
 };
 
 export const mockKintoneConfigWithApiToken: KintoneClientConfig = {
@@ -30,4 +31,5 @@ export const mockKintoneConfigWithApiToken: KintoneClientConfig = {
   HTTPS_PROXY: undefined,
   KINTONE_PFX_FILE_PATH: undefined,
   KINTONE_PFX_FILE_PASSWORD: undefined,
+  KINTONE_ATTACHMENTS_DIR: undefined,
 };

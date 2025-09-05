@@ -179,6 +179,7 @@ describe("config - successful parsing", () => {
         HTTPS_PROXY: undefined,
         KINTONE_PFX_FILE_PATH: undefined,
         KINTONE_PFX_FILE_PASSWORD: undefined,
+        KINTONE_ATTACHMENTS_DIR: undefined,
       },
     },
     {
@@ -197,6 +198,7 @@ describe("config - successful parsing", () => {
         HTTPS_PROXY: undefined,
         KINTONE_PFX_FILE_PATH: undefined,
         KINTONE_PFX_FILE_PASSWORD: undefined,
+        KINTONE_ATTACHMENTS_DIR: undefined,
       },
     },
     {
@@ -215,6 +217,7 @@ describe("config - successful parsing", () => {
         HTTPS_PROXY: undefined,
         KINTONE_PFX_FILE_PATH: undefined,
         KINTONE_PFX_FILE_PASSWORD: undefined,
+        KINTONE_ATTACHMENTS_DIR: undefined,
       },
     },
     {
@@ -233,6 +236,7 @@ describe("config - successful parsing", () => {
         HTTPS_PROXY: undefined,
         KINTONE_PFX_FILE_PATH: undefined,
         KINTONE_PFX_FILE_PASSWORD: undefined,
+        KINTONE_ATTACHMENTS_DIR: undefined,
       },
     },
   ])("$name", ({ env, expected }) => {
