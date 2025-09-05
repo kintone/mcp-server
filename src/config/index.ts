@@ -30,6 +30,8 @@ export const mergeEnvironmentAndCommandLine = (
     KINTONE_PFX_FILE_PASSWORD:
       args["pfx-file-password"] ?? env.KINTONE_PFX_FILE_PASSWORD,
     HTTPS_PROXY: args.proxy ?? env.HTTPS_PROXY ?? env.https_proxy,
+    KINTONE_ATTACHMENTS_DIR:
+      args["attachments-dir"] ?? env.KINTONE_ATTACHMENTS_DIR,
   };
 };
 
