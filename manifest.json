@@ -158,7 +158,7 @@
     "kintone_attachments_dir": {
       "type": "string",
       "title": "Attachments Directory",
-      "description": "Attachments file save directory",
+      "description": "Directory path where downloaded files from Kintone will be saved. Required for file download operations.",
       "required": false,
       "sensitive": false,
       "default": ""

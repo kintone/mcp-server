@@ -201,13 +201,13 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 
 - [認証設定ガイド](./docs/ja/authentication.md) - 認証方法の詳細と設定例
 
-## 特記事項
+## 使用上の注意
 
 ### `kintone-download-file`ツールの注意点
 
 - ダウンロードしたファイルは、`--attachments-dir`または`KINTONE_ATTACHMENTS_DIR`で指定したディレクトリに保存されます。
 - `--attachments-dir`または`KINTONE_ATTACHMENTS_DIR`を指定しない場合はツール実行時にエラーになります。
-- `--attachments-dir`または`KINTONE_ATTACHMENTS_DIR`に、存在しないディレクトリを指定した場合は、ディレクトリを新規作成してからそこに保存されます。
+- `--attachments-dir`または`KINTONE_ATTACHMENTS_DIR`に存在しないディレクトリを指定した場合は、ディレクトリを新規作成してからそこに保存されます。
 
 ## 制限事項
 

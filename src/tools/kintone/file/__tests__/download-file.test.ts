@@ -82,7 +82,7 @@ describe("downloadFile", () => {
       const mockBuffer = new ArrayBuffer(50);
       mockDownloadFile.mockResolvedValue(mockBuffer);
 
-      vi.mocked(getFileTypeFromArrayBuffer).mockResolvedValue(null);
+      vi.mocked(getFileTypeFromArrayBuffer).mockResolvedValue(undefined);
 
       // Execute
       const result = await downloadFile.callback(

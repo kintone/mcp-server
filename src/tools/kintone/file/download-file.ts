@@ -5,6 +5,7 @@ import { parseKintoneClientConfig } from "../../../config/index.js";
 import {
   ensureDirectoryExists,
   getFileTypeFromArrayBuffer,
+  replaceSpecialCharacters,
   writeFileSyncWithoutOverwrite,
 } from "../../../utils/file.js";
 import path from "node:path";
@@ -30,7 +31,7 @@ const outputSchema = {
 
 const generateFileName = (fileName: string, ext?: string) => {
   const extWithDot = ext ? `.${ext}` : "";
-  return `${fileName}${extWithDot}`;
+  return `${replaceSpecialCharacters(fileName)}${extWithDot}`;
 };
 
 const generateFilePath = (downloadDir: string, filename: string): string => {
