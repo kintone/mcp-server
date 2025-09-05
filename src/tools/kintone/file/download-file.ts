@@ -5,7 +5,7 @@ import { parseKintoneClientConfig } from "../../../config/index.js";
 import {
   ensureDirectoryExists,
   getFileTypeFromArrayBuffer,
-  writeFileSyncFromArrayBuffer,
+  writeFileSyncWithoutOverwrite,
 } from "../../../utils/file.js";
 import path from "node:path";
 
@@ -68,7 +68,7 @@ export const downloadFile = createTool(
       generateFileName(fileName, fileTypeResult?.ext),
     );
 
-    writeFileSyncFromArrayBuffer(filePath, buffer);
+    writeFileSyncWithoutOverwrite(filePath, buffer);
 
     const result = {
       filePath,
