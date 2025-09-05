@@ -1,8 +1,7 @@
 import { z } from "zod";
-import { createTool } from "../../utils.js";
-import { getKintoneClient } from "../../../client.js";
-import { parseKintoneClientConfig } from "../../../config/index.js";
-import { recordSchemaForParameter } from "../../../schema/record/record-for-parameter.js";
+import { createTool } from "../../factory.js";
+import { recordSchemaForParameter } from "../../../schema/record/index.js";
+import type { KintoneToolCallback } from "../../types/tool.js";
 
 const updateRecordSchema = z.object({
   // updateKey指定は対象外
@@ -44,37 +43,38 @@ const outputSchema = {
     .describe("Array of updated record information"),
 };
 
-export const updateRecords = createTool(
-  "kintone-update-records",
-  {
-    title: "Update Records",
-    description:
-      "Update multiple records in a kintone app. Use kintone-get-form-fields tool first to discover available field codes and their required formats. Note: Some fields cannot be updated (LOOKUP copies, STATUS, CATEGORY, CALC, ASSIGNEE, auto-calculated fields).",
-    inputSchema,
-    outputSchema,
-  },
-  async ({ app, records }) => {
-    const config = parseKintoneClientConfig();
-    const client = getKintoneClient(config);
+const toolName = "kintone-update-records";
+const toolConfig = {
+  title: "Update Records",
+  description:
+    "Update multiple records in a kintone app. Use kintone-get-form-fields tool first to discover available field codes and their required formats. Note: Some fields cannot be updated (LOOKUP copies, STATUS, CATEGORY, CALC, ASSIGNEE, auto-calculated fields).",
+  inputSchema,
+  outputSchema,
+};
 
-    const response = await client.record.updateRecords({
-      app,
-      records,
-      upsert: false, // upsertモードは対象外
-    });
+const callback: KintoneToolCallback<typeof inputSchema> = async (
+  { app, records },
+  { client },
+) => {
+  const response = await client.record.updateRecords({
+    app,
+    records,
+    upsert: false, // upsertモードは対象外
+  });
 
-    const result = {
-      records: response.records,
-    };
+  const result = {
+    records: response.records,
+  };
 
-    return {
-      structuredContent: result,
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(result, null, 2),
-        },
-      ],
-    };
-  },
-);
+  return {
+    structuredContent: result,
+    content: [
+      {
+        type: "text",
+        text: JSON.stringify(result, null, 2),
+      },
+    ],
+  };
+};
+
+export const updateRecords = createTool(toolName, toolConfig, callback);

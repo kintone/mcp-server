@@ -1,17 +1,13 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { getFormFields } from "../get-form-fields.js";
 import { z } from "zod";
-import { mockExtra, mockKintoneConfig } from "../../../../__tests__/utils.js";
+import {
+  createMockClient,
+  mockKintoneConfig,
+} from "../../../../__tests__/utils.js";
 
-// Mock the KintoneRestAPIClient
+// Mock function for getFormFields API call
 const mockGetFormFields = vi.fn();
-vi.mock("@kintone/rest-api-client", () => ({
-  KintoneRestAPIClient: vi.fn().mockImplementation(() => ({
-    app: {
-      getFormFields: mockGetFormFields,
-    },
-  })),
-}));
 
 describe("get-form-fields tool", () => {
   const originalEnv = process.env;
@@ -211,9 +207,12 @@ describe("get-form-fields tool", () => {
 
       mockGetFormFields.mockResolvedValueOnce(mockData);
 
+      const mockClient = createMockClient();
+      mockClient.app.getFormFields = mockGetFormFields;
+
       const result = await getFormFields.callback(
         { app: "123", lang: "ja" },
-        mockExtra,
+        { client: mockClient },
       );
 
       expect(mockGetFormFields).toHaveBeenCalledWith({

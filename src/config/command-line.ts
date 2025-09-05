@@ -6,7 +6,7 @@ import { parseArgs } from "node:util";
  * （process.argv[0]はnode、[1]はスクリプトパスなので除外されます）
  * @param args process.argv で取得した値
  */
-export const parseCommandLineOptions = (args: string[]) => {
+export const parse = (args: string[]) => {
   const { values } = parseArgs({
     args: args.slice(2), // process.argv[0]はnode、[1]はスクリプトパスなので除外
     allowPositionals: true,

@@ -1,17 +1,13 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { getRecords } from "../get-records.js";
 import { z } from "zod";
-import { mockExtra, mockKintoneConfig } from "../../../../__tests__/utils.js";
+import {
+  createMockClient,
+  mockKintoneConfig,
+} from "../../../../__tests__/utils.js";
 
-// Mock the KintoneRestAPIClient
+// Mock function for getRecords API call
 const mockGetRecords = vi.fn();
-vi.mock("@kintone/rest-api-client", () => ({
-  KintoneRestAPIClient: vi.fn().mockImplementation(() => ({
-    record: {
-      getRecords: mockGetRecords,
-    },
-  })),
-}));
 
 describe("get-records tool", () => {
   const originalEnv = process.env;
@@ -315,6 +311,9 @@ describe("get-records tool", () => {
 
       mockGetRecords.mockResolvedValueOnce(mockData);
 
+      const mockClient = createMockClient();
+      mockClient.record.getRecords = mockGetRecords;
+
       const result = await getRecords.callback(
         {
           app: "123",
@@ -322,7 +321,7 @@ describe("get-records tool", () => {
             textContains: [{ field: "title", value: "Test" }],
           },
         },
-        mockExtra,
+        { client: mockClient },
       );
 
       expect(mockGetRecords).toHaveBeenCalledWith({
@@ -342,6 +341,9 @@ describe("get-records tool", () => {
     it("should build complex query with multiple filters", async () => {
       const mockData = { records: [] };
       mockGetRecords.mockResolvedValueOnce(mockData);
+
+      const mockClient = createMockClient();
+      mockClient.record.getRecords = mockGetRecords;
 
       await getRecords.callback(
         {
@@ -363,7 +365,7 @@ describe("get-records tool", () => {
           limit: 50,
           offset: 100,
         },
-        mockExtra,
+        { client: mockClient },
       );
 
       expect(mockGetRecords).toHaveBeenCalledWith({
@@ -379,12 +381,15 @@ describe("get-records tool", () => {
       const mockData = { records: [] };
       mockGetRecords.mockResolvedValueOnce(mockData);
 
+      const mockClient = createMockClient();
+      mockClient.record.getRecords = mockGetRecords;
+
       await getRecords.callback(
         {
           app: "123",
           filters: {},
         },
-        mockExtra,
+        { client: mockClient },
       );
 
       expect(mockGetRecords).toHaveBeenCalledWith({
@@ -399,12 +404,15 @@ describe("get-records tool", () => {
       const mockData = { records: [] };
       mockGetRecords.mockResolvedValueOnce(mockData);
 
+      const mockClient = createMockClient();
+      mockClient.record.getRecords = mockGetRecords;
+
       await getRecords.callback(
         {
           app: "123",
           orderBy: [{ field: "created", order: "desc" }],
         },
-        mockExtra,
+        { client: mockClient },
       );
 
       expect(mockGetRecords).toHaveBeenCalledWith({
@@ -422,11 +430,14 @@ describe("get-records tool", () => {
       };
       mockGetRecords.mockResolvedValueOnce(mockData);
 
+      const mockClient = createMockClient();
+      mockClient.record.getRecords = mockGetRecords;
+
       const result = await getRecords.callback(
         {
           app: "123",
         },
-        mockExtra,
+        { client: mockClient },
       );
 
       expect(mockGetRecords).toHaveBeenCalledWith({

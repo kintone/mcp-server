@@ -1,7 +1,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { addRecords } from "../add-records.js";
 import { z } from "zod";
-import { mockExtra, mockKintoneConfig } from "../../../../__tests__/utils.js";
+import {
+  createMockClient,
+  mockKintoneConfig,
+} from "../../../../__tests__/utils.js";
 
 // Add-records inputの型を定義
 type AddRecordsInput = {
@@ -9,15 +12,8 @@ type AddRecordsInput = {
   records: Array<Record<string, any>>;
 };
 
-// Mock the KintoneRestAPIClient
+// Mock function for addRecords API call
 const mockAddRecords = vi.fn();
-vi.mock("@kintone/rest-api-client", () => ({
-  KintoneRestAPIClient: vi.fn().mockImplementation(() => ({
-    record: {
-      addRecords: mockAddRecords,
-    },
-  })),
-}));
 
 describe("add-records tool", () => {
   const originalEnv = process.env;
@@ -325,7 +321,12 @@ describe("add-records tool", () => {
         ],
       };
 
-      const result = await addRecords.callback(input, mockExtra);
+      const mockClient = createMockClient();
+      mockClient.record.addRecords = mockAddRecords;
+
+      const result = await addRecords.callback(input, {
+        client: mockClient,
+      });
 
       expect(mockAddRecords).toHaveBeenCalledWith({
         app: "123",
@@ -370,7 +371,12 @@ describe("add-records tool", () => {
         ],
       };
 
-      const result = await addRecords.callback(input, mockExtra);
+      const mockClient = createMockClient();
+      mockClient.record.addRecords = mockAddRecords;
+
+      const result = await addRecords.callback(input, {
+        client: mockClient,
+      });
 
       expect(mockAddRecords).toHaveBeenCalledWith({
         app: "456",
@@ -428,7 +434,12 @@ describe("add-records tool", () => {
         ],
       };
 
-      const result = await addRecords.callback(input, mockExtra);
+      const mockClient = createMockClient();
+      mockClient.record.addRecords = mockAddRecords;
+
+      const result = await addRecords.callback(input, {
+        client: mockClient,
+      });
 
       expect(mockAddRecords).toHaveBeenCalledWith({
         app: "123",
@@ -473,9 +484,14 @@ describe("add-records tool", () => {
         ],
       };
 
-      await expect(addRecords.callback(input, mockExtra)).rejects.toThrow(
-        "API Error: Invalid field value",
-      );
+      const mockClient = createMockClient();
+      mockClient.record.addRecords = mockAddRecords;
+
+      await expect(
+        addRecords.callback(input, {
+          client: mockClient,
+        }),
+      ).rejects.toThrow("API Error: Invalid field value");
 
       expect(mockAddRecords).toHaveBeenCalledWith({
         app: "123",
