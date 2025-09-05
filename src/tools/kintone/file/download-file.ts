@@ -15,6 +15,11 @@ const inputSchema = {
     .describe(
       "The unique file key to download (obtained from record retrieval or file upload)",
     ),
+  fileName: z
+    .string()
+    .describe(
+      "The filename to use when downloading to local storage. This will be the actual filename saved on disk",
+    ),
 };
 
 const outputSchema = {
@@ -23,9 +28,9 @@ const outputSchema = {
   fileSize: z.number().describe("File size in bytes"),
 };
 
-const generateFileName = (fileKey: string, ext?: string) => {
+const generateFileName = (fileName: string, ext?: string) => {
   const extWithDot = ext ? `.${ext}` : "";
-  return `${fileKey}${extWithDot}`;
+  return `${fileName}${extWithDot}`;
 };
 
 const generateFilePath = (downloadDir: string, filename: string): string => {
@@ -41,7 +46,7 @@ export const downloadFile = createTool(
     inputSchema,
     outputSchema,
   },
-  async ({ fileKey }) => {
+  async ({ fileKey, fileName }) => {
     const configResult = parseKintoneClientConfig();
     const client = getKintoneClient(configResult);
 
@@ -58,9 +63,10 @@ export const downloadFile = createTool(
     ensureDirectoryExists(downloadDir);
 
     const fileTypeResult = await getFileTypeFromArrayBuffer(buffer);
-
-    const fileName = generateFileName(fileKey, fileTypeResult?.ext);
-    const filePath = generateFilePath(downloadDir, fileName);
+    const filePath = generateFilePath(
+      downloadDir,
+      generateFileName(fileName, fileTypeResult?.ext),
+    );
 
     writeFileSyncFromArrayBuffer(filePath, buffer);
 
