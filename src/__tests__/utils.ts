@@ -21,6 +21,9 @@ export const createMockClient = (): KintoneRestAPIClient =>
       getFormFields: vi.fn(),
       getProcessManagement: vi.fn(),
     },
+    file: {
+      downloadFile: vi.fn(),
+    },
   }) as unknown as KintoneRestAPIClient;
 
 export function mockToolCallbackOptions(client?: KintoneRestAPIClient) {

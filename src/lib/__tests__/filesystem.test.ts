@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { replaceSpecialCharacters, ensureDirectoryExists } from "../file.js";
+import { generateFileName, ensureDirectoryExists } from "../filesystem.js";
 import fs from "node:fs";
 
 vi.mock("node:fs");
@@ -10,32 +10,46 @@ describe("file utilities", () => {
     vi.clearAllMocks();
   });
 
-  describe("replaceSpecialCharacters", () => {
+  describe("generateFileName", () => {
     it("should replace Windows forbidden characters with underscores", () => {
-      const input = 'test<>:"|?*\\/file.txt';
-      const expected = "test_________file.txt";
-      expect(replaceSpecialCharacters(input)).toBe(expected);
+      const input = 'test<>:"|?*\\/file';
+      const expected = "test_________file";
+      expect(generateFileName(input)).toBe(expected);
     });
 
     it("should not modify filenames without special characters", () => {
-      const input = "normal-filename_123.txt";
-      expect(replaceSpecialCharacters(input)).toBe(input);
+      const input = "normal-filename_123";
+      expect(generateFileName(input)).toBe(input);
     });
 
     it("should handle empty strings", () => {
-      expect(replaceSpecialCharacters("")).toBe("");
+      expect(generateFileName("")).toBe("");
     });
 
     it("should replace multiple occurrences of the same character", () => {
-      const input = "file:::name***.txt";
-      const expected = "file___name___.txt";
-      expect(replaceSpecialCharacters(input)).toBe(expected);
+      const input = "file:::name***";
+      const expected = "file___name___";
+      expect(generateFileName(input)).toBe(expected);
     });
 
     it("should handle all forbidden characters in one string", () => {
       const input = '<>:"|?*\\/';
       const expected = "_________";
-      expect(replaceSpecialCharacters(input)).toBe(expected);
+      expect(generateFileName(input)).toBe(expected);
+    });
+
+    it("should add extension when provided", () => {
+      const input = "filename";
+      const ext = "txt";
+      const expected = "filename.txt";
+      expect(generateFileName(input, ext)).toBe(expected);
+    });
+
+    it("should replace special characters and add extension", () => {
+      const input = "file<>name";
+      const ext = "pdf";
+      const expected = "file__name.pdf";
+      expect(generateFileName(input, ext)).toBe(expected);
     });
   });
 

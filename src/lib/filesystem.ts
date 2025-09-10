@@ -2,10 +2,23 @@ import { fileTypeFromBuffer } from "file-type";
 import fs from "node:fs";
 import path from "node:path";
 
+export const generateFileName = (fileName: string, ext?: string) => {
+  const extWithDot = ext ? `.${ext}` : "";
+  return `${replaceSpecialCharacters(fileName)}${extWithDot}`;
+};
+
+export const generateFilePath = (
+  downloadDir: string,
+  filename: string,
+): string => {
+  const filePath = path.join(downloadDir, filename);
+  return filePath;
+};
+
 /**
  * Replace special characters in filename for Windows compatibility
  */
-export const replaceSpecialCharacters = (filename: string): string => {
+const replaceSpecialCharacters = (filename: string): string => {
   // Windows forbidden characters: < > : " | ? * \ /
   return filename.replace(/[<>:"|?*\\/]/g, "_");
 };

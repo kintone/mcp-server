@@ -1,11 +1,11 @@
 import { z } from "zod";
 import {
   ensureDirectoryExists,
+  generateFileName,
+  generateFilePath,
   getFileTypeFromArrayBuffer,
-  replaceSpecialCharacters,
   writeFileSyncWithoutOverwrite,
-} from "../../../utils/file.js";
-import path from "node:path";
+} from "../../../lib/filesystem.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
 import { createTool } from "../../factory.js";
 
@@ -74,16 +74,6 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
       },
     ],
   };
-};
-
-const generateFileName = (fileName: string, ext?: string) => {
-  const extWithDot = ext ? `.${ext}` : "";
-  return `${replaceSpecialCharacters(fileName)}${extWithDot}`;
-};
-
-const generateFilePath = (downloadDir: string, filename: string): string => {
-  const filePath = path.join(downloadDir, filename);
-  return filePath;
 };
 
 export const downloadFile = createTool(toolName, toolConfig, callback);
