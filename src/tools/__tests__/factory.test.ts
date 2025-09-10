@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { createTool } from "../utils.js";
+import { createTool, createToolCallback } from "../factory.js";
 import { z } from "zod";
-import { mockExtra } from "../../__tests__/utils.js";
+import { mockToolCallbackOptions } from "../../__tests__/utils.js";
 
 describe("createTool", () => {
   it("should create a tool with correct structure", () => {
@@ -14,7 +14,7 @@ describe("createTool", () => {
       result: z.boolean(),
     };
 
-    const handler = async ({ x, y }: { x: number; y: string }) => {
+    const handler = async () => {
       return {
         structuredContent: { result: true },
         content: [{ type: "text" as const, text: "test" }],
@@ -24,6 +24,7 @@ describe("createTool", () => {
     const tool = createTool(
       "test_tool",
       {
+        title: "Test Tool",
         description: "Test tool",
         inputSchema,
         outputSchema,
@@ -50,10 +51,24 @@ describe("createTool", () => {
       };
     };
 
-    const tool = createTool("minimal_tool", {}, handler);
+    const tool = createTool(
+      "minimal_tool",
+      {
+        title: "Minimal Tool",
+        description: "A tool with minimal config",
+        inputSchema: {},
+        outputSchema: {},
+      },
+      handler,
+    );
 
     expect(tool.name).toBe("minimal_tool");
-    expect(tool.config).toEqual({});
+    expect(tool.config).toEqual({
+      title: "Minimal Tool",
+      description: "A tool with minimal config",
+      inputSchema: {},
+      outputSchema: {},
+    });
     expect(typeof tool.callback).toBe("function");
   });
 
@@ -71,11 +86,41 @@ describe("createTool", () => {
       };
     };
 
-    const tool = createTool("double_tool", { inputSchema }, handler);
+    const tool = createTool(
+      "double_tool",
+      {
+        title: "Double Tool",
+        description: "Doubles a number",
+        inputSchema,
+        outputSchema: { doubled: z.number() },
+      },
+      handler,
+    );
 
-    const result = await tool.callback({ value: 5 }, mockExtra);
+    const result = await tool.callback({ value: 5 }, mockToolCallbackOptions());
 
     expect(result.structuredContent).toEqual({ doubled: 10 });
     expect(result.content).toEqual([{ type: "text", text: "5 * 2 = 10" }]);
+  });
+});
+
+describe("createToolCallback", () => {
+  it("should wrap callback with options", async () => {
+    const callback = async (args: any, options: any) => ({
+      content: [
+        {
+          type: "text" as const,
+          text: `Value: ${args.value}, Version: ${options.version}`,
+        },
+      ],
+    });
+
+    const options = mockToolCallbackOptions();
+    const wrappedCallback = createToolCallback(callback, options);
+    const result = await wrappedCallback({ value: "test" });
+
+    expect(result.content).toEqual([
+      { type: "text", text: "Value: test, Version: 1.0.0" },
+    ]);
   });
 });
