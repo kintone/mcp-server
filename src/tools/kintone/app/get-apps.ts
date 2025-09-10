@@ -1,7 +1,6 @@
 import { z } from "zod";
-import { createTool } from "../../utils.js";
-import { getKintoneClient } from "../../../client.js";
-import { parseKintoneClientConfig } from "../../../config/index.js";
+import { createTool } from "../../factory.js";
+import type { KintoneToolCallback } from "../../types/tool.js";
 
 const inputSchema = {
   ids: z
@@ -74,50 +73,51 @@ const outputSchema = {
   apps: z.array(appSchema).describe("Array of app information"),
 };
 
-export const getApps = createTool(
-  "kintone-get-apps",
-  {
-    title: "Get Apps",
-    description: "Get multiple app settings from kintone",
-    inputSchema,
-    outputSchema,
-  },
-  async ({ ids, codes, name, spaceIds, offset, limit }) => {
-    const config = parseKintoneClientConfig();
-    const client = getKintoneClient(config);
+const toolName = "kintone-get-apps";
+const toolConfig = {
+  title: "Get Apps",
+  description: "Get multiple app settings from kintone",
+  inputSchema,
+  outputSchema,
+};
 
-    const response = await client.app.getApps({
-      ids,
-      codes,
-      name,
-      spaceIds,
-      offset,
-      limit,
-    });
+const callback: KintoneToolCallback<typeof inputSchema> = async (
+  { ids, codes, name, spaceIds, offset, limit },
+  { client },
+) => {
+  const response = await client.app.getApps({
+    ids,
+    codes,
+    name,
+    spaceIds,
+    offset,
+    limit,
+  });
 
-    const result = {
-      apps: response.apps.map((app) => ({
-        appId: app.appId,
-        code: app.code,
-        name: app.name,
-        description: app.description,
-        spaceId: app.spaceId,
-        threadId: app.threadId,
-        createdAt: app.createdAt,
-        creator: app.creator,
-        modifiedAt: app.modifiedAt,
-        modifier: app.modifier,
-      })),
-    };
+  const result = {
+    apps: response.apps.map((app) => ({
+      appId: app.appId,
+      code: app.code,
+      name: app.name,
+      description: app.description,
+      spaceId: app.spaceId,
+      threadId: app.threadId,
+      createdAt: app.createdAt,
+      creator: app.creator,
+      modifiedAt: app.modifiedAt,
+      modifier: app.modifier,
+    })),
+  };
 
-    return {
-      structuredContent: result,
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(result, null, 2),
-        },
-      ],
-    };
-  },
-);
+  return {
+    structuredContent: result,
+    content: [
+      {
+        type: "text",
+        text: JSON.stringify(result, null, 2),
+      },
+    ],
+  };
+};
+
+export const getApps = createTool(toolName, toolConfig, callback);

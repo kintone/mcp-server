@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { parseKintoneClientConfig } from "../index.js";
-import { mockKintoneConfig } from "../../__tests__/utils.js";
+import { mockProvidedConfig } from "../../../__tests__/utils.js";
+import { parseKintoneMcpServerConfig } from "../../parser.js";
 
 describe("config - validation errors", () => {
   const originalEnv = process.env;
@@ -19,8 +19,8 @@ describe("config - validation errors", () => {
     {
       name: "should throw error when KINTONE_BASE_URL is missing",
       env: {
-        KINTONE_USERNAME: mockKintoneConfig.KINTONE_USERNAME,
-        KINTONE_PASSWORD: mockKintoneConfig.KINTONE_PASSWORD,
+        KINTONE_USERNAME: mockProvidedConfig.KINTONE_USERNAME,
+        KINTONE_PASSWORD: mockProvidedConfig.KINTONE_PASSWORD,
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
@@ -30,7 +30,7 @@ describe("config - validation errors", () => {
     {
       name: "should throw error when KINTONE_BASE_URL is invalid",
       env: {
-        ...mockKintoneConfig,
+        ...mockProvidedConfig,
         KINTONE_BASE_URL: "not-a-url",
       },
       expectedErrors: [
@@ -41,7 +41,7 @@ describe("config - validation errors", () => {
     {
       name: "should throw error when KINTONE_BASE_URL is empty",
       env: {
-        ...mockKintoneConfig,
+        ...mockProvidedConfig,
         KINTONE_BASE_URL: "",
       },
       expectedErrors: [
@@ -52,8 +52,8 @@ describe("config - validation errors", () => {
     {
       name: "should throw error when KINTONE_USERNAME is missing",
       env: {
-        KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
-        KINTONE_PASSWORD: mockKintoneConfig.KINTONE_PASSWORD,
+        KINTONE_BASE_URL: mockProvidedConfig.KINTONE_BASE_URL,
+        KINTONE_PASSWORD: mockProvidedConfig.KINTONE_PASSWORD,
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
@@ -63,7 +63,7 @@ describe("config - validation errors", () => {
     {
       name: "should throw error when KINTONE_USERNAME is empty",
       env: {
-        ...mockKintoneConfig,
+        ...mockProvidedConfig,
         KINTONE_USERNAME: "",
       },
       expectedErrors: [
@@ -74,8 +74,8 @@ describe("config - validation errors", () => {
     {
       name: "should throw error when KINTONE_PASSWORD is missing",
       env: {
-        KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
-        KINTONE_USERNAME: mockKintoneConfig.KINTONE_USERNAME,
+        KINTONE_BASE_URL: mockProvidedConfig.KINTONE_BASE_URL,
+        KINTONE_USERNAME: mockProvidedConfig.KINTONE_USERNAME,
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
@@ -85,7 +85,7 @@ describe("config - validation errors", () => {
     {
       name: "should throw error when KINTONE_PASSWORD is empty",
       env: {
-        ...mockKintoneConfig,
+        ...mockProvidedConfig,
         KINTONE_PASSWORD: "",
       },
       expectedErrors: [
@@ -119,7 +119,7 @@ describe("config - validation errors", () => {
     {
       name: "should throw error when HTTPS_PROXY is invalid URL",
       env: {
-        ...mockKintoneConfig,
+        ...mockProvidedConfig,
         HTTPS_PROXY: "not-a-valid-url",
       },
       expectedErrors: [
@@ -130,7 +130,7 @@ describe("config - validation errors", () => {
     {
       name: "should throw error when HTTPS_PROXY has invalid format",
       env: {
-        ...mockKintoneConfig,
+        ...mockProvidedConfig,
         HTTPS_PROXY: "://invalid-format",
       },
       expectedErrors: [
@@ -141,7 +141,7 @@ describe("config - validation errors", () => {
     {
       name: "should throw error when only KINTONE_BASIC_AUTH_USERNAME is provided",
       env: {
-        ...mockKintoneConfig,
+        ...mockProvidedConfig,
         KINTONE_BASIC_AUTH_USERNAME: "basic-user",
       },
       expectedErrors: [
@@ -152,7 +152,7 @@ describe("config - validation errors", () => {
     {
       name: "should throw error when only KINTONE_BASIC_AUTH_PASSWORD is provided",
       env: {
-        ...mockKintoneConfig,
+        ...mockProvidedConfig,
         KINTONE_BASIC_AUTH_PASSWORD: "basic-pass",
       },
       expectedErrors: [
@@ -163,7 +163,7 @@ describe("config - validation errors", () => {
     {
       name: "should throw error when neither username/password nor API token is provided",
       env: {
-        KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
+        KINTONE_BASE_URL: mockProvidedConfig.KINTONE_BASE_URL,
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
@@ -173,7 +173,7 @@ describe("config - validation errors", () => {
     {
       name: "should throw error when API token has more than 9 tokens",
       env: {
-        KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
+        KINTONE_BASE_URL: mockProvidedConfig.KINTONE_BASE_URL,
         KINTONE_API_TOKEN: "t1,t2,t3,t4,t5,t6,t7,t8,t9,t10",
       },
       expectedErrors: [
@@ -184,7 +184,7 @@ describe("config - validation errors", () => {
     {
       name: "should throw error when API token contains non-alphanumeric characters",
       env: {
-        KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
+        KINTONE_BASE_URL: mockProvidedConfig.KINTONE_BASE_URL,
         KINTONE_API_TOKEN: "token-with-dash,token_with_underscore",
       },
       expectedErrors: [
@@ -195,8 +195,8 @@ describe("config - validation errors", () => {
     {
       name: "should throw error when only username is provided without password",
       env: {
-        KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
-        KINTONE_USERNAME: mockKintoneConfig.KINTONE_USERNAME,
+        KINTONE_BASE_URL: mockProvidedConfig.KINTONE_BASE_URL,
+        KINTONE_USERNAME: mockProvidedConfig.KINTONE_USERNAME,
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
@@ -206,8 +206,8 @@ describe("config - validation errors", () => {
     {
       name: "should throw error when only password is provided without username",
       env: {
-        KINTONE_BASE_URL: mockKintoneConfig.KINTONE_BASE_URL,
-        KINTONE_PASSWORD: mockKintoneConfig.KINTONE_PASSWORD,
+        KINTONE_BASE_URL: mockProvidedConfig.KINTONE_BASE_URL,
+        KINTONE_PASSWORD: mockProvidedConfig.KINTONE_PASSWORD,
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
@@ -215,10 +215,18 @@ describe("config - validation errors", () => {
       ],
     },
   ])("$name", ({ env, expectedErrors, deleteEnvVars }) => {
+    // Clear process.env of any existing Kintone-related variables
     process.env = {
-      ...originalEnv,
-      ...env,
+      PATH: originalEnv.PATH,
+      NODE_ENV: originalEnv.NODE_ENV,
     };
+
+    // Set test-specific env vars
+    Object.entries(env).forEach(([key, value]) => {
+      if (value !== undefined) {
+        process.env[key] = String(value);
+      }
+    });
 
     if (deleteEnvVars) {
       delete process.env.KINTONE_BASE_URL;
@@ -227,7 +235,7 @@ describe("config - validation errors", () => {
       delete process.env.KINTONE_API_TOKEN;
     }
 
-    const errorCall = () => parseKintoneClientConfig();
+    const errorCall = () => parseKintoneMcpServerConfig();
     try {
       errorCall();
       throw new Error("Expected to throw but didn't");

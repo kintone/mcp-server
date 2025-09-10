@@ -1,7 +1,6 @@
 import { z } from "zod";
-import { createTool } from "../../utils.js";
-import { getKintoneClient } from "../../../client.js";
-import { parseKintoneClientConfig } from "../../../config/index.js";
+import { createTool } from "../../factory.js";
+import type { KintoneToolCallback } from "../../types/tool.js";
 
 const inputSchema = {
   app: z.string().describe("The ID of the app (numeric value as string)"),
@@ -20,24 +19,25 @@ const inputSchema = {
 
 const outputSchema = {};
 
-export const deleteRecords = createTool(
-  "kintone-delete-records",
-  {
-    title: "Delete Records",
-    description:
-      "Delete multiple records from a kintone app. Maximum 100 records can be deleted at once.",
-    inputSchema,
-    outputSchema,
-  },
-  async ({ app, ids, revisions }) => {
-    const config = parseKintoneClientConfig();
-    const client = getKintoneClient(config);
+const toolName = "kintone-delete-records";
+const toolConfig = {
+  title: "Delete Records",
+  description:
+    "Delete multiple records from a kintone app. Maximum 100 records can be deleted at once.",
+  inputSchema,
+  outputSchema,
+};
 
-    await client.record.deleteRecords({ app, ids, revisions });
+const callback: KintoneToolCallback<typeof inputSchema> = async (
+  { app, ids, revisions },
+  { client },
+) => {
+  await client.record.deleteRecords({ app, ids, revisions });
 
-    return {
-      structuredContent: {},
-      content: [],
-    };
-  },
-);
+  return {
+    structuredContent: {},
+    content: [],
+  };
+};
+
+export const deleteRecords = createTool(toolName, toolConfig, callback);
