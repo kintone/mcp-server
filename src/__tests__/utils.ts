@@ -21,6 +21,9 @@ export const createMockClient = (): KintoneRestAPIClient =>
       getFormFields: vi.fn(),
       getProcessManagement: vi.fn(),
     },
+    file: {
+      downloadFile: vi.fn(),
+    },
   }) as unknown as KintoneRestAPIClient;
 
 export function mockToolCallbackOptions(client?: KintoneRestAPIClient) {
@@ -66,6 +69,7 @@ export const mockProvidedConfig: ProvidedConfig = {
   HTTPS_PROXY: undefined,
   KINTONE_PFX_FILE_PATH: undefined,
   KINTONE_PFX_FILE_PASSWORD: undefined,
+  KINTONE_ATTACHMENTS_DIR: undefined,
 };
 
 export const mockProvidedConfigWithApiToken: ProvidedConfig = {
@@ -78,4 +82,5 @@ export const mockProvidedConfigWithApiToken: ProvidedConfig = {
   HTTPS_PROXY: undefined,
   KINTONE_PFX_FILE_PATH: undefined,
   KINTONE_PFX_FILE_PASSWORD: undefined,
+  KINTONE_ATTACHMENTS_DIR: undefined,
 };
