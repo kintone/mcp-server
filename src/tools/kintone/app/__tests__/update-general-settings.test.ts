@@ -34,7 +34,7 @@ describe("update-general-settings tool", () => {
 
     it("should have correct description", () => {
       expect(updateGeneralSettings.config.description).toBe(
-        "Update the general settings of a kintone app",
+        "Update the general settings of a kintone app. Changes are made to the pre-live environment, which is a temporary storage area where app information is saved before deployment. To reflect changes to the production environment, execute the kintone-deploy-app-settings tool after this tool.",
       );
     });
 
