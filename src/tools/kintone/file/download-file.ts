@@ -18,7 +18,7 @@ const inputSchema = {
   fileName: z
     .string()
     .describe(
-      "The filename to use when downloading to local storage. This will be the actual filename saved on disk",
+      "The filename (without extension) to use when downloading to local storage. The extension will be automatically detected and added based on the file's MIME type",
     ),
 };
 
