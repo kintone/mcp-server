@@ -13,7 +13,7 @@ const inputSchema = {
     .boolean()
     .optional()
     .describe(
-      "Whether to retrieve from preview environment (requires app management permission)",
+      "Whether to retrieve from preview environment (requires app administration permission for preview, record view/add permission for production)",
     ),
 };
 

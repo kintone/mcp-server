@@ -37,9 +37,8 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
   { apps },
   { client },
 ) => {
-  // Use apps array directly as the API expects simple array of app IDs
   const result = await client.app.getDeployStatus({
-    apps: apps,
+    apps,
   });
 
   return {
