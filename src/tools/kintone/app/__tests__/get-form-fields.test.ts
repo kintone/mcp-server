@@ -50,6 +50,18 @@ describe("get-form-fields tool", () => {
           description: "with lang default",
         },
         { input: { app: "456", lang: "user" }, description: "with lang user" },
+        {
+          input: { app: "123", preview: true },
+          description: "with preview true",
+        },
+        {
+          input: { app: "123", preview: false },
+          description: "with preview false",
+        },
+        {
+          input: { app: "456", lang: "ja", preview: true },
+          description: "with lang ja and preview true",
+        },
       ])("accepts $description", ({ input }) => {
         expect(() => inputSchema.parse(input)).not.toThrow();
       });
@@ -68,6 +80,15 @@ describe("get-form-fields tool", () => {
           description: "invalid lang value",
         },
         { input: { app: "123", lang: null }, description: "lang as null" },
+        {
+          input: { app: "123", preview: "true" },
+          description: "preview as string",
+        },
+        { input: { app: "123", preview: 1 }, description: "preview as number" },
+        {
+          input: { app: "123", preview: null },
+          description: "preview as null",
+        },
       ])("rejects $description", ({ input }) => {
         expect(() => inputSchema.parse(input)).toThrow();
       });
@@ -225,6 +246,36 @@ describe("get-form-fields tool", () => {
         type: "text",
         text: JSON.stringify(mockData, null, 2),
       });
+    });
+
+    it("should call API with preview parameter", async () => {
+      const mockData = {
+        properties: {
+          field_1: {
+            type: "SINGLE_LINE_TEXT",
+            code: "field_1",
+            label: "Text Field",
+          },
+        },
+        revision: "1",
+      };
+
+      mockGetFormFields.mockResolvedValueOnce(mockData);
+
+      const mockClient = createMockClient();
+      mockClient.app.getFormFields = mockGetFormFields;
+
+      const result = await getFormFields.callback(
+        { app: "123", lang: "ja", preview: true },
+        { client: mockClient },
+      );
+
+      expect(mockGetFormFields).toHaveBeenCalledWith({
+        app: "123",
+        lang: "ja",
+        preview: true,
+      });
+      expect(result.structuredContent).toEqual(mockData);
     });
   });
 });
