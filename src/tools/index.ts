@@ -8,6 +8,9 @@ import { getApps } from "./kintone/app/get-apps.js";
 import { getFormFields } from "./kintone/app/get-form-fields.js";
 import { getProcessManagement } from "./kintone/app/get-process-management.js";
 import { updateStatuses } from "./kintone/record/update-statuses.js";
+import { addApp } from "./kintone/app/add-app.js";
+import { deployAppSettings } from "./kintone/app/deploy-app-settings.js";
+import { updateGeneralSettings } from "./kintone/app/update-general-settings.js";
 
 export { createToolCallback } from "./factory.js";
 export const tools: Array<Tool<any, any>> = [
@@ -20,4 +23,7 @@ export const tools: Array<Tool<any, any>> = [
   deleteRecords,
   getRecords,
   updateRecords,
+  addApp,
+  deployAppSettings,
+  updateGeneralSettings,
 ] as const;
