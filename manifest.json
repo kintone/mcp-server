@@ -65,6 +65,10 @@
       "description": "Get app deploy status from Kintone"
     },
     {
+      "name": "kintone-get-general-settings",
+      "description": "Get general settings of a kintone app"
+    },
+    {
       "name": "kintone-get-records",
       "description": "Get multiple records from a Kintone app"
     },
