@@ -55,12 +55,21 @@ describe("update-general-settings tool", () => {
         },
         theme: "BLUE" as const,
         titleField: {
-          type: "SINGLE_LINE_TEXT" as const,
-          value: "text_field",
+          selectionMode: "MANUAL" as const,
+          code: "text_field",
         },
         enableThumbnails: true,
         enableComments: false,
-        numberPrecision: 2,
+        enableBulkDeletion: true,
+        enableDuplicateRecord: false,
+        enableInlineRecordEditing: true,
+        numberPrecision: {
+          digits: "10",
+          decimalPlaces: "2",
+          roundingMode: "HALF_EVEN" as const,
+        },
+        firstMonthOfFiscalYear: "4",
+        revision: "1",
       };
       expect(() => schema.parse(validInputWithAllFields)).not.toThrow();
 
@@ -76,9 +85,22 @@ describe("update-general-settings tool", () => {
       expect(() =>
         schema.parse({
           app: "123",
-          numberPrecision: 21, // exceeds max value
+          titleField: {
+            selectionMode: "MANUAL",
+            // missing code field
+          },
         }),
       ).toThrow();
+
+      // Test titleField AUTO mode (should not require code)
+      expect(() =>
+        schema.parse({
+          app: "123",
+          titleField: {
+            selectionMode: "AUTO",
+          },
+        }),
+      ).not.toThrow();
     });
 
     it("should have valid output schema", () => {
@@ -147,12 +169,21 @@ describe("update-general-settings tool", () => {
         },
         theme: "BLUE" as const,
         titleField: {
-          type: "SINGLE_LINE_TEXT" as const,
-          value: "text_field",
+          selectionMode: "MANUAL" as const,
+          code: "text_field",
         },
         enableThumbnails: true,
         enableComments: false,
-        numberPrecision: 2,
+        enableBulkDeletion: true,
+        enableDuplicateRecord: false,
+        enableInlineRecordEditing: true,
+        numberPrecision: {
+          digits: "10",
+          decimalPlaces: "2",
+          roundingMode: "HALF_EVEN" as const,
+        },
+        firstMonthOfFiscalYear: "4",
+        revision: "1",
       });
 
       const mockClient = createMockClient();
@@ -172,12 +203,21 @@ describe("update-general-settings tool", () => {
         },
         theme: "BLUE",
         titleField: {
-          type: "SINGLE_LINE_TEXT",
-          value: "text_field",
+          selectionMode: "MANUAL",
+          code: "text_field",
         },
         enableThumbnails: true,
         enableComments: false,
-        numberPrecision: 2,
+        enableBulkDeletion: true,
+        enableDuplicateRecord: false,
+        enableInlineRecordEditing: true,
+        numberPrecision: {
+          digits: "10",
+          decimalPlaces: "2",
+          roundingMode: "HALF_EVEN" as const,
+        },
+        firstMonthOfFiscalYear: "4",
+        revision: "1",
       });
       expect(result.structuredContent).toEqual(mockResponse);
     });

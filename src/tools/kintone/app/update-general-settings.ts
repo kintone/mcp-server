@@ -18,43 +18,43 @@ const inputSchema = {
     .optional()
     .describe("The app description (up to 10,000 characters)"),
   icon: z
-    .object({
-      type: z.enum(["PRESET", "FILE"]).describe("The icon type"),
-      key: z.string().optional().describe("The icon key for PRESET type"),
-      file: z
-        .object({
-          fileKey: z.string().describe("The file key for uploaded icon"),
-        })
-        .optional()
-        .describe("The file information for FILE type"),
-    })
+    .discriminatedUnion("type", [
+      z.object({
+        type: z.literal("PRESET"),
+        key: z.string().describe("The icon key for PRESET type"),
+      }),
+      z.object({
+        type: z.literal("FILE"),
+        file: z
+          .object({
+            fileKey: z.string().describe("The file key for uploaded icon"),
+          })
+          .describe("The file information for FILE type"),
+      }),
+    ])
     .optional()
     .describe("The app icon configuration"),
   theme: z
     .enum([
       "WHITE",
-      "CLIPBOARD",
-      "BINDER",
-      "PENCIL",
-      "CLIPS",
       "RED",
-      "BLUE",
       "GREEN",
+      "BLUE",
       "YELLOW",
       "BLACK",
     ])
     .optional()
     .describe("The design theme"),
   titleField: z
-    .object({
-      type: z
-        .enum(["RECORD_NUMBER", "SINGLE_LINE_TEXT"])
-        .describe("The field type for record title"),
-      value: z
-        .string()
-        .optional()
-        .describe("The field code for SINGLE_LINE_TEXT type"),
-    })
+    .discriminatedUnion("selectionMode", [
+      z.object({
+        selectionMode: z.literal("AUTO"),
+      }),
+      z.object({
+        selectionMode: z.literal("MANUAL"),
+        code: z.string().describe("The field code for MANUAL selection mode"),
+      }),
+    ])
     .optional()
     .describe("The record title field settings"),
   enableThumbnails: z
@@ -65,12 +65,43 @@ const inputSchema = {
     .boolean()
     .optional()
     .describe("Whether to enable record comments"),
-  numberPrecision: z
-    .number()
-    .min(0)
-    .max(20)
+  enableBulkDeletion: z
+    .boolean()
     .optional()
-    .describe("The numeric calculation precision (0-20)"),
+    .describe("Whether to enable bulk deletion of records"),
+  enableDuplicateRecord: z
+    .boolean()
+    .optional()
+    .describe("Whether to enable the reuse record feature"),
+  enableInlineRecordEditing: z
+    .boolean()
+    .optional()
+    .describe("Whether to enable inline editing in record list"),
+  numberPrecision: z
+    .object({
+      digits: z
+        .string()
+        .optional()
+        .describe("Total number of digits (1-30)"),
+      decimalPlaces: z
+        .string()
+        .optional()
+        .describe("Number of decimal places (0-10)"),
+      roundingMode: z
+        .enum(["HALF_EVEN", "UP", "DOWN"])
+        .optional()
+        .describe("Rounding method"),
+    })
+    .optional()
+    .describe("The numeric calculation precision settings"),
+  firstMonthOfFiscalYear: z
+    .string()
+    .optional()
+    .describe("The first month of the fiscal year (1-12)"),
+  revision: z
+    .string()
+    .optional()
+    .describe("Expected revision number for optimistic locking"),
 };
 
 const outputSchema = {
@@ -86,31 +117,11 @@ const toolConfig = {
 };
 
 const callback: KintoneToolCallback<typeof inputSchema> = async (
-  {
-    app,
-    name,
-    description,
-    icon,
-    theme,
-    titleField,
-    enableThumbnails,
-    enableComments,
-    numberPrecision,
-  },
+  params,
   { client },
 ) => {
-  const params: any = { app };
-  if (name !== undefined) params.name = name;
-  if (description !== undefined) params.description = description;
-  if (icon !== undefined) params.icon = icon;
-  if (theme !== undefined) params.theme = theme;
-  if (titleField !== undefined) params.titleField = titleField;
-  if (enableThumbnails !== undefined)
-    params.enableThumbnails = enableThumbnails;
-  if (enableComments !== undefined) params.enableComments = enableComments;
-  if (numberPrecision !== undefined) params.numberPrecision = numberPrecision;
-
   const response = await client.app.updateAppSettings(params);
+
   const result = {
     revision: response.revision,
   };
