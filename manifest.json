@@ -74,6 +74,18 @@
     {
       "name": "kintone-update-statuses",
       "description": "Update status of multiple records in a Kintone app"
+    },
+    {
+      "name": "kintone-add-app",
+      "description": "Create a new app in the development environment on Kintone"
+    },
+    {
+      "name": "kintone-deploy-app-settings",
+      "description": "Deploy app settings from development to production environment on Kintone"
+    },
+    {
+      "name": "kintone-update-general-settings",
+      "description": "Update the general settings of a Kintone app"
     }
   ],
   "tools_generated": true,
