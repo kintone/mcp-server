@@ -103,7 +103,9 @@ export const layoutSubtableSchema = z.object({
 // Forward declaration for recursive type
 interface LayoutElement {
   type: "ROW" | "SUBTABLE" | "GROUP";
-  [key: string]: any;
+  code?: string;
+  fields?: Array<z.infer<typeof layoutFieldSchema>>;
+  layout?: LayoutElement[];
 }
 
 export const layoutElementSchema: z.ZodType<LayoutElement> = z.lazy(() =>
