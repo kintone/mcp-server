@@ -15,7 +15,7 @@ const inputSchema = {
   preview: z
     .boolean()
     .optional()
-    .describe("Whether to get form fields from preview environment"),
+    .describe("Whether to get form fields from pre-live environment"),
 };
 
 const fieldPropertySchema = z.object({

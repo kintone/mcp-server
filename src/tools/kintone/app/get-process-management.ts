@@ -16,7 +16,7 @@ const inputSchema = {
     .boolean()
     .optional()
     .describe(
-      "Whether to get process management settings from preview environment",
+      "Whether to get process management settings from pre-live environment",
     ),
 };
 
