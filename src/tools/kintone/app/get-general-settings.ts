@@ -10,6 +10,12 @@ const inputSchema = {
     .enum(["ja", "en", "zh", "default", "user"])
     .optional()
     .describe("The language for retrieving the app name and description"),
+  preview: z
+    .boolean()
+    .optional()
+    .describe(
+      "Whether to retrieve from preview environment (requires app administration permission for preview, record view/add permission for production)",
+    ),
 };
 
 const outputSchema = {
@@ -97,10 +103,10 @@ const toolConfig = {
 };
 
 const callback: KintoneToolCallback<typeof inputSchema> = async (
-  { app, lang },
+  { app, lang, preview },
   { client },
 ) => {
-  const settings = await client.app.getAppSettings({ app, lang });
+  const settings = await client.app.getAppSettings({ app, lang, preview });
 
   const result = {
     name: settings.name,
