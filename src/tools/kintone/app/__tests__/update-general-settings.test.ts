@@ -177,6 +177,72 @@ describe("update-general-settings tool", () => {
           input: { app: "123", theme: "INVALID" },
           description: "invalid theme value",
         },
+        {
+          input: {
+            app: "123",
+            numberPrecision: {
+              digits: "0",
+            },
+          },
+          description: "numberPrecision digits below minimum",
+        },
+        {
+          input: {
+            app: "123",
+            numberPrecision: {
+              digits: "31",
+            },
+          },
+          description: "numberPrecision digits above maximum",
+        },
+        {
+          input: {
+            app: "123",
+            numberPrecision: {
+              decimalPlaces: "-1",
+            },
+          },
+          description: "numberPrecision decimalPlaces below minimum",
+        },
+        {
+          input: {
+            app: "123",
+            numberPrecision: {
+              decimalPlaces: "11",
+            },
+          },
+          description: "numberPrecision decimalPlaces above maximum",
+        },
+        {
+          input: {
+            app: "123",
+            numberPrecision: {
+              digits: "abc",
+            },
+          },
+          description: "numberPrecision digits as non-numeric string",
+        },
+        {
+          input: {
+            app: "123",
+            numberPrecision: {
+              decimalPlaces: "xyz",
+            },
+          },
+          description: "numberPrecision decimalPlaces as non-numeric string",
+        },
+        {
+          input: { app: "123", firstMonthOfFiscalYear: "0" },
+          description: "firstMonthOfFiscalYear below minimum",
+        },
+        {
+          input: { app: "123", firstMonthOfFiscalYear: "13" },
+          description: "firstMonthOfFiscalYear above maximum",
+        },
+        {
+          input: { app: "123", firstMonthOfFiscalYear: "January" },
+          description: "firstMonthOfFiscalYear as non-numeric string",
+        },
       ])("rejects $description", ({ input }) => {
         expect(() => inputSchema.parse(input)).toThrow();
       });
