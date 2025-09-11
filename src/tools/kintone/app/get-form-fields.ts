@@ -12,6 +12,10 @@ const inputSchema = {
     .enum(["ja", "en", "zh", "default", "user"])
     .optional()
     .describe("The language for field names"),
+  preview: z
+    .boolean()
+    .optional()
+    .describe("Whether to get form fields from pre-live environment"),
 };
 
 const fieldPropertySchema = z.object({
@@ -133,12 +137,13 @@ const toolConfig = {
 };
 
 const callback: KintoneToolCallback<typeof inputSchema> = async (
-  { app, lang },
+  { app, lang, preview },
   { client },
 ) => {
   const response = await client.app.getFormFields({
     app,
     lang,
+    preview,
   });
 
   const result = {
