@@ -1,8 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { updateGeneralSettings } from "../update-general-settings.js";
 import { z } from "zod";
-import { createMockClient } from "../../../../__tests__/utils.js";
+import {
+  createMockClient,
+  mockKintoneConfig,
+} from "../../../../__tests__/utils.js";
 
+// Mock function for updateAppSettings API call
 const mockUpdateAppSettings = vi.fn();
 
 describe("update-general-settings tool", () => {
@@ -10,11 +14,10 @@ describe("update-general-settings tool", () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
+    // Set up environment variables for testing
     process.env = {
       ...originalEnv,
-      KINTONE_BASE_URL: "https://example.cybozu.com",
-      KINTONE_USERNAME: "testuser",
-      KINTONE_PASSWORD: "testpass",
+      ...mockKintoneConfig,
     };
   });
 
@@ -35,131 +38,220 @@ describe("update-general-settings tool", () => {
       );
     });
 
-    it("should have valid input schema", () => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(updateGeneralSettings.config.inputSchema!);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const inputSchema = z.object(updateGeneralSettings.config.inputSchema!);
 
-      const validInput = {
-        app: "123",
-        name: "Updated App",
-      };
-      expect(() => schema.parse(validInput)).not.toThrow();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const outputSchema = z.object(updateGeneralSettings.config.outputSchema!);
 
-      const validInputWithAllFields = {
-        app: "123",
-        name: "Updated App",
-        description: "Updated description",
-        icon: {
-          type: "PRESET" as const,
-          key: "APP72",
+    describe("input schema validation with valid inputs", () => {
+      it.each([
+        {
+          input: { app: "123" },
+          description: "minimal required fields",
         },
-        theme: "BLUE" as const,
-        titleField: {
-          selectionMode: "MANUAL" as const,
-          code: "text_field",
-        },
-        enableThumbnails: true,
-        enableComments: false,
-        enableBulkDeletion: true,
-        enableDuplicateRecord: false,
-        enableInlineRecordEditing: true,
-        numberPrecision: {
-          digits: "10",
-          decimalPlaces: "2",
-          roundingMode: "HALF_EVEN" as const,
-        },
-        firstMonthOfFiscalYear: "4",
-        revision: "1",
-      };
-      expect(() => schema.parse(validInputWithAllFields)).not.toThrow();
-
-      expect(() => schema.parse({})).toThrow();
-
-      expect(() =>
-        schema.parse({
-          app: "123",
-          name: "A".repeat(65), // exceeds max length
-        }),
-      ).toThrow();
-
-      expect(() =>
-        schema.parse({
-          app: "123",
-          titleField: {
-            selectionMode: "MANUAL",
-            // missing code field
+        {
+          input: {
+            app: "123",
+            name: "Updated App",
+            description: "Updated description",
+            theme: "BLUE" as const,
           },
-        }),
-      ).toThrow();
-
-      // Test titleField AUTO mode (should not require code)
-      expect(() =>
-        schema.parse({
-          app: "123",
-          titleField: {
-            selectionMode: "AUTO",
+          description: "basic string fields",
+        },
+        {
+          input: {
+            app: "123",
+            icon: {
+              type: "PRESET" as const,
+              key: "APP72",
+            },
           },
-        }),
-      ).not.toThrow();
+          description: "PRESET icon",
+        },
+        {
+          input: {
+            app: "123",
+            icon: {
+              type: "FILE" as const,
+              file: {
+                fileKey: "file123",
+              },
+            },
+          },
+          description: "FILE icon",
+        },
+        {
+          input: {
+            app: "123",
+            titleField: {
+              selectionMode: "AUTO" as const,
+            },
+          },
+          description: "titleField AUTO mode",
+        },
+        {
+          input: {
+            app: "123",
+            titleField: {
+              selectionMode: "MANUAL" as const,
+              code: "text_field",
+            },
+          },
+          description: "titleField MANUAL mode with code",
+        },
+        {
+          input: {
+            app: "123",
+            numberPrecision: {
+              digits: "10",
+              decimalPlaces: "2",
+              roundingMode: "HALF_EVEN" as const,
+            },
+          },
+          description: "numberPrecision object",
+        },
+        {
+          input: {
+            app: "123",
+            enableThumbnails: true,
+            enableComments: false,
+            enableBulkDeletion: true,
+            enableDuplicateRecord: false,
+            enableInlineRecordEditing: true,
+            firstMonthOfFiscalYear: "4",
+            revision: "1",
+          },
+          description: "all boolean and string optional fields",
+        },
+      ])("accepts $description", ({ input }) => {
+        expect(() => inputSchema.parse(input)).not.toThrow();
+      });
     });
 
-    it("should have valid output schema", () => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(updateGeneralSettings.config.outputSchema!);
+    describe("input schema validation with invalid inputs", () => {
+      it.each([
+        {
+          input: {},
+          description: "missing required app field",
+        },
+        {
+          input: { app: 123 },
+          description: "app as number",
+        },
+        {
+          input: { app: "123", name: "A".repeat(65) },
+          description: "name exceeds max length",
+        },
+        {
+          input: {
+            app: "123",
+            titleField: {
+              selectionMode: "MANUAL",
+              // missing code field
+            },
+          },
+          description: "titleField MANUAL mode missing code",
+        },
+        {
+          input: {
+            app: "123",
+            icon: {
+              type: "PRESET",
+              // missing key field
+            },
+          },
+          description: "PRESET icon missing key",
+        },
+        {
+          input: {
+            app: "123",
+            icon: {
+              type: "FILE",
+              // missing file field
+            },
+          },
+          description: "FILE icon missing file",
+        },
+        {
+          input: { app: "123", theme: "INVALID" },
+          description: "invalid theme value",
+        },
+      ])("rejects $description", ({ input }) => {
+        expect(() => inputSchema.parse(input)).toThrow();
+      });
+    });
 
-      const validOutput = {
-        revision: "2",
-      };
-      expect(() => schema.parse(validOutput)).not.toThrow();
+    describe("output schema validation with valid outputs", () => {
+      it.each([
+        {
+          output: { revision: "1" },
+          description: "revision string",
+        },
+      ])("accepts $description", ({ output }) => {
+        expect(() => outputSchema.parse(output)).not.toThrow();
+      });
+    });
 
-      expect(() => schema.parse({})).toThrow();
+    describe("output schema validation with invalid outputs", () => {
+      it.each([
+        {
+          output: {},
+          description: "missing revision field",
+        },
+        {
+          output: { revision: 123 },
+          description: "revision as number",
+        },
+        {
+          output: { revision: null },
+          description: "revision as null",
+        },
+      ])("rejects $description", ({ output }) => {
+        expect(() => outputSchema.parse(output)).toThrow();
+      });
     });
   });
 
   describe("callback function", () => {
-    it("should update app settings successfully with minimal fields", async () => {
-      const mockResponse = {
+    it("should call API and return formatted response", async () => {
+      const mockData = {
         revision: "2",
       };
 
-      mockUpdateAppSettings.mockResolvedValueOnce(mockResponse);
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(updateGeneralSettings.config.inputSchema!);
-      const params = schema.parse({
-        app: "123",
-        name: "Updated App",
-      });
+      mockUpdateAppSettings.mockResolvedValueOnce(mockData);
 
       const mockClient = createMockClient();
       mockClient.app.updateAppSettings = mockUpdateAppSettings;
 
-      const result = await updateGeneralSettings.callback(params, {
-        client: mockClient,
-      });
+      const result = await updateGeneralSettings.callback(
+        { app: "123", name: "Updated App" },
+        { client: mockClient },
+      );
 
       expect(mockUpdateAppSettings).toHaveBeenCalledWith({
         app: "123",
         name: "Updated App",
       });
-      expect(result.structuredContent).toEqual(mockResponse);
+      expect(result.structuredContent).toEqual(mockData);
       expect(result.content).toHaveLength(1);
       expect(result.content[0]).toEqual({
         type: "text",
-        text: JSON.stringify(mockResponse, null, 2),
+        text: JSON.stringify(mockData, null, 2),
       });
     });
 
-    it("should update app settings with all optional fields", async () => {
-      const mockResponse = {
+    it("should handle complex parameters", async () => {
+      const mockData = {
         revision: "3",
       };
 
-      mockUpdateAppSettings.mockResolvedValueOnce(mockResponse);
+      mockUpdateAppSettings.mockResolvedValueOnce(mockData);
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(updateGeneralSettings.config.inputSchema!);
-      const params = schema.parse({
+      const mockClient = createMockClient();
+      mockClient.app.updateAppSettings = mockUpdateAppSettings;
+
+      const params = {
         app: "123",
         name: "Updated App",
         description: "Updated description",
@@ -184,80 +276,14 @@ describe("update-general-settings tool", () => {
         },
         firstMonthOfFiscalYear: "4",
         revision: "1",
-      });
-
-      const mockClient = createMockClient();
-      mockClient.app.updateAppSettings = mockUpdateAppSettings;
-
-      const result = await updateGeneralSettings.callback(params, {
-        client: mockClient,
-      });
-
-      expect(mockUpdateAppSettings).toHaveBeenCalledWith({
-        app: "123",
-        name: "Updated App",
-        description: "Updated description",
-        icon: {
-          type: "PRESET",
-          key: "APP72",
-        },
-        theme: "BLUE",
-        titleField: {
-          selectionMode: "MANUAL",
-          code: "text_field",
-        },
-        enableThumbnails: true,
-        enableComments: false,
-        enableBulkDeletion: true,
-        enableDuplicateRecord: false,
-        enableInlineRecordEditing: true,
-        numberPrecision: {
-          digits: "10",
-          decimalPlaces: "2",
-          roundingMode: "HALF_EVEN" as const,
-        },
-        firstMonthOfFiscalYear: "4",
-        revision: "1",
-      });
-      expect(result.structuredContent).toEqual(mockResponse);
-    });
-
-    it("should handle FILE type icon", async () => {
-      const mockResponse = {
-        revision: "3",
       };
 
-      mockUpdateAppSettings.mockResolvedValueOnce(mockResponse);
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(updateGeneralSettings.config.inputSchema!);
-      const params = schema.parse({
-        app: "123",
-        icon: {
-          type: "FILE" as const,
-          file: {
-            fileKey: "file123",
-          },
-        },
-      });
-
-      const mockClient = createMockClient();
-      mockClient.app.updateAppSettings = mockUpdateAppSettings;
-
       const result = await updateGeneralSettings.callback(params, {
         client: mockClient,
       });
 
-      expect(mockUpdateAppSettings).toHaveBeenCalledWith({
-        app: "123",
-        icon: {
-          type: "FILE",
-          file: {
-            fileKey: "file123",
-          },
-        },
-      });
-      expect(result.structuredContent).toEqual(mockResponse);
+      expect(mockUpdateAppSettings).toHaveBeenCalledWith(params);
+      expect(result.structuredContent).toEqual(mockData);
     });
   });
 });

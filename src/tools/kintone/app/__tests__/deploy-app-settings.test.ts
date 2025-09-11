@@ -1,8 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { deployAppSettings } from "../deploy-app-settings.js";
 import { z } from "zod";
-import { createMockClient } from "../../../../__tests__/utils.js";
+import {
+  createMockClient,
+  mockKintoneConfig,
+} from "../../../../__tests__/utils.js";
 
+// Mock function for deployApp API call
 const mockDeployApp = vi.fn();
 
 describe("deploy-app-settings tool", () => {
@@ -10,11 +14,10 @@ describe("deploy-app-settings tool", () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
+    // Set up environment variables for testing
     process.env = {
       ...originalEnv,
-      KINTONE_BASE_URL: "https://example.cybozu.com",
-      KINTONE_USERNAME: "testuser",
-      KINTONE_PASSWORD: "testpass",
+      ...mockKintoneConfig,
     };
   });
 
@@ -33,118 +36,133 @@ describe("deploy-app-settings tool", () => {
       );
     });
 
-    it("should have valid input schema", () => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(deployAppSettings.config.inputSchema!);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const inputSchema = z.object(deployAppSettings.config.inputSchema!);
 
-      const validInput = {
-        apps: [{ app: "123" }],
-      };
-      expect(() => schema.parse(validInput)).not.toThrow();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const outputSchema = z.object(deployAppSettings.config.outputSchema!);
 
-      const validInputWithRevision = {
-        apps: [{ app: "123", revision: "1" }],
-        revert: false,
-      };
-      expect(() => schema.parse(validInputWithRevision)).not.toThrow();
-
-      expect(() => schema.parse({})).toThrow();
-
-      const tooManyApps = Array.from({ length: 301 }, (_, i) => ({
-        app: `${i}`,
-      }));
-      expect(() =>
-        schema.parse({
-          apps: tooManyApps,
-        }),
-      ).toThrow();
+    describe("input schema validation with valid inputs", () => {
+      it.each([
+        {
+          input: { apps: [{ app: "123" }] },
+          description: "single app minimal",
+        },
+        {
+          input: { apps: [{ app: "123", revision: "1" }] },
+          description: "single app with revision",
+        },
+        {
+          input: {
+            apps: [
+              { app: "123", revision: "1" },
+              { app: "456", revision: "2" },
+            ],
+          },
+          description: "multiple apps",
+        },
+        {
+          input: {
+            apps: [{ app: "123", revision: "1" }],
+            revert: true,
+          },
+          description: "with revert option",
+        },
+      ])("accepts $description", ({ input }) => {
+        expect(() => inputSchema.parse(input)).not.toThrow();
+      });
     });
 
-    it("should have valid output schema", () => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(deployAppSettings.config.outputSchema!);
+    describe("input schema validation with invalid inputs", () => {
+      it.each([
+        {
+          input: {},
+          description: "missing required apps field",
+        },
+        {
+          input: { apps: [] },
+          description: "empty apps array",
+        },
+        {
+          input: {
+            apps: Array.from({ length: 301 }, (_, i) => ({ app: `${i}` })),
+          },
+          description: "too many apps (exceeds 300 limit)",
+        },
+        {
+          input: { apps: [{ app: 123 }] },
+          description: "app as number",
+        },
+        {
+          input: { apps: [{ app: "123", revision: 1 }] },
+          description: "revision as number",
+        },
+        {
+          input: { apps: [{ app: "123" }], revert: "true" },
+          description: "revert as string",
+        },
+      ])("rejects $description", ({ input }) => {
+        expect(() => inputSchema.parse(input)).toThrow();
+      });
+    });
 
-      const validOutput = {};
-      expect(() => schema.parse(validOutput)).not.toThrow();
+    describe("output schema validation with valid outputs", () => {
+      it.each([
+        {
+          output: {},
+          description: "empty object",
+        },
+      ])("accepts $description", ({ output }) => {
+        expect(() => outputSchema.parse(output)).not.toThrow();
+      });
     });
   });
 
   describe("callback function", () => {
-    it("should deploy app settings successfully", async () => {
-      mockDeployApp.mockResolvedValueOnce(undefined);
+    it("should call API and return formatted response", async () => {
+      const mockData = {};
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(deployAppSettings.config.inputSchema!);
-      const params = schema.parse({
-        apps: [{ app: "123" }],
-      });
+      mockDeployApp.mockResolvedValueOnce(mockData);
 
       const mockClient = createMockClient();
       mockClient.app.deployApp = mockDeployApp;
 
-      const result = await deployAppSettings.callback(params, {
-        client: mockClient,
-      });
+      const result = await deployAppSettings.callback(
+        { apps: [{ app: "123" }] },
+        { client: mockClient },
+      );
 
       expect(mockDeployApp).toHaveBeenCalledWith({ apps: [{ app: "123" }] });
-      expect(result.structuredContent).toEqual({});
+      expect(result.structuredContent).toEqual(mockData);
       expect(result.content).toHaveLength(1);
       expect(result.content[0]).toEqual({
         type: "text",
-        text: JSON.stringify({}, null, 2),
+        text: JSON.stringify(mockData, null, 2),
       });
     });
 
-    it("should deploy with revert option", async () => {
-      mockDeployApp.mockResolvedValueOnce(undefined);
+    it("should handle complex parameters", async () => {
+      const mockData = {};
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(deployAppSettings.config.inputSchema!);
-      const params = schema.parse({
-        apps: [{ app: "123", revision: "1" }],
-        revert: true,
-      });
+      mockDeployApp.mockResolvedValueOnce(mockData);
 
       const mockClient = createMockClient();
       mockClient.app.deployApp = mockDeployApp;
+
+      const params = {
+        apps: [
+          { app: "123", revision: "1" },
+          { app: "456", revision: "2" },
+        ],
+        revert: true,
+      };
 
       const result = await deployAppSettings.callback(params, {
         client: mockClient,
       });
 
-      expect(mockDeployApp).toHaveBeenCalledWith({
-        apps: [{ app: "123", revision: "1" }],
-        revert: true,
-      });
-      expect(result.structuredContent).toEqual({});
-    });
-
-    it("should deploy multiple apps", async () => {
-      mockDeployApp.mockResolvedValueOnce(undefined);
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(deployAppSettings.config.inputSchema!);
-      const params = schema.parse({
-        apps: [
-          { app: "123", revision: "1" },
-          { app: "456", revision: "2" },
-        ],
-      });
-
-      const mockClient = createMockClient();
-      mockClient.app.deployApp = mockDeployApp;
-
-      const result = await deployAppSettings.callback(params, {
-        client: mockClient,
-      });
-
-      expect(mockDeployApp).toHaveBeenCalledWith({
-        apps: [
-          { app: "123", revision: "1" },
-          { app: "456", revision: "2" },
-        ],
-      });
-      expect(result.structuredContent).toEqual({});
+      expect(mockDeployApp).toHaveBeenCalledWith(params);
+      expect(result.structuredContent).toEqual(mockData);
     });
   });
 });

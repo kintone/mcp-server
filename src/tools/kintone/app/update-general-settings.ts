@@ -35,14 +35,7 @@ const inputSchema = {
     .optional()
     .describe("The app icon configuration"),
   theme: z
-    .enum([
-      "WHITE",
-      "RED",
-      "GREEN",
-      "BLUE",
-      "YELLOW",
-      "BLACK",
-    ])
+    .enum(["WHITE", "RED", "GREEN", "BLUE", "YELLOW", "BLACK"])
     .optional()
     .describe("The design theme"),
   titleField: z
@@ -79,10 +72,7 @@ const inputSchema = {
     .describe("Whether to enable inline editing in record list"),
   numberPrecision: z
     .object({
-      digits: z
-        .string()
-        .optional()
-        .describe("Total number of digits (1-30)"),
+      digits: z.string().optional().describe("Total number of digits (1-30)"),
       decimalPlaces: z
         .string()
         .optional()

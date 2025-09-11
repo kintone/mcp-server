@@ -1,8 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { addApp } from "../add-app.js";
 import { z } from "zod";
-import { createMockClient } from "../../../../__tests__/utils.js";
+import {
+  createMockClient,
+  mockKintoneConfig,
+} from "../../../../__tests__/utils.js";
 
+// Mock function for addApp API call
 const mockAddApp = vi.fn();
 
 describe("add-app tool", () => {
@@ -10,11 +14,10 @@ describe("add-app tool", () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
+    // Set up environment variables for testing
     process.env = {
       ...originalEnv,
-      KINTONE_BASE_URL: "https://example.cybozu.com",
-      KINTONE_USERNAME: "testuser",
-      KINTONE_PASSWORD: "testpass",
+      ...mockKintoneConfig,
     };
   });
 
@@ -33,102 +36,137 @@ describe("add-app tool", () => {
       );
     });
 
-    it("should have valid input schema", () => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(addApp.config.inputSchema!);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const inputSchema = z.object(addApp.config.inputSchema!);
 
-      const validInput = {
-        name: "Test App",
-      };
-      expect(() => schema.parse(validInput)).not.toThrow();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const outputSchema = z.object(addApp.config.outputSchema!);
 
-      const validInputWithOptionals = {
-        name: "Test App",
-        space: 10,
-      };
-      expect(() => schema.parse(validInputWithOptionals)).not.toThrow();
-
-      expect(() => schema.parse({})).toThrow();
-
-      expect(() =>
-        schema.parse({
-          name: "A".repeat(65), // exceeds max length
-        }),
-      ).toThrow();
+    describe("input schema validation with valid inputs", () => {
+      it.each([
+        {
+          input: { name: "Test App" },
+          description: "minimal required fields",
+        },
+        {
+          input: { name: "Test App", space: 10 },
+          description: "with optional space field",
+        },
+      ])("accepts $description", ({ input }) => {
+        expect(() => inputSchema.parse(input)).not.toThrow();
+      });
     });
 
-    it("should have valid output schema", () => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(addApp.config.outputSchema!);
+    describe("input schema validation with invalid inputs", () => {
+      it.each([
+        {
+          input: {},
+          description: "missing required name field",
+        },
+        {
+          input: { name: "A".repeat(65) },
+          description: "name exceeds max length",
+        },
+        {
+          input: { name: 123 },
+          description: "name as number",
+        },
+        {
+          input: { name: "Test App", space: "invalid" },
+          description: "space as string",
+        },
+      ])("rejects $description", ({ input }) => {
+        expect(() => inputSchema.parse(input)).toThrow();
+      });
+    });
 
-      const validOutput = {
-        app: "123",
-        revision: "1",
-      };
-      expect(() => schema.parse(validOutput)).not.toThrow();
+    describe("output schema validation with valid outputs", () => {
+      it.each([
+        {
+          output: { app: "123", revision: "1" },
+          description: "app and revision fields",
+        },
+      ])("accepts $description", ({ output }) => {
+        expect(() => outputSchema.parse(output)).not.toThrow();
+      });
+    });
 
-      expect(() => schema.parse({ app: "123" })).toThrow();
+    describe("output schema validation with invalid outputs", () => {
+      it.each([
+        {
+          output: {},
+          description: "missing all required fields",
+        },
+        {
+          output: { app: "123" },
+          description: "missing revision field",
+        },
+        {
+          output: { revision: "1" },
+          description: "missing app field",
+        },
+        {
+          output: { app: 123, revision: "1" },
+          description: "app as number",
+        },
+        {
+          output: { app: "123", revision: 1 },
+          description: "revision as number",
+        },
+      ])("rejects $description", ({ output }) => {
+        expect(() => outputSchema.parse(output)).toThrow();
+      });
     });
   });
 
   describe("callback function", () => {
-    it("should create app successfully with required fields only", async () => {
-      const mockAppData = {
+    it("should call API and return formatted response", async () => {
+      const mockData = {
         app: "123",
         revision: "1",
       };
 
-      mockAddApp.mockResolvedValueOnce(mockAppData);
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(addApp.config.inputSchema!);
-      const params = schema.parse({
-        name: "Test App",
-      });
+      mockAddApp.mockResolvedValueOnce(mockData);
 
       const mockClient = createMockClient();
       mockClient.app.addApp = mockAddApp;
 
-      const result = await addApp.callback(params, {
-        client: mockClient,
-      });
+      const result = await addApp.callback(
+        { name: "Test App" },
+        { client: mockClient },
+      );
 
       expect(mockAddApp).toHaveBeenCalledWith({ name: "Test App" });
-      expect(result.structuredContent).toEqual(mockAppData);
+      expect(result.structuredContent).toEqual(mockData);
       expect(result.content).toHaveLength(1);
       expect(result.content[0]).toEqual({
         type: "text",
-        text: JSON.stringify(mockAppData, null, 2),
+        text: JSON.stringify(mockData, null, 2),
       });
     });
 
-    it("should create app successfully with all optional fields", async () => {
-      const mockAppData = {
+    it("should handle optional fields", async () => {
+      const mockData = {
         app: "123",
         revision: "1",
       };
 
-      mockAddApp.mockResolvedValueOnce(mockAppData);
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = z.object(addApp.config.inputSchema!);
-      const params = schema.parse({
-        name: "Test App",
-        space: 10,
-      });
+      mockAddApp.mockResolvedValueOnce(mockData);
 
       const mockClient = createMockClient();
       mockClient.app.addApp = mockAddApp;
+
+      const params = {
+        name: "Test App",
+        space: 10,
+      };
 
       const result = await addApp.callback(params, {
         client: mockClient,
       });
 
-      expect(mockAddApp).toHaveBeenCalledWith({
-        name: "Test App",
-        space: 10,
-      });
-      expect(result.structuredContent).toEqual(mockAppData);
+      expect(mockAddApp).toHaveBeenCalledWith(params);
+      expect(result.structuredContent).toEqual(mockData);
     });
   });
 });

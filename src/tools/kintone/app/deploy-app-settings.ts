@@ -15,8 +15,9 @@ const inputSchema = {
           .describe("The expected revision number"),
       }),
     )
+    .min(1)
     .max(300)
-    .describe("List of apps to deploy (maximum 300 apps)"),
+    .describe("List of apps to deploy (minimum 1, maximum 300 apps)"),
   revert: z
     .boolean()
     .optional()
