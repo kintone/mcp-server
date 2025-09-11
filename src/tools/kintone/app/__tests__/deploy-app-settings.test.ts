@@ -29,7 +29,7 @@ describe("deploy-app-settings tool", () => {
 
     it("should have correct description", () => {
       expect(deployAppSettings.config.description).toBe(
-        "Deploy app settings from development to production environment on kintone",
+        "Deploy app settings from pre-live to production environment on kintone",
       );
     });
 
@@ -64,12 +64,8 @@ describe("deploy-app-settings tool", () => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const schema = z.object(deployAppSettings.config.outputSchema!);
 
-      const validOutput = {
-        success: true,
-      };
+      const validOutput = {};
       expect(() => schema.parse(validOutput)).not.toThrow();
-
-      expect(() => schema.parse({})).toThrow();
     });
   });
 
@@ -91,11 +87,11 @@ describe("deploy-app-settings tool", () => {
       });
 
       expect(mockDeployApp).toHaveBeenCalledWith({ apps: [{ app: "123" }] });
-      expect(result.structuredContent).toEqual({ success: true });
+      expect(result.structuredContent).toEqual({});
       expect(result.content).toHaveLength(1);
       expect(result.content[0]).toEqual({
         type: "text",
-        text: JSON.stringify({ success: true }, null, 2),
+        text: JSON.stringify({}, null, 2),
       });
     });
 
@@ -120,7 +116,7 @@ describe("deploy-app-settings tool", () => {
         apps: [{ app: "123", revision: "1" }],
         revert: true,
       });
-      expect(result.structuredContent).toEqual({ success: true });
+      expect(result.structuredContent).toEqual({});
     });
 
     it("should deploy multiple apps", async () => {
@@ -148,7 +144,7 @@ describe("deploy-app-settings tool", () => {
           { app: "456", revision: "2" },
         ],
       });
-      expect(result.structuredContent).toEqual({ success: true });
+      expect(result.structuredContent).toEqual({});
     });
   });
 });

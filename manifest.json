@@ -81,7 +81,7 @@
     },
     {
       "name": "kintone-deploy-app-settings",
-      "description": "Deploy app settings from development to production environment on Kintone"
+      "description": "Deploy app settings from pre-live to production environment on Kintone"
     },
     {
       "name": "kintone-update-general-settings",
