@@ -11,10 +11,6 @@ const inputSchema = {
     .number()
     .optional()
     .describe("The space ID where the app will be created"),
-  thread: z
-    .number()
-    .optional()
-    .describe("The thread ID where the app will be created"),
 };
 
 const outputSchema = {
@@ -25,20 +21,17 @@ const outputSchema = {
 const toolName = "kintone-add-app";
 const toolConfig = {
   title: "Add App",
-  description: "Create a new app in the development environment on kintone",
+  description: "Create a new app in the pre-live environment on kintone",
   inputSchema,
   outputSchema,
 };
 
 const callback: KintoneToolCallback<typeof inputSchema> = async (
-  { name, space, thread },
+  { name, space },
   { client },
 ) => {
-  const params: { name: string; space?: number; thread?: number } = { name };
-  if (space !== undefined) params.space = space;
-  if (thread !== undefined) params.thread = thread;
+  const app = await client.app.addApp({ name, space });
 
-  const app = await client.app.addPreviewApp(params);
   const result = {
     app: app.app,
     revision: app.revision,

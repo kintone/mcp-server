@@ -77,7 +77,7 @@
     },
     {
       "name": "kintone-add-app",
-      "description": "Create a new app in the development environment on Kintone"
+      "description": "Create a new app in the pre-live environment on Kintone"
     },
     {
       "name": "kintone-deploy-app-settings",

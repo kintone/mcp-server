@@ -3,7 +3,7 @@ import { addApp } from "../add-app.js";
 import { z } from "zod";
 import { createMockClient } from "../../../../__tests__/utils.js";
 
-const mockAddPreviewApp = vi.fn();
+const mockAddApp = vi.fn();
 
 describe("add-app tool", () => {
   const originalEnv = process.env;
@@ -29,7 +29,7 @@ describe("add-app tool", () => {
 
     it("should have correct description", () => {
       expect(addApp.config.description).toBe(
-        "Create a new app in the development environment on kintone",
+        "Create a new app in the pre-live environment on kintone",
       );
     });
 
@@ -45,7 +45,6 @@ describe("add-app tool", () => {
       const validInputWithOptionals = {
         name: "Test App",
         space: 10,
-        thread: 11,
       };
       expect(() => schema.parse(validInputWithOptionals)).not.toThrow();
 
@@ -79,7 +78,7 @@ describe("add-app tool", () => {
         revision: "1",
       };
 
-      mockAddPreviewApp.mockResolvedValueOnce(mockAppData);
+      mockAddApp.mockResolvedValueOnce(mockAppData);
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const schema = z.object(addApp.config.inputSchema!);
@@ -88,13 +87,13 @@ describe("add-app tool", () => {
       });
 
       const mockClient = createMockClient();
-      mockClient.app.addPreviewApp = mockAddPreviewApp;
+      mockClient.app.addApp = mockAddApp;
 
       const result = await addApp.callback(params, {
         client: mockClient,
       });
 
-      expect(mockAddPreviewApp).toHaveBeenCalledWith({ name: "Test App" });
+      expect(mockAddApp).toHaveBeenCalledWith({ name: "Test App" });
       expect(result.structuredContent).toEqual(mockAppData);
       expect(result.content).toHaveLength(1);
       expect(result.content[0]).toEqual({
@@ -109,27 +108,25 @@ describe("add-app tool", () => {
         revision: "1",
       };
 
-      mockAddPreviewApp.mockResolvedValueOnce(mockAppData);
+      mockAddApp.mockResolvedValueOnce(mockAppData);
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const schema = z.object(addApp.config.inputSchema!);
       const params = schema.parse({
         name: "Test App",
         space: 10,
-        thread: 11,
       });
 
       const mockClient = createMockClient();
-      mockClient.app.addPreviewApp = mockAddPreviewApp;
+      mockClient.app.addApp = mockAddApp;
 
       const result = await addApp.callback(params, {
         client: mockClient,
       });
 
-      expect(mockAddPreviewApp).toHaveBeenCalledWith({
+      expect(mockAddApp).toHaveBeenCalledWith({
         name: "Test App",
         space: 10,
-        thread: 11,
       });
       expect(result.structuredContent).toEqual(mockAppData);
     });
