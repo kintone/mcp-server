@@ -49,6 +49,18 @@ describe("get-general-settings tool", () => {
           description: "with lang default",
         },
         { input: { app: "123", lang: "user" }, description: "with lang user" },
+        {
+          input: { app: "123", preview: true },
+          description: "with preview true",
+        },
+        {
+          input: { app: "123", preview: false },
+          description: "with preview false",
+        },
+        {
+          input: { app: "123", lang: "ja", preview: true },
+          description: "with lang and preview",
+        },
       ])("should accept valid input: $description", ({ input }) => {
         expect(() => inputSchema.parse(input)).not.toThrow();
       });
@@ -171,6 +183,8 @@ describe("get-general-settings tool", () => {
 
       expect(mockGetAppSettings).toHaveBeenCalledWith({
         app: "123",
+        lang: undefined,
+        preview: undefined,
       });
       expect(result.structuredContent).toEqual(mockSettingsData);
       expect(result.content).toHaveLength(1);
@@ -225,9 +239,80 @@ describe("get-general-settings tool", () => {
       expect(mockGetAppSettings).toHaveBeenCalledWith({
         app: "123",
         lang: "ja",
+        preview: undefined,
       });
       expect(result.structuredContent?.name).toBe("営業アプリ");
       expect(result.structuredContent?.description).toBe("営業管理用アプリ");
+    });
+
+    it("should handle preview parameter", async () => {
+      const mockSettingsData = {
+        name: "Preview App",
+        description: "App in preview environment",
+        icon: {
+          type: "PRESET",
+          key: "APP64",
+        },
+        theme: "BLUE",
+        titleField: {
+          selectionMode: "AUTO",
+        },
+        enableThumbnails: true,
+        enableBulkDeletion: false,
+        enableComments: false,
+        enableDuplicateRecord: true,
+        enableInlineRecordEditing: false,
+        numberPrecision: {
+          digits: 5,
+          decimalPlaces: 2,
+          roundingMode: "DOWN",
+        },
+        firstMonthOfFiscalYear: 7,
+        revision: "2",
+      };
+
+      mockGetAppSettings.mockResolvedValueOnce(mockSettingsData);
+
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const schema = z.object(getGeneralSettings.config.inputSchema!);
+      const params = schema.parse({
+        app: "456",
+        preview: true,
+      });
+
+      const mockClient = createMockClient();
+      mockClient.app.getAppSettings = mockGetAppSettings;
+
+      const result = await getGeneralSettings.callback(params, {
+        client: mockClient,
+      });
+
+      expect(mockGetAppSettings).toHaveBeenCalledWith({
+        app: "456",
+        lang: undefined,
+        preview: true,
+      });
+      expect(result.structuredContent).toEqual(mockSettingsData);
+    });
+
+    it("should handle API errors", async () => {
+      const errorMessage = "API Error";
+      mockGetAppSettings.mockRejectedValueOnce(new Error(errorMessage));
+
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const schema = z.object(getGeneralSettings.config.inputSchema!);
+      const params = schema.parse({
+        app: "123",
+      });
+
+      const mockClient = createMockClient();
+      mockClient.app.getAppSettings = mockGetAppSettings;
+
+      await expect(
+        getGeneralSettings.callback(params, {
+          client: mockClient,
+        }),
+      ).rejects.toThrow(errorMessage);
     });
   });
 });
