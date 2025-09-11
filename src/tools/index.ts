@@ -9,6 +9,7 @@ import { getFormFields } from "./kintone/app/get-form-fields.js";
 import { getFormLayout } from "./kintone/app/get-form-layout.js";
 import { getProcessManagement } from "./kintone/app/get-process-management.js";
 import { getAppDeployStatus } from "./kintone/app/get-app-deploy-status.js";
+import { getGeneralSettings } from "./kintone/app/get-general-settings.js";
 import { updateStatuses } from "./kintone/record/update-statuses.js";
 
 export { createToolCallback } from "./factory.js";
@@ -19,6 +20,7 @@ export const tools: Array<Tool<any, any>> = [
   getFormLayout,
   getProcessManagement,
   getAppDeployStatus,
+  getGeneralSettings,
   updateStatuses,
   addRecords,
   deleteRecords,
