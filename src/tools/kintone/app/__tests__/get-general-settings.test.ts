@@ -103,11 +103,11 @@ describe("get-general-settings tool", () => {
         enableDuplicateRecord: true,
         enableInlineRecordEditing: false,
         numberPrecision: {
-          digits: 2,
-          decimalPlaces: 2,
+          digits: "2",
+          decimalPlaces: "2",
           roundingMode: "HALF_EVEN",
         },
-        firstMonthOfFiscalYear: 4,
+        firstMonthOfFiscalYear: "4",
         revision: "5",
       };
       expect(() => schema.parse(validOutput)).not.toThrow();
@@ -158,11 +158,11 @@ describe("get-general-settings tool", () => {
         enableDuplicateRecord: true,
         enableInlineRecordEditing: false,
         numberPrecision: {
-          digits: 2,
-          decimalPlaces: 2,
+          digits: "2",
+          decimalPlaces: "2",
           roundingMode: "HALF_EVEN",
         },
-        firstMonthOfFiscalYear: 4,
+        firstMonthOfFiscalYear: "4",
         revision: "5",
       };
 
