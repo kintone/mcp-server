@@ -3,11 +3,7 @@ import { createTool } from "../../factory.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
 
 const inputSchema = {
-  app: z
-    .string()
-    .describe(
-      "The ID of the app to retrieve form fields from (numeric value as string)",
-    ),
+  app: z.string().describe("The ID of the app to retrieve form fields from"),
   lang: z
     .enum(["ja", "en", "zh", "default", "user"])
     .optional()
