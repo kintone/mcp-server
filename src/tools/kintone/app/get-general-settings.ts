@@ -71,15 +71,9 @@ const outputSchema = {
     .describe("Whether inline record editing is enabled"),
   numberPrecision: z
     .object({
-      digits: z
-        .number()
-        .min(1)
-        .max(30)
-        .describe("The number of digits (1 to 30)"),
+      digits: z.string().describe("The number of digits (1 to 30)"),
       decimalPlaces: z
-        .number()
-        .min(0)
-        .max(10)
+        .string()
         .describe("The number of decimal places (0 to 10)"),
       roundingMode: z
         .enum(["HALF_EVEN", "UP", "DOWN"])
@@ -87,9 +81,7 @@ const outputSchema = {
     })
     .describe("The numeric calculation settings"),
   firstMonthOfFiscalYear: z
-    .number()
-    .min(1)
-    .max(12)
+    .string()
     .describe("The first month of the fiscal year (1-12)"),
   revision: z.string().describe("The revision number"),
 };
