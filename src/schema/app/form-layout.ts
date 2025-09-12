@@ -80,19 +80,19 @@ const hrFieldSchema = z.object({
     .describe("Field size configuration"),
 });
 
-export const layoutFieldSchema = z.union([
+const layoutFieldSchema = z.union([
   standardFieldSchema,
   labelFieldSchema,
   spacerFieldSchema,
   hrFieldSchema,
 ]);
 
-export const layoutRowSchema = z.object({
+const layoutRowSchema = z.object({
   type: z.literal("ROW").describe("Row type identifier"),
   fields: z.array(layoutFieldSchema).describe("Array of fields in this row"),
 });
 
-export const layoutSubtableSchema = z.object({
+const layoutSubtableSchema = z.object({
   type: z.literal("SUBTABLE").describe("Subtable type identifier"),
   code: z.string().describe("Subtable field code"),
   fields: z
@@ -112,7 +112,7 @@ export const layoutElementSchema: z.ZodType<LayoutElement> = z.lazy(() =>
   z.union([layoutRowSchema, layoutSubtableSchema, layoutGroupSchema]),
 );
 
-export const layoutGroupSchema = z.object({
+const layoutGroupSchema = z.object({
   type: z.literal("GROUP").describe("Group type identifier"),
   code: z.string().describe("Group field code"),
   layout: z
