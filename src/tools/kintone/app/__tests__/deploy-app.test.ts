@@ -32,7 +32,8 @@ describe("deploy-app tool", () => {
 
     it("should have correct description", () => {
       expect(deployApp.config.description).toBe(
-        "Deploy app settings from pre-live to production environment on kintone",
+        "Deploy app settings from pre-live to production environment on kintone. " +
+          "This is an asynchronous API - use kintone-get-app-deploy-status tool to check deployment progress.",
       );
     });
 
@@ -109,8 +110,11 @@ describe("deploy-app tool", () => {
     describe("output schema validation with valid outputs", () => {
       it.each([
         {
-          output: {},
-          description: "empty object",
+          output: {
+            message:
+              "Deployment initiated for 1 app(s). Use kintone-get-app-deploy-status tool to check progress.",
+          },
+          description: "deployment message",
         },
       ])("accepts $description", ({ output }) => {
         expect(() => outputSchema.parse(output)).not.toThrow();
@@ -120,9 +124,12 @@ describe("deploy-app tool", () => {
 
   describe("callback function", () => {
     it("should call API and return formatted response", async () => {
-      const mockData = {};
+      const expectedResult = {
+        message:
+          "Deployment initiated for 1 app(s). Use kintone-get-app-deploy-status tool to check progress.",
+      };
 
-      mockDeployApp.mockResolvedValueOnce(mockData);
+      mockDeployApp.mockResolvedValueOnce({});
 
       const mockClient = createMockClient();
       mockClient.app.deployApp = mockDeployApp;
@@ -133,18 +140,21 @@ describe("deploy-app tool", () => {
       );
 
       expect(mockDeployApp).toHaveBeenCalledWith({ apps: [{ app: "123" }] });
-      expect(result.structuredContent).toEqual(mockData);
+      expect(result.structuredContent).toEqual(expectedResult);
       expect(result.content).toHaveLength(1);
       expect(result.content[0]).toEqual({
         type: "text",
-        text: JSON.stringify(mockData, null, 2),
+        text: JSON.stringify(expectedResult, null, 2),
       });
     });
 
     it("should handle complex parameters", async () => {
-      const mockData = {};
+      const expectedResult = {
+        message:
+          "Deployment initiated for 2 app(s). Use kintone-get-app-deploy-status tool to check progress.",
+      };
 
-      mockDeployApp.mockResolvedValueOnce(mockData);
+      mockDeployApp.mockResolvedValueOnce({});
 
       const mockClient = createMockClient();
       mockClient.app.deployApp = mockDeployApp;
@@ -162,7 +172,7 @@ describe("deploy-app tool", () => {
       });
 
       expect(mockDeployApp).toHaveBeenCalledWith(params);
-      expect(result.structuredContent).toEqual(mockData);
+      expect(result.structuredContent).toEqual(expectedResult);
     });
   });
 });

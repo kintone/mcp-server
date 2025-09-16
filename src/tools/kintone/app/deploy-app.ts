@@ -24,13 +24,16 @@ const inputSchema = {
     .describe("If true, revert changes instead of deploying (default: false)"),
 };
 
-const outputSchema = {};
+const outputSchema = {
+  message: z.string().describe("Deployment status message"),
+};
 
 const toolName = "kintone-deploy-app";
 const toolConfig = {
   title: "Deploy App Settings",
   description:
-    "Deploy app settings from pre-live to production environment on kintone",
+    "Deploy app settings from pre-live to production environment on kintone. " +
+    "This is an asynchronous API - use kintone-get-app-deploy-status tool to check deployment progress.",
   inputSchema,
   outputSchema,
 };
@@ -41,7 +44,9 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
 ) => {
   await client.app.deployApp({ apps, revert });
 
-  const result = {};
+  const result = {
+    message: `Deployment initiated for ${apps.length} app(s). Use kintone-get-app-deploy-status tool to check progress.`,
+  };
 
   return {
     structuredContent: result,
