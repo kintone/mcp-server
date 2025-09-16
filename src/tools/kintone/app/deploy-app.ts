@@ -26,7 +26,7 @@ const inputSchema = {
 
 const outputSchema = {};
 
-const toolName = "kintone-deploy-app-settings";
+const toolName = "kintone-deploy-app";
 const toolConfig = {
   title: "Deploy App Settings",
   description:
@@ -54,4 +54,4 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
   };
 };
 
-export const deployAppSettings = createTool(toolName, toolConfig, callback);
+export const deployApp = createTool(toolName, toolConfig, callback);

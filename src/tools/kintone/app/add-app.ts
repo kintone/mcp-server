@@ -22,7 +22,7 @@ const toolName = "kintone-add-app";
 const toolConfig = {
   title: "Add App",
   description:
-    "Create a new app in the pre-live environment on kintone. The pre-live environment is a temporary storage area where app information is saved before deployment. To reflect changes to the production environment, execute the kintone-deploy-app-settings tool after this tool.",
+    "Create a new app in the pre-live environment on kintone. The pre-live environment is a temporary storage area where app information is saved before deployment. To reflect changes to the production environment, execute the kintone-deploy-app tool after this tool.",
   inputSchema,
   outputSchema,
 };

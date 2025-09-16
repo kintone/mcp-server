@@ -80,7 +80,7 @@
       "description": "Create a new app in the pre-live environment on Kintone"
     },
     {
-      "name": "kintone-deploy-app-settings",
+      "name": "kintone-deploy-app",
       "description": "Deploy app settings from pre-live to production environment on Kintone"
     },
     {

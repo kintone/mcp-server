@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { deployAppSettings } from "../deploy-app-settings.js";
+import { deployApp } from "../deploy-app.js";
 import { z } from "zod";
 import {
   createMockClient,
@@ -9,7 +9,7 @@ import {
 // Mock function for deployApp API call
 const mockDeployApp = vi.fn();
 
-describe("deploy-app-settings tool", () => {
+describe("deploy-app tool", () => {
   const originalEnv = process.env;
 
   beforeEach(async () => {
@@ -27,20 +27,20 @@ describe("deploy-app-settings tool", () => {
 
   describe("tool configuration", () => {
     it("should have correct name", () => {
-      expect(deployAppSettings.name).toBe("kintone-deploy-app-settings");
+      expect(deployApp.name).toBe("kintone-deploy-app");
     });
 
     it("should have correct description", () => {
-      expect(deployAppSettings.config.description).toBe(
+      expect(deployApp.config.description).toBe(
         "Deploy app settings from pre-live to production environment on kintone",
       );
     });
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const inputSchema = z.object(deployAppSettings.config.inputSchema!);
+    const inputSchema = z.object(deployApp.config.inputSchema!);
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const outputSchema = z.object(deployAppSettings.config.outputSchema!);
+    const outputSchema = z.object(deployApp.config.outputSchema!);
 
     describe("input schema validation with valid inputs", () => {
       it.each([
@@ -127,7 +127,7 @@ describe("deploy-app-settings tool", () => {
       const mockClient = createMockClient();
       mockClient.app.deployApp = mockDeployApp;
 
-      const result = await deployAppSettings.callback(
+      const result = await deployApp.callback(
         { apps: [{ app: "123" }] },
         { client: mockClient },
       );
@@ -157,7 +157,7 @@ describe("deploy-app-settings tool", () => {
         revert: true,
       };
 
-      const result = await deployAppSettings.callback(params, {
+      const result = await deployApp.callback(params, {
         client: mockClient,
       });
 

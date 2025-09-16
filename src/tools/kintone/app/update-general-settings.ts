@@ -120,7 +120,7 @@ const toolName = "kintone-update-general-settings";
 const toolConfig = {
   title: "Update General Settings",
   description:
-    "Update the general settings of a kintone app. Changes are made to the pre-live environment, which is a temporary storage area where app information is saved before deployment. To reflect changes to the production environment, execute the kintone-deploy-app-settings tool after this tool.",
+    "Update the general settings of a kintone app. Changes are made to the pre-live environment, which is a temporary storage area where app information is saved before deployment. To reflect changes to the production environment, execute the kintone-deploy-app tool after this tool.",
   inputSchema,
   outputSchema,
 };
