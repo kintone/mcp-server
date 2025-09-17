@@ -4,6 +4,7 @@ import type { ZodRawShape, ZodTypeAny, z } from "zod";
 
 export type ToolCallbackOptions = {
   client: KintoneRestAPIClient;
+  attachmentsDir?: string;
 };
 
 export type ToolConfig<

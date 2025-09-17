@@ -9,7 +9,10 @@ export type ParsedConfig = {
   isApiTokenAuth: boolean;
 };
 
-export type KintoneClientConfig = ProvidedConfig & {
+export type KintoneClientConfig = Omit<
+  ProvidedConfig,
+  "KINTONE_ATTACHMENTS_DIR"
+> & {
   USER_AGENT: string;
 };
 

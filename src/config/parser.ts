@@ -46,6 +46,8 @@ export const merge = (
     KINTONE_PFX_FILE_PASSWORD:
       args["pfx-file-password"] ?? env.KINTONE_PFX_FILE_PASSWORD,
     HTTPS_PROXY: args.proxy ?? env.HTTPS_PROXY ?? env.https_proxy,
+    KINTONE_ATTACHMENTS_DIR:
+      args["attachments-dir"] ?? env.KINTONE_ATTACHMENTS_DIR,
   };
 };
 
@@ -94,6 +96,11 @@ const createErrorMessage = (
   if (errors.KINTONE_BASIC_AUTH_PASSWORD?._errors.length) {
     errorMessages.push(
       `KINTONE_BASIC_AUTH_PASSWORD: ${errors.KINTONE_BASIC_AUTH_PASSWORD._errors.join(", ")}`,
+    );
+  }
+  if (errors.KINTONE_ATTACHMENTS_DIR?._errors.length) {
+    errorMessages.push(
+      `KINTONE_ATTACHMENTS_DIR: ${errors.KINTONE_ATTACHMENTS_DIR._errors.join(", ")}`,
     );
   }
   // Handle cross-field validation errors

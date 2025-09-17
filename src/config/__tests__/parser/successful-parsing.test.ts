@@ -1,8 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import {
-  mockProvidedConfig,
-  mockProvidedConfigWithApiToken,
-} from "../../../__tests__/utils.js";
+import { mockProvidedConfig } from "../../../__tests__/utils.js";
 import { parseKintoneMcpServerConfig } from "../../parser.js";
 
 describe("config - successful parsing", () => {
@@ -102,11 +99,11 @@ describe("config - successful parsing", () => {
       name: "should handle empty HTTPS_PROXY as empty string",
       env: {
         ...mockProvidedConfig,
-        HTTPS_PROXY: "",
+        HTTPS_PROXY: undefined,
       },
       expected: {
         ...mockProvidedConfig,
-        HTTPS_PROXY: "",
+        HTTPS_PROXY: undefined,
       },
     },
     {
@@ -182,6 +179,7 @@ describe("config - successful parsing", () => {
         HTTPS_PROXY: undefined,
         KINTONE_PFX_FILE_PATH: undefined,
         KINTONE_PFX_FILE_PASSWORD: undefined,
+        KINTONE_ATTACHMENTS_DIR: undefined,
       },
     },
     {
@@ -200,6 +198,7 @@ describe("config - successful parsing", () => {
         HTTPS_PROXY: undefined,
         KINTONE_PFX_FILE_PATH: undefined,
         KINTONE_PFX_FILE_PASSWORD: undefined,
+        KINTONE_ATTACHMENTS_DIR: undefined,
       },
     },
     {
@@ -218,6 +217,7 @@ describe("config - successful parsing", () => {
         HTTPS_PROXY: undefined,
         KINTONE_PFX_FILE_PATH: undefined,
         KINTONE_PFX_FILE_PASSWORD: undefined,
+        KINTONE_ATTACHMENTS_DIR: undefined,
       },
     },
     {
@@ -236,6 +236,7 @@ describe("config - successful parsing", () => {
         HTTPS_PROXY: undefined,
         KINTONE_PFX_FILE_PATH: undefined,
         KINTONE_PFX_FILE_PASSWORD: undefined,
+        KINTONE_ATTACHMENTS_DIR: undefined,
       },
     },
   ])("$name", ({ env, expected }) => {

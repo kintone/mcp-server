@@ -13,13 +13,14 @@ export const createServer = (options: KintoneMcpServerOptions): McpServer => {
 
   const client = getKintoneClient(options.config.clientConfig);
   const toolCondition = options.config.toolConditionConfig;
+  const attachmentsDir = options.config.fileConfig.attachmentsDir;
   tools
     .filter((tool) => shouldEnableTool(tool.name, toolCondition))
     .forEach((tool) =>
       server.registerTool(
         tool.name,
         tool.config,
-        createToolCallback(tool.callback, { client }),
+        createToolCallback(tool.callback, { client, attachmentsDir }),
       ),
     );
 

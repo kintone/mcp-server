@@ -20,6 +20,7 @@ export const parse = (args: string[]) => {
       "pfx-file-path": { type: "string" },
       "pfx-file-password": { type: "string" },
       proxy: { type: "string" },
+      "attachments-dir": { type: "string" },
     },
   });
 
