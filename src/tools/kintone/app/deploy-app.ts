@@ -1,0 +1,62 @@
+import { z } from "zod";
+import { createTool } from "../../factory.js";
+import type { KintoneToolCallback } from "../../types/tool.js";
+
+const inputSchema = {
+  apps: z
+    .array(
+      z.object({
+        app: z
+          .string()
+          .describe("The ID of the app to deploy (numeric value as string)"),
+        revision: z
+          .string()
+          .optional()
+          .describe("The expected revision number"),
+      }),
+    )
+    .min(1)
+    .max(300)
+    .describe("List of apps to deploy (minimum 1, maximum 300 apps)"),
+  revert: z
+    .boolean()
+    .optional()
+    .describe("If true, revert changes instead of deploying (default: false)"),
+};
+
+const outputSchema = {
+  message: z.string().describe("Deployment status message"),
+};
+
+const toolName = "kintone-deploy-app";
+const toolConfig = {
+  title: "Deploy App Settings",
+  description:
+    "Deploy app settings from pre-live to production environment on kintone. " +
+    "This is an asynchronous API - use kintone-get-app-deploy-status tool to check deployment progress.",
+  inputSchema,
+  outputSchema,
+};
+
+const callback: KintoneToolCallback<typeof inputSchema> = async (
+  { apps, revert },
+  { client },
+) => {
+  await client.app.deployApp({ apps, revert });
+
+  const result = {
+    message: `Deployment initiated for ${apps.length} app(s). Use kintone-get-app-deploy-status tool to check progress.`,
+  };
+
+  return {
+    structuredContent: result,
+    content: [
+      {
+        type: "text",
+        text: JSON.stringify(result, null, 2),
+      },
+    ],
+  };
+};
+
+export const deployApp = createTool(toolName, toolConfig, callback);
