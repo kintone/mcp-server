@@ -24,7 +24,7 @@ const outputSchema = {
   icon: z
     .object({
       type: z.enum(["FILE", "PRESET"]).describe("The icon type"),
-      key: z.string().describe("The icon key"),
+      key: z.string().optional().describe("The icon key"),
       file: z
         .object({
           contentType: z.string().describe("The content type of the file"),
@@ -99,6 +99,7 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
   { client },
 ) => {
   const settings = await client.app.getAppSettings({ app, lang, preview });
+  console.log(settings);
 
   const result = {
     name: settings.name,
