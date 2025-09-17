@@ -175,6 +175,7 @@ Please refer to the documentation of the AI tool you are using for details on ho
 | `--pfx-file-path`       | `KINTONE_PFX_FILE_PATH`       | Path to PFX file (for client certificate authentication)                  | -        |
 | `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFX file password                                                         | -        |
 | `--proxy`               | `HTTPS_PROXY`                 | HTTPS proxy URL (e.g., `http://proxy.example.com:8080`)                   | -        |
+| `--attachments-dir`     | `KINTONE_ATTACHMENTS_DIR`     | Directory to save downloaded files                                        | -        |
 
 ※1: Either `KINTONE_USERNAME` & `KINTONE_PASSWORD` or `KINTONE_API_TOKEN` is required
 
@@ -212,10 +213,19 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-add-app`                 | Create app in pre-live environment |
 | `kintone-deploy-app`              | Deploy app settings to production  |
 | `kintone-update-general-settings` | Update app general settings        |
+| `kintone-download-file`          | Download and save a file from an attachment field |
 
 ## Documentation
 
 - [Authentication Configuration Guide](./docs/en/authentication.md) - Detailed authentication methods and examples
+
+## Notes
+
+### `kintone-download-file` Tool
+
+- Downloaded files are saved to the directory specified by `--attachments-dir` or `KINTONE_ATTACHMENTS_DIR`.
+- If `--attachments-dir` or `KINTONE_ATTACHMENTS_DIR` is not specified, an error will occur when executing the tool.
+- If a non-existent directory is specified for `--attachments-dir` or `KINTONE_ATTACHMENTS_DIR`, a new directory will be created and files will be saved there.
 
 ## Limitations
 

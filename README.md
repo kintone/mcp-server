@@ -160,6 +160,7 @@ DXTファイルをインストールした場合、追加の手順は必要あ�
 | `--pfx-file-path`       | `KINTONE_PFX_FILE_PATH`       | PFXファイルのパス（クライアント証明書認証用）              | -    |
 | `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFXファイルのパスワード                                    | -    |
 | `--proxy`               | `HTTPS_PROXY`                 | HTTPSプロキシのURL（例: `http://proxy.example.com:8080`）  | -    |
+| `--attachments-dir`     | `KINTONE_ATTACHMENTS_DIR`     | ダウンロードしたファイルの保存先                           | -    |
 
 ※1: `KINTONE_USERNAME` & `KINTONE_PASSWORD` または `KINTONE_API_TOKEN` のいずれかが必須
 
@@ -197,10 +198,19 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-add-app`                 | 動作テスト環境にアプリを作成     |
 | `kintone-deploy-app`              | アプリ設定を運用環境へ反映       |
 | `kintone-update-general-settings` | アプリの一般設定を変更           |
+| `kintone-download-file`          | 添付ファイルフィールドのファイルを保存 |
 
 ## ドキュメント
 
 - [認証設定ガイド](./docs/ja/authentication.md) - 認証方法の詳細と設定例
+
+## 使用上の注意
+
+### `kintone-download-file`ツールの注意点
+
+- ダウンロードしたファイルは、`--attachments-dir`または`KINTONE_ATTACHMENTS_DIR`で指定したディレクトリに保存されます。
+- `--attachments-dir`または`KINTONE_ATTACHMENTS_DIR`を指定しない場合はツール実行時にエラーになります。
+- `--attachments-dir`または`KINTONE_ATTACHMENTS_DIR`に存在しないディレクトリを指定した場合は、ディレクトリを新規作成してからそこに保存されます。
 
 ## 制限事項
 

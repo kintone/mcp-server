@@ -34,7 +34,8 @@
         "KINTONE_BASIC_AUTH_PASSWORD": "${user_config.kintone_basic_auth_password}",
         "HTTPS_PROXY": "${user_config.https_proxy}",
         "KINTONE_PFX_FILE_PATH": "${user_config.kintone_pfx_file_path}",
-        "KINTONE_PFX_FILE_PASSWORD": "${user_config.kintone_pfx_file_password}"
+        "KINTONE_PFX_FILE_PASSWORD": "${user_config.kintone_pfx_file_password}",
+        "KINTONE_ATTACHMENTS_DIR": "${user_config.kintone_attachments_dir}"
       }
     }
   },
@@ -86,6 +87,10 @@
     {
       "name": "kintone-update-general-settings",
       "description": "Update the general settings of a Kintone app"
+    },
+    {
+      "name": "kintone-download-file",
+      "description": "Download and save a file from a Kintone"
     }
   ],
   "tools_generated": true,
@@ -159,6 +164,14 @@
       "description": "Password for PFX client certificate file",
       "required": false,
       "sensitive": true,
+      "default": ""
+    },
+    "kintone_attachments_dir": {
+      "type": "string",
+      "title": "Attachments Directory",
+      "description": "Directory path where downloaded files from Kintone will be saved. Required for file download operations.",
+      "required": false,
+      "sensitive": false,
       "default": ""
     }
   },
