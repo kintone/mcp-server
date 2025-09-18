@@ -193,6 +193,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-get-form-fields`         | アプリのフィールド設定を取得           |
 | `kintone-get-form-layout`         | アプリのフォームレイアウトを取得       |
 | `kintone-update-form-fields`      | アプリのフィールド設定を更新           |
+| `kintone-update-form-layout`      | アプリのフォームレイアウトを更新       |
 | `kintone-delete-form-fields`      | アプリのフィールドを削除               |
 | `kintone-get-process-management`  | プロセス管理設定を取得                 |
 | `kintone-get-app-deploy-status`   | アプリ設定の運用環境への反映状況確認   |
