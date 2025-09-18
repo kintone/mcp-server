@@ -21,6 +21,7 @@ export const createMockClient = (): KintoneRestAPIClient =>
       getFormFields: vi.fn(),
       getFormLayout: vi.fn(),
       updateFormFields: vi.fn(),
+      updateFormLayout: vi.fn(),
       deleteFormFields: vi.fn(),
       getProcessManagement: vi.fn(),
       getDeployStatus: vi.fn(),

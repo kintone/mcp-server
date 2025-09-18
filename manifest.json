@@ -61,6 +61,10 @@
       "description": "Update form field settings in a Kintone app (test environment)"
     },
     {
+      "name": "kintone-update-form-layout",
+      "description": "Update form layout settings in a Kintone app (test environment)"
+    },
+    {
       "name": "kintone-delete-form-fields",
       "description": "Delete form fields from a Kintone app (test environment only)"
     },
