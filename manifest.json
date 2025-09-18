@@ -69,6 +69,10 @@
       "description": "Get general settings of a kintone app"
     },
     {
+      "name": "kintone-add-field",
+      "description": "Add new fields to a Kintone app"
+    },
+    {
       "name": "kintone-get-records",
       "description": "Get multiple records from a Kintone app"
     },
