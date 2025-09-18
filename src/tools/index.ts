@@ -7,6 +7,7 @@ import { getApp } from "./kintone/app/get-app.js";
 import { getApps } from "./kintone/app/get-apps.js";
 import { getFormFields } from "./kintone/app/get-form-fields.js";
 import { getFormLayout } from "./kintone/app/get-form-layout.js";
+import { updateFormFields } from "./kintone/app/update-form-fields.js";
 import { getProcessManagement } from "./kintone/app/get-process-management.js";
 import { getAppDeployStatus } from "./kintone/app/get-app-deploy-status.js";
 import { getGeneralSettings } from "./kintone/app/get-general-settings.js";
@@ -23,6 +24,7 @@ export const tools: Array<Tool<any, any>> = [
   getApps,
   getFormFields,
   getFormLayout,
+  updateFormFields,
   getProcessManagement,
   getAppDeployStatus,
   getGeneralSettings,

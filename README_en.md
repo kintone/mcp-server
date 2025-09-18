@@ -201,6 +201,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-get-app`                 | Get details of a single app                        |
 | `kintone-get-form-fields`         | Get app field settings                             |
 | `kintone-get-form-layout`         | Get app form layout                                |
+| `kintone-update-form-fields`      | Update app field settings                          |
 | `kintone-get-process-management`  | Get process management settings                    |
 | `kintone-get-app-deploy-status`   | Check app settings deployment status to production |
 | `kintone-get-general-settings`    | Get general settings of an app                     |
