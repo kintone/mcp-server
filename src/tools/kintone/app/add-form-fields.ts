@@ -1,14 +1,17 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
-import { fieldPropertySchema } from "./schemas/field-property.js";
+import { baseFieldProperties } from "../../../schema/app/index.js";
+
+// 新規作成用フィールドプロパティスキーマ（ベースプロパティを使用）
+const addFieldPropertySchema = z.object(baseFieldProperties);
 
 const inputSchema = {
   app: z
     .string()
     .describe("The ID of the app to add fields to (numeric value as string)"),
   properties: z
-    .record(fieldPropertySchema)
+    .record(addFieldPropertySchema)
     .describe("Object containing field configurations to add"),
   revision: z.string().optional().describe("App configuration revision number"),
 };
