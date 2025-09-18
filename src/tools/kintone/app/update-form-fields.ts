@@ -1,7 +1,10 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
-import { fieldPropertySchema } from "./schemas/field-property.js";
+import { baseFieldProperties } from "../../../schema/app/index.js";
+
+// 更新用フィールドプロパティスキーマ（ベースプロパティを使用）
+const updateFieldPropertySchema = z.object(baseFieldProperties);
 
 const inputSchema = {
   app: z
@@ -10,7 +13,7 @@ const inputSchema = {
       "The ID of the app to update form fields for (numeric value as string)",
     ),
   properties: z
-    .record(fieldPropertySchema)
+    .record(updateFieldPropertySchema)
     .describe("Object containing field configurations to update"),
   revision: z
     .string()

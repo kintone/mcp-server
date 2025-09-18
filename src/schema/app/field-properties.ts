@@ -1,13 +1,9 @@
 import { z } from "zod";
 
-export const fieldPropertySchema = z.object({
+export const baseFieldProperties = {
   type: z.string().describe("The field type"),
   code: z.string().describe("The field code"),
   label: z.string().describe("The field name"),
-  enabled: z
-    .boolean()
-    .optional()
-    .describe("Whether the field is enabled (for STATUS and CATEGORY fields)"),
   noLabel: z.boolean().optional().describe("Whether to hide the field name"),
   required: z.boolean().optional().describe("Whether the field is required"),
   unique: z.boolean().optional().describe("Whether the field must be unique"),
@@ -101,4 +97,4 @@ export const fieldPropertySchema = z.object({
     .boolean()
     .optional()
     .describe("Whether the group is expanded by default"),
-});
+};

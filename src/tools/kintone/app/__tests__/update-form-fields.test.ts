@@ -226,7 +226,10 @@ describe("update-form-fields tool", () => {
         { output: { revision: true }, description: "revision as boolean" },
         { output: { revision: [] }, description: "revision as array" },
         { output: { revision: {} }, description: "revision as object" },
-        { output: { revision: undefined }, description: "revision as undefined" },
+        {
+          output: { revision: undefined },
+          description: "revision as undefined",
+        },
       ])("rejects $description", ({ output }) => {
         expect(() => outputSchema.parse(output)).toThrow();
       });
@@ -442,7 +445,7 @@ describe("update-form-fields tool", () => {
           maxValue: "9999",
           displayScale: "2",
           unit: "円",
-          unitPosition: "AFTER",
+          unitPosition: "AFTER" as const,
           digit: true,
         },
         date_field: {
@@ -460,7 +463,7 @@ describe("update-form-fields tool", () => {
             item2: { label: "Item 2", index: "1" },
             item3: { label: "Item 3", index: "2" },
           },
-          align: "VERTICAL",
+          align: "VERTICAL" as const,
         },
       };
 
