@@ -13,7 +13,7 @@ const inputSchema = {
   properties: z
     .record(addFieldPropertySchema)
     .describe("Object containing field configurations to add"),
-  revision: z.string().optional().describe("App configuration revision number"),
+  revision: z.string().optional().describe("Expected app configuration revision number. If the specified revision number does not match the current app's revision, an error will occur and the update will not be performed. If not specified or set to '-1', the revision number will not be checked."),
 };
 
 const outputSchema = {
@@ -23,7 +23,8 @@ const outputSchema = {
 const toolName = "kintone-add-field";
 const toolConfig = {
   title: "Add Field",
-  description: "Add new fields to a kintone app",
+  description:
+    "Add new fields to a kintone app (preview environment only). Requires App Management permissions. Cannot add Status, Assignee, or Category fields. Field codes must be unique, max 128 chars, cannot start with numbers, and only '_' symbol allowed. For selection fields (DROP_DOWN/RADIO_BUTTON/CHECK_BOX/MULTI_SELECT), option keys must exactly match their label values. Options require 'label' and 'index' properties. Use kintone-get-form-fields first to check existing fields. Changes require kintone-deploy-app to apply to live app.",
   inputSchema,
   outputSchema,
 };

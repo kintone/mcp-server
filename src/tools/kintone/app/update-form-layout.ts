@@ -15,7 +15,7 @@ const inputSchema = {
   revision: z
     .string()
     .optional()
-    .describe("The expected app configuration revision number before updating"),
+    .describe("Expected app configuration revision number. If the specified revision number does not match the current app's revision, an error will occur and the update will not be performed. If not specified or set to '-1', the revision number will not be checked."),
 };
 
 const outputSchema = {
@@ -26,7 +26,7 @@ const toolName = "kintone-update-form-layout";
 const toolConfig = {
   title: "Update Form Layout",
   description:
-    "Update form layout settings in a kintone app (test environment)",
+    "Update form layout settings in a kintone app (preview environment only). IMPORTANT: Use kintone-get-form-fields tool first to get exact field codes and structure. Field codes are case-sensitive and must match exactly. For SUBTABLE fields, use the correct nested structure: {type: 'SUBTABLE', code: 'table_code', fields: [{type: 'field_type', code: 'field_code'}, ...]}",
   inputSchema,
   outputSchema,
 };

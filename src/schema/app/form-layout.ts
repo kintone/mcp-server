@@ -65,7 +65,7 @@ const fieldForParameterSchema = z.object({
     .string()
     .optional()
     .describe(
-      "Field code (required for most field types except LABEL, SPACER, and HR)",
+      "Field code (required for most field types except LABEL, SPACER, and HR). Must exactly match the existing field code in the app",
     ),
   label: z
     .string()
@@ -91,10 +91,16 @@ const rowLayoutForParameterSchema = z.object({
 // SUBTABLE レイアウトパラメータ
 const subtableLayoutForParameterSchema = z.object({
   type: z.literal("SUBTABLE").describe("A Table"),
-  code: z.string().describe("The field code of the Table"),
+  code: z
+    .string()
+    .describe(
+      "The field code of the SUBTABLE field (not individual fields inside)",
+    ),
   fields: z
     .array(fieldForParameterSchema)
-    .describe("List of field layouts in the Table"),
+    .describe(
+      "List of field layouts INSIDE the subtable. These should be the field codes that exist within the subtable definition. Use kintone-get-form-fields to see the correct subtable structure. The subtable structure should be: {type: 'SUBTABLE', code: 'table_code', fields: [{type: 'TEXT', code: 'field_inside_table'}, ...]}",
+    ),
 });
 
 // GROUP レイアウトパラメータ

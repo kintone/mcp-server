@@ -15,7 +15,7 @@ const inputSchema = {
   revision: z
     .string()
     .optional()
-    .describe("The expected app configuration revision number before updating"),
+    .describe("Expected app configuration revision number. If the specified revision number does not match the current app's revision, an error will occur and the update will not be performed. If not specified or set to '-1', the revision number will not be checked."),
 };
 
 const outputSchema = {
@@ -25,7 +25,8 @@ const outputSchema = {
 const toolName = "kintone-update-form-fields";
 const toolConfig = {
   title: "Update Form Fields",
-  description: "Update form field settings in a kintone app (test environment)",
+  description:
+    "Update form field settings in a kintone app (preview environment only). Requires App Management permissions. Cannot update field codes for Label, Blank space, Border, Status, Assignee, or Category fields. For selection fields, unspecified options will be deleted. Option keys must exactly match current option names. New options require 'label' and 'index'. Field codes: max 128 chars, cannot start with numbers, only '_' symbol allowed. Duplicate field codes not allowed. Use kintone-get-form-fields first to check current settings. Changes require kintone-deploy-app to apply to live app.",
   inputSchema,
   outputSchema,
 };
