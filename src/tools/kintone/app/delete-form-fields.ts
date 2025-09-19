@@ -17,7 +17,7 @@ const inputSchema = {
     .string()
     .optional()
     .describe(
-      "Expected revision number. If set, the request will fail if the revision number of the app does not match.",
+      "Expected app configuration revision number. If the specified revision number does not match the current app's revision, an error will occur and the update will not be performed. If not specified or set to '-1', the revision number will not be checked.",
     ),
 };
 
@@ -29,7 +29,7 @@ const toolName = "kintone-delete-form-fields";
 const toolConfig = {
   title: "Delete Form Fields",
   description:
-    "Delete form fields from a kintone app (test environment only). Maximum 100 fields can be deleted at once. Cannot delete status, assignee, or category fields.",
+    "Delete form fields from a kintone app (preview environment only). Maximum 100 fields can be deleted at once. Cannot delete status, assignee, or category fields.",
   inputSchema,
   outputSchema,
 };
