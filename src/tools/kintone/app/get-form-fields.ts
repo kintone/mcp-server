@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
-import { baseFieldProperties } from "../../../schema/app/index.js";
+import { propertiesForParameterSchema } from "../../../schema/app/index.js";
 
 const inputSchema = {
   app: z
@@ -19,19 +19,10 @@ const inputSchema = {
     .describe("Whether to get form fields from pre-live environment"),
 };
 
-// レスポンス用フィールドプロパティスキーマ（ベース + enabled）
-const responseFieldPropertySchema = z.object({
-  ...baseFieldProperties,
-  enabled: z
-    .boolean()
-    .optional()
-    .describe("Whether the field is enabled (for STATUS and CATEGORY fields)"),
-});
-
 const outputSchema = {
-  properties: z
-    .record(responseFieldPropertySchema)
-    .describe("Object containing field configurations"),
+  properties: propertiesForParameterSchema.describe(
+    "Object containing field configurations",
+  ),
   revision: z.string().describe("App configuration revision number"),
 };
 
