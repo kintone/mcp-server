@@ -58,15 +58,15 @@
     },
     {
       "name": "kintone-update-form-fields",
-      "description": "Update form field settings in a Kintone app (test environment)"
+      "description": "Update form field settings in a Kintone app"
     },
     {
       "name": "kintone-update-form-layout",
-      "description": "Update form layout settings in a Kintone app (test environment)"
+      "description": "Update form layout settings in a Kintone app"
     },
     {
       "name": "kintone-delete-form-fields",
-      "description": "Delete form fields from a Kintone app (test environment only)"
+      "description": "Delete form fields from a Kintone app"
     },
     {
       "name": "kintone-get-process-management",
