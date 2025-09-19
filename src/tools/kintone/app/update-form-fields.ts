@@ -1,10 +1,7 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
-import { baseFieldProperties } from "../../../schema/app/index.js";
-
-// 更新用フィールドプロパティスキーマ（ベースプロパティを使用）
-const updateFieldPropertySchema = z.object(baseFieldProperties);
+import { propertiesForParameterSchema } from "../../../schema/app/index.js";
 
 const inputSchema = {
   app: z
@@ -12,9 +9,9 @@ const inputSchema = {
     .describe(
       "The ID of the app to update form fields for (numeric value as string)",
     ),
-  properties: z
-    .record(updateFieldPropertySchema)
-    .describe("Object containing field configurations to update"),
+  properties: propertiesForParameterSchema.describe(
+    "Object containing field configurations to update",
+  ),
   revision: z
     .string()
     .optional()
@@ -39,7 +36,7 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
 ) => {
   const response = await client.app.updateFormFields({
     app,
-    properties: properties as any,
+    properties: properties,
     revision,
   });
 
