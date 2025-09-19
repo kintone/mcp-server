@@ -15,7 +15,9 @@ const inputSchema = {
   revision: z
     .string()
     .optional()
-    .describe("Expected app configuration revision number. If the specified revision number does not match the current app's revision, an error will occur and the update will not be performed. If not specified or set to '-1', the revision number will not be checked."),
+    .describe(
+      "Expected app configuration revision number. If the specified revision number does not match the current app's revision, an error will occur and the update will not be performed. If not specified or set to '-1', the revision number will not be checked.",
+    ),
 };
 
 const outputSchema = {
