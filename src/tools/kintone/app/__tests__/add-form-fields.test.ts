@@ -31,7 +31,7 @@ describe("add-field tool", () => {
 
     it("should have correct description", () => {
       expect(addFormFields.config.description).toBe(
-        "Add new fields to a kintone app",
+        "Add new fields to a kintone app (preview environment only). Requires App Management permissions. Cannot add Status, Assignee, or Category fields. Field codes must be unique, max 128 chars, cannot start with numbers, and only '_' symbol allowed. For selection fields (DROP_DOWN/RADIO_BUTTON/CHECK_BOX/MULTI_SELECT), option keys must exactly match their label values. Options require 'label' and 'index' properties. Use kintone-get-form-fields first to check existing fields. Changes require kintone-deploy-app to apply to live app.",
       );
     });
 
