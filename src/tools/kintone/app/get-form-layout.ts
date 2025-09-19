@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
-import { layoutElementSchema } from "../../../schema/app/index.js";
+import { layoutForParameterSchema } from "../../../schema/app/index.js";
 
 const inputSchema = {
   app: z
@@ -18,9 +18,9 @@ const inputSchema = {
 };
 
 const outputSchema = {
-  layout: z
-    .array(layoutElementSchema)
-    .describe("Array of layout elements (rows, subtables, groups)"),
+  layout: layoutForParameterSchema.describe(
+    "Array of layout elements (rows, subtables, groups)",
+  ),
   revision: z.string().describe("App configuration revision number"),
 };
 
