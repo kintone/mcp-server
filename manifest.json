@@ -53,8 +53,20 @@
       "description": "Get form field settings from a Kintone app"
     },
     {
+      "name": "kintone-get-form-layout",
+      "description": "Get form layout from a Kintone app"
+    },
+    {
       "name": "kintone-get-process-management",
       "description": "Get process management settings from a Kintone app"
+    },
+    {
+      "name": "kintone-get-app-deploy-status",
+      "description": "Get app deploy status from Kintone"
+    },
+    {
+      "name": "kintone-get-general-settings",
+      "description": "Get general settings of a kintone app"
     },
     {
       "name": "kintone-get-records",

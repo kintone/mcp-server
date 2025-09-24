@@ -199,21 +199,24 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 
 ## Tools
 
-| Tool Name                         | Description                                       |
-| --------------------------------- | ------------------------------------------------- |
-| `kintone-get-apps`                | Get information of multiple apps                  |
-| `kintone-get-app`                 | Get details of a single app                       |
-| `kintone-get-form-fields`         | Get app field settings                            |
-| `kintone-get-process-management`  | Get process management settings                   |
-| `kintone-get-records`             | Get multiple records                              |
-| `kintone-add-records`             | Add multiple records                              |
-| `kintone-update-records`          | Update multiple records                           |
-| `kintone-delete-records`          | Delete multiple records                           |
-| `kintone-update-statuses`         | Update status of multiple records                 |
+| Tool Name                        | Description                                        |
+| -------------------------------- | -------------------------------------------------- |
+| `kintone-get-apps`               | Get information of multiple apps                   |
+| `kintone-get-app`                | Get details of a single app                        |
+| `kintone-get-form-fields`        | Get app field settings                             |
+| `kintone-get-form-layout`        | Get app form layout                                |
+| `kintone-get-process-management` | Get process management settings                    |
+| `kintone-get-app-deploy-status`  | Check app settings deployment status to production |
+| `kintone-get-general-settings`   | Get general settings of an app                     |
+| `kintone-get-records`            | Get multiple records                               |
+| `kintone-add-records`            | Add multiple records                               |
+| `kintone-update-records`         | Update multiple records                            |
+| `kintone-delete-records`         | Delete multiple records                            |
+| `kintone-update-statuses`        | Update status of multiple records                  |
 | `kintone-add-app`                 | Create app in pre-live environment                |
 | `kintone-deploy-app`              | Deploy app settings to production                 |
 | `kintone-update-general-settings` | Update app general settings                       |
-| `kintone-download-file`           | Download and save a file from an attachment field |
+| `kintone-download-file`          | Download and save a file from an attachment field  |
 
 ## Documentation
 
