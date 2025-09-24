@@ -14,11 +14,6 @@ const userEntitySchema = z.object({
   type: z.enum(["USER", "GROUP", "ORGANIZATION"]),
 });
 
-const functionEntitySchema = z.object({
-  code: z.string(),
-  type: z.literal("FUNCTION"),
-});
-
 // システムフィールド
 const recordNumberSchema = z.object({
   type: z.literal("RECORD_NUMBER"),
