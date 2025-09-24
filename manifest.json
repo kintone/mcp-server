@@ -2,7 +2,7 @@
   "dxt_version": "0.1",
   "name": "@kintone/mcp-server",
   "display_name": "Kintone MCP Server",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The official MCP Server for Kintone",
   "long_description": "This extension provides Model Context Protocol (MCP) server capabilities for Kintone, allowing AI assistants to interact with your Kintone applications.",
   "author": {
@@ -92,7 +92,6 @@
       "name": "kintone-download-file",
       "description": "Download and save a file from a Kintone"
     }
-
   ],
   "tools_generated": true,
   "user_config": {
