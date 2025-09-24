@@ -20,6 +20,7 @@ const config = createConfig({
       "(MIT AND Zlib)",
       "(MIT AND BSD-3-Clause)",
       "(MIT AND CC-BY-3.0)",
+      "(WTFPL OR MIT)",
       "BlueOak-1.0.0",
       "(BSD-3-Clause OR GPL-2.0)",
       "Unlicense",
