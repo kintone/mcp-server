@@ -72,22 +72,9 @@ const inputSchema = {
     .describe("Whether to enable inline editing in record list"),
   numberPrecision: z
     .object({
-      digits: z
-        .string()
-        .regex(/^\d+$/, "Must be a numeric string")
-        .refine((val) => {
-          const num = parseInt(val, 10);
-          return num >= 1 && num <= 30;
-        }, "Must be between 1 and 30")
-        .optional()
-        .describe("Total number of digits (1-30)"),
+      digits: z.string().optional().describe("Total number of digits (1-30)"),
       decimalPlaces: z
         .string()
-        .regex(/^\d+$/, "Must be a numeric string")
-        .refine((val) => {
-          const num = parseInt(val, 10);
-          return num >= 0 && num <= 10;
-        }, "Must be between 0 and 10")
         .optional()
         .describe("Number of decimal places (0-10)"),
       roundingMode: z
@@ -99,11 +86,6 @@ const inputSchema = {
     .describe("The numeric calculation precision settings"),
   firstMonthOfFiscalYear: z
     .string()
-    .regex(/^\d+$/, "Must be a numeric string")
-    .refine((val) => {
-      const num = parseInt(val, 10);
-      return num >= 1 && num <= 12;
-    }, "Must be between 1 and 12")
     .optional()
     .describe("The first month of the fiscal year (1-12)"),
   revision: z
