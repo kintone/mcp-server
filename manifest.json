@@ -81,7 +81,7 @@
       "description": "Get general settings of a kintone app"
     },
     {
-      "name": "kintone-add-field",
+      "name": "kintone-add-form-fields",
       "description": "Add new fields to a Kintone app"
     },
     {

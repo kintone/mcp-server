@@ -8,7 +8,7 @@ import {
 
 const mockAddFormFields = vi.fn();
 
-describe("add-field tool", () => {
+describe("add-form-fields tool", () => {
   const originalEnv = process.env;
 
   beforeEach(async () => {
@@ -26,7 +26,7 @@ describe("add-field tool", () => {
 
   describe("tool configuration", () => {
     it("should have correct name", () => {
-      expect(addFormFields.name).toBe("kintone-add-field");
+      expect(addFormFields.name).toBe("kintone-add-form-fields");
     });
 
     it("should have correct description", () => {

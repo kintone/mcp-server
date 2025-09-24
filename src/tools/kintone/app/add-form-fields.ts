@@ -4,14 +4,14 @@ import type { KintoneToolCallback } from "../../types/tool.js";
 import { baseFieldProperties } from "../../../schema/app/index.js";
 
 // 新規作成用フィールドプロパティスキーマ（ベースプロパティを使用）
-const addFieldPropertySchema = z.object(baseFieldProperties);
+const addFormFieldPropertySchema = z.object(baseFieldProperties);
 
 const inputSchema = {
   app: z
     .string()
     .describe("The ID of the app to add fields to (numeric value as string)"),
   properties: z
-    .record(addFieldPropertySchema)
+    .record(addFormFieldPropertySchema)
     .describe("Object containing field configurations to add"),
   revision: z
     .string()
@@ -25,9 +25,9 @@ const outputSchema = {
   revision: z.string().describe("Updated app configuration revision number"),
 };
 
-const toolName = "kintone-add-field";
+const toolName = "kintone-add-form-fields";
 const toolConfig = {
-  title: "Add Field",
+  title: "Add Form Fields",
   description:
     "Add new fields to a kintone app (preview environment only). Requires App Management permissions. Cannot add Status, Assignee, or Category fields. Field codes must be unique, max 128 chars, cannot start with numbers, and only '_' symbol allowed. For selection fields (DROP_DOWN/RADIO_BUTTON/CHECK_BOX/MULTI_SELECT), option keys must exactly match their label values. Options require 'label' and 'index' properties. Use kintone-get-form-fields first to check existing fields. Changes require kintone-deploy-app to apply to live app.",
   inputSchema,
