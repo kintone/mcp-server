@@ -10,8 +10,8 @@ describe("deleteFormFields", () => {
     vi.clearAllMocks();
   });
 
-  describe("正常系", () => {
-    it("フィールドを正常に削除できる", async () => {
+  describe("callback function", () => {
+    it("should delete fields successfully", async () => {
       const mockClient = createMockClient();
       const mockDeleteFormFields = mockClient.app
         .deleteFormFields as ReturnType<typeof vi.fn>;
@@ -42,7 +42,7 @@ describe("deleteFormFields", () => {
       expect(result.content[0].text).toContain('"revision": "5"');
     });
 
-    it("revisionを指定せずにフィールドを削除できる", async () => {
+    it("should delete fields without specifying revision", async () => {
       const mockClient = createMockClient();
       const mockDeleteFormFields = mockClient.app
         .deleteFormFields as ReturnType<typeof vi.fn>;
@@ -71,7 +71,7 @@ describe("deleteFormFields", () => {
       });
     });
 
-    it("100個のフィールドを同時に削除できる", async () => {
+    it("should delete 100 fields simultaneously", async () => {
       const mockClient = createMockClient();
       const mockDeleteFormFields = mockClient.app
         .deleteFormFields as ReturnType<typeof vi.fn>;
@@ -100,10 +100,8 @@ describe("deleteFormFields", () => {
         revision: "10",
       });
     });
-  });
 
-  describe("異常系", () => {
-    it("APIエラー時に適切なエラーを返す", async () => {
+    it("should handle API errors appropriately", async () => {
       const mockClient = createMockClient();
       const mockDeleteFormFields = mockClient.app
         .deleteFormFields as ReturnType<typeof vi.fn>;
@@ -121,7 +119,7 @@ describe("deleteFormFields", () => {
       ).rejects.toThrow("API Error");
     });
 
-    it("権限エラー時に適切なエラーを返す", async () => {
+    it("should handle permission errors appropriately", async () => {
       const mockClient = createMockClient();
       const mockDeleteFormFields = mockClient.app
         .deleteFormFields as ReturnType<typeof vi.fn>;
@@ -140,7 +138,7 @@ describe("deleteFormFields", () => {
       ).rejects.toThrow("Permission denied");
     });
 
-    it("リビジョン不一致エラー時に適切なエラーを返す", async () => {
+    it("should handle revision mismatch errors appropriately", async () => {
       const mockClient = createMockClient();
       const mockDeleteFormFields = mockClient.app
         .deleteFormFields as ReturnType<typeof vi.fn>;
