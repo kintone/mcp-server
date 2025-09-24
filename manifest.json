@@ -89,6 +89,18 @@
       "description": "Update status of multiple records in a Kintone app"
     },
     {
+      "name": "kintone-add-app",
+      "description": "Create a new app in the pre-live environment on Kintone"
+    },
+    {
+      "name": "kintone-deploy-app",
+      "description": "Deploy app settings from pre-live to production environment on Kintone"
+    },
+    {
+      "name": "kintone-update-general-settings",
+      "description": "Update the general settings of a Kintone app"
+    },
+    {
       "name": "kintone-download-file",
       "description": "Download and save a file from a Kintone"
     }

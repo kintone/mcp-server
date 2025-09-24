@@ -11,6 +11,9 @@ import { getProcessManagement } from "./kintone/app/get-process-management.js";
 import { getAppDeployStatus } from "./kintone/app/get-app-deploy-status.js";
 import { getGeneralSettings } from "./kintone/app/get-general-settings.js";
 import { updateStatuses } from "./kintone/record/update-statuses.js";
+import { addApp } from "./kintone/app/add-app.js";
+import { deployApp } from "./kintone/app/deploy-app.js";
+import { updateGeneralSettings } from "./kintone/app/update-general-settings.js";
 import { downloadFile } from "./kintone/file/download-file.js";
 
 export { createToolCallback } from "./factory.js";
@@ -27,5 +30,8 @@ export const tools: Array<Tool<any, any>> = [
   deleteRecords,
   getRecords,
   updateRecords,
+  addApp,
+  deployApp,
+  updateGeneralSettings,
   downloadFile,
 ] as const;
