@@ -38,9 +38,11 @@ kintoneの公式ローカルMCPサーバーです。
   - [プロキシ設定](#%E3%83%97%E3%83%AD%E3%82%AD%E3%82%B7%E8%A8%AD%E5%AE%9A)
 - [ツール一覧](#%E3%83%84%E3%83%BC%E3%83%AB%E4%B8%80%E8%A6%A7)
 - [ドキュメント](#%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88)
+- [使用上の注意](#%E4%BD%BF%E7%94%A8%E4%B8%8A%E3%81%AE%E6%B3%A8%E6%84%8F)
+  - [`kintone-download-file`ツールの注意点](#kintone-download-file%E3%83%84%E3%83%BC%E3%83%AB%E3%81%AE%E6%B3%A8%E6%84%8F%E7%82%B9)
 - [制限事項](#%E5%88%B6%E9%99%90%E4%BA%8B%E9%A0%85)
   - [レコード操作の制限](#%E3%83%AC%E3%82%B3%E3%83%BC%E3%83%89%E6%93%8D%E4%BD%9C%E3%81%AE%E5%88%B6%E9%99%90)
-  - [機能制限](#%E6%A9%9F%E8%83%BD%E5%88%B6%E9%99%90)
+  - [その他の制限](#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E5%88%B6%E9%99%90)
 - [サポート方針](#%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88%E6%96%B9%E9%87%9D)
 - [コントリビューション](#%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AA%E3%83%93%E3%83%A5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3)
 - [ライセンス](#%E3%83%A9%E3%82%A4%E3%82%BB%E3%83%B3%E3%82%B9)
@@ -190,9 +192,13 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-get-app`                 | 単一アプリの詳細情報を取得             |
 | `kintone-get-form-fields`         | アプリのフィールド設定を取得           |
 | `kintone-get-form-layout`         | アプリのフォームレイアウトを取得       |
+| `kintone-update-form-fields`      | アプリのフィールド設定を更新           |
+| `kintone-update-form-layout`      | アプリのフォームレイアウトを更新       |
+| `kintone-delete-form-fields`      | アプリのフィールドを削除               |
 | `kintone-get-process-management`  | プロセス管理設定を取得                 |
 | `kintone-get-app-deploy-status`   | アプリ設定の運用環境への反映状況確認   |
 | `kintone-get-general-settings`    | アプリの一般設定を取得                 |
+| `kintone-add-form-fields`         | アプリにフィールドを追加               |
 | `kintone-get-records`             | 複数のレコードを取得                   |
 | `kintone-add-records`             | 複数のレコードを追加                   |
 | `kintone-update-records`          | 複数のレコードを更新                   |

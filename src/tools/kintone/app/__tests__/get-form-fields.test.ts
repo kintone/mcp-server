@@ -32,7 +32,7 @@ describe("get-form-fields tool", () => {
 
     it("should have correct description", () => {
       expect(getFormFields.config.description).toBe(
-        "Get form field settings from a kintone app",
+        "Get form field settings from a kintone app. Returns detailed field information including type, code, label, and all configuration settings (required status, default values, validation rules, options for selection fields). Response includes 'properties' object with all fields and 'revision' string. Use this before add/update operations to understand current field structure. Supports both live and pre-live app settings retrieval.",
       );
     });
 
