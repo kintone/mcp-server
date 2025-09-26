@@ -1,0 +1,6 @@
+services:
+  app:
+    ports:
+      - 6274:6274
+    environment:
+      HOST: 0.0.0.0
