@@ -1,5 +1,5 @@
 # WARNING: When you rename a workflow filename, remember to update the Trusted Publishing settings as well.
-# https://www.npmjs.com/package/@kintone/mcp-server/access
+# - https://www.npmjs.com/package/@kintone/mcp-server/access
 # ref. https://docs.npmjs.com/trusted-publishers
 
 name: release
