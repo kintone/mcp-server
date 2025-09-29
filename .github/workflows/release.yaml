@@ -1,3 +1,7 @@
+# WARNING: When you rename a workflow filename, remember to update the Trusted Publishing settings as well.
+# https://www.npmjs.com/package/@kintone/mcp-server/access
+# ref. https://docs.npmjs.com/trusted-publishers
+
 name: release
 
 on:
@@ -59,7 +63,8 @@ jobs:
   publish-npm-package:
     name: Publish to npm
     permissions:
-      id-token: write
+      contents: read
+      id-token: write # Required for OIDC authn and npm provenance
     runs-on: ubuntu-latest
     needs: release-please
     if: needs.release-please.outputs.release_created
@@ -70,11 +75,11 @@ jobs:
         with:
           node-version-file: .node-version
           cache: "pnpm"
+          registry-url: "https://registry.npmjs.org"
+      # Ensure npm 11.5.1 or later is installed
+      # ref. https://docs.npmjs.com/trusted-publishers#github-actions-configuration
+      - run: npm install -g npm@latest
       - run: pnpm install --frozen-lockfile
-      - name: Configure npm user
-        run: npm config set "//registry.npmjs.org/:_authToken=${NPM_TOKEN}"
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: pnpm build
       - run: pnpm publish --access public
         env:
