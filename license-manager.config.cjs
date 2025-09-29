@@ -25,6 +25,10 @@ const config = createConfig({
       "(BSD-3-Clause OR GPL-2.0)",
       "Unlicense",
     ],
+    allowPackages: [
+      // https://github.com/npm/cli/blob/latest/LICENSE
+      "npm",
+    ],
   },
   extract: {
     output: "./NOTICE",
