@@ -28,7 +28,14 @@ const toolName = "kintone-update-form-fields";
 const toolConfig = {
   title: "Update Form Fields",
   description:
-    "Update form field settings in a kintone app (preview environment only). Requires App Management permissions. Cannot update field codes for Label, Blank space, Border, Status, Assignee, or Category fields. For selection fields, unspecified options will be deleted. Option keys must exactly match current option names. New options require 'label' and 'index'. Field codes: max 128 chars, cannot start with numbers, only '_' symbol allowed. Duplicate field codes not allowed. Use kintone-get-form-fields first to check current settings. Changes require kintone-deploy-app to apply to live app.",
+    "Update form field settings in a kintone app (preview environment only). " +
+    "Requires App Management permissions. " +
+    "Cannot update field codes for Label, Blank space, Border, Status, Assignee, or Category fields. " +
+    "For selection fields, unspecified options will be deleted. " +
+    "Option keys must exactly match current option names. " +
+    "For lookup fields, existing lookup configurations may not update properly - consider deleting and recreating the field instead. " +
+    "Use kintone-get-form-fields first to check current settings. " +
+    "Changes require kintone-deploy-app to apply to live app.",
   inputSchema,
   outputSchema,
 };

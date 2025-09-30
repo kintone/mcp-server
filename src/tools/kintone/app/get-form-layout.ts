@@ -53,7 +53,12 @@ export const getFormLayout = createTool(
   "kintone-get-form-layout",
   {
     title: "Get Form Layout",
-    description: "Get form layout from a kintone app",
+    description:
+      "Get form layout from a kintone app. " +
+      "Returns layout structure with rows, subtables, groups, and field positioning. " +
+      "Use to understand current form arrangement before layout updates. " +
+      "Essential when adding new fields that need specific positioning or when rearranging existing fields. " +
+      "Supports both live and pre-live app settings retrieval.",
     inputSchema,
     outputSchema,
   },

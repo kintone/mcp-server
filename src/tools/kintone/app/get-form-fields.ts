@@ -30,7 +30,13 @@ const toolName = "kintone-get-form-fields";
 const toolConfig = {
   title: "Get Form Fields",
   description:
-    "Get form field settings from a kintone app. Returns detailed field information including type, code, label, and all configuration settings (required status, default values, validation rules, options for selection fields). Response includes 'properties' object with all fields and 'revision' string. Use this before add/update operations to understand current field structure. Supports both live and pre-live app settings retrieval.",
+    "Get form field settings from a kintone app. " +
+    "Returns detailed field information including type, code, label, and all configuration settings " +
+    "(required status, default values, validation rules, options for selection fields, lookup configurations). " +
+    "Response includes 'properties' object with all fields and 'revision' string. " +
+    "Essential for understanding current field structure before add/update/delete operations. " +
+    "Use to verify lookup field configurations and field mappings. " +
+    "Supports both live and pre-live app settings retrieval.",
   inputSchema,
   outputSchema,
 };

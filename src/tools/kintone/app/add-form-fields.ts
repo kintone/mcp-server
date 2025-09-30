@@ -1,18 +1,15 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
-import { baseFieldProperties } from "../../../schema/app/index.js";
-
-// 新規作成用フィールドプロパティスキーマ（ベースプロパティを使用）
-const addFormFieldPropertySchema = z.object(baseFieldProperties);
+import { propertiesForParameterSchema } from "../../../schema/app/index.js";
 
 const inputSchema = {
   app: z
     .string()
     .describe("The ID of the app to add fields to (numeric value as string)"),
-  properties: z
-    .record(addFormFieldPropertySchema)
-    .describe("Object containing field configurations to add"),
+  properties: propertiesForParameterSchema.describe(
+    "Object containing field configurations to add",
+  ),
   revision: z
     .string()
     .optional()
@@ -29,7 +26,14 @@ const toolName = "kintone-add-form-fields";
 const toolConfig = {
   title: "Add Form Fields",
   description:
-    "Add new fields to a kintone app (preview environment only). Requires App Management permissions. Cannot add Status, Assignee, or Category fields. Field codes must be unique, max 128 chars, cannot start with numbers, and only '_' symbol allowed. For selection fields (DROP_DOWN/RADIO_BUTTON/CHECK_BOX/MULTI_SELECT), option keys must exactly match their label values. Options require 'label' and 'index' properties. Use kintone-get-form-fields first to check existing fields. Changes require kintone-deploy-app to apply to live app.",
+    "Add new fields to a kintone app (preview environment only). " +
+    "Requires App Management permissions. " +
+    "Field codes must be unique, max 128 chars, cannot start with numbers, and only '_' symbol allowed. " +
+    "For selection fields (DROP_DOWN/RADIO_BUTTON/CHECK_BOX/MULTI_SELECT), option keys must exactly match their label values. " +
+    "Options require 'label' and 'index' properties. " +
+    "For lookup fields, use appropriate field type (NUMBER for RECORD_NUMBER, SINGLE_LINE_TEXT for text fields). " +
+    "Use kintone-get-form-fields first to check existing fields. " +
+    "Changes require kintone-deploy-app to apply to live app.",
   inputSchema,
   outputSchema,
 };
@@ -40,7 +44,7 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
 ) => {
   const response = await client.app.addFormFields({
     app,
-    properties: properties as any,
+    properties,
     revision,
   });
 

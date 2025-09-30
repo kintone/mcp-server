@@ -29,7 +29,12 @@ const toolName = "kintone-delete-form-fields";
 const toolConfig = {
   title: "Delete Form Fields",
   description:
-    "Delete form fields from a kintone app (preview environment only). Maximum 100 fields can be deleted at once. Cannot delete status, assignee, or category fields.",
+    "Delete form fields from a kintone app (preview environment only). " +
+    "Maximum 100 fields can be deleted at once. " +
+    "Cannot delete status, assignee, or category fields. " +
+    "Useful for recreating lookup fields when updates fail. " +
+    "Use kintone-get-form-fields first to verify field codes. " +
+    "Changes require kintone-deploy-app to apply to live app.",
   inputSchema,
   outputSchema,
 };
