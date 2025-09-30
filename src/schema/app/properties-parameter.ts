@@ -680,6 +680,7 @@ const lookupSchema = z.object({
 
 // Fields available in subtables
 const inSubtableFieldSchema = z.union([
+  lookupSchema,
   singleLineTextSchema,
   numberSchema,
   calcSchema,
@@ -697,7 +698,6 @@ const inSubtableFieldSchema = z.union([
   userSelectSchema,
   organizationSelectSchema,
   groupSelectSchema,
-  lookupSchema,
 ]);
 
 const subtableSchema = z.object({
@@ -724,6 +724,7 @@ const fieldPropertySchema = z.union([
   categorySchema,
   statusSchema,
   statusAssigneeSchema,
+  lookupSchema,
   singleLineTextSchema,
   numberSchema,
   calcSchema,
@@ -743,7 +744,6 @@ const fieldPropertySchema = z.union([
   groupSelectSchema,
   groupSchema,
   referenceTableSchema,
-  lookupSchema,
   subtableSchema,
 ]);
 
