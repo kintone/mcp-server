@@ -345,7 +345,7 @@ const referenceTableSchema = z.object({
       filterCond: z.string(),
       displayFields: z.array(z.string()),
       sort: z.string(),
-      size: z.enum(["5", "10", "20", "30", "40", "50"]),
+      size: z.enum(["1", "3", "5", "10", "20", "30", "40", "50"]),
     })
     .optional(),
 });
