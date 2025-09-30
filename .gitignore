@@ -1,5 +1,6 @@
 .idea
 .vscode
+mise.local.toml
 
 ## Deps
 node_modules
