@@ -31,7 +31,14 @@ describe("add-form-fields tool", () => {
 
     it("should have correct description", () => {
       expect(addFormFields.config.description).toBe(
-        "Add new fields to a kintone app (preview environment only). Requires App Management permissions. Cannot add Status, Assignee, or Category fields. Field codes must be unique, max 128 chars, cannot start with numbers, and only '_' symbol allowed. For selection fields (DROP_DOWN/RADIO_BUTTON/CHECK_BOX/MULTI_SELECT), option keys must exactly match their label values. Options require 'label' and 'index' properties. Use kintone-get-form-fields first to check existing fields. Changes require kintone-deploy-app to apply to live app.",
+        "Add new fields to a kintone app (preview environment only). " +
+          "Requires App Management permissions. " +
+          "Field codes must be unique, max 128 chars, cannot start with numbers, and only '_' symbol allowed. " +
+          "For selection fields (DROP_DOWN/RADIO_BUTTON/CHECK_BOX/MULTI_SELECT), option keys must exactly match their label values. " +
+          "Options require 'label' and 'index' properties. " +
+          "For lookup fields, use appropriate field type (NUMBER for RECORD_NUMBER, SINGLE_LINE_TEXT for text fields). " +
+          "Use kintone-get-form-fields first to check existing fields. " +
+          "Changes require kintone-deploy-app to apply to live app.",
       );
     });
 
@@ -267,7 +274,7 @@ describe("add-form-fields tool", () => {
             app: "123",
             properties: {
               invalidField: {
-                type: "SINGLE_LINE_TEXT",
+                type: "USER_SELECT",
                 code: "invalidField",
                 label: "Invalid Field",
                 entities: "invalid", // should be array
@@ -281,7 +288,7 @@ describe("add-form-fields tool", () => {
             app: "123",
             properties: {
               invalidField: {
-                type: "SINGLE_LINE_TEXT",
+                type: "CHECK_BOX",
                 code: "invalidField",
                 label: "Invalid Field",
                 align: "INVALID", // should be HORIZONTAL or VERTICAL

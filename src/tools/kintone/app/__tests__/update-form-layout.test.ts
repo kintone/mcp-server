@@ -32,7 +32,12 @@ describe("update-form-layout tool", () => {
 
     it("should have correct description", () => {
       expect(updateFormLayout.config.description).toBe(
-        "Update form layout settings in a kintone app (preview environment only). IMPORTANT: Use kintone-get-form-fields tool first to get exact field codes and structure. Field codes are case-sensitive and must match exactly. For SUBTABLE fields, use the correct nested structure: {type: 'SUBTABLE', code: 'table_code', fields: [{type: 'field_type', code: 'field_code'}, ...]}",
+        "Update form layout settings in a kintone app (preview environment only). " +
+          "Use kintone-get-form-fields and kintone-get-form-layout first to understand current structure. " +
+          "Field codes are case-sensitive and must match exactly. " +
+          "For SUBTABLE fields, use nested structure: {type: 'SUBTABLE', code: 'table_code', fields: [{type: 'field_type', code: 'field_code'}, ...]}. " +
+          "Required when adding new fields to ensure proper positioning. " +
+          "Changes require kintone-deploy-app to apply to live app.",
       );
     });
 

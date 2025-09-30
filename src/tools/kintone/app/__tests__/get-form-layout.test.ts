@@ -39,7 +39,11 @@ describe("get-form-layout tool", () => {
 
     it("should have correct description", () => {
       expect(getFormLayout.config.description).toBe(
-        "Get form layout from a kintone app",
+        "Get form layout from a kintone app. " +
+          "Returns layout structure with rows, subtables, groups, and field positioning. " +
+          "Use to understand current form arrangement before layout updates. " +
+          "Essential when adding new fields that need specific positioning or when rearranging existing fields. " +
+          "Supports both live and pre-live app settings retrieval.",
       );
     });
 
