@@ -1,10 +1,15 @@
 # Contributing Guide
 
+## Required
+
+- [mise](https://mise.jdx.dev/)
+
 ## リポジトリのセットアップ
 
 ```shell
 git clone git@github.com:kintone/mcp-server.git
 cd mcp-server
+mise install
 pnpm install
 ```
 

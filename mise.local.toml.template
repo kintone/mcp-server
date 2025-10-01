@@ -1,0 +1,5 @@
+# Copy this file to mise.local.toml and use it
+[env]
+KINTONE_BASE_URL = "https://example.cybozu.com"
+KINTONE_USERNAME = "username"
+KINTONE_PASSWORD = "password"

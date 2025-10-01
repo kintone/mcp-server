@@ -1,0 +1,6 @@
+[tools]
+pnpm = "10.16.1"
+
+[settings]
+# enable to read .node-version
+idiomatic_version_file_enable_tools = ["node"]
