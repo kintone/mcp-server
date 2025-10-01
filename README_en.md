@@ -21,30 +21,26 @@ The official local MCP server for Kintone.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Kintone MCP Server](#kintone-mcp-server)
-  - [Installation](#installation)
-    - [DXT (Claude Desktop Package)](#dxt-claude-desktop-package)
-    - [Docker Container Image](#docker-container-image)
-      - [Prerequisites](#prerequisites)
-      - [Run Image](#run-image)
-    - [npm Package](#npm-package)
-      - [Prerequisites](#prerequisites-1)
-      - [Install Package](#install-package)
-      - [Run Server](#run-server)
-  - [Usage](#usage)
-    - [Example Configuration File Path](#example-configuration-file-path)
-    - [Example Configuration File Content](#example-configuration-file-content)
-  - [Configuration](#configuration)
-    - [Configuration Options](#configuration-options)
-    - [Proxy Configuration](#proxy-configuration)
-  - [Tools](#tools)
-  - [Documentation](#documentation)
-  - [Limitations](#limitations)
-    - [Record Operation Limitations](#record-operation-limitations)
-    - [Other Limitations](#other-limitations)
-  - [Support Policy](#support-policy)
-  - [Contribution](#contribution)
-  - [License](#license)
+- [Installation](#installation)
+  - [DXT (Claude Desktop Package)](#dxt-claude-desktop-package)
+  - [Docker Container Image](#docker-container-image)
+  - [npm Package](#npm-package)
+- [Usage](#usage)
+  - [Example Configuration File Path](#example-configuration-file-path)
+  - [Example Configuration File Content](#example-configuration-file-content)
+- [Configuration](#configuration)
+  - [Configuration Options](#configuration-options)
+  - [Proxy Configuration](#proxy-configuration)
+- [Tools](#tools)
+- [Documentation](#documentation)
+- [Notes](#notes)
+  - [`kintone-download-file` Tool](#kintone-download-file-tool)
+- [Limitations](#limitations)
+  - [Record Operation Limitations](#record-operation-limitations)
+  - [Other Limitations](#other-limitations)
+- [Support Policy](#support-policy)
+- [Contribution](#contribution)
+- [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -205,9 +201,13 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-get-app`                 | Get details of a single app                        |
 | `kintone-get-form-fields`         | Get app field settings                             |
 | `kintone-get-form-layout`         | Get app form layout                                |
+| `kintone-update-form-fields`      | Update app field settings                          |
+| `kintone-update-form-layout`      | Update app form layout                             |
+| `kintone-delete-form-fields`      | Delete app fields                                  |
 | `kintone-get-process-management`  | Get process management settings                    |
 | `kintone-get-app-deploy-status`   | Check app settings deployment status to production |
 | `kintone-get-general-settings`    | Get general settings of an app                     |
+| `kintone-add-form-fields`         | Add fields to an app                               |
 | `kintone-get-records`             | Get multiple records                               |
 | `kintone-add-records`             | Add multiple records                               |
 | `kintone-update-records`          | Update multiple records                            |

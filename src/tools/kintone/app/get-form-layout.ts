@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
-import { layoutElementSchema } from "../../../schema/app/index.js";
+import { layoutForParameterSchema } from "../../../schema/app/index.js";
 
 const inputSchema = {
   app: z
@@ -18,9 +18,9 @@ const inputSchema = {
 };
 
 const outputSchema = {
-  layout: z
-    .array(layoutElementSchema)
-    .describe("Array of layout elements (rows, subtables, groups)"),
+  layout: layoutForParameterSchema.describe(
+    "Array of layout elements (rows, subtables, groups)",
+  ),
   revision: z.string().describe("App configuration revision number"),
 };
 
@@ -53,7 +53,12 @@ export const getFormLayout = createTool(
   "kintone-get-form-layout",
   {
     title: "Get Form Layout",
-    description: "Get form layout from a kintone app",
+    description:
+      "Get form layout from a kintone app. " +
+      "Returns layout structure with rows, subtables, groups, and field positioning. " +
+      "Use to understand current form arrangement before layout updates. " +
+      "Essential when adding new fields that need specific positioning or when rearranging existing fields. " +
+      "Supports both live and pre-live app settings retrieval.",
     inputSchema,
     outputSchema,
   },

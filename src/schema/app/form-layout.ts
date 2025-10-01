@@ -1,121 +1,124 @@
 import { z } from "zod";
 
-// All field types that have a 'code' property
-const fieldTypesWithCode = z.union([
-  z.literal("SINGLE_LINE_TEXT").describe("文字列（1行）"),
-  z.literal("MULTI_LINE_TEXT").describe("文字列（複数行）"),
-  z.literal("NUMBER").describe("数値"),
-  z.literal("CALC").describe("計算"),
-  z.literal("CHECK_BOX").describe("チェックボックス"),
-  z.literal("RADIO_BUTTON").describe("ラジオボタン"),
-  z.literal("DROP_DOWN").describe("ドロップダウン"),
-  z.literal("MULTI_SELECT").describe("複数選択"),
-  z.literal("LINK").describe("リンク"),
-  z.literal("DATE").describe("日付"),
-  z.literal("TIME").describe("時刻"),
-  z.literal("DATETIME").describe("日時"),
-  z.literal("FILE").describe("添付ファイル"),
-  z.literal("USER_SELECT").describe("ユーザー選択"),
-  z.literal("ORGANIZATION_SELECT").describe("組織選択"),
-  z.literal("GROUP_SELECT").describe("グループ選択"),
-  z.literal("RICH_TEXT").describe("リッチエディター"),
-  z.literal("RECORD_NUMBER").describe("レコード番号"),
-  z.literal("CREATOR").describe("作成者"),
-  z.literal("CREATED_TIME").describe("作成日時"),
-  z.literal("MODIFIER").describe("更新者"),
-  z.literal("UPDATED_TIME").describe("更新日時"),
-  z.literal("REFERENCE_TABLE").describe("関連レコード一覧"),
+// フィールドタイプの定義
+const fieldTypeSchema = z.union([
+  z.literal("SINGLE_LINE_TEXT").describe("Text or Look-up field"),
+  z.literal("MULTI_LINE_TEXT").describe("Text Area field"),
+  z.literal("RICH_TEXT").describe("Rich text field"),
+  z.literal("NUMBER").describe("Number or Look-up field"),
+  z.literal("CALC").describe("Calculated field"),
+  z.literal("RADIO_BUTTON").describe("Radio button field"),
+  z.literal("CHECK_BOX").describe("Check box field"),
+  z.literal("MULTI_SELECT").describe("Multi-choice field"),
+  z.literal("DROP_DOWN").describe("Drop-down field"),
+  z.literal("USER_SELECT").describe("User selection field"),
+  z.literal("ORGANIZATION_SELECT").describe("Department selection field"),
+  z.literal("GROUP_SELECT").describe("Group selection field"),
+  z.literal("DATE").describe("Date field"),
+  z.literal("TIME").describe("Time field"),
+  z.literal("DATETIME").describe("Date and time field"),
+  z.literal("LINK").describe("Link field"),
+  z.literal("FILE").describe("Attachment field"),
+  z.literal("SUBTABLE").describe("Table field"),
+  z.literal("RECORD_NUMBER").describe("Record number field"),
+  z.literal("CREATOR").describe("Created by field"),
+  z.literal("CREATED_TIME").describe("Created datetime field"),
+  z.literal("MODIFIER").describe("Updated by field"),
+  z.literal("UPDATED_TIME").describe("Updated datetime field"),
+  z.literal("STATUS").describe("Process management status field"),
+  z
+    .literal("STATUS_ASSIGNEE")
+    .describe("Assignee of the Process Management status field"),
+  z.literal("CATEGORY").describe("Category field"),
+  z.literal("REFERENCE_TABLE").describe("Related Records field"),
+  z.literal("GROUP").describe("Field group"),
+  z.literal("LABEL").describe("Label field"),
+  z.literal("SPACER").describe("Blank space field"),
+  z.literal("HR").describe("Border field"),
 ]);
 
-// Standard field with code
-const standardFieldSchema = z.object({
-  type: fieldTypesWithCode.describe("The field type"),
-  code: z.string().describe("The field code"),
-  size: z
-    .object({
-      width: z.string().describe("Field width"),
-      height: z.string().optional().describe("Field height"),
-      innerHeight: z
-        .string()
-        .optional()
-        .describe("Inner height for multi-line text"),
-    })
+// サイズ設定スキーマ
+const sizeSchema = z
+  .object({
+    width: z
+      .union([z.string(), z.number()])
+      .optional()
+      .describe("Field width in pixels"),
+    height: z
+      .union([z.string(), z.number()])
+      .optional()
+      .describe(
+        "Field height (only applicable for specific fields like Blank space and Text Area)",
+      ),
+    innerHeight: z
+      .union([z.string(), z.number()])
+      .optional()
+      .describe("Inner height for multi-line text fields"),
+  })
+  .optional()
+  .describe("Width and height configurations for fields");
+
+// パラメータ用のフィールドスキーマ
+const fieldForParameterSchema = z.object({
+  type: fieldTypeSchema.describe("The field type"),
+  code: z
+    .string()
     .optional()
-    .describe("Field size configuration"),
-});
-
-// LABEL field with label property instead of code
-const labelFieldSchema = z.object({
-  type: z.literal("LABEL").describe("Label field type"),
-  label: z.string().describe("The label text"),
-  size: z
-    .object({
-      width: z.string().describe("Field width"),
-    })
+    .describe(
+      "Field code (required for most field types except LABEL, SPACER, and HR). Must exactly match the existing field code in the app",
+    ),
+  label: z
+    .string()
     .optional()
-    .describe("Field size configuration"),
-});
-
-// SPACER field with elementId instead of code
-const spacerFieldSchema = z.object({
-  type: z.literal("SPACER").describe("Spacer field type"),
-  elementId: z.string().describe("The element ID"),
-  size: z
-    .object({
-      width: z.string().describe("Field width"),
-      height: z.string().optional().describe("Field height"),
-    })
+    .describe("Text to set for Label fields (only used with Label field type)"),
+  elementId: z
+    .string()
     .optional()
-    .describe("Field size configuration"),
+    .describe(
+      "Element ID for Blank space fields (only used with Blank space field type)",
+    ),
+  size: sizeSchema,
 });
 
-// HR field without code
-const hrFieldSchema = z.object({
-  type: z.literal("HR").describe("Horizontal rule field type"),
-  size: z
-    .object({
-      width: z.string().describe("Field width"),
-    })
-    .optional()
-    .describe("Field size configuration"),
-});
-
-const layoutFieldSchema = z.union([
-  standardFieldSchema,
-  labelFieldSchema,
-  spacerFieldSchema,
-  hrFieldSchema,
-]);
-
-const layoutRowSchema = z.object({
-  type: z.literal("ROW").describe("Row type identifier"),
-  fields: z.array(layoutFieldSchema).describe("Array of fields in this row"),
-});
-
-const layoutSubtableSchema = z.object({
-  type: z.literal("SUBTABLE").describe("Subtable type identifier"),
-  code: z.string().describe("Subtable field code"),
+// ROW レイアウトパラメータ
+const rowLayoutForParameterSchema = z.object({
+  type: z.literal("ROW").describe("A normal row of fields"),
   fields: z
-    .array(layoutFieldSchema)
-    .describe("Array of fields in this subtable"),
+    .array(fieldForParameterSchema)
+    .describe("List of field layouts in the row"),
 });
 
-// Forward declaration for recursive type
-interface LayoutElement {
-  type: "ROW" | "SUBTABLE" | "GROUP";
-  code?: string;
-  fields?: Array<z.infer<typeof layoutFieldSchema>>;
-  layout?: LayoutElement[];
-}
+// SUBTABLE レイアウトパラメータ
+const subtableLayoutForParameterSchema = z.object({
+  type: z.literal("SUBTABLE").describe("A Table"),
+  code: z
+    .string()
+    .describe(
+      "The field code of the SUBTABLE field (not individual fields inside)",
+    ),
+  fields: z
+    .array(fieldForParameterSchema)
+    .describe(
+      "List of field layouts INSIDE the subtable. These should be the field codes that exist within the subtable definition. Use kintone-get-form-fields to see the correct subtable structure. The subtable structure should be: {type: 'SUBTABLE', code: 'table_code', fields: [{type: 'TEXT', code: 'field_inside_table'}, ...]}",
+    ),
+});
 
-export const layoutElementSchema: z.ZodType<LayoutElement> = z.lazy(() =>
-  z.union([layoutRowSchema, layoutSubtableSchema, layoutGroupSchema]),
-);
-
-const layoutGroupSchema = z.object({
-  type: z.literal("GROUP").describe("Group type identifier"),
-  code: z.string().describe("Group field code"),
+// GROUP レイアウトパラメータ
+const groupLayoutForParameterSchema = z.object({
+  type: z.literal("GROUP").describe("A Group field"),
+  code: z.string().describe("The field code of the Group field"),
   layout: z
-    .array(layoutElementSchema)
-    .describe("Nested layout elements within this group"),
+    .array(z.lazy(() => rowLayoutForParameterSchema))
+    .describe("List of field layouts inside the Group field"),
 });
+
+// LayoutForParameter スキーマ
+export const layoutForParameterSchema = z
+  .array(
+    z.union([
+      rowLayoutForParameterSchema,
+      subtableLayoutForParameterSchema,
+      groupLayoutForParameterSchema,
+    ]),
+  )
+  .describe("List of field layouts for the form");
