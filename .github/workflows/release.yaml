@@ -76,6 +76,7 @@ jobs:
           node-version-file: .node-version
           cache: "pnpm"
           registry-url: "https://registry.npmjs.org"
+      - run: npm install -g npm@latest
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm publish --access public
