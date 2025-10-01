@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/kintone/mcp-server/compare/1.1.0...1.2.0) (2025-10-01)
+
+
+### Features
+
+* add app management tools ([#113](https://github.com/kintone/mcp-server/issues/113)) ([453bd50](https://github.com/kintone/mcp-server/commit/453bd50fc9080ee452dfeaf2524bd0374bd70d74))
+* add update-form tools ([#115](https://github.com/kintone/mcp-server/issues/115)) ([c98b0cb](https://github.com/kintone/mcp-server/commit/c98b0cb3a7356cef2ee4314f76a3b8cde00b3ae3))
+
 ## [1.1.0](https://github.com/kintone/mcp-server/compare/1.0.0...1.1.0) (2025-09-18)
 
 
