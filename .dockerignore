@@ -1,1 +1,3 @@
 node_modules
+.devcontainer
+.devcontainer.override
