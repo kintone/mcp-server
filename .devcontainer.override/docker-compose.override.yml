@@ -1,0 +1,14 @@
+services:
+  app:
+    volumes:
+      - type: volume
+        source: node_modules
+        target: /workspace/node_modules
+    ports:
+      - 6274:6274
+    environment:
+      HOST: 0.0.0.0
+
+volumes:
+  node_modules:
+    name: ${COMPOSE_PROJECT_NAME}-node_modules

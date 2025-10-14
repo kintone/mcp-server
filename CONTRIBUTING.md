@@ -4,10 +4,38 @@
 
 - [mise](https://mise.jdx.dev/)
 
-## リポジトリのセットアップ
+## 開発環境
+
+以下のいずれかの方法で開発環境をセットアップできます。
+
+### Dev Containerを使った開発（推奨）
+
+#### 前提条件
+
+詳細は [kintone/dev-container](https://github.com/kintone/dev-container) を参照してください。
+
+#### セットアップ手順
+
+1. **リポジトリのクローン**（submoduleを含む）
+
+   ```shell
+   git clone --recurse-submodules git@github.com:kintone/mcp-server.git
+   ```
+
+   既存のリポジトリの場合：
+
+   ```shell
+   git submodule update --init --recursive
+   ```
+
+2. **Dev Containerの起動**
+
+   VS Code のコマンドパレットから「Dev Containers: Reopen in Container」を実行
+
+### ローカル環境でのセットアップ
 
 ```shell
-git clone git@github.com:kintone/mcp-server.git
+git clone --recurse-submodules git@github.com:kintone/mcp-server.git
 cd mcp-server
 mise install
 pnpm install

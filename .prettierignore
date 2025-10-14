@@ -12,3 +12,5 @@ CHANGELOG.md
 .release-please-manifest.json
 manifest.json
 src/version.ts
+
+.devcontainer

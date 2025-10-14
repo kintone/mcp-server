@@ -1,0 +1,4 @@
+[submodule ".devcontainer"]
+	path = .devcontainer
+	url = git@github.com:kintone/dev-container.git
+	branch = main
