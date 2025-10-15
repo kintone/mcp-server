@@ -43,7 +43,7 @@ importers:
         specifier: ^0.16.8
         version: 0.16.8(@types/node@22.18.10)(typescript@5.9.3)
       '@types/node':
-        specifier: ^22.18.7
+        specifier: ^22.18.8
         version: 22.18.10
       doctoc:
         specifier: ^2.2.1
