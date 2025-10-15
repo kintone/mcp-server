@@ -40,8 +40,8 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
       '@modelcontextprotocol/inspector':
-        specifier: ^0.16.8
-        version: 0.16.8(@types/node@22.18.10)(typescript@5.9.3)
+        specifier: ^0.17.0
+        version: 0.17.1(@types/node@22.18.10)(typescript@5.9.3)
       '@types/node':
         specifier: ^22.18.8
         version: 22.18.10
@@ -511,20 +511,20 @@ packages:
     resolution: {integrity: sha512-H+xo3EUvKuj5ROjrZ/6nLOiFeRRxJtodjfW1qg8jUmrau/rZ+FpldJ7jghLQNHNo/72siCDtJDjgJl6QjNTJaw==}
     engines: {node: '>=18'}
 
-  '@modelcontextprotocol/inspector-cli@0.16.8':
-    resolution: {integrity: sha512-u8x8Dbb8Dos34M7N8p4e4AF++Bi1D+lq+dkRCvLi5Qub/dI75Z7YTIXBezA4LbIISly+Ecn05fdofzZwqyOvpg==}
+  '@modelcontextprotocol/inspector-cli@0.17.1':
+    resolution: {integrity: sha512-zLCE0M0DQON4xZf78oqgS+UIM7p6bSIGr1t6i6p31W/auJ6YJ1iHQl0lb0AxiYei1M3o5VQegYcPIyEm6AT8Aw==}
     hasBin: true
 
-  '@modelcontextprotocol/inspector-client@0.16.8':
-    resolution: {integrity: sha512-4sTk/jUnQ1lDv9kbx1nN45SsoApDxW8hjKLKcHnHh9nfRVEN9SW+ylUjNvVCDP74xSNpD8v5p6NJyVWtZYfPWA==}
+  '@modelcontextprotocol/inspector-client@0.17.1':
+    resolution: {integrity: sha512-WJhrj06Vgwen6U/sCWyzBoAOrq0iyCWyTyUMye1520OapGeVtlW6aTeL0UWbYnswXkrFeJOG45631aMdMHk4rg==}
     hasBin: true
 
-  '@modelcontextprotocol/inspector-server@0.16.8':
-    resolution: {integrity: sha512-plv0SiPgQAT0/LjC0MmGsoo/sdpS6V4TpOUAxO4J3DnvnLLaInnNh9hiU1SlGgCjsRv0nN9TvX9pWRqVnZH9kw==}
+  '@modelcontextprotocol/inspector-server@0.17.1':
+    resolution: {integrity: sha512-5Pbefr3nFFk2pnnGFWb9v1kmzMMFqiNApSVp6al0pT0A2IaIu1eUQNmg2xSb21yaf4JT4rVj5KqIAnnxAQpicw==}
     hasBin: true
 
-  '@modelcontextprotocol/inspector@0.16.8':
-    resolution: {integrity: sha512-7kk6uOGY9ySgCFsRuRplWzvjiEwulG876pfnjQxqaBJAcUlp3N1yrOt7YQMBZsxvop+RGw50IehiPuGs+7oh+w==}
+  '@modelcontextprotocol/inspector@0.17.1':
+    resolution: {integrity: sha512-AW9QsFrkbqpEjAZcCAgvQA7+emnF22DLYef5DxvTjgv9gFwlKq8d7/HrAFFln8k+SUQ2Zn/AT1LGzgH59qbZ1A==}
     engines: {node: '>=22.7.5'}
     hasBin: true
 
@@ -4278,7 +4278,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@modelcontextprotocol/inspector-cli@0.16.8':
+  '@modelcontextprotocol/inspector-cli@0.17.1':
     dependencies:
       '@modelcontextprotocol/sdk': 1.18.1
       commander: 13.1.0
@@ -4286,7 +4286,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@modelcontextprotocol/inspector-client@0.16.8':
+  '@modelcontextprotocol/inspector-client@0.17.1':
     dependencies:
       '@modelcontextprotocol/sdk': 1.18.1
       '@radix-ui/react-checkbox': 1.3.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -4318,7 +4318,7 @@ snapshots:
       - '@types/react-dom'
       - supports-color
 
-  '@modelcontextprotocol/inspector-server@0.16.8':
+  '@modelcontextprotocol/inspector-server@0.17.1':
     dependencies:
       '@modelcontextprotocol/sdk': 1.18.1
       cors: 2.8.5
@@ -4332,11 +4332,11 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@modelcontextprotocol/inspector@0.16.8(@types/node@22.18.10)(typescript@5.9.3)':
+  '@modelcontextprotocol/inspector@0.17.1(@types/node@22.18.10)(typescript@5.9.3)':
     dependencies:
-      '@modelcontextprotocol/inspector-cli': 0.16.8
-      '@modelcontextprotocol/inspector-client': 0.16.8
-      '@modelcontextprotocol/inspector-server': 0.16.8
+      '@modelcontextprotocol/inspector-cli': 0.17.1
+      '@modelcontextprotocol/inspector-client': 0.17.1
+      '@modelcontextprotocol/inspector-server': 0.17.1
       '@modelcontextprotocol/sdk': 1.18.1
       concurrently: 9.2.1
       node-fetch: 3.3.2
