@@ -18,7 +18,7 @@ jobs:
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
       - run: pnpm build:dxt
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           path: build/kintone-mcp-server.dxt
           name: kintone-mcp-server.dxt
@@ -35,7 +35,7 @@ jobs:
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
       - run: pnpm pack
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           path: "kintone-mcp-server-*.tgz"
           name: kintone-mcp-server.tgz
