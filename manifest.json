@@ -1,5 +1,5 @@
 {
-  "dxt_version": "0.1",
+  "manifest_version": "0.2",
   "name": "@kintone/mcp-server",
   "display_name": "Kintone MCP Server",
   "version": "1.2.1",

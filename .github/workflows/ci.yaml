@@ -43,7 +43,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
 
-  check-dxt:
+  check-mcpb:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -53,7 +53,7 @@ jobs:
           node-version-file: .node-version
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
-      - run: pnpm check:dxt
+      - run: pnpm check:mcpb
 
   license-check:
     runs-on: ubuntu-latest

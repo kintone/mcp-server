@@ -38,7 +38,7 @@ jobs:
       tags: "${{ needs.release-please.outputs.tag_name }},latest"
       push: true
 
-  build-and-upload-dxt-to-release:
+  build-and-upload-mcpb-to-release:
     needs: release-please
     if: needs.release-please.outputs.release_created
     runs-on: ubuntu-latest
@@ -52,12 +52,12 @@ jobs:
           node-version-file: .node-version
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
-      - run: pnpm build:dxt
+      - run: pnpm build:mcpb
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release upload ${{ needs.release-please.outputs.tag_name }} \
-            build/kintone-mcp-server.dxt \
+            build/kintone-mcp-server.mcpb \
             --clobber
 
   publish-npm-package:
