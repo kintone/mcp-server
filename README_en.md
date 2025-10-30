@@ -22,7 +22,7 @@ The official local MCP server for Kintone.
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [Installation](#installation)
-  - [MCPB (Claude Desktop Package)](#dxt-claude-desktop-package)
+  - [MCPB (Claude Desktop Package)](#mcpb-claude-desktop-package)
   - [Docker Container Image](#docker-container-image)
   - [npm Package](#npm-package)
 - [Usage](#usage)
