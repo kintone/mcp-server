@@ -88,6 +88,7 @@ jobs:
   # https://github.com/modelcontextprotocol/registry/blob/18cde88a7e1c7916f1433c1f131a8de2fec8fe65/docs/guides/publishing/github-actions.md
   publish-mcp-registory:
     runs-on: ubuntu-latest
+    needs: publish-npm-package
     permissions:
       id-token: write # Required for OIDC authentication
       contents: read
