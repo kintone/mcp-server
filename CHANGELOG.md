@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/kintone/mcp-server/compare/1.2.1...1.2.2) (2025-10-31)
+
+
+### Bug Fixes
+
+* migrate DXT to MCPB ([#168](https://github.com/kintone/mcp-server/issues/168)) ([08541ae](https://github.com/kintone/mcp-server/commit/08541aec7940f99e2b6feeff699ba73efdc6c067))
+
 ## [1.2.1](https://github.com/kintone/mcp-server/compare/1.2.0...1.2.1) (2025-10-18)
 
 
