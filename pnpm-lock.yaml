@@ -24,9 +24,9 @@ importers:
         specifier: ^3.25.76
         version: 3.25.76
     devDependencies:
-      '@anthropic-ai/dxt':
-        specifier: ^0.2.6
-        version: 0.2.6
+      '@anthropic-ai/mcpb':
+        specifier: ^1.1.1
+        version: 1.1.1
       '@commitlint/cli':
         specifier: ^19.8.1
         version: 19.8.1(@types/node@22.18.10)(typescript@5.9.3)
@@ -78,9 +78,8 @@ packages:
   '@altano/repository-tools@2.0.1':
     resolution: {integrity: sha512-YE/52CkFtb+YtHPgbWPai7oo5N9AKnMuP5LM+i2AG7G1H2jdYBCO1iDnkDE3dZ3C1MIgckaF+d5PNRulgt0bdw==}
 
-  '@anthropic-ai/dxt@0.2.6':
-    resolution: {integrity: sha512-5VSqKRpkytTYh5UJz9jOaI8zLXNCe4Gc+ArKGFV6IeWnEPP0Qnd0k+V3pO8cYzp92Puf/+Cgo0xc4haE0azTXg==}
-    deprecated: This package has been renamed to @anthropic-ai/mcpb
+  '@anthropic-ai/mcpb@1.1.1':
+    resolution: {integrity: sha512-a8R5pQcPPwUfuswR2of4tHDd/NJHv1L6mKJ97hfqE/gZq/xaqL12mDUtQVcyl3g1BV8csi9JOpyf15jLvfIXvQ==}
     hasBin: true
 
   '@babel/code-frame@7.27.1':
@@ -3810,7 +3809,7 @@ snapshots:
 
   '@altano/repository-tools@2.0.1': {}
 
-  '@anthropic-ai/dxt@0.2.6':
+  '@anthropic-ai/mcpb@1.1.1':
     dependencies:
       '@inquirer/prompts': 6.0.1
       commander: 13.1.0

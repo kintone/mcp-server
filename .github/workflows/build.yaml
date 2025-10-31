@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  build-dxt:
+  build-mcpb:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -17,11 +17,11 @@ jobs:
           node-version-file: .node-version
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
-      - run: pnpm build:dxt
+      - run: pnpm build:mcpb
       - uses: actions/upload-artifact@v4
         with:
-          path: build/kintone-mcp-server.dxt
-          name: kintone-mcp-server.dxt
+          path: build/kintone-mcp-server.mcpb
+          name: kintone-mcp-server.mcpb
           retention-days: 3
 
   build-npm:

@@ -22,7 +22,7 @@ The official local MCP server for Kintone.
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [Installation](#installation)
-  - [DXT (Claude Desktop Package)](#dxt-claude-desktop-package)
+  - [MCPB (Claude Desktop Package)](#mcpb-claude-desktop-package)
   - [Docker Container Image](#docker-container-image)
   - [npm Package](#npm-package)
 - [Usage](#usage)
@@ -46,16 +46,16 @@ The official local MCP server for Kintone.
 
 ## Installation
 
-### DXT (Claude Desktop Package)
+### MCPB (Claude Desktop Package)
 
-DXT files can be installed as an extension for Claude Desktop.
+MCPB files can be installed as an extension for Claude Desktop.
 Follow these steps to install:
 
 1. Go to the [Releases page](https://github.com/kintone/mcp-server/releases)
-2. Download `kintone-mcp-server.dxt` from the latest release
+2. Download `kintone-mcp-server.mcpb` from the latest release
 3. Open Claude Desktop
 4. Go to Settings → Desktop Apps → Extensions
-5. Drag and drop the downloaded `kintone-mcp-server.dxt` file onto the Claude Desktop screen
+5. Drag and drop the downloaded `kintone-mcp-server.mcpb` file onto the Claude Desktop screen
 6. A confirmation dialog will appear, select "Install"
 7. A settings dialog will appear, enter the required information:
    - `Kintone Base URL`: The base URL of your Kintone (e.g., `https://example.cybozu.com`)
@@ -115,7 +115,7 @@ kintone-mcp-server \
 
 ## Usage
 
-If you installed the DXT file, no additional steps are required to use it.
+If you installed the MCPB file, no additional steps are required to use it.
 For other installation methods, you need to create a configuration file.
 
 Please refer to the documentation of the AI tool you are using for details on how to create the configuration file.

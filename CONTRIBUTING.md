@@ -61,10 +61,10 @@ Dockerコンテナイメージ
 docker build -f ./docker/Dockerfile .
 ```
 
-DXTファイル
+MCPBファイル
 
 ```shell
-pnpm build:dxt
+pnpm build:mcpb
 ```
 
 ## テスト
