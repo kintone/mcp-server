@@ -43,7 +43,7 @@ importers:
         specifier: ^0.17.1
         version: 0.17.1(@types/node@22.18.13)(typescript@5.9.3)
       '@types/node':
-        specifier: ^22.18.11
+        specifier: ^22.18.12
         version: 22.18.13
       doctoc:
         specifier: ^2.2.1
@@ -6474,7 +6474,7 @@ snapshots:
       acorn: 8.15.0
       eslint-visitor-keys: 3.4.3
       espree: 9.6.1
-      semver: 7.7.2
+      semver: 7.7.3
 
   jsonfile@6.1.0:
     dependencies:
