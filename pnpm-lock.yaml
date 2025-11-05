@@ -40,8 +40,8 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
       '@modelcontextprotocol/inspector':
-        specifier: ^0.17.1
-        version: 0.17.1(@types/node@22.18.13)(typescript@5.9.3)
+        specifier: ^0.17.2
+        version: 0.17.2(@types/node@22.18.13)(typescript@5.9.3)
       '@types/node':
         specifier: ^22.18.12
         version: 22.18.13
@@ -522,20 +522,20 @@ packages:
     resolution: {integrity: sha512-H+xo3EUvKuj5ROjrZ/6nLOiFeRRxJtodjfW1qg8jUmrau/rZ+FpldJ7jghLQNHNo/72siCDtJDjgJl6QjNTJaw==}
     engines: {node: '>=18'}
 
-  '@modelcontextprotocol/inspector-cli@0.17.1':
-    resolution: {integrity: sha512-zLCE0M0DQON4xZf78oqgS+UIM7p6bSIGr1t6i6p31W/auJ6YJ1iHQl0lb0AxiYei1M3o5VQegYcPIyEm6AT8Aw==}
+  '@modelcontextprotocol/inspector-cli@0.17.2':
+    resolution: {integrity: sha512-xXaqZYWJz77xvmfAVlYbvz2/xw9OaalFHq0n5A8PlmZvmhi6akQocIE7ZYaoEBpLbWRSwIZWfsidnfoKb6dO2A==}
     hasBin: true
 
-  '@modelcontextprotocol/inspector-client@0.17.1':
-    resolution: {integrity: sha512-WJhrj06Vgwen6U/sCWyzBoAOrq0iyCWyTyUMye1520OapGeVtlW6aTeL0UWbYnswXkrFeJOG45631aMdMHk4rg==}
+  '@modelcontextprotocol/inspector-client@0.17.2':
+    resolution: {integrity: sha512-llC96yU8iMjG7ny2gpjhm+ARQqBRZWeKBCxW+nBErAE43jBqd5DhGuI2abrt499Gd3ByNOImz+Z5mb8YWjRiJA==}
     hasBin: true
 
-  '@modelcontextprotocol/inspector-server@0.17.1':
-    resolution: {integrity: sha512-5Pbefr3nFFk2pnnGFWb9v1kmzMMFqiNApSVp6al0pT0A2IaIu1eUQNmg2xSb21yaf4JT4rVj5KqIAnnxAQpicw==}
+  '@modelcontextprotocol/inspector-server@0.17.2':
+    resolution: {integrity: sha512-+logjB5XXK+8aE+eDl8cLnwY0UhOUh19vo6tg5rFVmLXNQPtxTFyWybcQfgP/cHp76+r5+EMxIpydDYEoasTvg==}
     hasBin: true
 
-  '@modelcontextprotocol/inspector@0.17.1':
-    resolution: {integrity: sha512-AW9QsFrkbqpEjAZcCAgvQA7+emnF22DLYef5DxvTjgv9gFwlKq8d7/HrAFFln8k+SUQ2Zn/AT1LGzgH59qbZ1A==}
+  '@modelcontextprotocol/inspector@0.17.2':
+    resolution: {integrity: sha512-ADWwZtbvecKCbLCR7L0Uaa2mPKFDJcTrc9xcE9pdN8gL/jFfzOMrgdNsKt+qBknzMeSQ6mJT+UguJbnQs8n13Q==}
     engines: {node: '>=22.7.5'}
     hasBin: true
 
@@ -543,9 +543,14 @@ packages:
     resolution: {integrity: sha512-QakrKIGniGuRVfWBdMsDea/dx1PNE739QJ7gCM41s9q+qaCYTHCdsIBXQVVXry3mfWAiaM9kT22Hyz53Uw8mfg==}
     engines: {node: '>=18'}
 
-  '@modelcontextprotocol/sdk@1.18.1':
-    resolution: {integrity: sha512-d//GE8/Yh7aC3e7p+kZG8JqqEAwwDUmAfvH1quogtbk+ksS6E0RR6toKKESPYYZVre0meqkJb27zb+dhqE9Sgw==}
+  '@modelcontextprotocol/sdk@1.21.0':
+    resolution: {integrity: sha512-YFBsXJMFCyI1zP98u7gezMFKX4lgu/XpoZJk7ufI6UlFKXLj2hAMUuRlQX/nrmIPOmhRrG6tw2OQ2ZA/ZlXYpQ==}
     engines: {node: '>=18'}
+    peerDependencies:
+      '@cfworker/json-schema': ^4.1.1
+    peerDependenciesMeta:
+      '@cfworker/json-schema':
+        optional: true
 
   '@napi-rs/wasm-runtime@0.2.12':
     resolution: {integrity: sha512-ZVWUcfwY4E/yPitQJl481FjFo3K22D6qF0DuFH6Y/nbnE11GY5uguDxZMGXPQ8WQ0128MXQD7TnfHyK4oWoIJQ==}
@@ -1344,6 +1349,14 @@ packages:
   agent-base@7.1.4:
     resolution: {integrity: sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==}
     engines: {node: '>= 14'}
+
+  ajv-formats@3.0.1:
+    resolution: {integrity: sha512-8iUql50EUR+uUcdRQ3HDqa6EVyo3docL8g5WJ3FNcWmu62IbkGUue/pEyLBW8VGKKucTPgqeks4fIU1DA4yowQ==}
+    peerDependencies:
+      ajv: ^8.0.0
+    peerDependenciesMeta:
+      ajv:
+        optional: true
 
   ajv@6.12.6:
     resolution: {integrity: sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==}
@@ -4311,17 +4324,18 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@modelcontextprotocol/inspector-cli@0.17.1':
+  '@modelcontextprotocol/inspector-cli@0.17.2':
     dependencies:
-      '@modelcontextprotocol/sdk': 1.18.1
+      '@modelcontextprotocol/sdk': 1.21.0
       commander: 13.1.0
       spawn-rx: 5.1.2
     transitivePeerDependencies:
+      - '@cfworker/json-schema'
       - supports-color
 
-  '@modelcontextprotocol/inspector-client@0.17.1':
+  '@modelcontextprotocol/inspector-client@0.17.2':
     dependencies:
-      '@modelcontextprotocol/sdk': 1.18.1
+      '@modelcontextprotocol/sdk': 1.21.0
       '@radix-ui/react-checkbox': 1.3.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dialog': 1.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-icons': 1.3.2(react@18.3.1)
@@ -4347,13 +4361,14 @@ snapshots:
       tailwind-merge: 2.6.0
       zod: 3.25.76
     transitivePeerDependencies:
+      - '@cfworker/json-schema'
       - '@types/react'
       - '@types/react-dom'
       - supports-color
 
-  '@modelcontextprotocol/inspector-server@0.17.1':
+  '@modelcontextprotocol/inspector-server@0.17.2':
     dependencies:
-      '@modelcontextprotocol/sdk': 1.18.1
+      '@modelcontextprotocol/sdk': 1.21.0
       cors: 2.8.5
       express: 5.1.0
       shell-quote: 1.8.3
@@ -4361,16 +4376,17 @@ snapshots:
       ws: 8.18.3
       zod: 3.25.76
     transitivePeerDependencies:
+      - '@cfworker/json-schema'
       - bufferutil
       - supports-color
       - utf-8-validate
 
-  '@modelcontextprotocol/inspector@0.17.1(@types/node@22.18.13)(typescript@5.9.3)':
+  '@modelcontextprotocol/inspector@0.17.2(@types/node@22.18.13)(typescript@5.9.3)':
     dependencies:
-      '@modelcontextprotocol/inspector-cli': 0.17.1
-      '@modelcontextprotocol/inspector-client': 0.17.1
-      '@modelcontextprotocol/inspector-server': 0.17.1
-      '@modelcontextprotocol/sdk': 1.18.1
+      '@modelcontextprotocol/inspector-cli': 0.17.2
+      '@modelcontextprotocol/inspector-client': 0.17.2
+      '@modelcontextprotocol/inspector-server': 0.17.2
+      '@modelcontextprotocol/sdk': 1.21.0
       concurrently: 9.2.1
       node-fetch: 3.3.2
       open: 10.2.0
@@ -4379,6 +4395,7 @@ snapshots:
       ts-node: 10.9.2(@types/node@22.18.13)(typescript@5.9.3)
       zod: 3.25.76
     transitivePeerDependencies:
+      - '@cfworker/json-schema'
       - '@swc/core'
       - '@swc/wasm'
       - '@types/node'
@@ -4406,9 +4423,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@modelcontextprotocol/sdk@1.18.1':
+  '@modelcontextprotocol/sdk@1.21.0':
     dependencies:
-      ajv: 6.12.6
+      ajv: 8.17.1
+      ajv-formats: 3.0.1(ajv@8.17.1)
       content-type: 1.0.5
       cors: 2.8.5
       cross-spawn: 7.0.6
@@ -5103,6 +5121,10 @@ snapshots:
   acorn@8.15.0: {}
 
   agent-base@7.1.4: {}
+
+  ajv-formats@3.0.1(ajv@8.17.1):
+    optionalDependencies:
+      ajv: 8.17.1
 
   ajv@6.12.6:
     dependencies:
