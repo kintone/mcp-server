@@ -52,8 +52,8 @@ importers:
         specifier: ^9.38.0
         version: 9.38.0(jiti@2.5.1)
       eslint-plugin-package-json:
-        specifier: ^0.57.0
-        version: 0.57.0(@types/estree@1.0.8)(eslint@9.38.0(jiti@2.5.1))(jsonc-eslint-parser@2.4.0)
+        specifier: ^0.58.0
+        version: 0.58.0(@types/estree@1.0.8)(eslint@9.38.0(jiti@2.5.1))(jsonc-eslint-parser@2.4.0)
       globals:
         specifier: ^16.4.0
         version: 16.4.0
@@ -1931,8 +1931,8 @@ packages:
     peerDependencies:
       eslint: '>=8.23.0'
 
-  eslint-plugin-package-json@0.57.0:
-    resolution: {integrity: sha512-3X0nODFG+8r0Cqmqmw/JwWdtWNPrQX0mxg6HrHISFm2WIDvmc3hukGKG4so0zDbi+nYsd5/9QbE71MAyWGiFXQ==}
+  eslint-plugin-package-json@0.58.0:
+    resolution: {integrity: sha512-g5/veEamkTSb+HiR7ncQmHmgIvMAPJJkfFVyCDj4qhH6mc8FnYFeOzB3v5aAoAq8Ejxqzh7jIsq79/BLGmIBBA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
       eslint: '>=8.0.0'
@@ -3899,7 +3899,7 @@ snapshots:
   '@commitlint/is-ignored@19.8.1':
     dependencies:
       '@commitlint/types': 19.8.1
-      semver: 7.7.2
+      semver: 7.7.3
 
   '@commitlint/lint@19.8.1':
     dependencies:
@@ -4977,7 +4977,7 @@ snapshots:
       fast-glob: 3.3.3
       is-glob: 4.0.3
       minimatch: 9.0.5
-      semver: 7.7.2
+      semver: 7.7.3
       ts-api-utils: 2.1.0(typescript@5.9.3)
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -5738,7 +5738,7 @@ snapshots:
   eslint-compat-utils@0.5.1(eslint@9.38.0(jiti@2.5.1)):
     dependencies:
       eslint: 9.38.0(jiti@2.5.1)
-      semver: 7.7.2
+      semver: 7.7.3
 
   eslint-config-prettier@10.1.8(eslint@9.38.0(jiti@2.5.1)):
     dependencies:
@@ -5815,7 +5815,7 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  eslint-plugin-package-json@0.57.0(@types/estree@1.0.8)(eslint@9.38.0(jiti@2.5.1))(jsonc-eslint-parser@2.4.0):
+  eslint-plugin-package-json@0.58.0(@types/estree@1.0.8)(eslint@9.38.0(jiti@2.5.1))(jsonc-eslint-parser@2.4.0):
     dependencies:
       '@altano/repository-tools': 2.0.1
       change-case: 5.4.4
