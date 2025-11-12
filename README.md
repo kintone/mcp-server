@@ -45,6 +45,7 @@ kintoneの公式ローカルMCPサーバーです。
   - [その他の制限](#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E5%88%B6%E9%99%90)
 - [サポート方針](#%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88%E6%96%B9%E9%87%9D)
 - [コントリビューション](#%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AA%E3%83%93%E3%83%A5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3)
+- [プライバシー](#%E3%83%97%E3%83%A9%E3%82%A4%E3%83%90%E3%82%B7%E3%83%BC)
 - [ライセンス](#%E3%83%A9%E3%82%A4%E3%82%BB%E3%83%B3%E3%82%B9)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -241,6 +242,11 @@ kintoneローカルMCPサーバーは、APIサポート窓口の対象外です�
 ## コントリビューション
 
 [Contributing Guide](CONTRIBUTING.md) を参照してください。
+
+## プライバシー
+
+このMCPサーバーは、kintone REST APIに接続します。  
+利用地域に応じた公式プライバシーポリシーは、[Privacy Policy Reference](./PRIVACY.md) を参照してください。
 
 ## ライセンス
 
