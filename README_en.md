@@ -254,8 +254,8 @@ See the [Contributing Guide](CONTRIBUTING.md).
 
 ## Privacy
 
-This MCP server connects to the Kintone REST API.
-Please review our [PRIVACY.md](./PRIVACY.md) for information about the applicable privacy policies.
+This MCP server connects to the Kintone REST API.  
+Please see our [Privacy Policy Reference](./PRIVACY.md) for details about the applicable privacy policies.
 
 ## License
 

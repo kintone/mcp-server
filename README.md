@@ -246,7 +246,7 @@ kintoneローカルMCPサーバーは、APIサポート窓口の対象外です�
 ## プライバシー
 
 このMCPサーバーは、kintone REST APIに接続します。  
-利用者の地域に応じた公式プライバシーポリシーについては、[PRIVACY.md](./PRIVACY.md) を参照してください。
+利用地域に応じた公式プライバシーポリシーは、[Privacy Policy Reference](./PRIVACY.md) を参照してください。
 
 ## ライセンス
 
