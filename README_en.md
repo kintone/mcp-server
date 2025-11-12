@@ -40,6 +40,7 @@ The official local MCP server for Kintone.
   - [Other Limitations](#other-limitations)
 - [Support Policy](#support-policy)
 - [Contribution](#contribution)
+- [Privacy](#privacy)
 - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -250,6 +251,11 @@ Please report bugs or request features via [Issues](https://github.com/kintone/m
 ## Contribution
 
 See the [Contributing Guide](CONTRIBUTING.md).
+
+## Privacy
+
+This MCP server connects to the Kintone REST API.
+Please review our [PRIVACY.md](./PRIVACY.md) for information about the applicable privacy policies.
 
 ## License
 
