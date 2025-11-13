@@ -7,7 +7,7 @@ export default defineConfig({
     exclude: ["**/node_modules/**", "**/dist/**", "**/build/**"],
     // 実環境を利用するため、並列実行を無効化して順次実行
     fileParallelism: false,
-    pool: 'forks',
+    pool: "forks",
     poolOptions: {
       forks: {
         singleFork: true,

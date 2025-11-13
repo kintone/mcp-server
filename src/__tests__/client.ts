@@ -35,19 +35,14 @@ export const createDockerTransport = (config: ProvidedConfig) => {
       "run",
       "-i",
       "--rm",
-      "-e",
-      "KINTONE_BASE_URL",
-      "-e",
-      "KINTONE_USERNAME",
-      "-e",
-      "KINTONE_PASSWORD",
+      // -eフラグを展開
+      // e.g. "-e", "KINTONE_BASE_URL", "-e", "KINTONE_API_TOKEN", ...
+      ...Object.keys(config).flatMap((key) => ["-e", key]),
       "kintone-mcp-server:e2e",
     ],
     env: {
       PATH: "/usr/local/bin:/usr/bin:/bin",
-      KINTONE_BASE_URL: config.KINTONE_BASE_URL,
-      KINTONE_USERNAME: config.KINTONE_USERNAME || "",
-      KINTONE_PASSWORD: config.KINTONE_PASSWORD || "",
+      ...config,
     },
   });
 };
