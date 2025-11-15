@@ -73,7 +73,7 @@
     "@modelcontextprotocol/inspector": "^0.17.2",
     "@types/node": "^22.18.13",
     "doctoc": "^2.2.1",
-    "eslint": "^9.38.0",
+    "eslint": "^9.39.0",
     "eslint-plugin-package-json": "^0.59.1",
     "globals": "^16.4.0",
     "npm": "^11.6.2",
