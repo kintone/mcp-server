@@ -53,7 +53,15 @@ jobs:
           APP_ID: ${{ secrets.E2E_APP_ID }}
           KINTONE_BASE_URL: ${{ secrets.E2E_KINTONE_BASE_URL }}
           KINTONE_USERNAME: ${{ secrets.E2E_KINTONE_USERNAME }}
-          KINTONE_PASSWORD: ${{ secrets.E2E_KINTONE_PASSWORD}}
+          KINTONE_PASSWORD: ${{ secrets.E2E_KINTONE_PASSWORD }}
 
         run: |
+          # 事前にDockerコンテナを起動しておく
+          docker run -i --rm \
+            -e KINTONE_BASE_URL=${KINTONE_BASE_URL} \
+            -e KINTONE_USERNAME=${KINTONE_USERNAME} \
+            -e KINTONE_PASSWORD=${KINTONE_PASSWORD} \
+            ghcr.io/kintone/mcp-server
+ 
+          # 起動済のmcpサーバに対してE2Eテストを実行
           pnpm test:e2e
