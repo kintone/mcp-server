@@ -38,6 +38,10 @@ The official local MCP server for Kintone.
 - [Limitations](#limitations)
   - [Record Operation Limitations](#record-operation-limitations)
   - [Other Limitations](#other-limitations)
+- [Troubleshooting](#troubleshooting)
+  - [Connection errors](#connection-errors)
+  - [Authentication errors](#authentication-errors)
+  - [Permission errors](#permission-errors)
 - [Support Policy](#support-policy)
 - [Contribution](#contribution)
 - [Privacy](#privacy)
@@ -241,6 +245,28 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 ### Other Limitations
 
 - **Guest space not supported**: Cannot access apps within guest spaces
+
+## Troubleshooting
+
+### Connection errors
+
+- Verify that the base URL is correct (e.g., `https://example.kintone.com`).
+- If you are behind a proxy, set the `HTTPS_PROXY` environment variable.
+- If the connection temporarily fails, please try again after a few minutes.
+
+### Authentication errors
+
+- Ensure your username and password are correct.
+- Do not specify both username/password and API token at the same time.  
+  If both are provided, password authentication takes precedence.
+- When using a client certificate, make sure you are using the secure access domain (e.g., `.s.cybozu.com`, depending on your region).
+
+### Permission errors
+
+- Make sure the user or API token has sufficient access rights to the target app.  
+  (Some operations require app admin or record-viewing permissions.)
+- Guest space apps are not supported.
+- When using an API token, verify that it has the necessary permissions such as "View", "Add", "Edit", or "Delete".
 
 ## Support Policy
 
