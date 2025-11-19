@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.3](https://github.com/kintone/mcp-server/compare/1.2.2...1.2.3) (2025-11-19)
+
+
+### Bug Fixes
+
+* add Privacy Policy Reference ([#181](https://github.com/kintone/mcp-server/issues/181)) ([eba3b6d](https://github.com/kintone/mcp-server/commit/eba3b6d2837a7ddcf7851e680b73e100d9ad504a))
+* add troubleshooting ([#182](https://github.com/kintone/mcp-server/issues/182)) ([2a89bfe](https://github.com/kintone/mcp-server/commit/2a89bfe82f6d9defab7d4a003ed0d32d2f3c3435))
+
 ## [1.2.2](https://github.com/kintone/mcp-server/compare/1.2.1...1.2.2) (2025-10-31)
 
 
