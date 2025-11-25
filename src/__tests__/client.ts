@@ -17,12 +17,11 @@ export const createTransport = (
   runtime: Runtime,
   config: ProvidedConfig,
 ): StdioClientTransport => {
-  // 現在の実装では両方とも同じトランスポートを使用
-  // 将来的にnpm用の別のトランスポートが追加される可能性を考慮
   switch (runtime) {
     case "docker":
-    case "npm":
       return createDockerTransport(config);
+    case "npm":
+      return createNpmTransport(config);
     default:
       throw new Error(`Unknown runtime: ${runtime}`);
   }
@@ -44,5 +43,33 @@ export const createDockerTransport = (config: ProvidedConfig) => {
       PATH: "/usr/local/bin:/usr/bin:/bin",
       ...config,
     },
+  });
+};
+
+const ENV_TO_CLI_ARG: Record<string, string> = {
+  KINTONE_BASE_URL: "--base-url",
+  KINTONE_USERNAME: "--username",
+  KINTONE_PASSWORD: "--password",
+  KINTONE_API_TOKEN: "--api-token",
+  KINTONE_BASIC_AUTH_USERNAME: "--basic-auth-username",
+  KINTONE_BASIC_AUTH_PASSWORD: "--basic-auth-password",
+  HTTPS_PROXY: "--proxy",
+  KINTONE_PFX_FILE_PATH: "--pfx-file-path",
+  KINTONE_PFX_FILE_PASSWORD: "--pfx-file-password",
+  KINTONE_ATTACHMENTS_DIR: "--attachments-dir",
+};
+
+export const createNpmTransport = (config: ProvidedConfig) => {
+  const args: string[] = ["kintone-mcp-server"];
+
+  for (const [envKey, value] of Object.entries(config)) {
+    if (value !== undefined && envKey in ENV_TO_CLI_ARG) {
+      args.push(ENV_TO_CLI_ARG[envKey], value);
+    }
+  }
+
+  return new StdioClientTransport({
+    command: "npx",
+    args,
   });
 };
