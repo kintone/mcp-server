@@ -1,4 +1,5 @@
-import { describe, it, expect, afterEach } from "vitest";
+import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import type { Client } from "@modelcontextprotocol/sdk/client";
 import type { Runtime } from "./client";
 import { createClient, createTransport } from "./client";
 import type { ProvidedConfig } from "../config/types/config";
@@ -15,12 +16,19 @@ describe("MCP Server Installation E2E Tests", () => {
 
   const runtime = (process.env.RUNTIME || "docker") as Runtime;
 
+  let client: Client;
+
+  beforeAll(async () => {
+    const transport = createTransport(runtime, config);
+    client = await createClient(transport);
+  });
+
+  afterAll(async () => {
+    await client.close();
+  });
+
   describe("Tool List Verification", () => {
     it("should list all kintone tools correctly", async () => {
-      // Arrange
-      const transport = createTransport(runtime, config);
-      const client = await createClient(transport);
-
       // Act
       const tools = await client.listTools();
       const toolNames = tools.tools.map((tool) => tool.name);
@@ -44,10 +52,6 @@ describe("MCP Server Installation E2E Tests", () => {
 
   describe("Tool Execution Verification", () => {
     it("should execute kintone-get-app tool correctly", async () => {
-      // Arrange
-      const transport = createTransport(runtime, config);
-      const client = await createClient(transport);
-
       // Act
       const result = await client.callTool({
         name: "kintone-get-app",
