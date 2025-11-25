@@ -11,6 +11,7 @@ jobs:
   e2e-test:
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 1
       matrix:
         runtime: [docker, npm]
 
