@@ -61,7 +61,6 @@ jobs:
           APP_ID: ${{ secrets.E2E_APP_ID }}
           KINTONE_BASE_URL: ${{ secrets.E2E_KINTONE_BASE_URL }}
           KINTONE_USERNAME: ${{ secrets.E2E_KINTONE_USERNAME }}
-          KINTONE_PASSWORD: ${{ secrets.E2E_KINTONE_PASSWORD}}
-
+          KINTONE_PASSWORD: ${{ secrets.E2E_KINTONE_PASSWORD }}
         run: |
           pnpm test:e2e
