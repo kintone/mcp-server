@@ -69,7 +69,7 @@
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@cybozu/eslint-config": "^24.2.0",
-    "@cybozu/license-manager": "^1.4.0",
+    "@cybozu/license-manager": "^1.4.1",
     "@modelcontextprotocol/inspector": "^0.17.2",
     "@types/node": "^22.19.1",
     "doctoc": "^2.2.1",
