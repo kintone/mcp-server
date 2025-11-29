@@ -54,6 +54,7 @@
     "start": "node dist/index.js",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
+    "test:e2e": "vitest --config vitest.config.e2e.ts",
     "test:watch": "vitest --watch",
     "typecheck": "tsc -noEmit "
   },
