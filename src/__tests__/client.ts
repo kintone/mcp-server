@@ -46,7 +46,7 @@ export const createDockerTransport = (config: ProvidedConfig) => {
   });
 };
 
-const ENV_TO_CLI_ARG: Record<string, string> = {
+const ENV_TO_CLI_ARG = {
   KINTONE_BASE_URL: "--base-url",
   KINTONE_USERNAME: "--username",
   KINTONE_PASSWORD: "--password",
@@ -57,13 +57,16 @@ const ENV_TO_CLI_ARG: Record<string, string> = {
   KINTONE_PFX_FILE_PATH: "--pfx-file-path",
   KINTONE_PFX_FILE_PASSWORD: "--pfx-file-password",
   KINTONE_ATTACHMENTS_DIR: "--attachments-dir",
-};
+} as const;
+
+const isEnvKey = (key: string): key is keyof typeof ENV_TO_CLI_ARG =>
+  key in ENV_TO_CLI_ARG;
 
 export const createNpmTransport = (config: ProvidedConfig) => {
   const args: string[] = ["kintone-mcp-server"];
 
   for (const [envKey, value] of Object.entries(config)) {
-    if (value !== undefined && envKey in ENV_TO_CLI_ARG) {
+    if (value !== undefined && isEnvKey(envKey)) {
       args.push(ENV_TO_CLI_ARG[envKey], value);
     }
   }
