@@ -1,20 +1,23 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import type { Client } from "@modelcontextprotocol/sdk/client";
-import type { Runtime } from "./client";
 import { createClient, createTransport } from "./client";
+import { configSchema } from "../src/config/schema";
+import { testConfigSchema } from "./config";
 import type { ProvidedConfig } from "../src/config/types/config";
 
 describe("MCP Server Installation E2E Tests", () => {
-  const appId = process.env.APP_ID || "1";
+  const mcpConfig = configSchema.parse(process.env);
 
   const config: ProvidedConfig = {
-    KINTONE_BASE_URL:
-      process.env.KINTONE_BASE_URL || "https://example.kintone.com",
-    KINTONE_USERNAME: process.env.KINTONE_USERNAME || "user",
-    KINTONE_PASSWORD: process.env.KINTONE_PASSWORD || "pass",
+    KINTONE_BASE_URL: mcpConfig.KINTONE_BASE_URL,
+    KINTONE_USERNAME: mcpConfig.KINTONE_USERNAME,
+    KINTONE_PASSWORD: mcpConfig.KINTONE_PASSWORD,
   };
 
-  const runtime = (process.env.RUNTIME || "docker") as Runtime;
+  const testConfig = testConfigSchema.parse(process.env);
+
+  const appId = testConfig.APP_ID;
+  const runtime = testConfig.RUNTIME;
 
   let client: Client;
 
