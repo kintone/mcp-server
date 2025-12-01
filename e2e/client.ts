@@ -1,5 +1,5 @@
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
-import type { ProvidedConfig } from "../config/types/config.js";
+import type { ProvidedConfig } from "../src/config/types/config.js";
 import { Client } from "@modelcontextprotocol/sdk/client";
 
 export const createClient = async (transport: StdioClientTransport) => {

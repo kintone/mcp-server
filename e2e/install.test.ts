@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import type { Client } from "@modelcontextprotocol/sdk/client";
 import type { Runtime } from "./client";
 import { createClient, createTransport } from "./client";
-import type { ProvidedConfig } from "../config/types/config";
+import type { ProvidedConfig } from "../src/config/types/config";
 
 describe("MCP Server Installation E2E Tests", () => {
   const appId = process.env.APP_ID || "1";
