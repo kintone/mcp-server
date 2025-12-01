@@ -38,3 +38,5 @@ vi.mock("@kintone/rest-api-client", () => ({
   - `test:` テスト追加/修正
   - `chore:` ビルドプロセス/ツール変更
 - **PRタイトル**: 同様にSemantic形式で記述
+
+
