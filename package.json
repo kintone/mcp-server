@@ -59,7 +59,7 @@
     "typecheck": "tsc -noEmit "
   },
   "dependencies": {
-    "@kintone/rest-api-client": "^5.7.5",
+    "@kintone/rest-api-client": "^6.1.0",
     "@modelcontextprotocol/sdk": "^1.17.5",
     "file-type": "^21.0.0",
     "https-proxy-agent": "^7.0.6",
