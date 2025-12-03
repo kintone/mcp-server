@@ -25,8 +25,8 @@ importers:
         version: 3.25.76
     devDependencies:
       '@anthropic-ai/mcpb':
-        specifier: ^1.2.0
-        version: 1.2.0
+        specifier: ^2.0.1
+        version: 2.0.1
       '@commitlint/cli':
         specifier: ^19.8.1
         version: 19.8.1(@types/node@22.19.1)(typescript@5.9.3)
@@ -78,8 +78,8 @@ packages:
   '@altano/repository-tools@2.0.1':
     resolution: {integrity: sha512-YE/52CkFtb+YtHPgbWPai7oo5N9AKnMuP5LM+i2AG7G1H2jdYBCO1iDnkDE3dZ3C1MIgckaF+d5PNRulgt0bdw==}
 
-  '@anthropic-ai/mcpb@1.2.0':
-    resolution: {integrity: sha512-XYVCxQJsr4D4ZecEXVe9PvBpKj2T31KgEiT8K4thoi7krPFIQjXj4yOolAXP8hGSJHrW1Nf4odZES1kjLNDVkg==}
+  '@anthropic-ai/mcpb@2.0.1':
+    resolution: {integrity: sha512-ktKzkt7w41MMqaVXt7E99dVPYPE5X5Glz32X2XEiVr14TYv0g+40/nbmIlM4gaAu5EWsWSWElAcyXENKV6t+lQ==}
     hasBin: true
 
   '@babel/code-frame@7.27.1':
@@ -3856,7 +3856,7 @@ snapshots:
 
   '@altano/repository-tools@2.0.1': {}
 
-  '@anthropic-ai/mcpb@1.2.0':
+  '@anthropic-ai/mcpb@2.0.1':
     dependencies:
       '@inquirer/prompts': 6.0.1
       commander: 13.1.0
