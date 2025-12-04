@@ -14,7 +14,7 @@ RUN pnpm license:extract
 RUN pnpm install --prod
 
 
-FROM gcr.io/distroless/nodejs22-debian12:nonroot@sha256:1014312994b734e9f3bba23bb96fab389119750a98f14bc76936dc2a7e72c3da
+FROM gcr.io/distroless/nodejs22-debian12:nonroot@sha256:9187fd451b5e2d258d691cb7da51020bfc8f557cc4a58e80b38f3f30bbbc37f9
 # ref. https://docs.github.com/ja/packages/working-with-a-github-packages-registry/working-with-the-container-registry#labelling-container-images
 LABEL org.opencontainers.image.source=https://github.com/kintone/mcp-server
 LABEL org.opencontainers.image.description="The official MCP Server for kintone"
