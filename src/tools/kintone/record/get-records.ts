@@ -13,7 +13,10 @@ const filtersSchema = z
         }),
       )
       .optional()
-      .describe("Text fields containing specified values"),
+      .describe(
+        "Text fields containing specified values (like operator). " +
+          "Supported fields: SINGLE_LINE_TEXT, LINK, MULTI_LINE_TEXT, RICH_TEXT, ATTACHMENT",
+      ),
     equals: z
       .array(
         z.object({
@@ -22,7 +25,10 @@ const filtersSchema = z
         }),
       )
       .optional()
-      .describe("Fields equal to specified values"),
+      .describe(
+        "Fields equal to specified values (= operator). " +
+          "Supported fields: RECORD_NUMBER, SINGLE_LINE_TEXT, LINK, NUMBER, CALC, DATE, TIME, DATETIME, CREATED_TIME, UPDATED_TIME, STATUS",
+      ),
     dateRange: z
       .array(
         z.object({
@@ -32,7 +38,10 @@ const filtersSchema = z
         }),
       )
       .optional()
-      .describe("Date fields within specified range"),
+      .describe(
+        "Date fields within specified range (>=, <= operators). " +
+          "Supported fields: DATE, TIME, DATETIME, CREATED_TIME, UPDATED_TIME",
+      ),
     numberRange: z
       .array(
         z.object({
@@ -42,7 +51,10 @@ const filtersSchema = z
         }),
       )
       .optional()
-      .describe("Number fields within specified range"),
+      .describe(
+        "Number fields within specified range (>=, <= operators). " +
+          "Supported fields: RECORD_NUMBER, $id, NUMBER, CALC",
+      ),
     inValues: z
       .array(
         z.object({
@@ -51,7 +63,10 @@ const filtersSchema = z
         }),
       )
       .optional()
-      .describe("Fields matching any of the specified values"),
+      .describe(
+        "Fields matching any of the specified values (in operator). " +
+          "Supported fields: RECORD_NUMBER, $id, SINGLE_LINE_TEXT, LINK, NUMBER, CALC, CHECK_BOX, RADIO_BUTTON, DROP_DOWN, MULTI_SELECT, USER_SELECT, ORGANIZATION_SELECT, GROUP_SELECT, STATUS, CREATOR, MODIFIER",
+      ),
     notInValues: z
       .array(
         z.object({
@@ -60,7 +75,10 @@ const filtersSchema = z
         }),
       )
       .optional()
-      .describe("Fields not matching any of the specified values"),
+      .describe(
+        "Fields not matching any of the specified values (not in operator). " +
+          "Supported fields: RECORD_NUMBER, $id, SINGLE_LINE_TEXT, LINK, NUMBER, CALC, CHECK_BOX, RADIO_BUTTON, DROP_DOWN, MULTI_SELECT, USER_SELECT, ORGANIZATION_SELECT, GROUP_SELECT, STATUS, CREATOR, MODIFIER",
+      ),
   })
   .optional()
   .describe(
