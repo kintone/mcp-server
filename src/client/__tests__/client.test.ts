@@ -5,16 +5,31 @@ import {
 } from "../../__tests__/utils.js";
 import type { KintoneClientConfig } from "../index.js";
 
-// Mock KintoneRestAPIClient
+// Mock constructors - vitest v4 requires class-based mocks for constructors
 const mockKintoneClient = vi.fn();
 vi.mock("@kintone/rest-api-client", () => ({
-  KintoneRestAPIClient: mockKintoneClient,
+  KintoneRestAPIClient: class {
+    constructor(...args: unknown[]) {
+      // コンストラクタの引数を記録（アサーション用）
+      mockKintoneClient(...args);
+      // mockReturnValue()で設定された値があれば返す
+      const result = mockKintoneClient.mock.results.at(-1)?.value;
+      if (result !== undefined) return result;
+    }
+  },
 }));
 
-// Mock https-proxy-agent
 const mockHttpsProxyAgent = vi.fn();
 vi.mock("https-proxy-agent", () => ({
-  HttpsProxyAgent: mockHttpsProxyAgent,
+  HttpsProxyAgent: class {
+    constructor(...args: unknown[]) {
+      // コンストラクタの引数を記録（アサーション用）
+      mockHttpsProxyAgent(...args);
+      // mockReturnValue()で設定された値があれば返す
+      const result = mockHttpsProxyAgent.mock.results.at(-1)?.value;
+      if (result !== undefined) return result;
+    }
+  },
 }));
 
 // Mock fs
