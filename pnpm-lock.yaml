@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@kintone/rest-api-client':
-        specifier: ^5.7.5
-        version: 5.7.5
+        specifier: ^6.1.0
+        version: 6.1.0
       '@modelcontextprotocol/sdk':
         specifier: ^1.17.5
         version: 1.17.5
@@ -674,9 +674,9 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@kintone/rest-api-client@5.7.5':
-    resolution: {integrity: sha512-H+xo3EUvKuj5ROjrZ/6nLOiFeRRxJtodjfW1qg8jUmrau/rZ+FpldJ7jghLQNHNo/72siCDtJDjgJl6QjNTJaw==}
-    engines: {node: '>=18'}
+  '@kintone/rest-api-client@6.1.0':
+    resolution: {integrity: sha512-kg+UpaKDAxjuG6s3m3SeTl2aqO2JSZbeX9asNpw4xKPYMuG7jH2RYt4d83h9VtgR+yu5IdeXbIMlYEEI9za6RQ==}
+    engines: {node: '>=20'}
 
   '@modelcontextprotocol/inspector-cli@0.17.5':
     resolution: {integrity: sha512-LoDwYa/lpjug19mvIrqOU1UAmgrnOxToZqa/WCDmFLlo7t2LXMqtWKdw00WHXH7p4knF6CgRNfHSBquUmwBJag==}
@@ -1796,8 +1796,8 @@ packages:
     resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
     engines: {node: '>= 0.6'}
 
-  core-js@3.44.0:
-    resolution: {integrity: sha512-aFCtd4l6GvAXwVEh3XbbVqJGHDJt0OZRa+5ePGx3LLwi12WfexqQxcsohb2wgsa/92xtl19Hd66G/L+TaAxDMw==}
+  core-js@3.47.0:
+    resolution: {integrity: sha512-c3Q2VVkGAUyupsjRnaNX6u8Dq2vAdzm9iuPj5FW0fRxzlxgq9Q39MDq10IvmQSpLgHQNyQzQmOo6bgGHmH3NNg==}
 
   cors@2.8.5:
     resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}
@@ -4590,10 +4590,10 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.4
 
-  '@kintone/rest-api-client@5.7.5':
+  '@kintone/rest-api-client@6.1.0':
     dependencies:
       axios: 1.12.2
-      core-js: 3.44.0
+      core-js: 3.47.0
       form-data: 4.0.4
       js-base64: 3.7.8
       mime: 3.0.0
@@ -5710,7 +5710,7 @@ snapshots:
 
   cookie@0.7.2: {}
 
-  core-js@3.44.0: {}
+  core-js@3.47.0: {}
 
   cors@2.8.5:
     dependencies:
