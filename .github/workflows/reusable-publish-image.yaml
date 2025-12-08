@@ -23,7 +23,7 @@ jobs:
       tags: ${{ steps.generate-tags.outputs.result }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Generate tags
         id: generate-tags
@@ -50,7 +50,7 @@ jobs:
       packages: write # To push an image to ghcr.io
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3
