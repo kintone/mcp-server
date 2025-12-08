@@ -27,7 +27,7 @@ const filtersSchema = z
       .optional()
       .describe(
         "Fields equal to specified values (= operator). " +
-          "Supported fields: RECORD_NUMBER, SINGLE_LINE_TEXT, LINK, NUMBER, CALC, DATE, TIME, DATETIME, CREATED_TIME, UPDATED_TIME, STATUS",
+          "Supported fields: RECORD_NUMBER, $id, SINGLE_LINE_TEXT, LINK, NUMBER, CALC, DATE, TIME, DATETIME, CREATED_TIME, UPDATED_TIME, STATUS",
       ),
     dateRange: z
       .array(
