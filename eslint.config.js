@@ -1,12 +1,16 @@
 import presetsNodeTypescriptPrettier from "@cybozu/eslint-config/flat/presets/node-typescript-prettier.js";
 import eslintPluginPackageJson from "eslint-plugin-package-json";
 import globals from "globals";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
+const nodePlugin = require("eslint-plugin-n");
 
 /** @type {import("eslint").Linter.Config[]} */
 export default [
   ...presetsNodeTypescriptPrettier,
   {
-    ignores: ["lib", "esm", "umd", "dist"],
+    ignores: ["lib", "esm", "umd", "dist", "build"],
   },
   {
     files: ["*.cjs", "*.cts"],
@@ -21,6 +25,9 @@ export default [
     },
   },
   {
+    plugins: {
+      n: nodePlugin,
+    },
     rules: {
       "@typescript-eslint/consistent-type-imports": "error",
       "n/hashbang": [
@@ -31,6 +38,12 @@ export default [
           additionalExecutables: ["scripts/**/*"],
         },
       ],
+      "n/no-missing-import": [
+        "error",
+        {
+          allowModules: ["@modelcontextprotocol/sdk"],
+        },
+      ],
     },
   },
   {
@@ -38,16 +51,6 @@ export default [
     rules: {
       ...eslintPluginPackageJson.configs.recommended.rules,
       "@typescript-eslint/consistent-type-imports": "off",
-    },
-  },
-  {
-    rules: {
-      "n/no-missing-import": [
-        "error",
-        {
-          allowModules: ["@modelcontextprotocol/sdk"],
-        },
-      ],
     },
   },
 ];
