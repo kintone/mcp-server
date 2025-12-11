@@ -32,7 +32,7 @@ describe("get-records tool", () => {
 
     it("should have correct description", () => {
       expect(getRecords.config.description).toBe(
-        "Get multiple records from a kintone app with structured filtering. Use kintone-get-form-fields tool first to discover available fields and their types.",
+        "Get multiple records from a kintone app with structured filtering. All filter conditions are AND-combined; OR conditions are not supported by this MCP server. Use kintone-get-form-fields tool first to discover available fields and their types.",
       );
     });
 
