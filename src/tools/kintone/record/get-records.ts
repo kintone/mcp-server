@@ -82,7 +82,7 @@ const filtersSchema = z
   })
   .optional()
   .describe(
-    "Filter conditions for records. Use kintone-get-form-fields tool to discover available field codes and types for an app",
+    "Filter conditions for records. All conditions are AND-combined. NOTE: This MCP server does not currently support OR conditions in filters. Use kintone-get-form-fields tool to discover available field codes and types for an app",
   );
 
 const orderBySchema = z
@@ -172,7 +172,7 @@ const toolName = "kintone-get-records";
 const toolConfig = {
   title: "Get Records",
   description:
-    "Get multiple records from a kintone app with structured filtering. Use kintone-get-form-fields tool first to discover available fields and their types.",
+    "Get multiple records from a kintone app with structured filtering. All filter conditions are AND-combined; OR conditions are not supported by this MCP server. Use kintone-get-form-fields tool first to discover available fields and their types.",
   inputSchema,
   outputSchema,
 };
