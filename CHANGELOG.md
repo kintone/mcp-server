@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.3.0](https://github.com/kintone/mcp-server/compare/1.2.3...1.3.0) (2025-12-17)
+
+
+### Features
+
+* add field type descriptions to filtersSchema operators ([#214](https://github.com/kintone/mcp-server/issues/214)) ([c64119e](https://github.com/kintone/mcp-server/commit/c64119e800b4bb490ef90759db8f441cc9e8397f))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to v6 ([#167](https://github.com/kintone/mcp-server/issues/167)) ([e183dd2](https://github.com/kintone/mcp-server/commit/e183dd24f90f00b8749db5aff30c3b26724ba8dc))
+* **deps:** update dependency @modelcontextprotocol/sdk to ^1.24.3 ([#217](https://github.com/kintone/mcp-server/issues/217)) ([d937a27](https://github.com/kintone/mcp-server/commit/d937a27f973b01a98e80b4c7cc96d3785a07d422))
+* **deps:** update dependency @modelcontextprotocol/sdk to v1.24.0 [security] ([#208](https://github.com/kintone/mcp-server/issues/208)) ([ba8f027](https://github.com/kintone/mcp-server/commit/ba8f02783532e243d72205a015e5db15489afe28))
+* **deps:** update dependency file-type to ^21.1.1 ([#197](https://github.com/kintone/mcp-server/issues/197)) ([fd1e275](https://github.com/kintone/mcp-server/commit/fd1e2752b91c8edd58c4a7abbd1266fe265be5b9))
+
 ## [1.2.3](https://github.com/kintone/mcp-server/compare/1.2.2...1.2.3) (2025-11-19)
 
 
