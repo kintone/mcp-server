@@ -13,7 +13,10 @@ const filtersSchema = z
         }),
       )
       .optional()
-      .describe("Text fields containing specified values"),
+      .describe(
+        "Text fields containing specified values (like operator). " +
+          "Supported fields: SINGLE_LINE_TEXT, LINK, MULTI_LINE_TEXT, RICH_TEXT, ATTACHMENT",
+      ),
     equals: z
       .array(
         z.object({
@@ -22,7 +25,10 @@ const filtersSchema = z
         }),
       )
       .optional()
-      .describe("Fields equal to specified values"),
+      .describe(
+        "Fields equal to specified values (= operator). " +
+          "Supported fields: RECORD_NUMBER, $id, SINGLE_LINE_TEXT, LINK, NUMBER, CALC, DATE, TIME, DATETIME, CREATED_TIME, UPDATED_TIME, STATUS",
+      ),
     dateRange: z
       .array(
         z.object({
@@ -32,7 +38,10 @@ const filtersSchema = z
         }),
       )
       .optional()
-      .describe("Date fields within specified range"),
+      .describe(
+        "Date fields within specified range (>=, <= operators). " +
+          "Supported fields: DATE, TIME, DATETIME, CREATED_TIME, UPDATED_TIME",
+      ),
     numberRange: z
       .array(
         z.object({
@@ -42,7 +51,10 @@ const filtersSchema = z
         }),
       )
       .optional()
-      .describe("Number fields within specified range"),
+      .describe(
+        "Number fields within specified range (>=, <= operators). " +
+          "Supported fields: RECORD_NUMBER, $id, NUMBER, CALC",
+      ),
     inValues: z
       .array(
         z.object({
@@ -51,7 +63,10 @@ const filtersSchema = z
         }),
       )
       .optional()
-      .describe("Fields matching any of the specified values"),
+      .describe(
+        "Fields matching any of the specified values (in operator). " +
+          "Supported fields: RECORD_NUMBER, $id, SINGLE_LINE_TEXT, LINK, NUMBER, CALC, CHECK_BOX, RADIO_BUTTON, DROP_DOWN, MULTI_SELECT, USER_SELECT, ORGANIZATION_SELECT, GROUP_SELECT, STATUS, CREATOR, MODIFIER",
+      ),
     notInValues: z
       .array(
         z.object({
@@ -60,11 +75,14 @@ const filtersSchema = z
         }),
       )
       .optional()
-      .describe("Fields not matching any of the specified values"),
+      .describe(
+        "Fields not matching any of the specified values (not in operator). " +
+          "Supported fields: RECORD_NUMBER, $id, SINGLE_LINE_TEXT, LINK, NUMBER, CALC, CHECK_BOX, RADIO_BUTTON, DROP_DOWN, MULTI_SELECT, USER_SELECT, ORGANIZATION_SELECT, GROUP_SELECT, STATUS, CREATOR, MODIFIER",
+      ),
   })
   .optional()
   .describe(
-    "Filter conditions for records. Use kintone-get-form-fields tool to discover available field codes and types for an app",
+    "Filter conditions for records. All conditions are AND-combined. NOTE: This MCP server does not currently support OR conditions in filters. Use kintone-get-form-fields tool to discover available field codes and types for an app",
   );
 
 const orderBySchema = z
@@ -154,7 +172,7 @@ const toolName = "kintone-get-records";
 const toolConfig = {
   title: "Get Records",
   description:
-    "Get multiple records from a kintone app with structured filtering. Use kintone-get-form-fields tool first to discover available fields and their types.",
+    "Get multiple records from a kintone app with structured filtering. All filter conditions are AND-combined; OR conditions are not supported by this MCP server. Use kintone-get-form-fields tool first to discover available fields and their types.",
   inputSchema,
   outputSchema,
 };
