@@ -72,7 +72,7 @@
     "@cybozu/eslint-config": "^25.0.0",
     "@cybozu/license-manager": "^1.4.1",
     "@modelcontextprotocol/inspector": "^0.17.5",
-    "@types/node": "^22.19.2",
+    "@types/node": "^22.19.3",
     "doctoc": "^2.2.1",
     "eslint": "^9.39.2",
     "eslint-plugin-package-json": "^0.85.0",
