@@ -40,6 +40,13 @@ const config = createConfig({
         licenseText: "See https://github.com/Borewit/tokenizer-token#licence",
       };
     }
+    if (dep.name === "@hono/node-server") {
+      return {
+        // License text is written in README.md
+        licenseText:
+          "See https://github.com/honojs/node-server/blob/main/README.md#license",
+      };
+    }
     return undefined;
   },
   packageManager: "pnpm",
