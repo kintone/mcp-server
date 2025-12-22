@@ -19,6 +19,13 @@
       matchUpdateTypes: ["minor", "patch"],
       automerge: true,
     },
+    {
+      description: "Automerge pnpm minor and patch updates",
+      matchPackageNames: ["pnpm"],
+      minimumReleaseAge: "14 days",
+      matchUpdateTypes: ["minor", "patch"],
+      automerge: true,
+    },
   ],
   "git-submodules": {
     enabled: true,
