@@ -40,6 +40,7 @@
     "commitlint": "commitlint",
     "dev": "tsx --watch src/index.ts",
     "doc:update-toc": "doctoc README.md README_en.md --github --maxlevel 3 --notitle",
+    "doc:cursor-install-link": "tsx scripts/generate-cursor-install-link.ts",
     "fix": "pnpm run \"/^fix:.*/\"",
     "fix:eslint": "pnpm lint:eslint --fix",
     "fix:prettier": "pnpm lint:prettier --write",

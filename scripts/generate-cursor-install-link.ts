@@ -1,15 +1,20 @@
-#!/usr/bin/env node
-
 // Cursorのインストール用リンクを作成するスクリプト
-// 実行方法: ./scripts/generate-cursor-install-link.js
+// 実行方法: pnpm doc:cursor-install-link
 
 // インストールリンクの詳細はCursorのドキュメントを参照
 // ref. https://docs.cursor.com/ja/tools/developers
 // 本来は上記ページのリンク生成ツールで作成できるのだが、
 // Web Linkの生成が壊れているようなのでこのスクリプトで生成する
 // ref. https://forum.cursor.com/t/install-link-generator-for-mcp-servers-produces-invalid-config-parameter/128080
+
+interface CursorMcpConfig {
+  command: string;
+  env: Record<string, string>;
+  args: string[];
+}
+
 const name = "kintone";
-const config = {
+const config: CursorMcpConfig = {
   command: "docker",
   env: {
     KINTONE_BASE_URL: "https://(subdomain).cybozu.com",
