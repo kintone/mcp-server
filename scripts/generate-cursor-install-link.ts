@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // Cursorのインストール用リンクを作成するスクリプト
 // 実行方法: pnpm doc:cursor-install-link
 
