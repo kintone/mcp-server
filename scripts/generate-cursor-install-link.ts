@@ -14,7 +14,7 @@ interface CursorMcpConfig {
   args: string[];
 }
 
-const name = "kintone";
+const serverName = "kintone";
 const config: CursorMcpConfig = {
   command: "docker",
   env: {
@@ -43,6 +43,6 @@ const encoded = encodeURIComponent(b64);
 
 // URL組み立て
 const baseUrl = "https://cursor.com/en/install-mcp";
-const url = `${baseUrl}?name=${encodeURIComponent(name)}&config=${encoded}`;
+const url = `${baseUrl}?name=${encodeURIComponent(serverName)}&config=${encoded}`;
 
 console.log(url);
