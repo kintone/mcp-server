@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.3.2](https://github.com/kintone/mcp-server/compare/1.3.1...1.3.2) (2026-01-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to ^6.1.1 ([#263](https://github.com/kintone/mcp-server/issues/263)) ([0773bbd](https://github.com/kintone/mcp-server/commit/0773bbd73772a41b06ff380784ef3905d61539a1))
+* **deps:** update dependency @modelcontextprotocol/sdk to ^1.25.2 ([#251](https://github.com/kintone/mcp-server/issues/251)) ([b6905c2](https://github.com/kintone/mcp-server/commit/b6905c2795883e5741d51b8369cd04b546c40aaf))
+* **deps:** update dependency @modelcontextprotocol/sdk to v1.25.2 [security] ([#249](https://github.com/kintone/mcp-server/issues/249)) ([0a9f410](https://github.com/kintone/mcp-server/commit/0a9f4105cbbbb9e20f4ab86da31320b69bc6a795))
+* **deps:** update dependency file-type to ^21.2.0 ([#234](https://github.com/kintone/mcp-server/issues/234)) ([e4b5560](https://github.com/kintone/mcp-server/commit/e4b5560b7e3967adef229e181e5ee79133cf7870))
+* **deps:** update dependency file-type to ^21.3.0 ([#247](https://github.com/kintone/mcp-server/issues/247)) ([ed5a35b](https://github.com/kintone/mcp-server/commit/ed5a35bad7ce74090c0949e84a01f69ade74581b))
+
 ## [1.3.1](https://github.com/kintone/mcp-server/compare/1.3.0...1.3.1) (2025-12-23)
 
 
