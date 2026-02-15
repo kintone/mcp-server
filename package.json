@@ -90,5 +90,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "mcpName": "io.github.kintone/mcp-server"
 }
