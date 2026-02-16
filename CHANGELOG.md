@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.4](https://github.com/kintone/mcp-server/compare/1.3.3...1.3.4) (2026-02-16)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @modelcontextprotocol/sdk to v1.26.0 [security] ([#287](https://github.com/kintone/mcp-server/issues/287)) ([36bbfdf](https://github.com/kintone/mcp-server/commit/36bbfdffa17819534f692415a4bda07d03e311e6))
+
 ## [1.3.3](https://github.com/kintone/mcp-server/compare/1.3.2...1.3.3) (2026-01-26)
 
 
