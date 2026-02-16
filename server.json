@@ -1,0 +1,104 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "name": "io.github.kintone/mcp-server",
+  "description": "The official MCP Server for kintone",
+  "title": "kintone MCP Server",
+  "website": "https://github.com/kintone/mcp-server",
+  "repository": {
+    "url": "https://github.com/kintone/mcp-server",
+    "source": "github"
+  },
+  "version": "1.2.1",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@kintone/mcp-server",
+      "version": "1.2.1",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "isRequired": true,
+          "format": "string",
+          "description": "The base URL of your Kintone environment (e.g., https://example.cybozu.com)",
+          "isSecret": false,
+          "name": "KINTONE_BASE_URL"
+        },
+        {
+          "isRequired": false,
+          "format": "string",
+          "description": "Your Kintone username for authentication",
+          "isSecret": false,
+          "name": "KINTONE_USERNAME",
+          "default": ""
+        },
+        {
+          "isRequired": false,
+          "format": "string",
+          "description": "Your Kintone password for authentication",
+          "isSecret": true,
+          "name": "KINTONE_PASSWORD",
+          "default": ""
+        },
+        {
+          "format": "string",
+          "isRequired": false,
+          "description": "API token for authentication (comma-separated for multiple tokens, max 9 tokens). If both API token and username & password are provided, username & password will take priority.",
+          "name": "KINTONE_API_TOKEN",
+          "isSecret": true,
+          "default": ""
+        },
+        {
+          "isRequired": false,
+          "format": "string",
+          "description": "Username for Basic authentication",
+          "isSecret": false,
+          "name": "KINTONE_BASIC_AUTH_USERNAME",
+          "default": ""
+        },
+        {
+          "isRequired": false,
+          "format": "string",
+          "description": "Password for Basic authentication",
+          "isSecret": true,
+          "name": "KINTONE_BASIC_AUTH_PASSWORD",
+          "default": ""
+        },
+        {
+          "isRequired": false,
+          "format": "string",
+          "description": "HTTPS proxy URL (e.g., http://proxy.example.com:8080)",
+          "isSecret": false,
+          "name": "HTTPS_PROXY",
+          "default": ""
+        },
+        {
+          "isRequired": false,
+          "format": "string",
+          "description": "Path to PFX client certificate file for authentication",
+          "isSecret": false,
+          "name": "KINTONE_PFX_FILE_PATH",
+          "default": ""
+        },
+        {
+          "isRequired": false,
+          "format": "string",
+          "description": "Password for PFX client certificate file",
+          "isSecret": true,
+          "name": "KINTONE_PFX_FILE_PASSWORD",
+          "default": ""
+        },
+        {
+          "isRequired": false,
+          "format": "string",
+          "description": "Directory path where downloaded files from Kintone will be saved. Required for file download operations.",
+          "isSecret": false,
+          "name": "KINTONE_ATTACHMENTS_DIR",
+          "default": ""
+        }
+      ]
+    }
+  ]
+}
