@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@kintone/rest-api-client':
-        specifier: ^6.1.1
-        version: 6.1.1
+        specifier: ^6.1.2
+        version: 6.1.2
       '@modelcontextprotocol/sdk':
         specifier: ^1.26.0
         version: 1.26.0(zod@3.25.76)
@@ -740,8 +740,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@kintone/rest-api-client@6.1.1':
-    resolution: {integrity: sha512-DJ61P1YcdukPGM0iZJ3myXxfdP8jafLPS8KltLvN3h1DrnEInOqE4gYi+G09UQM6lGpeK/5PDTv1xRX2vnqtmw==}
+  '@kintone/rest-api-client@6.1.2':
+    resolution: {integrity: sha512-/6RMKD/cNg8KOfQDXLOTzKkfG+EAKuU6czgVF5b5c4Na9uFB9BENmdg7e1eV3qNwszfIt7UpONfT3apCiw2R3Q==}
     engines: {node: '>=20'}
 
   '@modelcontextprotocol/inspector-cli@0.18.0':
@@ -3352,10 +3352,6 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
-  qs@6.14.1:
-    resolution: {integrity: sha512-4EK3+xJl8Ts67nLYNwqw/dsFVnCf+qR7RgXSK9jEEm9unao3njwMDdmsdvoKBKHzxd7tCYz5e5M+SnMjdtXGQQ==}
-    engines: {node: '>=0.6'}
-
   qs@6.14.2:
     resolution: {integrity: sha512-V/yCWTTF7VJ9hIh18Ugr2zhJMP01MY7c5kh4J870L7imm6/DIzBsNLTXzMwUA3yZ5b/KBqLx8Kp3uRvd7xSe3Q==}
     engines: {node: '>=0.6'}
@@ -4788,14 +4784,14 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@kintone/rest-api-client@6.1.1':
+  '@kintone/rest-api-client@6.1.2':
     dependencies:
       axios: 1.12.2
       core-js: 3.47.0
       form-data: 4.0.5
       js-base64: 3.7.8
       mime: 3.0.0
-      qs: 6.14.1
+      qs: 6.14.2
     transitivePeerDependencies:
       - debug
 
@@ -7508,10 +7504,6 @@ snapshots:
   proxy-from-env@1.1.0: {}
 
   punycode@2.3.1: {}
-
-  qs@6.14.1:
-    dependencies:
-      side-channel: 1.1.0
 
   qs@6.14.2:
     dependencies:
