@@ -622,7 +622,7 @@ const referenceTableSchema = z.object({
         .describe("Array of field codes to display"),
       sort: z.string().describe("Sort condition"),
       size: z
-        .enum(["5", "10", "20", "30", "40", "50"])
+        .enum(["1", "3", "5", "10", "20", "30", "40", "50"])
         .describe("Number of records to display"),
     })
     .optional()
