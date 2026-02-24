@@ -46,8 +46,8 @@ importers:
         specifier: ^22.19.11
         version: 22.19.11
       doctoc:
-        specifier: ^2.2.1
-        version: 2.2.1
+        specifier: ^2.3.0
+        version: 2.3.0
       eslint:
         specifier: ^9.39.3
         version: 9.39.3(jiti@2.5.1)
@@ -1616,8 +1616,8 @@ packages:
   ajv@8.17.1:
     resolution: {integrity: sha512-B/gBuNg5SiMTrPkC+A2+cW0RszwxYmn6VYxB/inlBStS5nx6xHIt/ehKRhIMhqusl7a8LjQoZnjCs5vhwxOQ1g==}
 
-  anchor-markdown-header@0.6.0:
-    resolution: {integrity: sha512-v7HJMtE1X7wTpNFseRhxsY/pivP4uAJbidVhPT+yhz4i/vV1+qx371IXuV9V7bN6KjFtheLJxqaSm0Y/8neJTA==}
+  anchor-markdown-header@0.8.2:
+    resolution: {integrity: sha512-ix0Hx6ARkHOsQRmt1++ZmjURq4Pr5MGXQJjh0lQ/l5jTpTURn4aqhbZ+AJMpZ/Sd3JiyNwi7KaeiF64OsMGCPg==}
 
   ansi-escapes@4.3.2:
     resolution: {integrity: sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==}
@@ -2012,8 +2012,8 @@ packages:
     resolution: {integrity: sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==}
     engines: {node: '>=0.3.1'}
 
-  doctoc@2.2.1:
-    resolution: {integrity: sha512-qNJ1gsuo7hH40vlXTVVrADm6pdg30bns/Mo7Nv1SxuXSM1bwF9b4xQ40a6EFT/L1cI+Yylbyi8MPI4G4y7XJzQ==}
+  doctoc@2.3.0:
+    resolution: {integrity: sha512-duuDNVnRHE5mFGYlI+oDf1vguML8PIhKnbUCs7iKPHIEdzYhkCldk6MQeX3ZeXQStRtZxGspSHImtgOMQPIS4A==}
     hasBin: true
 
   doctrine@2.1.0:
@@ -2050,11 +2050,11 @@ packages:
   electron-to-chromium@1.5.266:
     resolution: {integrity: sha512-kgWEglXvkEfMH7rxP5OSZZwnaDWT7J9EoZCujhnpLbfi0bbNtRkgdX2E3gt0Uer11c61qCYktB3hwkAS325sJg==}
 
-  emoji-regex@10.1.0:
-    resolution: {integrity: sha512-xAEnNCT3w2Tg6MA7ly6QqYJvEoY1tm9iIjJ3yMKK9JPlWuRHAMoe5iETwQnx3M9TVbFMfsrBgWKR+IsmswwNjg==}
-
   emoji-regex@10.4.0:
     resolution: {integrity: sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==}
+
+  emoji-regex@10.6.0:
+    resolution: {integrity: sha512-toUI84YS5YmxW219erniWD0CIVOo46xGKColeNQRgOzDorgBi1v4D71/OFzgD9GO2UGKIv1C3Sp8DAn0+j5w7A==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -3437,6 +3437,9 @@ packages:
 
   remark-parse@9.0.0:
     resolution: {integrity: sha512-geKatMwSzEXKHuzBNU1z676sGcDcFoChMK38TgdHJNAYfFtsfHDQG7MoJAjs6sgYMqyLduCYWDIWZIxiPeafEw==}
+
+  remove-markdown@0.6.3:
+    resolution: {integrity: sha512-Qvp2p0Q1irE7AaJO7QemJe04HdObHylJrG+q4hszvPlYp7q4EvfINpEIaIEFdB+3XTDp1h6fiyT60ae00gmRow==}
 
   repeat-string@1.6.1:
     resolution: {integrity: sha512-PV0dzCYDNfRi1jCDbJzpW7jNNDRuCOG/jI5ctQcGKt/clZD+YcPS3yIlWuTJMmESC8aevCFmWJy5wjAFgNqN6w==}
@@ -5633,9 +5636,10 @@ snapshots:
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
 
-  anchor-markdown-header@0.6.0:
+  anchor-markdown-header@0.8.2:
     dependencies:
-      emoji-regex: 10.1.0
+      emoji-regex: 10.6.0
+      remove-markdown: 0.6.3
 
   ansi-escapes@4.3.2:
     dependencies:
@@ -6022,10 +6026,10 @@ snapshots:
 
   diff@4.0.2: {}
 
-  doctoc@2.2.1:
+  doctoc@2.3.0:
     dependencies:
       '@textlint/markdown-to-ast': 12.6.1
-      anchor-markdown-header: 0.6.0
+      anchor-markdown-header: 0.8.2
       htmlparser2: 7.2.0
       minimist: 1.2.8
       underscore: 1.13.7
@@ -6071,9 +6075,9 @@ snapshots:
 
   electron-to-chromium@1.5.266: {}
 
-  emoji-regex@10.1.0: {}
-
   emoji-regex@10.4.0: {}
+
+  emoji-regex@10.6.0: {}
 
   emoji-regex@8.0.0: {}
 
@@ -7598,6 +7602,8 @@ snapshots:
       mdast-util-from-markdown: 0.8.5
     transitivePeerDependencies:
       - supports-color
+
+  remove-markdown@0.6.3: {}
 
   repeat-string@1.6.1: {}
 
