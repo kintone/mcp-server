@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.6](https://github.com/kintone/mcp-server/compare/1.3.5...1.3.6) (2026-02-25)
+
+
+### Bug Fixes
+
+* add reference table size of 1 and 3 ([#305](https://github.com/kintone/mcp-server/issues/305)) ([56dd36c](https://github.com/kintone/mcp-server/commit/56dd36ce16b90b1e710c84b36fb117e927c16a3d))
+* **deps:** update dependency @kintone/rest-api-client to ^6.1.2 ([#310](https://github.com/kintone/mcp-server/issues/310)) ([e7f9050](https://github.com/kintone/mcp-server/commit/e7f905031573073a767bf83c2efd5953e6d117ac))
+
 ## [1.3.5](https://github.com/kintone/mcp-server/compare/1.3.4...1.3.5) (2026-02-16)
 
 
