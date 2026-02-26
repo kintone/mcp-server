@@ -1,5 +1,5 @@
 [tools]
-pnpm = "10.29.2"
+pnpm = "10.29.3"
 
 [settings]
 # enable to read .node-version
