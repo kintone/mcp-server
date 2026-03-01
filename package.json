@@ -78,7 +78,7 @@
     "eslint": "^9.39.3",
     "eslint-plugin-package-json": "^0.88.3",
     "globals": "^17.3.0",
-    "npm": "^11.10.1",
+    "npm": "^11.11.0",
     "prettier": "^3.8.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
