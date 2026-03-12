@@ -15,7 +15,7 @@ importers:
         specifier: ^1.26.0
         version: 1.26.0(zod@3.25.76)
       file-type:
-        specifier: ^21.3.0
+        specifier: ^21.3.1
         version: 21.3.1
       https-proxy-agent:
         specifier: ^7.0.6
