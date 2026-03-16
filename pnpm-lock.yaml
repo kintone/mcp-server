@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@kintone/rest-api-client':
-        specifier: ^6.1.2
-        version: 6.1.2
+        specifier: ^6.1.3
+        version: 6.1.3
       '@modelcontextprotocol/sdk':
         specifier: ^1.26.0
         version: 1.26.0(zod@3.25.76)
@@ -748,8 +748,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@kintone/rest-api-client@6.1.2':
-    resolution: {integrity: sha512-/6RMKD/cNg8KOfQDXLOTzKkfG+EAKuU6czgVF5b5c4Na9uFB9BENmdg7e1eV3qNwszfIt7UpONfT3apCiw2R3Q==}
+  '@kintone/rest-api-client@6.1.3':
+    resolution: {integrity: sha512-CqMba2cFPPQ8hh82ZaM9gm43j55U9KIiNVe8vsrslAqyvGVLt4eirpq2nIA7oKmFqAELvUY5mwZ+JkAvXm0ouQ==}
     engines: {node: '>=20'}
 
   '@modelcontextprotocol/inspector-cli@0.18.0':
@@ -4756,7 +4756,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@kintone/rest-api-client@6.1.2':
+  '@kintone/rest-api-client@6.1.3':
     dependencies:
       axios: 1.12.2
       core-js: 3.47.0
