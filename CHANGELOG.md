@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.9](https://github.com/kintone/mcp-server/compare/1.3.8...1.3.9) (2026-03-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency file-type to ^21.3.3 ([#361](https://github.com/kintone/mcp-server/issues/361)) ([c904e5e](https://github.com/kintone/mcp-server/commit/c904e5e577d73d052efce8264411c0d8934d4c8a))
+
 ## [1.3.8](https://github.com/kintone/mcp-server/compare/1.3.7...1.3.8) (2026-03-17)
 
 
