@@ -1,8 +1,12 @@
 import type { ZodError } from "zod/v4";
 import { parse } from "./command-line.js";
-import { PACKAGE_NAME, configSchema } from "./schema.js";
+import { PACKAGE_NAME, configSchema, transportConfigSchema } from "./schema.js";
 import { version } from "../version.js";
-import type { ParsedConfig, ProvidedConfig } from "./types/config.js";
+import type {
+  ParsedConfig,
+  ProvidedConfig,
+  TransportConfig,
+} from "./types/config.js";
 
 export const parseKintoneMcpServerConfig = (): ParsedConfig => {
   const cmdArgs = parse(process.argv);
@@ -109,4 +113,26 @@ const createErrorMessage = (
   }
 
   return errorMessages;
+};
+
+export const parseTransportConfig = (): TransportConfig => {
+  const cmdArgs = parse(process.argv);
+  const result = transportConfigSchema.safeParse({
+    TRANSPORT: cmdArgs.transport,
+    PORT: cmdArgs.port,
+    HOSTNAME: cmdArgs.hostname,
+  });
+
+  if (result.success) {
+    return {
+      transport: result.data.TRANSPORT,
+      port: result.data.PORT,
+      hostname: result.data.HOSTNAME,
+    };
+  }
+
+  const issues = result.error.issues
+    .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
+    .join("\n");
+  throw new Error(`Invalid transport configuration:\n${issues}`);
 };
