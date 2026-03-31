@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.3.10](https://github.com/kintone/mcp-server/compare/1.3.9...1.3.10) (2026-03-31)
+
+
+### Bug Fixes
+
+* **deps:** update dependency file-type to ^21.3.4 ([#372](https://github.com/kintone/mcp-server/issues/372)) ([d7c11a1](https://github.com/kintone/mcp-server/commit/d7c11a1cf43c22bebb1fa04d0159d1036d15e6eb))
+* fix properties parameter schema to require lookup property ([#368](https://github.com/kintone/mcp-server/issues/368)) ([4c00f35](https://github.com/kintone/mcp-server/commit/4c00f35f677876913fef1a705494191fd3733859))
+* remove npm install step from workflow ([#382](https://github.com/kintone/mcp-server/issues/382)) ([1fce642](https://github.com/kintone/mcp-server/commit/1fce6425854dfc5dc6f69e5feef0e41171119bef))
+* update rest-api-client version ([#380](https://github.com/kintone/mcp-server/issues/380)) ([8060707](https://github.com/kintone/mcp-server/commit/8060707c0829de81109d306516a7ee7d329f4ffd))
+
 ## [1.3.9](https://github.com/kintone/mcp-server/compare/1.3.8...1.3.9) (2026-03-24)
 
 
