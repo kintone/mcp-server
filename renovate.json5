@@ -1,5 +1,6 @@
 {
   extends: ["github>cybozu/renovate-config", ":prConcurrentLimitNone"],
+  rangeStrategy: "pin",
   packageRules: [
     {
       description: "Pin Node.js to v22 and automerge",
