@@ -1,5 +1,5 @@
 # build binaries
-FROM node:22@sha256:7e791fc54bd02fc89fd4fb39eb37e5bea753c75679c8022478d81679367d995a AS build
+FROM node:22@sha256:bc3be43a8a3ee021c733dd7f1329dd8ff3d2f21f9835160bfa3c32b147b0115a AS build
 
 COPY . /app
 WORKDIR /app
