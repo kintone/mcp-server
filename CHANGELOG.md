@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.11](https://github.com/kintone/mcp-server/compare/1.3.10...1.3.11) (2026-04-08)
+
+
+### Bug Fixes
+
+* fix dependencies versions ([#385](https://github.com/kintone/mcp-server/issues/385)) ([aaa4ca7](https://github.com/kintone/mcp-server/commit/aaa4ca7bd31af257cb1408ed470f8f95d797ed91))
+
 ## [1.3.10](https://github.com/kintone/mcp-server/compare/1.3.9...1.3.10) (2026-03-31)
 
 
