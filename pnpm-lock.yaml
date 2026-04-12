@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@kintone/rest-api-client':
-        specifier: 6.1.4
-        version: 6.1.4
+        specifier: 6.1.5
+        version: 6.1.5
       '@modelcontextprotocol/sdk':
         specifier: 1.26.0
         version: 1.26.0(zod@3.25.76)
@@ -736,8 +736,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@kintone/rest-api-client@6.1.4':
-    resolution: {integrity: sha512-L3E7zcJW4EWnBWHJqo9xr4S6NrxNJsAvjiTr1zWzT+6wfiHe14sTIfW4kO46XGPigu81pLUcKGyKydG9/tQZZg==}
+  '@kintone/rest-api-client@6.1.5':
+    resolution: {integrity: sha512-4mKrVry5w/yBE1GWRixbkTN1MnnmYkUtu7oWz6Pnb5vqIp/jci47wwilgKC8kec/MhQokwGlBzroEEL3a6wFkg==}
     engines: {node: '>=20'}
 
   '@modelcontextprotocol/inspector-cli@0.18.0':
@@ -1875,9 +1875,6 @@ packages:
   cookie@0.7.2:
     resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
     engines: {node: '>= 0.6'}
-
-  core-js@3.49.0:
-    resolution: {integrity: sha512-es1U2+YTtzpwkxVLwAFdSpaIMyQaq0PBgm3YD1W3Qpsn1NAmO3KSgZfu+oGSWVu6NvLHoHCV/aYcsE5wiB7ALg==}
 
   cors@2.8.6:
     resolution: {integrity: sha512-tJtZBBHA6vjIAaF6EnIaq6laBBP9aq/Y3ouVJjEfoHbRBcHBAHYcMh/w8LDrk2PvIMMq8gmopa5D4V8RmbrxGw==}
@@ -4694,10 +4691,9 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@kintone/rest-api-client@6.1.4':
+  '@kintone/rest-api-client@6.1.5':
     dependencies:
       axios: 1.14.0
-      core-js: 3.49.0
       form-data: 4.0.5
       js-base64: 3.7.8
       mime: 3.0.0
@@ -5795,8 +5791,6 @@ snapshots:
   cookie-signature@1.2.2: {}
 
   cookie@0.7.2: {}
-
-  core-js@3.49.0: {}
 
   cors@2.8.6:
     dependencies:

@@ -60,7 +60,7 @@
     "typecheck": "tsc -noEmit "
   },
   "dependencies": {
-    "@kintone/rest-api-client": "6.1.4",
+    "@kintone/rest-api-client": "6.1.5",
     "@modelcontextprotocol/sdk": "1.26.0",
     "file-type": "21.3.4",
     "https-proxy-agent": "7.0.6",
