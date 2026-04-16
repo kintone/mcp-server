@@ -44,6 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write # To upload release assets
+      id-token: write
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
@@ -51,6 +52,9 @@ jobs:
         with:
           node-version-file: .node-version
           cache: "pnpm"
+      - uses: flatt-security/setup-takumi-guard-npm@v1
+        with:
+          bot-id: ${{ secrets.TAKUMI_GUARD_BOT_ID }}
       - run: pnpm install --frozen-lockfile
       - run: pnpm build:mcpb
       - env:
@@ -76,11 +80,14 @@ jobs:
           node-version-file: .node-version
           cache: "pnpm"
           registry-url: "https://registry.npmjs.org"
+      - uses: flatt-security/setup-takumi-guard-npm@v1
+        with:
+          bot-id: ${{ secrets.TAKUMI_GUARD_BOT_ID }}
       # Ensure npm 11.5.1 or later is installed
       # ref. https://docs.npmjs.com/trusted-publishers#github-actions-configuration
       - run: npm install -g npm@11.5.1
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
-      - run: pnpm publish --access public
+      - run: pnpm publish --access public --registry https://registry.npmjs.org/
         env:
           NPM_CONFIG_PROVENANCE: true

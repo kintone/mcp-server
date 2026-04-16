@@ -14,6 +14,9 @@ concurrency:
 jobs:
   e2e-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     strategy:
       max-parallel: 1
       matrix:
@@ -31,6 +34,11 @@ jobs:
         with:
           node-version-file: .node-version
           cache: "pnpm"
+
+      - name: Setup Takumi Guard
+        uses: flatt-security/setup-takumi-guard-npm@v1
+        with:
+          bot-id: ${{ secrets.TAKUMI_GUARD_BOT_ID }}
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
