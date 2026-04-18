@@ -74,7 +74,7 @@
     "@cybozu/license-manager": "1.4.1",
     "@modelcontextprotocol/inspector": "0.18.0",
     "@types/node": "22.19.17",
-    "doctoc": "2.4.0",
+    "doctoc": "2.4.1",
     "eslint": "9.39.4",
     "eslint-plugin-package-json": "0.88.3",
     "globals": "17.5.0",
