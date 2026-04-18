@@ -46,8 +46,8 @@ importers:
         specifier: 22.19.17
         version: 22.19.17
       doctoc:
-        specifier: 2.4.0
-        version: 2.4.0
+        specifier: 2.4.1
+        version: 2.4.1
       eslint:
         specifier: 9.39.4
         version: 9.39.4(jiti@2.5.1)
@@ -1978,8 +1978,8 @@ packages:
     resolution: {integrity: sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==}
     engines: {node: '>=0.3.1'}
 
-  doctoc@2.4.0:
-    resolution: {integrity: sha512-KlJu2flOc5Eg7D0bMRIrl4zERs5dJ+2gqgB1Mgu/aTsBCSbkUzrMDpOt4IMa4T9pVI7V9frxx5psK5H2WFWv1Q==}
+  doctoc@2.4.1:
+    resolution: {integrity: sha512-vDasMUactdtJCpQgeVleLPlSQCB6RORauWJDwNetJDAhMR5uSuw7IGtHX/6k+E1rHCI4rLrPx8dKSznYCNwehA==}
     hasBin: true
 
   doctrine@2.1.0:
@@ -3773,9 +3773,6 @@ packages:
     hasBin: true
     peerDependencies:
       browserslist: '>= 4.21.0'
-
-  update-section@0.3.3:
-    resolution: {integrity: sha512-BpRZMZpgXLuTiKeiu7kK0nIPwGdyrqrs6EDSaXtjD/aQ2T+qVo9a5hRC3HN3iJjCMxNT/VxoLGQ7E/OzE5ucnw==}
 
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
@@ -5882,14 +5879,13 @@ snapshots:
 
   diff@4.0.2: {}
 
-  doctoc@2.4.0:
+  doctoc@2.4.1:
     dependencies:
       '@textlint/markdown-to-ast': 15.5.2
       anchor-markdown-header: 0.8.3
       htmlparser2: 7.2.0
       loglevel: 1.9.2
       minimist: 1.2.8
-      update-section: 0.3.3
     transitivePeerDependencies:
       - supports-color
 
@@ -7961,8 +7957,6 @@ snapshots:
       browserslist: 4.28.1
       escalade: 3.2.0
       picocolors: 1.1.1
-
-  update-section@0.3.3: {}
 
   uri-js@4.4.1:
     dependencies:
