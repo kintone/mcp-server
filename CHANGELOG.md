@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.13](https://github.com/kintone/mcp-server/compare/1.3.12...1.3.13) (2026-04-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to v6.1.6 ([#406](https://github.com/kintone/mcp-server/issues/406)) ([20ec0bd](https://github.com/kintone/mcp-server/commit/20ec0bdc197d183a21f39fd3a6e611cdeeb48735))
+
 ## [1.3.12](https://github.com/kintone/mcp-server/compare/1.3.11...1.3.12) (2026-04-12)
 
 
