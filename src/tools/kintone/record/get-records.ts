@@ -3,86 +3,101 @@ import { createTool } from "../../factory.js";
 import { recordSchema } from "../../../schema/record/index.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
 
-const filtersSchema = z
-  .object({
-    textContains: z
-      .array(
-        z.object({
-          field: z.string().describe("Field code"),
-          value: z.string().describe("Text to search for"),
-        }),
-      )
+const andFiltersSchema = z.object({
+  textContains: z
+    .array(
+      z.object({
+        field: z.string().describe("Field code"),
+        value: z.string().describe("Text to search for"),
+      }),
+    )
+    .optional()
+    .describe(
+      "Text fields containing specified values (like operator). " +
+        "Supported fields: SINGLE_LINE_TEXT, LINK, MULTI_LINE_TEXT, RICH_TEXT, ATTACHMENT",
+    ),
+  equals: z
+    .array(
+      z.object({
+        field: z.string().describe("Field code"),
+        value: z.string().describe("Exact value to match"),
+      }),
+    )
+    .optional()
+    .describe(
+      "Fields equal to specified values (= operator). " +
+        "Supported fields: RECORD_NUMBER, $id, SINGLE_LINE_TEXT, LINK, NUMBER, CALC, DATE, TIME, DATETIME, CREATED_TIME, UPDATED_TIME, STATUS",
+    ),
+  dateRange: z
+    .array(
+      z.object({
+        field: z.string().describe("Field code"),
+        from: z.string().optional().describe("Start date (YYYY-MM-DD)"),
+        to: z.string().optional().describe("End date (YYYY-MM-DD)"),
+      }),
+    )
+    .optional()
+    .describe(
+      "Date fields within specified range (>=, <= operators). " +
+        "Supported fields: DATE, TIME, DATETIME, CREATED_TIME, UPDATED_TIME",
+    ),
+  numberRange: z
+    .array(
+      z.object({
+        field: z.string().describe("Field code"),
+        min: z.number().optional().describe("Minimum value"),
+        max: z.number().optional().describe("Maximum value"),
+      }),
+    )
+    .optional()
+    .describe(
+      "Number fields within specified range (>=, <= operators). " +
+        "Supported fields: RECORD_NUMBER, $id, NUMBER, CALC",
+    ),
+  inValues: z
+    .array(
+      z.object({
+        field: z.string().describe("Field code"),
+        values: z.array(z.string()).describe("List of values to match"),
+      }),
+    )
+    .optional()
+    .describe(
+      "Fields matching any of the specified values (in operator). " +
+        "Supported fields: RECORD_NUMBER, $id, SINGLE_LINE_TEXT, LINK, NUMBER, CALC, CHECK_BOX, RADIO_BUTTON, DROP_DOWN, MULTI_SELECT, USER_SELECT, ORGANIZATION_SELECT, GROUP_SELECT, STATUS, CREATOR, MODIFIER",
+    ),
+  notInValues: z
+    .array(
+      z.object({
+        field: z.string().describe("Field code"),
+        values: z.array(z.string()).describe("List of values to exclude"),
+      }),
+    )
+    .optional()
+    .describe(
+      "Fields not matching any of the specified values (not in operator). " +
+        "Supported fields: RECORD_NUMBER, $id, SINGLE_LINE_TEXT, LINK, NUMBER, CALC, CHECK_BOX, RADIO_BUTTON, DROP_DOWN, MULTI_SELECT, USER_SELECT, ORGANIZATION_SELECT, GROUP_SELECT, STATUS, CREATOR, MODIFIER",
+    ),
+});
+
+const filtersSchema = andFiltersSchema
+  .extend({
+    orFilters: z
+      .array(andFiltersSchema)
       .optional()
       .describe(
-        "Text fields containing specified values (like operator). " +
-          "Supported fields: SINGLE_LINE_TEXT, LINK, MULTI_LINE_TEXT, RICH_TEXT, ATTACHMENT",
-      ),
-    equals: z
-      .array(
-        z.object({
-          field: z.string().describe("Field code"),
-          value: z.string().describe("Exact value to match"),
-        }),
-      )
-      .optional()
-      .describe(
-        "Fields equal to specified values (= operator). " +
-          "Supported fields: RECORD_NUMBER, $id, SINGLE_LINE_TEXT, LINK, NUMBER, CALC, DATE, TIME, DATETIME, CREATED_TIME, UPDATED_TIME, STATUS",
-      ),
-    dateRange: z
-      .array(
-        z.object({
-          field: z.string().describe("Field code"),
-          from: z.string().optional().describe("Start date (YYYY-MM-DD)"),
-          to: z.string().optional().describe("End date (YYYY-MM-DD)"),
-        }),
-      )
-      .optional()
-      .describe(
-        "Date fields within specified range (>=, <= operators). " +
-          "Supported fields: DATE, TIME, DATETIME, CREATED_TIME, UPDATED_TIME",
-      ),
-    numberRange: z
-      .array(
-        z.object({
-          field: z.string().describe("Field code"),
-          min: z.number().optional().describe("Minimum value"),
-          max: z.number().optional().describe("Maximum value"),
-        }),
-      )
-      .optional()
-      .describe(
-        "Number fields within specified range (>=, <= operators). " +
-          "Supported fields: RECORD_NUMBER, $id, NUMBER, CALC",
-      ),
-    inValues: z
-      .array(
-        z.object({
-          field: z.string().describe("Field code"),
-          values: z.array(z.string()).describe("List of values to match"),
-        }),
-      )
-      .optional()
-      .describe(
-        "Fields matching any of the specified values (in operator). " +
-          "Supported fields: RECORD_NUMBER, $id, SINGLE_LINE_TEXT, LINK, NUMBER, CALC, CHECK_BOX, RADIO_BUTTON, DROP_DOWN, MULTI_SELECT, USER_SELECT, ORGANIZATION_SELECT, GROUP_SELECT, STATUS, CREATOR, MODIFIER",
-      ),
-    notInValues: z
-      .array(
-        z.object({
-          field: z.string().describe("Field code"),
-          values: z.array(z.string()).describe("List of values to exclude"),
-        }),
-      )
-      .optional()
-      .describe(
-        "Fields not matching any of the specified values (not in operator). " +
-          "Supported fields: RECORD_NUMBER, $id, SINGLE_LINE_TEXT, LINK, NUMBER, CALC, CHECK_BOX, RADIO_BUTTON, DROP_DOWN, MULTI_SELECT, USER_SELECT, ORGANIZATION_SELECT, GROUP_SELECT, STATUS, CREATOR, MODIFIER",
+        "OR-combined filter groups. Each group's conditions are AND-combined internally, " +
+          "then all groups are joined with OR. " +
+          "Example: [{textContains:[{field:'V1',value:'acme'}]},{textContains:[{field:'V2',value:'acme'}]}] " +
+          "produces: (V1 like \"acme\" or V2 like \"acme\"). " +
+          "Use this to search the same value across multiple fields.",
       ),
   })
   .optional()
   .describe(
-    "Filter conditions for records. All conditions are AND-combined. NOTE: This MCP server does not currently support OR conditions in filters. Use kintone-get-form-fields tool to discover available field codes and types for an app",
+    "Filter conditions for records. Top-level conditions are AND-combined. " +
+      "Use orFilters for OR logic across fields. " +
+      "Use kintone-get-form-fields tool to discover available field codes and types for an app",
   );
 
 const orderBySchema = z
@@ -128,16 +143,16 @@ const outputSchema = {
   totalCount: z.string().describe("Total count of records matching the query"),
 };
 
-function buildQueryFromFilters(
-  filters: NonNullable<z.infer<typeof filtersSchema>>,
-): string | undefined {
+function buildAndConditions(
+  filters: z.infer<typeof andFiltersSchema>,
+): string[] {
   const conditions: string[] = [];
 
-  filters.textContains?.forEach((f: any) => {
+  filters.textContains?.forEach((f) => {
     conditions.push(`${f.field} like "${f.value}"`);
   });
 
-  filters.equals?.forEach((f: any) => {
+  filters.equals?.forEach((f) => {
     if (typeof f.value === "string") {
       conditions.push(`${f.field} = "${f.value}"`);
     } else {
@@ -145,34 +160,57 @@ function buildQueryFromFilters(
     }
   });
 
-  filters.dateRange?.forEach((f: any) => {
+  filters.dateRange?.forEach((f) => {
     if (f.from) conditions.push(`${f.field} >= "${f.from}"`);
     if (f.to) conditions.push(`${f.field} <= "${f.to}"`);
   });
 
-  filters.numberRange?.forEach((f: any) => {
+  filters.numberRange?.forEach((f) => {
     if (f.min !== undefined) conditions.push(`${f.field} >= ${f.min}`);
     if (f.max !== undefined) conditions.push(`${f.field} <= ${f.max}`);
   });
 
-  filters.inValues?.forEach((f: any) => {
+  filters.inValues?.forEach((f) => {
     const values = f.values.map((v: string) => `"${v}"`).join(", ");
     conditions.push(`${f.field} in (${values})`);
   });
 
-  filters.notInValues?.forEach((f: any) => {
+  filters.notInValues?.forEach((f) => {
     const values = f.values.map((v: string) => `"${v}"`).join(", ");
     conditions.push(`${f.field} not in (${values})`);
   });
 
-  return conditions.length > 0 ? conditions.join(" and ") : undefined;
+  return conditions;
+}
+
+function buildQueryFromFilters(
+  filters: NonNullable<z.infer<typeof filtersSchema>>,
+): string | undefined {
+  const andConditions = buildAndConditions(filters);
+
+  if (filters.orFilters?.length) {
+    const orParts = filters.orFilters
+      .map((group) => buildAndConditions(group))
+      .filter((c) => c.length > 0)
+      .map((c) => (c.length === 1 ? c[0] : `(${c.join(" and ")})`));
+
+    if (orParts.length > 0) {
+      const orClause =
+        orParts.length === 1 ? orParts[0] : `(${orParts.join(" or ")})`;
+      andConditions.push(orClause);
+    }
+  }
+
+  return andConditions.length > 0 ? andConditions.join(" and ") : undefined;
 }
 
 const toolName = "kintone-get-records";
 const toolConfig = {
   title: "Get Records",
   description:
-    "Get multiple records from a kintone app with structured filtering. All filter conditions are AND-combined; OR conditions are not supported by this MCP server. Use kintone-get-form-fields tool first to discover available fields and their types.",
+    "Get multiple records from a kintone app with structured filtering. " +
+    "Top-level filter conditions are AND-combined. Use orFilters for OR logic across fields. " +
+    "Use kintone-get-form-fields tool first to discover available fields and their types.",
   inputSchema,
   outputSchema,
 };
