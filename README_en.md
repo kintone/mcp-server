@@ -177,6 +177,9 @@ Please refer to the documentation of the AI tool you are using for details on ho
 | `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFX file password                                                         | -        |
 | `--proxy`               | `HTTPS_PROXY`                 | HTTPS proxy URL (e.g., `http://proxy.example.com:8080`)                   | -        |
 | `--attachments-dir`     | `KINTONE_ATTACHMENTS_DIR`     | Directory to save downloaded files                                        | -        |
+| `--transport`           | -                             | Transport type (`stdio` or `http`, default: `stdio`)                      | -        |
+| `--port`                | -                             | HTTP server port (default: `3000`)                                        | -        |
+| `--hostname`            | -                             | HTTP server bind address (default: `127.0.0.1`)                           | -        |
 
 ※1: Either `KINTONE_USERNAME` & `KINTONE_PASSWORD` or `KINTONE_API_TOKEN` is required
 
@@ -186,6 +189,52 @@ Please refer to the documentation of the AI tool you are using for details on ho
 - When password authentication and API token authentication are specified simultaneously, password authentication takes priority
 - When both command-line arguments and environment variables are specified, command-line arguments take priority
 - For detailed authentication configuration, refer to the [Authentication Configuration Guide](./docs/en/authentication.md)
+
+### HTTP Transport Mode
+
+You can start the server in Streamable HTTP transport mode by specifying `--transport http`.
+This is useful for sharing the MCP server as a remote server within a team.
+
+To run the MCP server in HTTP mode, use the following command:
+
+```bash
+# Start locally (default: 127.0.0.1:3000)
+kintone-mcp-server \
+  --base-url https://example.cybozu.com \
+  --username (username) \
+  --password (password) \
+  --transport http
+
+# Specify port and hostname
+kintone-mcp-server \
+  --base-url https://example.cybozu.com \
+  --username (username) \
+  --password (password) \
+  --transport http --port 8080 --hostname 0.0.0.0
+```
+
+To run the Docker container in HTTP mode, use the following command:
+
+```bash
+docker run --rm -p 3000:3000 \
+  -e KINTONE_BASE_URL=https://example.cybozu.com \
+  -e KINTONE_USERNAME=(username) \
+  -e KINTONE_PASSWORD=(password) \
+  ghcr.io/kintone/mcp-server:latest --transport http --hostname 0.0.0.0
+```
+
+To connect from an MCP client, use the following command:
+
+```bash
+# Claude Code
+claude mcp add --transport http kintone http://localhost:3000/mcp
+```
+
+**Notes:**
+
+- By default, the server binds to `127.0.0.1`, making it accessible only from the local machine
+- To allow external access, specify `--hostname 0.0.0.0`
+- HTTP mode operates statelessly (each request has an independent session)
 
 ### Proxy Configuration
 
