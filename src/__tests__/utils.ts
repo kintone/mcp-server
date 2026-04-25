@@ -14,6 +14,7 @@ export const createMockClient = (): KintoneRestAPIClient =>
       deleteRecords: vi.fn(),
       updateStatus: vi.fn(),
       updateRecordsStatus: vi.fn(),
+      getRecordComments: vi.fn(),
     },
     app: {
       getApp: vi.fn(),
