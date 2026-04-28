@@ -28,7 +28,4 @@
       automerge: true,
     },
   ],
-  "git-submodules": {
-    enabled: true,
-  },
 }
