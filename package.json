@@ -68,7 +68,7 @@
   },
   "devDependencies": {
     "@anthropic-ai/mcpb": "2.1.2",
-    "@commitlint/cli": "20.5.0",
+    "@commitlint/cli": "20.5.2",
     "@commitlint/config-conventional": "20.5.0",
     "@cybozu/eslint-config": "25.0.1",
     "@cybozu/license-manager": "1.4.1",
