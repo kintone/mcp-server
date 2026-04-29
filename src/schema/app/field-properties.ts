@@ -165,7 +165,8 @@ const subtableFieldProperties = {
         .describe("Query condition to filter lookup results"),
       sort: z.string().optional().describe("Sort order for lookup results"),
     })
-    .optional()
+    .nullish()
+    .transform((val) => (val === null ? undefined : val))
     .describe(
       "Lookup configuration to retrieve values from related app records",
     ),
@@ -194,7 +195,8 @@ const subtableFieldProperties = {
         .optional()
         .describe("Number of records to display per page"),
     })
-    .optional()
+    .nullish()
+    .transform((val) => (val === null ? undefined : val))
     .describe(
       "Configuration for REFERENCE_TABLE field to display related app records",
     ),
@@ -370,7 +372,8 @@ export const baseFieldProperties = {
         .describe("Query condition to filter lookup results"),
       sort: z.string().optional().describe("Sort order for lookup results"),
     })
-    .optional()
+    .nullish()
+    .transform((val) => (val === null ? undefined : val))
     .describe(
       "Lookup configuration to retrieve values from related app records",
     ),
@@ -399,7 +402,8 @@ export const baseFieldProperties = {
         .optional()
         .describe("Number of records to display per page"),
     })
-    .optional()
+    .nullish()
+    .transform((val) => (val === null ? undefined : val))
     .describe(
       "Configuration for REFERENCE_TABLE field to display related app records",
     ),
