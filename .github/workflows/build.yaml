@@ -24,7 +24,7 @@ jobs:
           bot-id: ${{ !github.event.pull_request.head.repo.fork && secrets.TAKUMI_GUARD_BOT_ID || '' }}
       - run: pnpm install --frozen-lockfile
       - run: pnpm build:mcpb
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           path: build/kintone-mcp-server.mcpb
           name: kintone-mcp-server.mcpb
@@ -47,7 +47,7 @@ jobs:
           bot-id: ${{ !github.event.pull_request.head.repo.fork && secrets.TAKUMI_GUARD_BOT_ID || '' }}
       - run: pnpm install --frozen-lockfile
       - run: pnpm pack
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           path: "kintone-mcp-server-*.tgz"
           name: kintone-mcp-server.tgz
