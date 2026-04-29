@@ -209,6 +209,8 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-update-records`          | 複数のレコードを更新                   |
 | `kintone-delete-records`          | 複数のレコードを削除                   |
 | `kintone-update-statuses`         | 複数のレコードのステータスを更新       |
+| `kintone-get-record-comments`     | レコードのコメントを取得               |
+| `kintone-add-record-comment`      | レコードにコメントを追加               |
 | `kintone-add-app`                 | 動作テスト環境にアプリを作成           |
 | `kintone-deploy-app`              | アプリ設定を運用環境へ反映             |
 | `kintone-update-general-settings` | アプリの一般設定を変更                 |

@@ -1,6 +1,8 @@
 import type { Tool } from "./types/tool.js";
+import { addRecordComment } from "./kintone/record/add-record-comment.js";
 import { addRecords } from "./kintone/record/add-records.js";
 import { deleteRecords } from "./kintone/record/delete-records.js";
+import { getRecordComments } from "./kintone/record/get-record-comments.js";
 import { getRecords } from "./kintone/record/get-records.js";
 import { updateRecords } from "./kintone/record/update-records.js";
 import { getApp } from "./kintone/app/get-app.js";
@@ -37,6 +39,8 @@ export const tools: Array<Tool<any, any>> = [
   addRecords,
   deleteRecords,
   getRecords,
+  getRecordComments,
+  addRecordComment,
   updateRecords,
   addApp,
   deployApp,
