@@ -1,0 +1,216 @@
+name: Docker snapshot
+
+# Add the `snapshot/docker` label to a PR to publish the mcp-server container
+# image to ghcr.io. Removing the label or closing the PR cleans up the
+# associated snapshot images automatically.
+
+on:
+  pull_request:
+    types: [labeled, synchronize, unlabeled, closed]
+
+concurrency:
+  group: snapshot-docker-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  # ── snapshot/docker label added / push to a labeled PR → publish ──
+  prepare:
+    name: Prepare snapshot tags
+    runs-on: ubuntu-latest
+    # Skip fork PRs: pull_request from a fork runs with a read-only
+    # GITHUB_TOKEN and no secrets, so docker login / push would fail. Limit
+    # the workflow to PRs from the same repository to avoid noise.
+    if: |
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      (
+        (github.event.action == 'labeled' && github.event.label.name == 'snapshot/docker') ||
+        (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'snapshot/docker'))
+      )
+    outputs:
+      sanitized-branch: ${{ steps.branch.outputs.sanitized-branch }}
+      moving-tag: ${{ steps.branch.outputs.moving-tag }}
+      immutable-tag: ${{ steps.tags.outputs.immutable-tag }}
+      tags-csv: ${{ steps.tags.outputs.tags-csv }}
+      short-sha: ${{ steps.tags.outputs.short-sha }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          sparse-checkout: .github/actions
+
+      - name: Sanitize branch name
+        id: branch
+        uses: ./.github/actions/sanitize-snapshot-branch
+        with:
+          branch: ${{ github.head_ref }}
+
+      - name: Compute tags
+        id: tags
+        env:
+          SANITIZED_BRANCH: ${{ steps.branch.outputs.sanitized-branch }}
+          MOVING_TAG: ${{ steps.branch.outputs.moving-tag }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          TIMESTAMP=$(date -u +%Y%m%d%H%M%S)
+          SHORT_SHA="${HEAD_SHA:0:7}"
+          IMMUTABLE_TAG="${SANITIZED_BRANCH}-${TIMESTAMP}-${SHORT_SHA}"
+          {
+            echo "immutable-tag=${IMMUTABLE_TAG}"
+            echo "tags-csv=${IMMUTABLE_TAG},${MOVING_TAG}"
+            echo "short-sha=${SHORT_SHA}"
+          } >> "$GITHUB_OUTPUT"
+
+  publish:
+    name: Build and publish image
+    needs: prepare
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/reusable-publish-image.yaml
+    with:
+      tags: ${{ needs.prepare.outputs.tags-csv }}
+      push: true
+    secrets: inherit
+
+  comment-publish:
+    name: Comment on PR (publish)
+    needs: [prepare, publish]
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          IMMUTABLE_TAG: ${{ needs.prepare.outputs.immutable-tag }}
+          MOVING_TAG: ${{ needs.prepare.outputs.moving-tag }}
+          SHORT_SHA: ${{ needs.prepare.outputs.short-sha }}
+        run: |
+          set -euo pipefail
+          IMAGE="ghcr.io/kintone/mcp-server"
+          BODY=$(cat <<EOF
+          <!-- snapshot-docker -->
+          ### mcp-server snapshot image published
+
+          | Key | Value |
+          | --- | --- |
+          | Image | \`${IMAGE}\` |
+          | Immutable tag | \`${IMMUTABLE_TAG}\` |
+          | Moving tag | \`${MOVING_TAG}\` |
+          | Commit | ${SHORT_SHA} |
+
+          \`\`\`bash
+          docker pull ${IMAGE}:${MOVING_TAG}
+          \`\`\`
+
+          Pin a specific build:
+          \`\`\`bash
+          docker pull ${IMAGE}:${IMMUTABLE_TAG}
+          \`\`\`
+          EOF
+          )
+
+          COMMENT_ID=$(gh api "repos/${{ github.repository }}/issues/${PR_NUMBER}/comments" \
+            --jq 'map(select(.body | contains("<!-- snapshot-docker -->"))) | .[0].id // empty')
+
+          if [[ -n "$COMMENT_ID" ]]; then
+            gh api -X PATCH "repos/${{ github.repository }}/issues/comments/${COMMENT_ID}" \
+              -f body="${BODY}"
+          else
+            gh pr comment "${PR_NUMBER}" --body "${BODY}"
+          fi
+
+      - name: Summary
+        env:
+          IMMUTABLE_TAG: ${{ needs.prepare.outputs.immutable-tag }}
+          MOVING_TAG: ${{ needs.prepare.outputs.moving-tag }}
+        run: |
+          IMAGE="ghcr.io/kintone/mcp-server"
+          cat >> "$GITHUB_STEP_SUMMARY" <<EOF
+          ## Docker Snapshot Published
+
+          | Key | Value |
+          | --- | --- |
+          | Image | \`${IMAGE}\` |
+          | Immutable tag | \`${IMMUTABLE_TAG}\` |
+          | Moving tag | \`${MOVING_TAG}\` |
+
+          ### Pull
+          \`\`\`bash
+          docker pull ${IMAGE}:${MOVING_TAG}
+          \`\`\`
+          EOF
+
+  # ── label removed / labeled PR closed → cleanup ──
+  cleanup:
+    name: Cleanup branch snapshots
+    # Same fork-PR guard as `prepare` above.
+    if: |
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      (
+        (github.event.action == 'unlabeled' && github.event.label.name == 'snapshot/docker') ||
+        (github.event.action == 'closed' && contains(github.event.pull_request.labels.*.name, 'snapshot/docker'))
+      )
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/reusable-cleanup-docker-snapshots.yaml
+    with:
+      branch: ${{ github.head_ref }}
+    secrets: inherit
+
+  comment-cleanup:
+    name: Comment on PR (cleanup)
+    needs: cleanup
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          DELETED_COUNT: ${{ needs.cleanup.outputs.deleted-count }}
+          MATCHED_COUNT: ${{ needs.cleanup.outputs.matched-count }}
+          MOVING_TAG: ${{ needs.cleanup.outputs.moving-tag }}
+        run: |
+          set -euo pipefail
+          BODY=$(cat <<EOF
+          <!-- snapshot-docker -->
+          ### mcp-server snapshot cleaned up
+
+          | Key | Value |
+          | --- | --- |
+          | Moving tag removed | \`${MOVING_TAG}\` |
+          | Versions matched | ${MATCHED_COUNT} |
+          | Versions deleted | ${DELETED_COUNT} |
+          EOF
+          )
+
+          COMMENT_ID=$(gh api "repos/${{ github.repository }}/issues/${PR_NUMBER}/comments" \
+            --jq 'map(select(.body | contains("<!-- snapshot-docker -->"))) | .[0].id // empty')
+
+          if [[ -n "$COMMENT_ID" ]]; then
+            gh api -X PATCH "repos/${{ github.repository }}/issues/comments/${COMMENT_ID}" \
+              -f body="${BODY}"
+          else
+            gh pr comment "${PR_NUMBER}" --body "${BODY}"
+          fi
+
+  # ── On close, drop the label too ──
+  # Only remove the label after a successful cleanup; otherwise leave it as a
+  # trigger for re-runs.
+  remove-label:
+    name: Remove snapshot/docker label
+    needs: cleanup
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Remove label
+        run: gh pr edit "${{ github.event.pull_request.number }}" --remove-label "snapshot/docker"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}

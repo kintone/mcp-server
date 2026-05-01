@@ -61,6 +61,8 @@ Dockerコンテナイメージ
 docker build -f ./docker/Dockerfile .
 ```
 
+PRから検証用イメージを ghcr.io に publish する場合は [docs/dev/snapshot-publish.md](docs/dev/snapshot-publish.md) を参照してください。
+
 MCPBファイル
 
 ```shell
