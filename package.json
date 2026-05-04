@@ -75,7 +75,7 @@
     "@modelcontextprotocol/inspector": "0.18.0",
     "@types/node": "22.19.17",
     "doctoc": "2.4.1",
-    "eslint": "9.39.4",
+    "eslint": "10.3.0",
     "eslint-plugin-package-json": "0.88.3",
     "globals": "17.6.0",
     "npm": "11.13.0",
