@@ -77,7 +77,7 @@
     "doctoc": "2.4.1",
     "eslint": "9.39.4",
     "eslint-plugin-package-json": "0.88.3",
-    "globals": "17.5.0",
+    "globals": "17.6.0",
     "npm": "11.13.0",
     "prettier": "3.8.3",
     "tsx": "4.21.0",
