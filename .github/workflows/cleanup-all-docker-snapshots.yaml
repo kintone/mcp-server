@@ -1,0 +1,203 @@
+name: Cleanup all docker snapshots
+
+# Bulk cleanup for mcp-server snapshot images. Defaults to dry-run.
+# When `branch` is empty, all snapshot branches are collected from the registry
+# moving tags and from PRs that currently carry the `snapshot/docker` label.
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch name to clean up. Empty = all snapshot branches."
+        required: false
+        type: string
+        default: ""
+      dry-run:
+        description: "List versions and labels but do not delete/remove (default: true)"
+        required: false
+        type: boolean
+        default: true
+
+concurrency:
+  group: cleanup-all-docker-snapshots
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    name: Collect snapshot branches
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+      pull-requests: read
+    outputs:
+      branches: ${{ steps.collect.outputs.branches }}
+      pr-numbers: ${{ steps.collect.outputs.pr-numbers }}
+    steps:
+      - name: Collect branches and PR numbers
+        id: collect
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_BRANCH: ${{ inputs.branch }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          ORG="kintone"
+          PACKAGE_NAME="mcp-server"
+          LABEL="snapshot/docker"
+
+          sanitize() {
+            echo "$1" | sed 's/[^a-zA-Z0-9-]/-/g; s/--*/-/g; s/^-//; s/-$//' | cut -c1-50 | sed 's/-$//'
+          }
+
+          if [[ -n "$INPUT_BRANCH" ]]; then
+            S=$(sanitize "$INPUT_BRANCH")
+            if [[ -z "$S" ]]; then
+              echo "::error::sanitized branch name is empty (input: '${INPUT_BRANCH}')"
+              exit 1
+            fi
+            echo "$S" > /tmp/all-branches.txt
+          else
+            # 1) Branches inferred from existing moving tags in the registry
+            gh api --paginate "/orgs/${ORG}/packages/container/${PACKAGE_NAME}/versions" \
+              --jq '.[] | .metadata.container.tags[]?' \
+              | grep -E '^snapshot-' \
+              | sed 's/^snapshot-//' \
+              > /tmp/branches-from-tags.txt || true
+
+            # 2) Branches from PRs that currently have the label
+            : > /tmp/branches-from-prs.txt
+            gh pr list --repo "$REPO" --label "$LABEL" --state all --limit 1000 \
+              --json headRefName --jq '.[].headRefName' > /tmp/raw-pr-branches.txt 2>/dev/null || true
+            while IFS= read -r b; do
+              [[ -z "$b" ]] && continue
+              sanitize "$b" >> /tmp/branches-from-prs.txt
+            done < /tmp/raw-pr-branches.txt
+
+            # Use `awk 'NF'` to drop blank lines; `grep -v '^$'` exits 1 on no
+            # matches and would fail the step under `set -o pipefail` when
+            # both files are empty (no snapshots, no labeled PRs).
+            cat /tmp/branches-from-tags.txt /tmp/branches-from-prs.txt \
+              | awk 'NF' \
+              | sort -u > /tmp/all-branches.txt
+          fi
+
+          BRANCH_COUNT=$(wc -l < /tmp/all-branches.txt | tr -d ' ')
+          echo "Branches to clean up: ${BRANCH_COUNT}"
+          [[ "$BRANCH_COUNT" -gt 0 ]] && cat /tmp/all-branches.txt || true
+
+          BRANCHES_JSON=$(jq -R -s -c 'split("\n") | map(select(length > 0))' < /tmp/all-branches.txt)
+          echo "branches=${BRANCHES_JSON}" >> "$GITHUB_OUTPUT"
+
+          # Open PRs with the label (label-removal targets).
+          # When `branch` input is given, narrow to PRs whose head ref matches.
+          : > /tmp/open-prs.txt
+          if [[ -n "$INPUT_BRANCH" ]]; then
+            SANITIZED_INPUT=$(sanitize "$INPUT_BRANCH")
+            gh pr list --repo "$REPO" --label "$LABEL" --state open --limit 1000 \
+              --json number,headRefName > /tmp/open-pr-list.json 2>/dev/null || echo '[]' > /tmp/open-pr-list.json
+            while IFS=$'\t' read -r pr_num head_ref; do
+              [[ -z "$pr_num" ]] && continue
+              if [[ "$head_ref" == "$INPUT_BRANCH" ]] || [[ "$(sanitize "$head_ref")" == "$SANITIZED_INPUT" ]]; then
+                echo "$pr_num" >> /tmp/open-prs.txt
+              fi
+            done < <(jq -r '.[] | "\(.number)\t\(.headRefName)"' /tmp/open-pr-list.json)
+          else
+            gh pr list --repo "$REPO" --label "$LABEL" --state open --limit 1000 \
+              --json number --jq '.[].number' > /tmp/open-prs.txt 2>/dev/null || true
+          fi
+          PR_NUMBERS_JSON=$(jq -R -s -c 'split("\n") | map(select(length > 0) | tonumber)' < /tmp/open-prs.txt)
+          echo "pr-numbers=${PR_NUMBERS_JSON}" >> "$GITHUB_OUTPUT"
+
+  cleanup-each:
+    name: Cleanup
+    needs: collect
+    if: needs.collect.outputs.branches != '[]' && needs.collect.outputs.branches != ''
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: ${{ fromJson(needs.collect.outputs.branches) }}
+    uses: ./.github/workflows/reusable-cleanup-docker-snapshots.yaml
+    with:
+      branch: ${{ matrix.branch }}
+      dry-run: ${{ inputs.dry-run }}
+    secrets: inherit
+
+  remove-labels:
+    name: Remove snapshot/docker labels from open PRs
+    needs: [collect, cleanup-each]
+    if: |
+      always() &&
+      needs.collect.result == 'success' &&
+      needs.collect.outputs.pr-numbers != '[]' &&
+      needs.collect.outputs.pr-numbers != ''
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    outputs:
+      removed: ${{ steps.remove.outputs.removed }}
+      failed: ${{ steps.remove.outputs.failed }}
+    steps:
+      - name: Remove labels
+        id: remove
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBERS: ${{ needs.collect.outputs.pr-numbers }}
+          DRY_RUN: ${{ inputs.dry-run }}
+        run: |
+          set -euo pipefail
+          REMOVED=0
+          FAILED=0
+          while IFS= read -r pr; do
+            [[ -z "$pr" ]] && continue
+            if [[ "$DRY_RUN" == "true" ]]; then
+              echo "[DRY RUN] Would remove snapshot/docker label from PR #${pr}"
+              ((REMOVED++)) || true
+            else
+              if gh pr edit "$pr" --remove-label "snapshot/docker"; then
+                echo "Removed label from PR #${pr}"
+                ((REMOVED++)) || true
+              else
+                echo "::warning::Failed to remove label from PR #${pr}"
+                ((FAILED++)) || true
+              fi
+            fi
+          done < <(echo "$PR_NUMBERS" | jq -r '.[]')
+          echo "removed=${REMOVED}" >> "$GITHUB_OUTPUT"
+          echo "failed=${FAILED}" >> "$GITHUB_OUTPUT"
+
+  summary:
+    name: Summary
+    needs: [collect, cleanup-each, remove-labels]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Aggregate
+        env:
+          BRANCHES: ${{ needs.collect.outputs.branches }}
+          PR_NUMBERS: ${{ needs.collect.outputs.pr-numbers }}
+          INPUT_BRANCH: ${{ inputs.branch }}
+          DRY_RUN: ${{ inputs.dry-run }}
+          LABELS_REMOVED: ${{ needs.remove-labels.outputs.removed || '0' }}
+          LABELS_FAILED: ${{ needs.remove-labels.outputs.failed || '0' }}
+        run: |
+          BRANCH_COUNT=$(echo "${BRANCHES:-[]}" | jq 'length')
+          PR_COUNT=$(echo "${PR_NUMBERS:-[]}" | jq 'length')
+          {
+            echo "## Cleanup all docker snapshots"
+            echo
+            echo "| Key | Value |"
+            echo "| --- | --- |"
+            echo "| Input branch | \`${INPUT_BRANCH:-<all>}\` |"
+            echo "| Dry run | ${DRY_RUN} |"
+            echo "| Branches processed | ${BRANCH_COUNT} |"
+            echo "| Open PRs with label | ${PR_COUNT} |"
+            echo "| Labels removed | ${LABELS_REMOVED} |"
+            echo "| Label removal failed | ${LABELS_FAILED} |"
+            echo
+            echo "Per-branch results: see the \`Cleanup\` matrix jobs."
+          } >> "$GITHUB_STEP_SUMMARY"

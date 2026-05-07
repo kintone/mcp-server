@@ -1,0 +1,164 @@
+name: Reusable - Cleanup docker snapshot images
+
+on:
+  workflow_call:
+    inputs:
+      branch:
+        description: "Raw branch name. Deletes all snapshot images for this branch."
+        required: true
+        type: string
+      dry-run:
+        description: "List versions but do not delete"
+        required: false
+        type: boolean
+        default: false
+    outputs:
+      deleted-count:
+        description: "Number of versions deleted"
+        value: ${{ jobs.cleanup.outputs.deleted-count }}
+      failed-count:
+        description: "Number of versions that failed to delete"
+        value: ${{ jobs.cleanup.outputs.failed-count }}
+      matched-count:
+        description: "Number of versions matched"
+        value: ${{ jobs.cleanup.outputs.matched-count }}
+      moving-tag:
+        description: "Moving tag for the branch"
+        value: ${{ jobs.cleanup.outputs.moving-tag }}
+
+jobs:
+  cleanup:
+    name: Cleanup branch snapshots
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      deleted-count: ${{ steps.delete.outputs.deleted-count || '0' }}
+      failed-count: ${{ steps.delete.outputs.failed-count || '0' }}
+      matched-count: ${{ steps.list.outputs.count || '0' }}
+      moving-tag: ${{ steps.branch.outputs.moving-tag }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          sparse-checkout: .github/actions
+
+      - name: Sanitize branch name
+        id: branch
+        uses: ./.github/actions/sanitize-snapshot-branch
+        with:
+          branch: ${{ inputs.branch }}
+
+      - name: List snapshot versions
+        id: list
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MOVING_TAG: ${{ steps.branch.outputs.moving-tag }}
+          SANITIZED_BRANCH: ${{ steps.branch.outputs.sanitized-branch }}
+        run: |
+          set -euo pipefail
+          ORG="kintone"
+          PACKAGE_NAME="mcp-server"
+
+          # immutable tag: <sanitized-branch>-<14 digit ts>-<7 hex sha>.
+          # Use a structural regex to avoid sweeping `feat-foo-bar-...` when
+          # the cleanup target is `feat-foo`.
+          gh api --paginate "/orgs/${ORG}/packages/container/${PACKAGE_NAME}/versions" \
+            --jq '.[] | "\(.id)\t\(.metadata.container.tags | join(","))"' \
+            | awk -F'\t' -v moving="$MOVING_TAG" -v branch="$SANITIZED_BRANCH" '
+              {
+                n = split($2, tags, ",")
+                for (i = 1; i <= n; i++) {
+                  if (tags[i] == moving) { print; next }
+                  if (match(tags[i], "^" branch "-[0-9]{14}-[0-9a-f]{7}$")) { print; next }
+                }
+              }
+            ' > /tmp/target-versions.tsv || true
+
+          COUNT=$(wc -l < /tmp/target-versions.tsv | tr -d ' ')
+          echo "count=${COUNT}" >> "$GITHUB_OUTPUT"
+          echo "Found ${COUNT} version(s) matching moving=${MOVING_TAG} or immutable for branch=${SANITIZED_BRANCH}"
+          if [[ "$COUNT" -gt 0 ]]; then
+            cat /tmp/target-versions.tsv
+          fi
+
+      - name: Delete snapshot versions
+        if: steps.list.outputs.count != '0'
+        id: delete
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ inputs.dry-run }}
+        run: |
+          set -euo pipefail
+          ORG="kintone"
+          PACKAGE_NAME="mcp-server"
+          MAX_RETRIES=3
+          TOTAL=$(wc -l < /tmp/target-versions.tsv | tr -d ' ')
+          CURRENT=0
+          DELETED_COUNT=0
+          FAILED_COUNT=0
+
+          while IFS=$'\t' read -r version_id tags; do
+            ((CURRENT++)) || true
+            echo "::group::[${CURRENT}/${TOTAL}] id=${version_id} tags=${tags}"
+
+            if [[ "$DRY_RUN" == "true" ]]; then
+              echo "[DRY RUN] Would delete id=${version_id} (tags: ${tags})"
+              ((DELETED_COUNT++)) || true
+            else
+              success=false
+              for attempt in $(seq 1 "$MAX_RETRIES"); do
+                if gh api -X DELETE "/orgs/${ORG}/packages/container/${PACKAGE_NAME}/versions/${version_id}" --silent 2>/dev/null; then
+                  echo "Deleted id=${version_id}"
+                  success=true
+                  break
+                fi
+                echo "Attempt ${attempt}/${MAX_RETRIES} failed"
+                sleep 1
+              done
+              if [[ "$success" == "true" ]]; then
+                ((DELETED_COUNT++)) || true
+              else
+                echo "::warning::Failed to delete id=${version_id} (tags: ${tags}) after ${MAX_RETRIES} attempts"
+                ((FAILED_COUNT++)) || true
+              fi
+            fi
+
+            echo "::endgroup::"
+          done < /tmp/target-versions.tsv
+
+          echo "deleted-count=${DELETED_COUNT}" >> "$GITHUB_OUTPUT"
+          echo "failed-count=${FAILED_COUNT}" >> "$GITHUB_OUTPUT"
+
+      - name: Summary
+        if: always()
+        env:
+          BRANCH_NAME: ${{ inputs.branch }}
+          MOVING_TAG: ${{ steps.branch.outputs.moving-tag }}
+          IMMUTABLE_PREFIX: ${{ steps.branch.outputs.immutable-prefix }}
+          DELETED_COUNT: ${{ steps.delete.outputs.deleted-count || '0' }}
+          FAILED_COUNT: ${{ steps.delete.outputs.failed-count || '0' }}
+          MATCHED_COUNT: ${{ steps.list.outputs.count || '0' }}
+          DRY_RUN: ${{ inputs.dry-run }}
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<EOF
+          ## Docker Branch Snapshot Cleanup
+
+          | Key | Value |
+          | --- | --- |
+          | Branch | \`${BRANCH_NAME}\` |
+          | Moving tag | \`${MOVING_TAG}\` |
+          | Immutable prefix | \`${IMMUTABLE_PREFIX}\` |
+          | Versions matched | ${MATCHED_COUNT} |
+          | Versions deleted | ${DELETED_COUNT} |
+          | Versions failed | ${FAILED_COUNT} |
+          | Dry run | ${DRY_RUN} |
+          EOF
+
+      - name: Fail if any deletions failed
+        if: steps.delete.outputs.failed-count != '0' && steps.delete.outputs.failed-count != ''
+        env:
+          FAILED_COUNT: ${{ steps.delete.outputs.failed-count }}
+        run: |
+          echo "::error::${FAILED_COUNT} version(s) failed to delete"
+          exit 1
