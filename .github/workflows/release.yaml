@@ -51,7 +51,6 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version-file: .node-version
-          cache: "pnpm"
       - uses: flatt-security/setup-takumi-guard-npm@9a5d797c2085b6326d3a2985c08e3a114b9b88c1 # v1.1.1
         with:
           bot-id: ${{ !github.event.pull_request.head.repo.fork && secrets.TAKUMI_GUARD_BOT_ID || '' }}
@@ -78,7 +77,6 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version-file: .node-version
-          cache: "pnpm"
           registry-url: "https://registry.npmjs.org"
       - uses: flatt-security/setup-takumi-guard-npm@9a5d797c2085b6326d3a2985c08e3a114b9b88c1 # v1.1.1
         with:
