@@ -34,6 +34,9 @@ export const createMockClient = (): KintoneRestAPIClient =>
     file: {
       downloadFile: vi.fn(),
     },
+    space: {
+      getSpace: vi.fn(),
+    },
   }) as unknown as KintoneRestAPIClient;
 
 export function mockToolCallbackOptions(client?: KintoneRestAPIClient) {

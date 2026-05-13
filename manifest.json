@@ -123,6 +123,10 @@
     {
       "name": "kintone-download-file",
       "description": "Download and save a file from a Kintone"
+    },
+    {
+      "name": "kintone-get-space",
+      "description": "Retrieve a kintone space via the Space REST API (GET /k/v1/space.json). Read-only: returns metadata and portal content such as name, default thread, privacy, HTML body, cover image, widget visibility, member count, attached apps, and who may create apps (EVERYONE vs ADMIN). Requires permission to view the target space. Does not modify any space configuration."
     }
   ],
   "tools_generated": true,
