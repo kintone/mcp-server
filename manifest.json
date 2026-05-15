@@ -123,6 +123,10 @@
     {
       "name": "kintone-download-file",
       "description": "Download and save a file from a Kintone"
+    },
+    {
+      "name": "kintone-search",
+      "description": "Search across kintone for records, spaces, threads, comments, and attachments"
     }
   ],
   "tools_generated": true,
