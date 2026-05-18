@@ -47,18 +47,18 @@ const config = createConfig({
           "See https://github.com/honojs/node-server/blob/main/README.md#license",
       };
     }
-    if (dep.name === "agent-base" && dep.version === "6.0.2") {
+    if (dep.name === "agent-base") {
       return {
         // License text is written in README.md
         licenseText:
-          "See https://github.com/TooTallNate/node-agent-base/blob/6.0.2/README.md#license",
+          "See https://github.com/TooTallNate/node-agent-base#license",
       };
     }
-    if (dep.name === "https-proxy-agent" && dep.version === "5.0.1") {
+    if (dep.name === "https-proxy-agent") {
       return {
         // License text is written in README.md
         licenseText:
-          "See https://github.com/TooTallNate/node-https-proxy-agent/blob/5.0.1/README.md#license",
+          "See https://github.com/TooTallNate/node-https-proxy-agent#license",
       };
     }
     return undefined;
