@@ -25,7 +25,7 @@ const inputSchema = {
     .min(1)
     .max(65535)
     .describe(
-      "Comment text. To mention users/groups/organizations, include '@code' tokens here and list the corresponding entries in 'mentions'.",
+      "Comment text. To mention users/groups/organizations, list the corresponding entries in 'mentions'. Do NOT include '@code' tokens in this text — not even as a greeting prefix such as '@user1 さん、' or '@group_name '. Mentions specified via the 'mentions' parameter are auto-rendered into the posted comment by kintone; any '@code' written in this text becomes a plain-text literal that does not link, does not notify, and visually duplicates the auto-rendered mention.",
     ),
   mentions: z
     .array(mentionSchema)
