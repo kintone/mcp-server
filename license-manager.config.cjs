@@ -49,16 +49,14 @@ const config = createConfig({
     }
     if (dep.name === "agent-base") {
       return {
-        // License text is written in README.md
         licenseText:
-          "See https://github.com/TooTallNate/node-agent-base#license",
+          "See https://github.com/TooTallNate/proxy-agents/blob/main/packages/agent-base/LICENSE",
       };
     }
     if (dep.name === "https-proxy-agent") {
       return {
-        // License text is written in README.md
         licenseText:
-          "See https://github.com/TooTallNate/node-https-proxy-agent#license",
+          "See https://github.com/TooTallNate/proxy-agents/blob/main/packages/https-proxy-agent/LICENSE",
       };
     }
     return undefined;
