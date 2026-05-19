@@ -23,10 +23,7 @@ const callback: KintoneToolCallback<typeof searchInputSchema> = async (
   const { query, ...rest } = input;
   const response = await client.search({
     ...rest,
-    query: query as [
-      { operator: "AND" | "NOT"; keywords: string[] },
-      ...Array<{ operator: "AND" | "NOT"; keywords: string[] }>,
-    ],
+    query,
   });
 
   const result = {

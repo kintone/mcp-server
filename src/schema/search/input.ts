@@ -70,8 +70,8 @@ const searchHitTypeSchema = z.enum([
 
 export const searchInputSchema = {
   query: z
-    .array(searchQuerySchema)
-    .min(1)
+    .tuple([searchQuerySchema])
+    .rest(searchQuerySchema)
     .describe("Search queries (at least 1 required)"),
   types: z
     .array(searchHitTypeSchema)
