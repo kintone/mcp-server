@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const searchQuerySchema = z.object({
-  operator: z.enum(["AND", "NOT"]).describe("Search operator"),
+  operator: z.enum(["AND", "OR", "NOT"]).describe("Search operator (AND: all keywords match, OR: any keyword matches, NOT: keywords do not match)"),
   keywords: z
     .array(z.string())
     .min(1)
