@@ -83,22 +83,93 @@ const attachmentBaseSchema = z.object({
 const hitBase = { url: z.string(), snippets: z.array(z.string()) };
 
 const searchHitSchema = z.union([
-  z.object({ ...hitBase, type: z.literal("RECORD"), record: searchHitRecordSchema }),
-  z.object({ ...hitBase, type: z.literal("RECORD_COMMENT"), recordComment: searchHitRecordCommentSchema }),
-  z.object({ ...hitBase, type: z.literal("SPACE"), space: searchHitSpaceSchema }),
-  z.object({ ...hitBase, type: z.literal("THREAD"), thread: searchHitThreadSchema }),
-  z.object({ ...hitBase, type: z.literal("THREAD_COMMENT"), threadComment: searchHitThreadCommentSchema }),
-  z.object({ ...hitBase, type: z.literal("PEOPLE_COMMENT"), peopleComment: searchHitPeopleCommentSchema }),
-  z.object({ ...hitBase, type: z.literal("MESSAGE_COMMENT"), messageComment: searchHitMessageCommentSchema }),
-  z.object({ ...hitBase, type: z.literal("ATTACHMENT"), attachment: attachmentBaseSchema.extend({ attachedTo: z.literal("RECORD") }), record: searchHitRecordSchema }),
-  z.object({ ...hitBase, type: z.literal("ATTACHMENT"), attachment: attachmentBaseSchema.extend({ attachedTo: z.literal("SPACE") }), space: searchHitSpaceSchema }),
-  z.object({ ...hitBase, type: z.literal("ATTACHMENT"), attachment: attachmentBaseSchema.extend({ attachedTo: z.literal("THREAD") }), thread: searchHitThreadSchema }),
-  z.object({ ...hitBase, type: z.literal("ATTACHMENT"), attachment: attachmentBaseSchema.extend({ attachedTo: z.literal("THREAD_COMMENT") }), threadComment: searchHitThreadCommentSchema }),
-  z.object({ ...hitBase, type: z.literal("ATTACHMENT"), attachment: attachmentBaseSchema.extend({ attachedTo: z.literal("PEOPLE_COMMENT") }), peopleComment: searchHitPeopleCommentSchema }),
-  z.object({ ...hitBase, type: z.literal("ATTACHMENT"), attachment: attachmentBaseSchema.extend({ attachedTo: z.literal("MESSAGE_COMMENT") }), messageComment: searchHitMessageCommentSchema }),
+  z.object({
+    ...hitBase,
+    type: z.literal("RECORD"),
+    record: searchHitRecordSchema,
+  }),
+  z.object({
+    ...hitBase,
+    type: z.literal("RECORD_COMMENT"),
+    recordComment: searchHitRecordCommentSchema,
+  }),
+  z.object({
+    ...hitBase,
+    type: z.literal("SPACE"),
+    space: searchHitSpaceSchema,
+  }),
+  z.object({
+    ...hitBase,
+    type: z.literal("THREAD"),
+    thread: searchHitThreadSchema,
+  }),
+  z.object({
+    ...hitBase,
+    type: z.literal("THREAD_COMMENT"),
+    threadComment: searchHitThreadCommentSchema,
+  }),
+  z.object({
+    ...hitBase,
+    type: z.literal("PEOPLE_COMMENT"),
+    peopleComment: searchHitPeopleCommentSchema,
+  }),
+  z.object({
+    ...hitBase,
+    type: z.literal("MESSAGE_COMMENT"),
+    messageComment: searchHitMessageCommentSchema,
+  }),
+  z.object({
+    ...hitBase,
+    type: z.literal("ATTACHMENT"),
+    attachment: attachmentBaseSchema.extend({
+      attachedTo: z.literal("RECORD"),
+    }),
+    record: searchHitRecordSchema,
+  }),
+  z.object({
+    ...hitBase,
+    type: z.literal("ATTACHMENT"),
+    attachment: attachmentBaseSchema.extend({ attachedTo: z.literal("SPACE") }),
+    space: searchHitSpaceSchema,
+  }),
+  z.object({
+    ...hitBase,
+    type: z.literal("ATTACHMENT"),
+    attachment: attachmentBaseSchema.extend({
+      attachedTo: z.literal("THREAD"),
+    }),
+    thread: searchHitThreadSchema,
+  }),
+  z.object({
+    ...hitBase,
+    type: z.literal("ATTACHMENT"),
+    attachment: attachmentBaseSchema.extend({
+      attachedTo: z.literal("THREAD_COMMENT"),
+    }),
+    threadComment: searchHitThreadCommentSchema,
+  }),
+  z.object({
+    ...hitBase,
+    type: z.literal("ATTACHMENT"),
+    attachment: attachmentBaseSchema.extend({
+      attachedTo: z.literal("PEOPLE_COMMENT"),
+    }),
+    peopleComment: searchHitPeopleCommentSchema,
+  }),
+  z.object({
+    ...hitBase,
+    type: z.literal("ATTACHMENT"),
+    attachment: attachmentBaseSchema.extend({
+      attachedTo: z.literal("MESSAGE_COMMENT"),
+    }),
+    messageComment: searchHitMessageCommentSchema,
+  }),
 ]);
 
 export const searchOutputSchema = {
   hits: z.array(searchHitSchema).describe("Array of search hits"),
-  nextPageToken: z.string().nullable().describe("Token for fetching the next page of results"),
+  nextPageToken: z
+    .string()
+    .nullable()
+    .describe("Token for fetching the next page of results"),
 };

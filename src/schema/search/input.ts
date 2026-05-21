@@ -1,7 +1,11 @@
 import { z } from "zod";
 
 const searchQuerySchema = z.object({
-  operator: z.enum(["AND", "OR", "NOT"]).describe("Search operator (AND: all keywords match, OR: any keyword matches, NOT: keywords do not match)"),
+  operator: z
+    .enum(["AND", "OR", "NOT"])
+    .describe(
+      "Search operator (AND: all keywords match, OR: any keyword matches, NOT: keywords do not match)",
+    ),
   keywords: z
     .array(z.string())
     .min(1)
@@ -102,6 +106,17 @@ export const searchInputSchema = {
     .nullable()
     .describe("Filter by creator codes"),
   sort: searchSortSchema.optional().describe("Sort configuration"),
-  limit: z.number().min(1).max(20).default(20).describe("Maximum number of results to return"),
-  pageToken: z.string().optional().nullable().describe("Token for pagination. If undefined, null, or empty string, returns the first page. For subsequent pages, specify the nextPageToken from the previous response."),
+  limit: z
+    .number()
+    .min(1)
+    .max(20)
+    .default(20)
+    .describe("Maximum number of results to return"),
+  pageToken: z
+    .string()
+    .optional()
+    .nullable()
+    .describe(
+      "Token for pagination. If undefined, null, or empty string, returns the first page. For subsequent pages, specify the nextPageToken from the previous response.",
+    ),
 };
