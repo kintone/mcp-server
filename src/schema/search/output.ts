@@ -14,7 +14,7 @@ const searchHitRecordSchema = z.object({
   recordTitle: z.string(),
   createdAt: z.string(),
   creator: searchUserSchema,
-  matchedFields: z.array(z.object({ code: z.string(), name: z.string() })),
+  matchedFields: z.array(z.object({ code: z.string(), label: z.string() })),
   spaceId: idSchema.optional(),
   spaceName: z.string().optional(),
 });
