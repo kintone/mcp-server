@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.14](https://github.com/kintone/mcp-server/compare/1.3.13...1.3.14) (2026-05-19)
+
+
+### Bug Fixes
+
+* **ci:** keep working tree clean when Takumi Guard configures registry ([#437](https://github.com/kintone/mcp-server/issues/437)) ([1e724be](https://github.com/kintone/mcp-server/commit/1e724bece399ed5e31ce8ef471fe2705fcb7623f))
+* **deps:** update dependency file-type to v22 ([#379](https://github.com/kintone/mcp-server/issues/379)) ([131ae25](https://github.com/kintone/mcp-server/commit/131ae2537dea4282996d0338e2f6bfa46efefcc7))
+
 ## [1.3.13](https://github.com/kintone/mcp-server/compare/1.3.12...1.3.13) (2026-04-20)
 
 
