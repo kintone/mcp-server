@@ -222,7 +222,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-deploy-app`              | Deploy app settings to production                  |
 | `kintone-update-general-settings` | Update app general settings                        |
 | `kintone-download-file`           | Download and save a file from an attachment field  |
-| `kintone-add-space-from-template` | Create a new kintone space from a space template                         |
+| `kintone-add-space-from-template` | Create a new kintone space from a space template   |
 
 ## Documentation
 

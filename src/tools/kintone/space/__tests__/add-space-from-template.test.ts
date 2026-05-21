@@ -110,6 +110,7 @@ describe("add-space-from-template tool", () => {
     it("should call addSpaceFromTemplate with the parsed input and return structured content", async () => {
       mockAddSpaceFromTemplate.mockResolvedValueOnce({ id: "200" });
 
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const input = z.object(addSpaceFromTemplate.config.inputSchema!).parse({
         id: "100",
         name: "From Template",
