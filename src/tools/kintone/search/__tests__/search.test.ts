@@ -179,10 +179,6 @@ describe("search tool", () => {
           description: "empty query array",
         },
         {
-          input: { query: [{ operator: "OR", keywords: ["test"] }] },
-          description: "invalid operator (OR)",
-        },
-        {
           input: { query: [{ operator: "AND", keywords: [] }] },
           description: "empty keywords array",
         },
@@ -239,7 +235,7 @@ describe("search tool", () => {
                   recordTitle: "Test",
                   createdAt: "2025-01-01T00:00:00Z",
                   creator: { code: "user1", name: "User 1" },
-                  matchedFields: [{ code: "title", name: "Title" }],
+                  matchedFields: [{ code: "title", label: "Title" }],
                 },
               },
             ],

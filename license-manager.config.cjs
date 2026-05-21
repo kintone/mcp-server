@@ -47,6 +47,20 @@ const config = createConfig({
           "See https://github.com/honojs/node-server/blob/main/README.md#license",
       };
     }
+    if (dep.name === "agent-base" && dep.version === "6.0.2") {
+      return {
+        // LICENSE file is not included in this version of the package
+        licenseText:
+          "See https://github.com/TooTallNate/proxy-agents/blob/main/packages/agent-base/LICENSE",
+      };
+    }
+    if (dep.name === "https-proxy-agent" && dep.version === "5.0.1") {
+      return {
+        // LICENSE file is not included in this version of the package
+        licenseText:
+          "See https://github.com/TooTallNate/proxy-agents/blob/main/packages/https-proxy-agent/LICENSE",
+      };
+    }
     return undefined;
   },
   packageManager: "pnpm",
