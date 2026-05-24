@@ -58,8 +58,8 @@ importers:
         specifier: 17.6.0
         version: 17.6.0
       npm:
-        specifier: 11.14.1
-        version: 11.14.1
+        specifier: 11.15.0
+        version: 11.15.0
       prettier:
         specifier: 3.8.3
         version: 3.8.3
@@ -3027,8 +3027,8 @@ packages:
   node-releases@2.0.27:
     resolution: {integrity: sha512-nmh3lCkYZ3grZvqcCH+fjmQ7X+H0OeZgP40OierEaAptX4XofMh5kwNbWh7lBduUzCcV/8kZ+NDLCwm2iorIlA==}
 
-  npm@11.14.1:
-    resolution: {integrity: sha512-aopNZ0eEl6LbxoFcrXLmTEPzNBNxfiQnVgR9RmJBqzm+5h5pFoOmRljpRJbsXxocBeSl7GLcx3MoDf2UlEOjZw==}
+  npm@11.15.0:
+    resolution: {integrity: sha512-+k0tk7lRnpMUPnC7kTuU/yrV/mnFoPhJQ75VfLtZ6fwbzOVXaPsTE/Il9Pn1DHi482byMyqkHv/XsQ76mNjXLw==}
     engines: {node: ^20.17.0 || >=22.9.0}
     hasBin: true
     bundledDependencies:
@@ -7126,7 +7126,7 @@ snapshots:
 
   node-releases@2.0.27: {}
 
-  npm@11.14.1: {}
+  npm@11.15.0: {}
 
   object-assign@4.1.1: {}
 
