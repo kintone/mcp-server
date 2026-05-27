@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/kintone/mcp-server/compare/1.3.15...1.4.0) (2026-05-27)
+
+
+### Features
+
+* add search tool ([#440](https://github.com/kintone/mcp-server/issues/440)) ([011538e](https://github.com/kintone/mcp-server/commit/011538e98c8f74ea04fcdb0cd44df61a32332370))
+
 ## [1.3.15](https://github.com/kintone/mcp-server/compare/1.3.14...1.3.15) (2026-05-24)
 
 
