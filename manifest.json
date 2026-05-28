@@ -105,6 +105,14 @@
       "description": "Delete multiple records from a Kintone app"
     },
     {
+      "name": "kintone-get-record-comments",
+      "description": "Get comments posted on a single kintone record"
+    },
+    {
+      "name": "kintone-add-record-comment",
+      "description": "Add a single comment to a kintone record"
+    },
+    {
       "name": "kintone-update-statuses",
       "description": "Update status of multiple records in a Kintone app"
     },
