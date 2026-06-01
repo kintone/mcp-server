@@ -99,7 +99,6 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
   { client },
 ) => {
   const settings = await client.app.getAppSettings({ app, lang, preview });
-  console.log(settings);
 
   const result = {
     name: settings.name,
