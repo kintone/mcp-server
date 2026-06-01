@@ -40,6 +40,7 @@ kintoneの公式ローカルMCPサーバーです。
 - [ドキュメント](#%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88)
 - [使用上の注意](#%E4%BD%BF%E7%94%A8%E4%B8%8A%E3%81%AE%E6%B3%A8%E6%84%8F)
   - [`kintone-download-file`ツールの注意点](#kintone-download-file%E3%83%84%E3%83%BC%E3%83%AB%E3%81%AE%E6%B3%A8%E6%84%8F%E7%82%B9)
+  - [`kintone-search`ツールの注意点](#kintone-search%E3%83%84%E3%83%BC%E3%83%AB%E3%81%AE%E6%B3%A8%E6%84%8F%E7%82%B9)
 - [制限事項](#%E5%88%B6%E9%99%90%E4%BA%8B%E9%A0%85)
   - [レコード操作の制限](#%E3%83%AC%E3%82%B3%E3%83%BC%E3%83%89%E6%93%8D%E4%BD%9C%E3%81%AE%E5%88%B6%E9%99%90)
   - [その他の制限](#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E5%88%B6%E9%99%90)
@@ -215,6 +216,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-deploy-app`              | アプリ設定を運用環境へ反映             |
 | `kintone-update-general-settings` | アプリの一般設定を変更                 |
 | `kintone-download-file`           | 添付ファイルフィールドのファイルを保存 |
+| `kintone-search`                  | kintone全体を検索                      |
 
 ## ドキュメント
 
@@ -227,6 +229,10 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 - ダウンロードしたファイルは、`--attachments-dir`または`KINTONE_ATTACHMENTS_DIR`で指定したディレクトリに保存されます。
 - `--attachments-dir`または`KINTONE_ATTACHMENTS_DIR`を指定しない場合はツール実行時にエラーになります。
 - `--attachments-dir`または`KINTONE_ATTACHMENTS_DIR`に存在しないディレクトリを指定した場合は、ディレクトリを新規作成してからそこに保存されます。
+
+### `kintone-search`ツールの注意点
+
+- `kintone-search`は[APIラボの検索API](https://github.com/kintone/js-sdk/blob/main/packages/rest-api-client/docs/search.md)を利用しています。そのため、ツールの挙動は予告なく変更される場合があります。
 
 ## 制限事項
 

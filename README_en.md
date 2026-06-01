@@ -35,6 +35,7 @@ The official local MCP server for Kintone.
 - [Documentation](#documentation)
 - [Notes](#notes)
   - [`kintone-download-file` Tool](#kintone-download-file-tool)
+  - [`kintone-search` Tool](#kintone-search-tool)
 - [Limitations](#limitations)
   - [Record Operation Limitations](#record-operation-limitations)
   - [Other Limitations](#other-limitations)
@@ -224,6 +225,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-deploy-app`              | Deploy app settings to production                  |
 | `kintone-update-general-settings` | Update app general settings                        |
 | `kintone-download-file`           | Download and save a file from an attachment field  |
+| `kintone-search`                  | Search across all of kintone                       |
 
 ## Documentation
 
@@ -236,6 +238,10 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 - Downloaded files are saved to the directory specified by `--attachments-dir` or `KINTONE_ATTACHMENTS_DIR`.
 - If `--attachments-dir` or `KINTONE_ATTACHMENTS_DIR` is not specified, an error will occur when executing the tool.
 - If a non-existent directory is specified for `--attachments-dir` or `KINTONE_ATTACHMENTS_DIR`, a new directory will be created and files will be saved there.
+
+### `kintone-search` Tool
+
+- `kintone-search` uses the [API Lab search API](https://github.com/kintone/js-sdk/blob/main/packages/rest-api-client/docs/search.md). As a result, the tool's behavior may change without notice.
 
 ## Limitations
 
