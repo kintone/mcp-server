@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.5.0](https://github.com/kintone/mcp-server/compare/1.4.0...1.5.0) (2026-06-02)
+
+
+### Features
+
+* add kintone record comment tools (get/add) ([#414](https://github.com/kintone/mcp-server/issues/414)) ([d2ae555](https://github.com/kintone/mcp-server/commit/d2ae55519c1312e38fe4666f853086b44458fadc))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @modelcontextprotocol/sdk to v1.29.0 ([#317](https://github.com/kintone/mcp-server/issues/317)) ([1688179](https://github.com/kintone/mcp-server/commit/168817913c7a7927dc7304cce949e0efbcaa6793))
+* remove stray console.log polluting MCP stdio stream ([#463](https://github.com/kintone/mcp-server/issues/463)) ([ab15d5a](https://github.com/kintone/mcp-server/commit/ab15d5a9525d45e64d2e8396d0ae568a20671d2f))
+* use --node-linker=hoisted instead of --shamefully-hoist ([#459](https://github.com/kintone/mcp-server/issues/459)) ([a276b1c](https://github.com/kintone/mcp-server/commit/a276b1ca4939b68f858a2ddbb2186efccb57adc2))
+
 ## [1.4.0](https://github.com/kintone/mcp-server/compare/1.3.15...1.4.0) (2026-05-27)
 
 
