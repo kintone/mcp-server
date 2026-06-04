@@ -22,6 +22,7 @@ import { deployApp } from "./kintone/app/deploy-app.js";
 import { updateGeneralSettings } from "./kintone/app/update-general-settings.js";
 import { downloadFile } from "./kintone/file/download-file.js";
 import { search } from "./kintone/search/search.js";
+import { updateSpace } from "./kintone/space/update-space.js";
 
 export { createToolCallback } from "./factory.js";
 export const tools: Array<Tool<any, any>> = [
@@ -48,4 +49,5 @@ export const tools: Array<Tool<any, any>> = [
   updateGeneralSettings,
   downloadFile,
   search,
+  updateSpace,
 ] as const;
