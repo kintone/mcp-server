@@ -64,7 +64,7 @@
     "@modelcontextprotocol/sdk": "1.29.0",
     "file-type": "22.0.1",
     "https-proxy-agent": "7.0.6",
-    "zod": "3.25.76"
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@anthropic-ai/mcpb": "2.1.2",
