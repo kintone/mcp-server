@@ -218,6 +218,8 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-update-records`          | Update multiple records                            |
 | `kintone-delete-records`          | Delete multiple records                            |
 | `kintone-update-statuses`         | Update status of multiple records                  |
+| `kintone-get-record-comments`     | Get comments on a record                           |
+| `kintone-add-record-comment`      | Add a comment to a record                          |
 | `kintone-add-app`                 | Create app in pre-live environment                 |
 | `kintone-deploy-app`              | Deploy app settings to production                  |
 | `kintone-update-general-settings` | Update app general settings                        |

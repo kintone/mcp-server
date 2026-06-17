@@ -9,7 +9,7 @@ type FilterRule = {
 const filterRules: FilterRule[] = [
   {
     condition: (condition: Condition) => condition.isApiTokenAuth,
-    excludeTools: ["kintone-get-apps", "kintone-add-app", "kintone-get-space"],
+    excludeTools: ["kintone-get-apps", "kintone-add-app", "kintone-search", "kintone-get-space"],
   },
 ];
 

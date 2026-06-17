@@ -1,5 +1,41 @@
 # Changelog
 
+## [1.5.0](https://github.com/kintone/mcp-server/compare/1.4.0...1.5.0) (2026-06-02)
+
+
+### Features
+
+* add kintone record comment tools (get/add) ([#414](https://github.com/kintone/mcp-server/issues/414)) ([d2ae555](https://github.com/kintone/mcp-server/commit/d2ae55519c1312e38fe4666f853086b44458fadc))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @modelcontextprotocol/sdk to v1.29.0 ([#317](https://github.com/kintone/mcp-server/issues/317)) ([1688179](https://github.com/kintone/mcp-server/commit/168817913c7a7927dc7304cce949e0efbcaa6793))
+* remove stray console.log polluting MCP stdio stream ([#463](https://github.com/kintone/mcp-server/issues/463)) ([ab15d5a](https://github.com/kintone/mcp-server/commit/ab15d5a9525d45e64d2e8396d0ae568a20671d2f))
+* use --node-linker=hoisted instead of --shamefully-hoist ([#459](https://github.com/kintone/mcp-server/issues/459)) ([a276b1c](https://github.com/kintone/mcp-server/commit/a276b1ca4939b68f858a2ddbb2186efccb57adc2))
+
+## [1.4.0](https://github.com/kintone/mcp-server/compare/1.3.15...1.4.0) (2026-05-27)
+
+
+### Features
+
+* add search tool ([#440](https://github.com/kintone/mcp-server/issues/440)) ([011538e](https://github.com/kintone/mcp-server/commit/011538e98c8f74ea04fcdb0cd44df61a32332370))
+
+## [1.3.15](https://github.com/kintone/mcp-server/compare/1.3.14...1.3.15) (2026-05-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @kintone/rest-api-client to v6.1.7 ([#444](https://github.com/kintone/mcp-server/issues/444)) ([2eb757d](https://github.com/kintone/mcp-server/commit/2eb757de4a0e58fe4b8d23c487d63ba008bc05cb))
+
+## [1.3.14](https://github.com/kintone/mcp-server/compare/1.3.13...1.3.14) (2026-05-19)
+
+
+### Bug Fixes
+
+* **ci:** keep working tree clean when Takumi Guard configures registry ([#437](https://github.com/kintone/mcp-server/issues/437)) ([1e724be](https://github.com/kintone/mcp-server/commit/1e724bece399ed5e31ce8ef471fe2705fcb7623f))
+* **deps:** update dependency file-type to v22 ([#379](https://github.com/kintone/mcp-server/issues/379)) ([131ae25](https://github.com/kintone/mcp-server/commit/131ae2537dea4282996d0338e2f6bfa46efefcc7))
+
 ## [1.3.13](https://github.com/kintone/mcp-server/compare/1.3.12...1.3.13) (2026-04-20)
 
 

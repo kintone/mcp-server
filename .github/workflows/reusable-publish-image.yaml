@@ -11,6 +11,15 @@ on:
         required: false
         type: boolean
         default: true
+      ref:
+        description: >
+          Git ref (branch, tag, or SHA) to build. Defaults to the event's
+          default checkout (GITHUB_SHA). On pull_request events that is the
+          merge commit, so pass the PR head SHA explicitly to build the exact
+          PR HEAD.
+        required: false
+        type: string
+        default: ""
 
 defaults:
   run:
@@ -51,6 +60,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.ref }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
