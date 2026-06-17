@@ -85,6 +85,7 @@ jobs:
       - name: Comment
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           IMMUTABLE_TAG: ${{ needs.prepare.outputs.immutable-tag }}
           MOVING_TAG: ${{ needs.prepare.outputs.moving-tag }}
@@ -173,6 +174,7 @@ jobs:
       - name: Comment
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           DELETED_COUNT: ${{ needs.cleanup.outputs.deleted-count }}
           MATCHED_COUNT: ${{ needs.cleanup.outputs.matched-count }}
