@@ -215,6 +215,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-deploy-app`              | アプリ設定を運用環境へ反映             |
 | `kintone-update-general-settings` | アプリの一般設定を変更                 |
 | `kintone-download-file`           | 添付ファイルフィールドのファイルを保存 |
+| `kintone-get-space`               | スペースの情報を取得                   |
 
 ## ドキュメント
 
