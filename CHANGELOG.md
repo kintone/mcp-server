@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/kintone/mcp-server/compare/1.5.0...1.6.0) (2026-06-23)
+
+
+### Features
+
+* add get space tool ([#435](https://github.com/kintone/mcp-server/issues/435)) ([24fe1a9](https://github.com/kintone/mcp-server/commit/24fe1a9a64e2cacd2dfd8e58baf6f8c5f36faa90))
+
 ## [1.5.0](https://github.com/kintone/mcp-server/compare/1.4.0...1.5.0) (2026-06-02)
 
 
