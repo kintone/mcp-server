@@ -1,6 +1,6 @@
 {
   "name": "@kintone/mcp-server",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "The official MCP Server for kintone",
   "keywords": [
     "kintone",
@@ -73,18 +73,18 @@
     "@cybozu/eslint-config": "25.0.1",
     "@cybozu/license-manager": "1.4.1",
     "@modelcontextprotocol/inspector": "0.18.0",
-    "@types/node": "22.19.19",
-    "doctoc": "2.4.1",
+    "@types/node": "22.20.0",
+    "doctoc": "2.5.0",
     "eslint": "9.39.4",
     "eslint-plugin-package-json": "0.88.3",
     "globals": "17.6.0",
-    "npm": "11.16.0",
-    "prettier": "3.8.3",
+    "npm": "11.17.0",
+    "prettier": "3.8.4",
     "tsx": "4.22.4",
     "typescript": "5.9.3",
-    "vitest": "4.1.7"
+    "vitest": "4.1.9"
   },
-  "packageManager": "pnpm@10.34.1+sha512.b58fbde6dca66a929538021581f648b4570b6ca19b18e7cbd7f2c07a7b24454155388dacdf08f2af3678e88a6d1fe04f9d609df24bf51735a060ea041b374ab7",
+  "packageManager": "pnpm@10.34.4+sha512.8768be55200ae3f2226b6527fcca2687e14bc4e5f12d7721a0f25da3df47915177058648db4177baf348120fa0ba2752d8d8d93f6beaf1fe64ae18da8de961af",
   "engines": {
     "node": ">= 22"
   },

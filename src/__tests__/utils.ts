@@ -38,6 +38,7 @@ export const createMockClient = (): KintoneRestAPIClient =>
     },
     space: {
       updateSpace: vi.fn(),
+      getSpace: vi.fn(),
     },
     search: vi.fn(),
   }) as unknown as KintoneRestAPIClient;

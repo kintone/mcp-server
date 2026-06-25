@@ -216,6 +216,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-update-general-settings` | アプリの一般設定を変更                 |
 | `kintone-download-file`           | 添付ファイルフィールドのファイルを保存 |
 | `kintone-update-space`            | スペースの設定を更新                   |
+| `kintone-get-space`               | スペースの情報を取得                   |
 
 ## ドキュメント
 
