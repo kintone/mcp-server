@@ -55,8 +55,8 @@ importers:
         specifier: 0.88.3
         version: 0.88.3(@types/estree@1.0.8)(eslint@9.39.4(jiti@2.5.1))(jsonc-eslint-parser@2.4.0)
       globals:
-        specifier: 17.6.0
-        version: 17.6.0
+        specifier: 17.7.0
+        version: 17.7.0
       npm:
         specifier: 11.17.0
         version: 11.17.0
@@ -2449,6 +2449,7 @@ packages:
   git-raw-commits@5.0.1:
     resolution: {integrity: sha512-Y+csSm2GD/PCSh6Isd/WiMjNAydu0VBiG9J7EdQsNA5P9uXvLayqjmTsNlK5Gs9IhblFZqOU0yid5Il5JPoLiQ==}
     engines: {node: '>=18'}
+    deprecated: Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.
     hasBin: true
 
   glob-parent@6.0.2:
@@ -2473,8 +2474,8 @@ packages:
     resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
     engines: {node: '>=18'}
 
-  globals@17.6.0:
-    resolution: {integrity: sha512-sepffkT8stwnIYbsMBpoCHJuJM5l98FUF2AnE07hfvE0m/qp3R586hw4jF4uadbhvg1ooIdzuu7CsfD2jzCaNA==}
+  globals@17.7.0:
+    resolution: {integrity: sha512-Czmyns5dUsq4seFBR/Kdydhmo8y9kC79hiSkPn0YcGtNnYWnrgt0vjrSjx9tspoDGWm2CMarffRuLjM4xUz8xg==}
     engines: {node: '>=18'}
 
   globalthis@1.0.4:
@@ -4269,7 +4270,7 @@ snapshots:
       eslint-plugin-prettier: 5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.4(jiti@2.5.1)))(eslint@9.39.4(jiti@2.5.1))(prettier@3.8.4)
       eslint-plugin-react: 7.37.5(eslint@9.39.4(jiti@2.5.1))
       eslint-plugin-react-hooks: 7.0.1(eslint@9.39.4(jiti@2.5.1))
-      globals: 17.6.0
+      globals: 17.7.0
       typescript: 5.9.3
       typescript-eslint: 8.56.1(eslint@9.39.4(jiti@2.5.1))(typescript@5.9.3)
     transitivePeerDependencies:
@@ -6586,7 +6587,7 @@ snapshots:
 
   globals@15.15.0: {}
 
-  globals@17.6.0: {}
+  globals@17.7.0: {}
 
   globalthis@1.0.4:
     dependencies:
