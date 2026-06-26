@@ -675,8 +675,7 @@ const lookupSchema = z.object({
         .describe("Query for filtering records in the referenced app"),
       sort: z.string().describe("Sort condition"),
     })
-    .nullish()
-    .transform((val) => (val === null ? undefined : val))
+    .nullable()
     .describe("Lookup configuration"),
 });
 
