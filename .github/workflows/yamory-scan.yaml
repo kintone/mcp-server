@@ -12,7 +12,7 @@ jobs:
       packages: read
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.3
 
       - name: Setup trivy
         env:
@@ -25,14 +25,14 @@ jobs:
           sudo dpkg -i trivy_${TRIVY_VERSION}_Linux-64bit.deb
 
       - name: Login to GHCR
-        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: create YAMORY_IMAGE_IDENTIFIER
-        uses: actions/github-script@v8
+        uses: actions/github-script@v8.0.0
         id: image_identifier
         env:
           TAG: ${{ github.event.registry_package.package_version.container_metadata.tag.name }}

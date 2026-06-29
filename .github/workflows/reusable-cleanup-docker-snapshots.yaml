@@ -39,7 +39,7 @@ jobs:
       matched-count: ${{ steps.list.outputs.count || '0' }}
       moving-tag: ${{ steps.branch.outputs.moving-tag }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.3
         with:
           sparse-checkout: .github/actions
 
