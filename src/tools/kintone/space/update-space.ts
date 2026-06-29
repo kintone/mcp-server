@@ -11,7 +11,7 @@ const inputSchema = {
     ),
   name: z
     .string()
-    .max(100)
+    .max(128)
     .optional()
     .describe(
       "Space name (max 100 characters). Omit to keep the existing name.",
