@@ -14,7 +14,7 @@ const inputSchema = {
     .max(128)
     .optional()
     .describe(
-      "Space name (max 100 characters). Omit to keep the existing name.",
+      "Space name (max 128 characters). Omit to keep the existing name.",
     ),
   isPrivate: z
     .boolean()

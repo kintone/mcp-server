@@ -76,9 +76,9 @@ describe("update-space tool", () => {
         {
           input: {
             id: "1",
-            name: "x".repeat(100),
+            name: "x".repeat(128),
           },
-          description: "name at exact max length (100 chars)",
+          description: "name at exact max length (128 chars)",
         },
       ])("accepts $description", ({ input }) => {
         expect(() => schema.parse(input)).not.toThrow();
@@ -94,8 +94,8 @@ describe("update-space tool", () => {
         { input: { id: 1 }, description: "id as number" },
         { input: { id: null }, description: "id as null" },
         {
-          input: { id: "1", name: "x".repeat(101) },
-          description: "name longer than 100 chars",
+          input: { id: "1", name: "x".repeat(129) },
+          description: "name longer than 128 chars",
         },
         {
           input: { id: "1", isPrivate: "true" },
