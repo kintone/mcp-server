@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { z } from "zod";
-import { addSpaceFromTemplate } from "../add-space-from-template.ts";
+import { addSpaceFromTemplate } from "../add-space-from-template.js";
 import { createMockClient } from "../../../../__tests__/utils.js";
 
 const mockAddSpaceFromTemplate = vi.fn();

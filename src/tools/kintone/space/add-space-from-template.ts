@@ -47,6 +47,9 @@ const inputSchema = {
     .min(1)
     .describe(
       "Array of space members. Must contain at least one entry and at least one of them must have isAdmin: true.",
+    ).refine(
+      (members) => members.some((m) => m.isAdmin),
+      { message: "At least one member must have isAdmin: true" }
     ),
   isPrivate: z
     .boolean()
