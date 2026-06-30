@@ -2,6 +2,12 @@ import { z } from "zod";
 
 export const PACKAGE_NAME = "@kintone/mcp-server";
 
+export const transportConfigSchema = z.object({
+  TRANSPORT: z.enum(["stdio", "http"]).default("stdio"),
+  PORT: z.coerce.number().int().min(1).max(65535).default(3000),
+  HOSTNAME: z.string().default("127.0.0.1"),
+});
+
 export const configSchema = z
   .object({
     KINTONE_BASE_URL: z
