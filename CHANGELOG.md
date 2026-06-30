@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/kintone/mcp-server/compare/1.6.0...1.7.0) (2026-06-30)
+
+
+### Features
+
+* add update-space tool ([#467](https://github.com/kintone/mcp-server/issues/467)) ([b5f382d](https://github.com/kintone/mcp-server/commit/b5f382d36df57445c254f7f2411cc5e5e73eec9c))
+
 ## [1.6.0](https://github.com/kintone/mcp-server/compare/1.5.0...1.6.0) (2026-06-23)
 
 
