@@ -12,7 +12,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
       - uses: actions/setup-node@v6.4.0
         with:
@@ -29,7 +29,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
       - uses: actions/setup-node@v6.4.0
         with:
@@ -46,7 +46,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
       - uses: actions/setup-node@v6.4.0
         with:
@@ -63,7 +63,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
       - uses: actions/setup-node@v6.4.0
         with:
@@ -80,7 +80,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
       - uses: actions/setup-node@v6.4.0
         with:
@@ -96,7 +96,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6.0.3
+        uses: actions/checkout@v7.0.0
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0

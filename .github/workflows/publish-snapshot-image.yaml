@@ -53,7 +53,7 @@ jobs:
     outputs:
       tags: ${{ steps.generate-tags.outputs.result }}
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
 
       - name: Prepare base tags
         id: prepare-base-tags
