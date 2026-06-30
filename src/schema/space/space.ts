@@ -5,7 +5,7 @@ const userRefSchema = z.object({
   name: z.string().describe("Display name of the user"),
 });
 
-const permissionsSchema = z.object({
+export const permissionsSchema = z.object({
   createApp: z
     .enum(["EVERYONE", "ADMIN"])
     .describe(

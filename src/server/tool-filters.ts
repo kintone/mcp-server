@@ -13,6 +13,7 @@ const filterRules: FilterRule[] = [
       "kintone-get-apps",
       "kintone-add-app",
       "kintone-search",
+      "kintone-update-space",
       "kintone-get-space",
     ],
   },

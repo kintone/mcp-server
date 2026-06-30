@@ -224,6 +224,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-deploy-app`              | Deploy app settings to production                  |
 | `kintone-update-general-settings` | Update app general settings                        |
 | `kintone-download-file`           | Download and save a file from an attachment field  |
+| `kintone-update-space`            | Update space settings                              |
 | `kintone-get-space`               | Get space information and portal settings          |
 
 ## Documentation

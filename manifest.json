@@ -139,6 +139,10 @@
     {
       "name": "kintone-search",
       "description": "Search across kintone for records, spaces, threads, comments, and attachments"
+    },
+    {
+      "name": "kintone-update-space",
+      "description": "Update settings of a kintone space via the Space REST API (PUT /k/v1/space.json). Modifies space configuration such as name, privacy, member lock, multi-thread mode, portal widget visibility, and who may create apps (EVERYONE vs ADMIN). Only fields included in the request are updated; omitted fields keep their existing values. useMultiThread is applied only when true (single-thread to multi-thread switch); passing false has no effect. Requires space administrator privileges on the target space. The API returns an empty body on success."
     }
   ],
   "tools_generated": true,

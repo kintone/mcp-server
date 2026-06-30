@@ -1,1 +1,1 @@
-export { spaceSchema } from "./space.js";
+export { spaceSchema, permissionsSchema } from "./space.js";
