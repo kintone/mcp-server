@@ -32,7 +32,7 @@ jobs:
       tags: ${{ steps.generate-tags.outputs.result }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6.0.3
+        uses: actions/checkout@v7.0.0
 
       - name: Generate tags
         id: generate-tags
@@ -59,7 +59,7 @@ jobs:
       packages: write # To push an image to ghcr.io
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6.0.3
+        uses: actions/checkout@v7.0.0
         with:
           ref: ${{ inputs.ref }}
 
