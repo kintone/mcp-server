@@ -33,7 +33,7 @@ jobs:
       tags-csv: ${{ steps.tags.outputs.tags-csv }}
       short-sha: ${{ steps.tags.outputs.short-sha }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.3
         with:
           sparse-checkout: .github/actions
 
