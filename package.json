@@ -76,10 +76,10 @@
     "@types/node": "22.20.0",
     "doctoc": "2.5.0",
     "eslint": "9.39.4",
-    "eslint-plugin-package-json": "0.88.3",
+    "eslint-plugin-package-json": "0.91.2",
     "globals": "17.7.0",
     "npm": "11.17.0",
-    "prettier": "3.8.5",
+    "prettier": "3.9.1",
     "tsx": "4.22.4",
     "typescript": "5.9.3",
     "vitest": "4.1.9"
