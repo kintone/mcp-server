@@ -3,7 +3,7 @@
   "manifest_version": "0.2",
   "name": "@kintone/mcp-server",
   "display_name": "Kintone MCP Server",
-  "version": "1.3.13",
+  "version": "1.7.0",
   "description": "The official MCP Server for Kintone",
   "long_description": "This extension provides Model Context Protocol (MCP) server capabilities for Kintone, allowing AI assistants to interact with your Kintone applications.",
   "author": {
@@ -105,6 +105,14 @@
       "description": "Delete multiple records from a Kintone app"
     },
     {
+      "name": "kintone-get-record-comments",
+      "description": "Get comments posted on a single kintone record"
+    },
+    {
+      "name": "kintone-add-record-comment",
+      "description": "Add a single comment to a kintone record"
+    },
+    {
       "name": "kintone-update-statuses",
       "description": "Update status of multiple records in a Kintone app"
     },
@@ -127,6 +135,18 @@
     {
       "name": "kintone-add-space-from-template",
       "description": "Create a new kintone space from an existing space template via POST /k/v1/template/space.json. Requires permission to create spaces from templates (typically a kintone System Administrator, or a user explicitly granted space-creation rights). The members array must contain at least one entry with isAdmin: true; otherwise the API rejects the request. To create a guest space, the supplied template id must be a guest space template and isGuest must be true. The space is created immediately on the production environment (no deploy step); this operation is not reversible from this tool. Returns the id of the newly created space."
+    },
+    {
+      "name": "kintone-get-space",
+      "description": "Retrieve a kintone space via the Space REST API (GET /k/v1/space.json). Read-only: returns metadata and portal content such as name, default thread, privacy, HTML body, cover image, widget visibility, member count, attached apps, and who may create apps (EVERYONE vs ADMIN). Requires permission to view the target space. Does not modify any space configuration."
+    },
+    {
+      "name": "kintone-search",
+      "description": "Search across kintone for records, spaces, threads, comments, and attachments"
+    },
+    {
+      "name": "kintone-update-space",
+      "description": "Update settings of a kintone space via the Space REST API (PUT /k/v1/space.json). Modifies space configuration such as name, privacy, member lock, multi-thread mode, portal widget visibility, and who may create apps (EVERYONE vs ADMIN). Only fields included in the request are updated; omitted fields keep their existing values. useMultiThread is applied only when true (single-thread to multi-thread switch); passing false has no effect. Requires space administrator privileges on the target space. The API returns an empty body on success."
     }
   ],
   "tools_generated": true,

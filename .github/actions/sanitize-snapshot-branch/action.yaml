@@ -1,0 +1,40 @@
+name: Sanitize snapshot branch
+description: >
+  Sanitize a git branch name for use in docker image tags and label-driven snapshot workflows.
+  Strips non-alphanumeric characters (except -), collapses hyphens, and truncates to 50 chars.
+
+inputs:
+  branch:
+    description: Raw git branch name to sanitize
+    required: true
+
+outputs:
+  sanitized-branch:
+    description: Sanitized branch name (safe for docker tags)
+    value: ${{ steps.sanitize.outputs.sanitized-branch }}
+  moving-tag:
+    description: Moving docker tag (snapshot-<sanitized-branch>)
+    value: ${{ steps.sanitize.outputs.moving-tag }}
+  immutable-prefix:
+    description: Prefix for immutable docker tags (<sanitized-branch>-)
+    value: ${{ steps.sanitize.outputs.immutable-prefix }}
+
+runs:
+  using: composite
+  steps:
+    - name: Sanitize
+      id: sanitize
+      shell: bash
+      env:
+        BRANCH_NAME: ${{ inputs.branch }}
+      run: |
+        SANITIZED=$(echo "$BRANCH_NAME" | sed 's/[^a-zA-Z0-9-]/-/g; s/--*/-/g; s/^-//; s/-$//' | cut -c1-50 | sed 's/-$//')
+        if [[ -z "$SANITIZED" ]]; then
+          echo "::error::sanitized branch name is empty (input: '${BRANCH_NAME}')"
+          exit 1
+        fi
+        {
+          echo "sanitized-branch=${SANITIZED}"
+          echo "moving-tag=snapshot-${SANITIZED}"
+          echo "immutable-prefix=${SANITIZED}-"
+        } >> "$GITHUB_OUTPUT"

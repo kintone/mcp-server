@@ -14,6 +14,8 @@ export const createMockClient = (): KintoneRestAPIClient =>
       deleteRecords: vi.fn(),
       updateStatus: vi.fn(),
       updateRecordsStatus: vi.fn(),
+      getRecordComments: vi.fn(),
+      addRecordComment: vi.fn(),
     },
     app: {
       getApp: vi.fn(),
@@ -36,7 +38,10 @@ export const createMockClient = (): KintoneRestAPIClient =>
     },
     space: {
       addSpaceFromTemplate: vi.fn(),
+      updateSpace: vi.fn(),
+      getSpace: vi.fn(),
     },
+    search: vi.fn(),
   }) as unknown as KintoneRestAPIClient;
 
 export function mockToolCallbackOptions(client?: KintoneRestAPIClient) {

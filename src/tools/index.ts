@@ -1,6 +1,8 @@
 import type { Tool } from "./types/tool.js";
+import { addRecordComment } from "./kintone/record/add-record-comment.js";
 import { addRecords } from "./kintone/record/add-records.js";
 import { deleteRecords } from "./kintone/record/delete-records.js";
+import { getRecordComments } from "./kintone/record/get-record-comments.js";
 import { getRecords } from "./kintone/record/get-records.js";
 import { updateRecords } from "./kintone/record/update-records.js";
 import { getApp } from "./kintone/app/get-app.js";
@@ -20,6 +22,9 @@ import { deployApp } from "./kintone/app/deploy-app.js";
 import { updateGeneralSettings } from "./kintone/app/update-general-settings.js";
 import { downloadFile } from "./kintone/file/download-file.js";
 import { addSpaceFromTemplate } from "./kintone/space/add-space-from-template.js";
+import { getSpace } from "./kintone/space/get-space.js";
+import { search } from "./kintone/search/search.js";
+import { updateSpace } from "./kintone/space/update-space.js";
 
 export { createToolCallback } from "./factory.js";
 export const tools: Array<Tool<any, any>> = [
@@ -38,10 +43,15 @@ export const tools: Array<Tool<any, any>> = [
   addRecords,
   deleteRecords,
   getRecords,
+  getRecordComments,
+  addRecordComment,
   updateRecords,
   addApp,
   deployApp,
   updateGeneralSettings,
   downloadFile,
   addSpaceFromTemplate,
+  getSpace,
+  search,
+  updateSpace,
 ] as const;
