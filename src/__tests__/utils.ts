@@ -37,6 +37,7 @@ export const createMockClient = (): KintoneRestAPIClient =>
       downloadFile: vi.fn(),
     },
     space: {
+      addSpaceFromTemplate: vi.fn(),
       updateSpace: vi.fn(),
       getSpace: vi.fn(),
     },

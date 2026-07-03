@@ -12,6 +12,7 @@ const filterRules: FilterRule[] = [
     excludeTools: [
       "kintone-get-apps",
       "kintone-add-app",
+      "kintone-add-space-from-template",
       "kintone-search",
       "kintone-update-space",
       "kintone-get-space",

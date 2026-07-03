@@ -133,6 +133,10 @@
       "description": "Download and save a file from a Kintone"
     },
     {
+      "name": "kintone-add-space-from-template",
+      "description": "Create a new kintone space from an existing space template via POST /k/v1/template/space.json. Requires permission to create spaces from templates (typically a kintone System Administrator, or a user explicitly granted space-creation rights). The members array must contain at least one entry with isAdmin: true; otherwise the API rejects the request. To create a guest space, the supplied template id must be a guest space template and isGuest must be true. The space is created immediately on the production environment (no deploy step); this operation is not reversible from this tool. Returns the id of the newly created space."
+    },
+    {
       "name": "kintone-get-space",
       "description": "Retrieve a kintone space via the Space REST API (GET /k/v1/space.json). Read-only: returns metadata and portal content such as name, default thread, privacy, HTML body, cover image, widget visibility, member count, attached apps, and who may create apps (EVERYONE vs ADMIN). Requires permission to view the target space. Does not modify any space configuration."
     },
