@@ -78,6 +78,17 @@ const buildBasicAuthParam = (options: {
     : {};
 };
 
+const maskProxyUrl = (proxyUrl: string): string => {
+  try {
+    const url = new URL(proxyUrl);
+    url.username = "";
+    url.password = "";
+    return url.toString();
+  } catch {
+    return "[invalid proxy URL]";
+  }
+};
+
 const buildHttpsAgent = (options: {
   proxy?: string;
   pfxFilePath?: string;
@@ -103,7 +114,7 @@ const buildHttpsAgent = (options: {
       return new HttpsProxyAgent(options.proxy, agentOptions);
     } catch (error) {
       throw new Error(
-        `Invalid HTTPS proxy URL: ${options.proxy}. ${error instanceof Error ? error.message : String(error)}`,
+        `Invalid HTTPS proxy URL: ${maskProxyUrl(options.proxy)}. ${error instanceof Error ? error.message : String(error)}`,
       );
     }
   }

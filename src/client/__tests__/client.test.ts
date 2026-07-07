@@ -267,7 +267,22 @@ describe("getKintoneClient", () => {
       };
 
       expect(() => getKintoneClient(config)).toThrow(
-        "Invalid HTTPS proxy URL: invalid-url. Invalid URL",
+        "Invalid HTTPS proxy URL: [invalid proxy URL]. Invalid URL",
+      );
+    });
+
+    it("should mask credentials in error message when proxy URL contains username and password", () => {
+      mockHttpsProxyAgent.mockImplementationOnce(() => {
+        throw new Error("Connection refused");
+      });
+
+      const config: KintoneClientConfig = {
+        ...mockKintoneConfig,
+        HTTPS_PROXY: "http://user:pass@proxy.example.com:8080",
+      };
+
+      expect(() => getKintoneClient(config)).toThrow(
+        "Invalid HTTPS proxy URL: http://proxy.example.com:8080/. Connection refused",
       );
     });
   });
