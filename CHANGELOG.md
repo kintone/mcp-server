@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/kintone/mcp-server/compare/1.7.0...1.8.0) (2026-07-07)
+
+
+### Features
+
+* add add-space-from-template tool ([#449](https://github.com/kintone/mcp-server/issues/449)) ([bd799dc](https://github.com/kintone/mcp-server/commit/bd799dc2abd127decdd2c37bc76567724eaac51d))
+
 ## [1.7.0](https://github.com/kintone/mcp-server/compare/1.6.0...1.7.0) (2026-06-30)
 
 
