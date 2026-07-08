@@ -625,7 +625,8 @@ const referenceTableSchema = z.object({
         .enum(["1", "3", "5", "10", "20", "30", "40", "50"])
         .describe("Number of records to display"),
     })
-    .optional()
+    .nullish()
+    .transform((val) => (val === null ? undefined : val))
     .describe("Related records list configuration"),
 });
 
@@ -674,6 +675,8 @@ const lookupSchema = z.object({
         .describe("Query for filtering records in the referenced app"),
       sort: z.string().describe("Sort condition"),
     })
+    .nullish()
+    .transform((val) => (val === null ? undefined : val))
     .describe("Lookup configuration"),
 });
 
