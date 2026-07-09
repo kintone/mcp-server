@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.2](https://github.com/kintone/mcp-server/compare/1.8.1...1.8.2) (2026-07-09)
+
+
+### Bug Fixes
+
+* mask credentials in proxy URL error message ([#499](https://github.com/kintone/mcp-server/issues/499)) ([c3f5064](https://github.com/kintone/mcp-server/commit/c3f5064e88313571ba26c212a89eb84b89fb00d1))
+
 ## [1.8.1](https://github.com/kintone/mcp-server/compare/1.8.0...1.8.1) (2026-07-08)
 
 
