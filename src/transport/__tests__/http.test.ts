@@ -171,11 +171,6 @@ describe("HTTP Server", () => {
 
     // Verify server never forwarded to handleRequest regardless of client outcome
     expect(mockHandleRequest).not.toHaveBeenCalled();
-    // Verify at least one code path was exercised
-    if (!connectionReset) {
-      // If we got a response, it must have been 413
-      expect(true).toBe(true);
-    }
   });
 
   it("should delegate GET /mcp to SDK transport", async () => {
@@ -242,15 +237,8 @@ describe("HTTP Server", () => {
     });
   });
 
-  it("should allow requests from localhost origin when binding to 127.0.0.1", async () => {
+  it("should reject localhost origin when binding to 127.0.0.1 (DNS rebinding protection)", async () => {
     server = await startHttpServer(mockServerConfig, 0, "127.0.0.1");
-
-    mockHandleRequest.mockImplementation(
-      async (_req: unknown, res: ServerResponse) => {
-        res.writeHead(200, { "Content-Type": "application/json" });
-        res.end("{}");
-      },
-    );
 
     const response = await makeRequest(server, {
       body: "{}",
@@ -260,8 +248,8 @@ describe("HTTP Server", () => {
       },
     });
 
-    expect(response.status).toBe(200);
-    expect(mockHandleRequest).toHaveBeenCalledOnce();
+    expect(response.status).toBe(403);
+    expect(mockHandleRequest).not.toHaveBeenCalled();
   });
 
   it("should accept requests without Origin header", async () => {
@@ -311,6 +299,25 @@ describe("HTTP Server", () => {
       error: "Internal Server Error",
     });
     // Verify cleanup was called
+    expect(mockTransportClose).toHaveBeenCalled();
+    expect(mockServerClose).toHaveBeenCalled();
+  });
+
+  it("should call cleanup after successful request completes", async () => {
+    server = await startHttpServer(mockServerConfig, 0, "127.0.0.1");
+
+    mockHandleRequest.mockImplementation(
+      async (_req: unknown, res: ServerResponse) => {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end("{}");
+      },
+    );
+
+    await makeRequest(server, {
+      body: "{}",
+      headers: { "Content-Type": "application/json" },
+    });
+
     expect(mockTransportClose).toHaveBeenCalled();
     expect(mockServerClose).toHaveBeenCalled();
   });

@@ -12,7 +12,7 @@ const MAX_BODY_SIZE = 1 * 1024 * 1024; // 1MB
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
 
-const LOOPBACK_HOSTS = new Set(["127.0.0.1", "localhost", "::1", "[::1]"]);
+const LOOPBACK_HOSTS = new Set(["127.0.0.1", "::1", "[::1]"]);
 
 const normalizeHostname = (h: string): string =>
   h.replace(/^\[/, "").replace(/\]$/, "");
@@ -128,7 +128,10 @@ const handleMcpTransport = async (
   let transport: InstanceType<typeof StreamableHTTPServerTransport> | undefined;
   let server: ReturnType<typeof createServer> | undefined;
 
+  let cleaned = false;
   const cleanup = () => {
+    if (cleaned) return;
+    cleaned = true;
     transport?.close().catch(noop);
     server?.close().catch(noop);
   };

@@ -30,6 +30,7 @@ The official local MCP server for Kintone.
   - [Example Configuration File Content](#example-configuration-file-content)
 - [Configuration](#configuration)
   - [Configuration Options](#configuration-options)
+  - [HTTP Transport Mode](#http-transport-mode)
   - [Proxy Configuration](#proxy-configuration)
 - [Tools](#tools)
 - [Documentation](#documentation)
