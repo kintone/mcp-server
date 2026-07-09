@@ -25,6 +25,7 @@ import { addSpaceFromTemplate } from "./kintone/space/add-space-from-template.js
 import { getSpace } from "./kintone/space/get-space.js";
 import { search } from "./kintone/search/search.js";
 import { updateSpace } from "./kintone/space/update-space.js";
+import { deleteSpace } from "./kintone/space/delete-space.js";
 
 export { createToolCallback } from "./factory.js";
 export const tools: Array<Tool<any, any>> = [
@@ -54,4 +55,5 @@ export const tools: Array<Tool<any, any>> = [
   getSpace,
   search,
   updateSpace,
+  deleteSpace,
 ] as const;

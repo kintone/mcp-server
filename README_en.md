@@ -227,6 +227,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-add-space-from-template` | Create a new kintone space from a space template   |
 | `kintone-update-space`            | Update space settings                              |
 | `kintone-get-space`               | Get space information and portal settings          |
+| `kintone-delete-space`            | Delete a space                                     |
 
 ## Documentation
 

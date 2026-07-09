@@ -16,6 +16,7 @@ const filterRules: FilterRule[] = [
       "kintone-search",
       "kintone-update-space",
       "kintone-get-space",
+      "kintone-delete-space",
     ],
   },
 ];
