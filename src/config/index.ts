@@ -4,9 +4,17 @@ import { PACKAGE_NAME } from "./schema.js";
 import type {
   KintoneClientConfig,
   KintoneMcpServerConfig,
+  ParsedConfig,
 } from "./types/config.js";
 
-const config = parseKintoneMcpServerConfig();
+let cachedConfig: ParsedConfig | undefined;
+
+const getConfig = (): ParsedConfig => {
+  if (!cachedConfig) {
+    cachedConfig = parseKintoneMcpServerConfig();
+  }
+  return cachedConfig;
+};
 
 export const getMcpServerConfig = (): KintoneMcpServerConfig => {
   return {
@@ -16,6 +24,7 @@ export const getMcpServerConfig = (): KintoneMcpServerConfig => {
 };
 
 export const getKintoneClientConfig = (): KintoneClientConfig => {
+  const config = getConfig();
   return {
     KINTONE_BASE_URL: config.config.KINTONE_BASE_URL,
     KINTONE_USERNAME: config.config.KINTONE_USERNAME,
@@ -31,12 +40,14 @@ export const getKintoneClientConfig = (): KintoneClientConfig => {
 };
 
 export const getToolConditionConfig = () => {
+  const config = getConfig();
   return {
     isApiTokenAuth: config.isApiTokenAuth,
   };
 };
 
 export const getFileConfig = () => {
+  const config = getConfig();
   return {
     attachmentsDir: config.config.KINTONE_ATTACHMENTS_DIR,
   };

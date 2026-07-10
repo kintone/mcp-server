@@ -5,8 +5,8 @@ export const PACKAGE_NAME = "@kintone/mcp-server";
 export const configSchema = z
   .object({
     KINTONE_BASE_URL: z
-      .string()
-      .url()
+      .string({ required_error: "Required (e.g., https://example.cybozu.com)" })
+      .url("Must be a valid URL (e.g., https://example.cybozu.com)")
       .describe(
         "The base URL of your kintone environment (e.g., https://example.cybozu.com)",
       ),
@@ -51,11 +51,9 @@ export const configSchema = z
     HTTPS_PROXY: z
       .string()
       .optional()
-      .refine(
-        (value) =>
-          !value || value === "" || z.string().url().safeParse(value).success,
-        { message: "Invalid proxy URL format" },
-      )
+      .refine((value) => !value || z.string().url().safeParse(value).success, {
+        message: "Must be a valid URL (e.g., http://proxy.example.com:8080)",
+      })
       .describe("HTTPS proxy URL (e.g., http://proxy.example.com:8080)"),
     KINTONE_PFX_FILE_PATH: z
       .string()

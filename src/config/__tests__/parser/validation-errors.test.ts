@@ -35,7 +35,7 @@ describe("config - validation errors", () => {
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
-        "KINTONE_BASE_URL: Invalid url",
+        "KINTONE_BASE_URL: Must be a valid URL (e.g., https://example.cybozu.com)",
       ],
     },
     {
@@ -46,7 +46,7 @@ describe("config - validation errors", () => {
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
-        "KINTONE_BASE_URL: Invalid url",
+        "KINTONE_BASE_URL: Required (e.g., https://example.cybozu.com)",
       ],
     },
     {
@@ -61,14 +61,14 @@ describe("config - validation errors", () => {
       ],
     },
     {
-      name: "should throw error when KINTONE_USERNAME is empty",
+      name: "should treat empty KINTONE_USERNAME as not provided",
       env: {
         ...mockProvidedConfig,
         KINTONE_USERNAME: "",
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
-        "KINTONE_USERNAME: String must contain at least 1 character(s)",
+        "Either KINTONE_USERNAME/KINTONE_PASSWORD or KINTONE_API_TOKEN must be provided",
       ],
     },
     {
@@ -83,14 +83,14 @@ describe("config - validation errors", () => {
       ],
     },
     {
-      name: "should throw error when KINTONE_PASSWORD is empty",
+      name: "should treat empty KINTONE_PASSWORD as not provided",
       env: {
         ...mockProvidedConfig,
         KINTONE_PASSWORD: "",
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
-        "KINTONE_PASSWORD: String must contain at least 1 character(s)",
+        "Either KINTONE_USERNAME/KINTONE_PASSWORD or KINTONE_API_TOKEN must be provided",
       ],
     },
     {
@@ -102,9 +102,8 @@ describe("config - validation errors", () => {
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
-        "KINTONE_BASE_URL: Invalid url",
-        "KINTONE_USERNAME: String must contain at least 1 character(s)",
-        "KINTONE_PASSWORD: String must contain at least 1 character(s)",
+        "KINTONE_BASE_URL: Must be a valid URL (e.g., https://example.cybozu.com)",
+        "Either KINTONE_USERNAME/KINTONE_PASSWORD or KINTONE_API_TOKEN must be provided",
       ],
     },
     {
@@ -124,7 +123,7 @@ describe("config - validation errors", () => {
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
-        "HTTPS_PROXY: Invalid proxy URL format",
+        "HTTPS_PROXY: Must be a valid URL (e.g., http://proxy.example.com:8080)",
       ],
     },
     {
@@ -135,7 +134,7 @@ describe("config - validation errors", () => {
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
-        "HTTPS_PROXY: Invalid proxy URL format",
+        "HTTPS_PROXY: Must be a valid URL (e.g., http://proxy.example.com:8080)",
       ],
     },
     {
