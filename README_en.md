@@ -2,7 +2,7 @@
 
 [![ci][ci-badge]][ci-url]
 [![npm version][npm-badge]][npm-url]
-[![License: MIT][license-badge]][license-url]
+[![License: Apache 2.0][license-badge]][license-url]
 [![Install MCP Server][cursor-badge]][cursor-url]
 
 [ci-badge]: https://github.com/kintone/mcp-server/actions/workflows/ci.yaml/badge.svg
