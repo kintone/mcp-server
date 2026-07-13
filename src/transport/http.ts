@@ -8,16 +8,26 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import { createServer, type KintoneMcpServerOptions } from "../server/index.js";
 
 const MAX_BODY_SIZE = 1 * 1024 * 1024; // 1MB
+const MCP_PATH = "/mcp";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
+
+const sendJsonError = (
+  res: ServerResponse,
+  status: number,
+  message: string,
+) => {
+  res.writeHead(status, { "Content-Type": "application/json" });
+  res.end(JSON.stringify({ error: message }));
+};
 
 const LOOPBACK_HOSTS = new Set(["127.0.0.1", "::1", "[::1]"]);
 
 const normalizeHostname = (h: string): string =>
   h.replace(/^\[/, "").replace(/\]$/, "");
 
-const isAllowedOrigin = (origin: string, hostname: string): boolean => {
+export const isAllowedOrigin = (origin: string, hostname: string): boolean => {
   try {
     const originHost = new URL(origin).hostname;
     const normalizedBind = normalizeHostname(hostname);
@@ -52,8 +62,7 @@ const readBody = (
       size += chunk.length;
       if (size > MAX_BODY_SIZE && !limitExceeded) {
         limitExceeded = true;
-        res.writeHead(413, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ error: "Payload Too Large" }));
+        sendJsonError(res, 413, "Payload Too Large");
         req.resume(); // drain remaining data
         resolve(null);
         return;
@@ -69,6 +78,7 @@ const readBody = (
     });
     req.on("error", () => {
       if (!limitExceeded) {
+        if (!res.headersSent) res.destroy();
         resolve(null);
       }
     });
@@ -91,11 +101,10 @@ const handleMcpPost = async (
   // Content-Type validation (POST only)
   const contentType = req.headers["content-type"];
   if (!contentType || !contentType.includes("application/json")) {
-    res.writeHead(415, { "Content-Type": "application/json" });
-    res.end(
-      JSON.stringify({
-        error: "Unsupported Media Type: expected application/json",
-      }),
+    sendJsonError(
+      res,
+      415,
+      "Unsupported Media Type: expected application/json",
     );
     return;
   }
@@ -110,8 +119,7 @@ const handleMcpPost = async (
   try {
     body = JSON.parse(rawBody);
   } catch {
-    res.writeHead(400, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ error: "Bad Request: invalid JSON" }));
+    sendJsonError(res, 400, "Bad Request: invalid JSON");
     return;
   }
 
@@ -147,8 +155,7 @@ const handleMcpTransport = async (
   } catch (error) {
     console.error("Error handling MCP request:", error);
     if (!res.headersSent) {
-      res.writeHead(500, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ error: "Internal Server Error" }));
+      sendJsonError(res, 500, "Internal Server Error");
     }
     cleanup();
   }
@@ -162,22 +169,19 @@ export const startHttpServer = (
   const httpServer = createHttpServer(async (req, res) => {
     const url = parseRequestUrl(req);
     if (url === null) {
-      res.writeHead(400, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ error: "Bad Request: invalid URL" }));
+      sendJsonError(res, 400, "Bad Request: invalid URL");
       return;
     }
 
-    if (url.pathname !== "/mcp") {
-      res.writeHead(404, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ error: "Not Found" }));
+    if (url.pathname !== MCP_PATH) {
+      sendJsonError(res, 404, "Not Found");
       return;
     }
 
     // Origin header validation (MCP spec MUST)
     const origin = req.headers.origin;
     if (origin !== undefined && !isAllowedOrigin(origin, hostname)) {
-      res.writeHead(403, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ error: "Forbidden: Origin not allowed" }));
+      sendJsonError(res, 403, "Forbidden: Origin not allowed");
       return;
     }
 
@@ -192,7 +196,9 @@ export const startHttpServer = (
   return new Promise((resolve, reject) => {
     httpServer.on("error", reject);
     httpServer.listen(port, hostname, () => {
-      console.error(`HTTP server listening on http://${hostname}:${port}/mcp`);
+      console.error(
+        `HTTP server listening on http://${hostname}:${port}${MCP_PATH}`,
+      );
       resolve(httpServer);
     });
   });

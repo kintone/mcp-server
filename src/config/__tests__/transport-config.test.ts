@@ -11,12 +11,15 @@ import { parseTransportConfig } from "../parser.js";
 const mockedParse = vi.mocked(parse);
 
 describe("parseTransportConfig", () => {
+  const originalEnv = { ...process.env };
+
   beforeEach(() => {
     mockedParse.mockReturnValue({});
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
+    process.env = { ...originalEnv };
   });
 
   it("should return default values when no CLI args are provided", () => {
@@ -113,5 +116,33 @@ describe("parseTransportConfig", () => {
     expect(() => parseTransportConfig()).toThrow(
       "Invalid transport configuration",
     );
+  });
+
+  it("should fall back to env vars when no CLI args are provided", () => {
+    process.env.TRANSPORT = "http";
+    process.env.PORT = "8080";
+    process.env.HOSTNAME = "0.0.0.0";
+
+    const result = parseTransportConfig();
+
+    expect(result).toEqual({
+      transport: "http",
+      port: 8080,
+      hostname: "0.0.0.0",
+    });
+  });
+
+  it("should prefer CLI args over env vars", () => {
+    process.env.TRANSPORT = "http";
+    process.env.PORT = "8080";
+    mockedParse.mockReturnValue({ port: "9090" });
+
+    const result = parseTransportConfig();
+
+    expect(result).toEqual({
+      transport: "http",
+      port: 9090,
+      hostname: "127.0.0.1",
+    });
   });
 });

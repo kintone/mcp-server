@@ -8,6 +8,7 @@ import type {
 } from "./types/config.js";
 
 const config = parseKintoneMcpServerConfig();
+const transportConfig = parseTransportConfig();
 
 export const getMcpServerConfig = (): KintoneMcpServerConfig => {
   return {
@@ -43,4 +44,4 @@ export const getFileConfig = () => {
   };
 };
 
-export const getTransportConfig = (): TransportConfig => parseTransportConfig();
+export const getTransportConfig = (): TransportConfig => transportConfig;

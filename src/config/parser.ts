@@ -118,9 +118,9 @@ const createErrorMessage = (
 export const parseTransportConfig = (): TransportConfig => {
   const cmdArgs = parse(process.argv);
   const result = transportConfigSchema.safeParse({
-    TRANSPORT: cmdArgs.transport,
-    PORT: cmdArgs.port,
-    HOSTNAME: cmdArgs.hostname,
+    TRANSPORT: cmdArgs.transport ?? process.env.TRANSPORT,
+    PORT: cmdArgs.port ?? process.env.PORT,
+    HOSTNAME: cmdArgs.hostname ?? process.env.HOSTNAME,
   });
 
   if (result.success) {

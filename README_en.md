@@ -235,7 +235,9 @@ claude mcp add --transport http kintone http://localhost:3000/mcp
 
 - By default, the server binds to `127.0.0.1`, making it accessible only from the local machine
 - To allow external access, specify `--hostname 0.0.0.0`
+- **When exposing on `0.0.0.0`, the HTTP endpoint has no authentication and no encryption (TLS). On untrusted networks, place it behind a reverse proxy (TLS termination + authentication)**
 - HTTP mode operates statelessly (each request has an independent session)
+- In HTTP transport mode, files saved by `kintone-download-file` are written to the server's local filesystem. If the server runs on a remote host, the returned file path is not accessible to the MCP client
 
 ### Proxy Configuration
 

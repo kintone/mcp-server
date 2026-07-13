@@ -22,7 +22,7 @@ vi.mock("../../server/index.js", () => ({
   })),
 }));
 
-import { startHttpServer } from "../http.js";
+import { startHttpServer, isAllowedOrigin } from "../http.js";
 import type { KintoneMcpServerOptions } from "../../server/index.js";
 
 const mockServerConfig: KintoneMcpServerOptions = {
@@ -364,5 +364,19 @@ describe("HTTP Server", () => {
 
     expect(response.status).toBe(200);
     expect(mockHandleRequest).toHaveBeenCalledOnce();
+  });
+});
+
+describe("isAllowedOrigin", () => {
+  it("should allow same hostname origin when binding to specific hostname", () => {
+    expect(isAllowedOrigin("http://192.168.1.100:3000", "192.168.1.100")).toBe(
+      true,
+    );
+  });
+
+  it("should reject different hostname origin when binding to specific hostname", () => {
+    expect(isAllowedOrigin("http://192.168.1.200:3000", "192.168.1.100")).toBe(
+      false,
+    );
   });
 });

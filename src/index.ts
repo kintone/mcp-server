@@ -9,8 +9,7 @@ import {
   getTransportConfig,
 } from "./config/index.js";
 import { startHttpServer } from "./transport/http.js";
-
-const SHUTDOWN_TIMEOUT_MS = 5000;
+import { setupGracefulShutdown } from "./shutdown.js";
 
 const main = async () => {
   const mcpServerConfig = getMcpServerConfig();
@@ -38,21 +37,7 @@ const main = async () => {
       transportConfig.hostname,
     );
 
-    let shuttingDown = false;
-    const shutdown = () => {
-      if (shuttingDown) return;
-      shuttingDown = true;
-      console.error("Shutting down HTTP server...");
-      httpServer.close();
-
-      // Force exit if connections linger
-      setTimeout(() => {
-        console.error("Forcing shutdown after timeout");
-        httpServer.closeAllConnections();
-      }, SHUTDOWN_TIMEOUT_MS).unref();
-    };
-    process.on("SIGTERM", shutdown);
-    process.on("SIGINT", shutdown);
+    setupGracefulShutdown(httpServer);
   } else {
     console.error("Starting server...");
     const transport = new StdioServerTransport();
