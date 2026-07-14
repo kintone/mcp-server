@@ -67,5 +67,22 @@ describe("delete-space tool", () => {
       expect(result.structuredContent).toEqual({});
       expect(result.content).toEqual([]);
     });
+
+    it("should propagate errors from the API", async () => {
+      const mockError = new Error("API Error: Space not found");
+      mockDeleteSpace.mockRejectedValueOnce(mockError);
+
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const input = z.object(deleteSpace.config.inputSchema!).parse({
+        id: "999",
+      });
+
+      const mockClient = createMockClient();
+      mockClient.space.deleteSpace = mockDeleteSpace;
+
+      await expect(
+        deleteSpace.callback(input, { client: mockClient }),
+      ).rejects.toThrow("API Error: Space not found");
+    });
   });
 });
