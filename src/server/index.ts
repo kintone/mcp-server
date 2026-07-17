@@ -1,6 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { shouldEnableTool } from "./tool-filters.js";
-import { getKintoneClient } from "../client/index.js";
+import { createKintoneClient } from "../client/index.js";
 import { createToolCallback, tools } from "../tools/index.js";
 import type { KintoneMcpServerOptions } from "./types/server.js";
 
@@ -11,7 +11,7 @@ export const createServer = (options: KintoneMcpServerOptions): McpServer => {
     version: options.version,
   });
 
-  const client = getKintoneClient(options.config.clientConfig);
+  const client = createKintoneClient(options.config.clientConfig);
   const toolCondition = options.config.toolConditionConfig;
   const attachmentsDir = options.config.fileConfig.attachmentsDir;
   tools
