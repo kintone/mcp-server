@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/kintone/mcp-server/compare/1.8.2...1.9.0) (2026-07-21)
+
+
+### Features
+
+* add kintone-delete-space tool ([#503](https://github.com/kintone/mcp-server/issues/503)) ([3e82951](https://github.com/kintone/mcp-server/commit/3e82951a13d8dfc2c6981a5b2fb37ada28129360))
+
 ## [1.8.2](https://github.com/kintone/mcp-server/compare/1.8.1...1.8.2) (2026-07-09)
 
 
