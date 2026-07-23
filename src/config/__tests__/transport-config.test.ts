@@ -118,18 +118,25 @@ describe("parseTransportConfig", () => {
     );
   });
 
-  it("should fall back to env vars when no CLI args are provided", () => {
+  it("should fall back to env vars (TRANSPORT/PORT) when no CLI args are provided", () => {
     process.env.TRANSPORT = "http";
     process.env.PORT = "8080";
-    process.env.HOSTNAME = "0.0.0.0";
 
     const result = parseTransportConfig();
 
     expect(result).toEqual({
       transport: "http",
       port: 8080,
-      hostname: "0.0.0.0",
+      hostname: "127.0.0.1",
     });
+  });
+
+  it("should not fall back to the HOSTNAME env var (reserved by Docker/shells)", () => {
+    process.env.HOSTNAME = "0.0.0.0";
+
+    const result = parseTransportConfig();
+
+    expect(result.hostname).toBe("127.0.0.1");
   });
 
   it("should prefer CLI args over env vars", () => {

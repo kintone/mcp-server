@@ -157,21 +157,21 @@ MCPBファイルをインストールした場合、追加の手順は必要あ�
 
 ### 設定オプション一覧
 
-| コマンドライン引数      | 環境変数                      | 説明                                                             | 必須 |
-| ----------------------- | ----------------------------- | ---------------------------------------------------------------- | ---- |
-| `--base-url`            | `KINTONE_BASE_URL`            | kintone環境のベースURL（例: `https://example.cybozu.com`）       | ✓    |
-| `--username`            | `KINTONE_USERNAME`            | kintoneのログインユーザー名                                      | ※1   |
-| `--password`            | `KINTONE_PASSWORD`            | kintoneのログインパスワード                                      | ※1   |
-| `--api-token`           | `KINTONE_API_TOKEN`           | APIトークン（カンマ区切りで最大9個まで指定可能）                 | ※1   |
-| `--basic-auth-username` | `KINTONE_BASIC_AUTH_USERNAME` | Basic認証のユーザー名                                            | -    |
-| `--basic-auth-password` | `KINTONE_BASIC_AUTH_PASSWORD` | Basic認証のパスワード                                            | -    |
-| `--pfx-file-path`       | `KINTONE_PFX_FILE_PATH`       | PFXファイルのパス（クライアント証明書認証用）                    | -    |
-| `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFXファイルのパスワード                                          | -    |
-| `--proxy`               | `HTTPS_PROXY`                 | HTTPSプロキシのURL（例: `http://proxy.example.com:8080`）        | -    |
-| `--attachments-dir`     | `KINTONE_ATTACHMENTS_DIR`     | ダウンロードしたファイルの保存先                                 | -    |
-| `--transport`           | -                             | トランスポート方式（`stdio` または `http`、デフォルト: `stdio`） | -    |
-| `--port`                | -                             | HTTPサーバーのポート番号（デフォルト: `3000`）                   | -    |
-| `--hostname`            | -                             | HTTPサーバーのバインドアドレス（デフォルト: `127.0.0.1`）        | -    |
+| コマンドライン引数      | 環境変数                      | 説明                                                                                                                          | 必須 |
+| ----------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---- |
+| `--base-url`            | `KINTONE_BASE_URL`            | kintone環境のベースURL（例: `https://example.cybozu.com`）                                                                    | ✓    |
+| `--username`            | `KINTONE_USERNAME`            | kintoneのログインユーザー名                                                                                                   | ※1   |
+| `--password`            | `KINTONE_PASSWORD`            | kintoneのログインパスワード                                                                                                   | ※1   |
+| `--api-token`           | `KINTONE_API_TOKEN`           | APIトークン（カンマ区切りで最大9個まで指定可能）                                                                              | ※1   |
+| `--basic-auth-username` | `KINTONE_BASIC_AUTH_USERNAME` | Basic認証のユーザー名                                                                                                         | -    |
+| `--basic-auth-password` | `KINTONE_BASIC_AUTH_PASSWORD` | Basic認証のパスワード                                                                                                         | -    |
+| `--pfx-file-path`       | `KINTONE_PFX_FILE_PATH`       | PFXファイルのパス（クライアント証明書認証用）                                                                                 | -    |
+| `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFXファイルのパスワード                                                                                                       | -    |
+| `--proxy`               | `HTTPS_PROXY`                 | HTTPSプロキシのURL（例: `http://proxy.example.com:8080`）                                                                     | -    |
+| `--attachments-dir`     | `KINTONE_ATTACHMENTS_DIR`     | ダウンロードしたファイルの保存先                                                                                              | -    |
+| `--transport`           | `TRANSPORT`                   | トランスポート方式（`stdio` または `http`、デフォルト: `stdio`）                                                              | -    |
+| `--port`                | `PORT`                        | HTTPサーバーのポート番号（デフォルト: `3000`）                                                                                | -    |
+| `--hostname`            | -                             | HTTPサーバーのバインドアドレス（デフォルト: `127.0.0.1`。`HOSTNAME` は Docker 等が自動設定する予約環境変数のため env 非対応） | -    |
 
 ※1: `KINTONE_USERNAME` & `KINTONE_PASSWORD` または `KINTONE_API_TOKEN` のいずれかが必須
 

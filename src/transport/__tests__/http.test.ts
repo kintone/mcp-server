@@ -1,5 +1,9 @@
 import { describe, it, expect, afterEach, vi, beforeEach } from "vitest";
-import type { Server, ServerResponse } from "node:http";
+import {
+  request as httpRequest,
+  type Server,
+  type ServerResponse,
+} from "node:http";
 
 const mockHandleRequest = vi.fn().mockResolvedValue(undefined);
 const mockConnect = vi.fn().mockResolvedValue(undefined);
@@ -173,6 +177,34 @@ describe("HTTP Server", () => {
     expect(mockHandleRequest).not.toHaveBeenCalled();
   });
 
+  it("should clean up and not forward to handleRequest when the client aborts mid-body", async () => {
+    server = await startHttpServer(mockServerConfig, 0, "127.0.0.1");
+    const address = server.address();
+    if (!address || typeof address === "string") throw new Error("no address");
+
+    await new Promise<void>((resolve) => {
+      const req = httpRequest({
+        host: "127.0.0.1",
+        port: address.port,
+        path: "/mcp",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": "1000",
+        },
+      });
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      req.on("error", () => {});
+      req.write("partial-body");
+      setTimeout(() => {
+        req.destroy();
+        setTimeout(resolve, 100);
+      }, 50);
+    });
+
+    expect(mockHandleRequest).not.toHaveBeenCalled();
+  });
+
   it("should delegate GET /mcp to SDK transport", async () => {
     server = await startHttpServer(mockServerConfig, 0, "127.0.0.1");
 
@@ -218,6 +250,41 @@ describe("HTTP Server", () => {
 
     expect(response.status).toBe(404);
     expect(JSON.parse(response.body)).toEqual({ error: "Not Found" });
+  });
+
+  it("should return 400 when the Host header makes the request URL unparseable", async () => {
+    server = await startHttpServer(mockServerConfig, 0, "127.0.0.1");
+    const address = server.address();
+    if (!address || typeof address === "string") throw new Error("no address");
+
+    const response = await new Promise<{ status: number; body: string }>(
+      (resolve, reject) => {
+        const req = httpRequest(
+          {
+            host: "127.0.0.1",
+            port: address.port,
+            path: "/mcp",
+            method: "GET",
+            headers: { Host: "exa mple.com" },
+          },
+          (res) => {
+            let body = "";
+            res.on("data", (chunk) => {
+              body += chunk;
+            });
+            res.on("end", () => resolve({ status: res.statusCode ?? 0, body }));
+          },
+        );
+        req.on("error", reject);
+        req.end();
+      },
+    );
+
+    expect(response.status).toBe(400);
+    expect(JSON.parse(response.body)).toEqual({
+      error: "Bad Request: invalid URL",
+    });
+    expect(mockHandleRequest).not.toHaveBeenCalled();
   });
 
   it("should return 403 for disallowed Origin header", async () => {

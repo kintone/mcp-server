@@ -166,21 +166,21 @@ Please refer to the documentation of the AI tool you are using for details on ho
 
 ### Configuration Options
 
-| Command-line Argument   | Environment Variable          | Description                                                               | Required |
-| ----------------------- | ----------------------------- | ------------------------------------------------------------------------- | -------- |
-| `--base-url`            | `KINTONE_BASE_URL`            | Base URL of your Kintone environment (e.g., `https://example.cybozu.com`) | ✓        |
-| `--username`            | `KINTONE_USERNAME`            | Kintone login username                                                    | ※1       |
-| `--password`            | `KINTONE_PASSWORD`            | Kintone login password                                                    | ※1       |
-| `--api-token`           | `KINTONE_API_TOKEN`           | API token (comma-separated, max 9 tokens)                                 | ※1       |
-| `--basic-auth-username` | `KINTONE_BASIC_AUTH_USERNAME` | Basic authentication username                                             | -        |
-| `--basic-auth-password` | `KINTONE_BASIC_AUTH_PASSWORD` | Basic authentication password                                             | -        |
-| `--pfx-file-path`       | `KINTONE_PFX_FILE_PATH`       | Path to PFX file (for client certificate authentication)                  | -        |
-| `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFX file password                                                         | -        |
-| `--proxy`               | `HTTPS_PROXY`                 | HTTPS proxy URL (e.g., `http://proxy.example.com:8080`)                   | -        |
-| `--attachments-dir`     | `KINTONE_ATTACHMENTS_DIR`     | Directory to save downloaded files                                        | -        |
-| `--transport`           | -                             | Transport type (`stdio` or `http`, default: `stdio`)                      | -        |
-| `--port`                | -                             | HTTP server port (default: `3000`)                                        | -        |
-| `--hostname`            | -                             | HTTP server bind address (default: `127.0.0.1`)                           | -        |
+| Command-line Argument   | Environment Variable          | Description                                                                                                                                      | Required |
+| ----------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
+| `--base-url`            | `KINTONE_BASE_URL`            | Base URL of your Kintone environment (e.g., `https://example.cybozu.com`)                                                                        | ✓        |
+| `--username`            | `KINTONE_USERNAME`            | Kintone login username                                                                                                                           | ※1       |
+| `--password`            | `KINTONE_PASSWORD`            | Kintone login password                                                                                                                           | ※1       |
+| `--api-token`           | `KINTONE_API_TOKEN`           | API token (comma-separated, max 9 tokens)                                                                                                        | ※1       |
+| `--basic-auth-username` | `KINTONE_BASIC_AUTH_USERNAME` | Basic authentication username                                                                                                                    | -        |
+| `--basic-auth-password` | `KINTONE_BASIC_AUTH_PASSWORD` | Basic authentication password                                                                                                                    | -        |
+| `--pfx-file-path`       | `KINTONE_PFX_FILE_PATH`       | Path to PFX file (for client certificate authentication)                                                                                         | -        |
+| `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFX file password                                                                                                                                | -        |
+| `--proxy`               | `HTTPS_PROXY`                 | HTTPS proxy URL (e.g., `http://proxy.example.com:8080`)                                                                                          | -        |
+| `--attachments-dir`     | `KINTONE_ATTACHMENTS_DIR`     | Directory to save downloaded files                                                                                                               | -        |
+| `--transport`           | `TRANSPORT`                   | Transport type (`stdio` or `http`, default: `stdio`)                                                                                             | -        |
+| `--port`                | `PORT`                        | HTTP server port (default: `3000`)                                                                                                               | -        |
+| `--hostname`            | -                             | HTTP server bind address (default: `127.0.0.1`). `HOSTNAME` is excluded from env fallback since it's a reserved variable auto-set by Docker etc. | -        |
 
 ※1: Either `KINTONE_USERNAME` & `KINTONE_PASSWORD` or `KINTONE_API_TOKEN` is required
 

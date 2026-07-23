@@ -120,7 +120,8 @@ export const parseTransportConfig = (): TransportConfig => {
   const result = transportConfigSchema.safeParse({
     TRANSPORT: cmdArgs.transport ?? process.env.TRANSPORT,
     PORT: cmdArgs.port ?? process.env.PORT,
-    HOSTNAME: cmdArgs.hostname ?? process.env.HOSTNAME,
+    // HOSTNAME は Docker/bash がコンテナ ID 等を自動設定する予約済み環境変数のため env fallback から除外
+    HOSTNAME: cmdArgs.hostname,
   });
 
   if (result.success) {
