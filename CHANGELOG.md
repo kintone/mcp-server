@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/kintone/mcp-server/compare/1.9.0...1.9.1) (2026-07-23)
+
+
+### Bug Fixes
+
+* **deps:** add pnpm override for fast-uri (CVE-2026-13676, CVE-2026-16221) ([#524](https://github.com/kintone/mcp-server/issues/524)) ([c54384e](https://github.com/kintone/mcp-server/commit/c54384e459d8383a88b3df4dd7935a6894d51ad4))
+
 ## [1.9.0](https://github.com/kintone/mcp-server/compare/1.8.2...1.9.0) (2026-07-21)
 
 
