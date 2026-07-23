@@ -88,6 +88,11 @@
   "engines": {
     "node": ">= 22"
   },
+  "pnpm": {
+    "overrides": {
+      "fast-uri": ">=3.1.4"
+    }
+  },
   "publishConfig": {
     "access": "public"
   }
