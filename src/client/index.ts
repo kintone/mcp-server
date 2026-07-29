@@ -4,17 +4,11 @@ import { Agent, type AgentOptions } from "https";
 import { readFileSync } from "fs";
 import type { KintoneClientConfig } from "./types/client.js";
 
-let client: KintoneRestAPIClient | null = null;
-
 export type { KintoneClientConfig };
 
-export const getKintoneClient = (
+export const createKintoneClient = (
   config: KintoneClientConfig,
 ): KintoneRestAPIClient => {
-  if (client) {
-    return client;
-  }
-
   const {
     KINTONE_BASE_URL,
     KINTONE_USERNAME,
@@ -34,7 +28,7 @@ export const getKintoneClient = (
     apiToken: KINTONE_API_TOKEN,
   });
 
-  client = new KintoneRestAPIClient({
+  return new KintoneRestAPIClient({
     baseUrl: KINTONE_BASE_URL,
     ...authParams,
     ...buildBasicAuthParam({
@@ -48,8 +42,6 @@ export const getKintoneClient = (
       pfxPassword: KINTONE_PFX_FILE_PASSWORD,
     }),
   });
-
-  return client;
 };
 
 const buildAuthParams = (option: {

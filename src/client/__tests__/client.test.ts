@@ -38,15 +38,15 @@ vi.mock("fs", () => ({
   readFileSync: mockReadFileSync,
 }));
 
-describe("getKintoneClient", () => {
-  let getKintoneClient: any;
+describe("createKintoneClient", () => {
+  let createKintoneClient: any;
 
   beforeEach(async () => {
     vi.clearAllMocks();
     vi.resetModules();
     // Import fresh module instance for each test
     const module = await import("../index.js");
-    getKintoneClient = module.getKintoneClient;
+    createKintoneClient = module.createKintoneClient;
   });
 
   describe("basic functionality", () => {
@@ -54,7 +54,7 @@ describe("getKintoneClient", () => {
       const mockClientInstance = { app: { getApp: vi.fn() } };
       mockKintoneClient.mockReturnValue(mockClientInstance);
 
-      const result = getKintoneClient(mockKintoneConfig);
+      const result = createKintoneClient(mockKintoneConfig);
 
       expect(mockKintoneClient).toHaveBeenCalledWith({
         baseUrl: mockKintoneConfig.KINTONE_BASE_URL,
@@ -68,15 +68,19 @@ describe("getKintoneClient", () => {
       expect(result).toBe(mockClientInstance);
     });
 
-    it("should return the same instance on subsequent calls (singleton)", () => {
-      const mockClientInstance = { app: { getApp: vi.fn() } };
-      mockKintoneClient.mockReturnValue(mockClientInstance);
+    it("should create a new instance on each call", () => {
+      const mockClientInstance1 = { app: { getApp: vi.fn() } };
+      const mockClientInstance2 = { app: { getApp: vi.fn() } };
+      mockKintoneClient
+        .mockReturnValueOnce(mockClientInstance1)
+        .mockReturnValueOnce(mockClientInstance2);
 
-      const client1 = getKintoneClient(mockKintoneConfig);
-      const client2 = getKintoneClient(mockKintoneConfig);
+      const client1 = createKintoneClient(mockKintoneConfig);
+      const client2 = createKintoneClient(mockKintoneConfig);
 
-      expect(client1).toBe(client2);
-      expect(mockKintoneClient).toHaveBeenCalledTimes(1);
+      expect(client1).toBe(mockClientInstance1);
+      expect(client2).toBe(mockClientInstance2);
+      expect(mockKintoneClient).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -85,7 +89,7 @@ describe("getKintoneClient", () => {
       const mockClientInstance = { app: { getApp: vi.fn() } };
       mockKintoneClient.mockReturnValue(mockClientInstance);
 
-      getKintoneClient(mockKintoneConfig);
+      createKintoneClient(mockKintoneConfig);
 
       expect(mockKintoneClient).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -101,7 +105,7 @@ describe("getKintoneClient", () => {
       const mockClientInstance = { app: { getApp: vi.fn() } };
       mockKintoneClient.mockReturnValue(mockClientInstance);
 
-      getKintoneClient(mockKintoneConfigWithApiToken);
+      createKintoneClient(mockKintoneConfigWithApiToken);
 
       expect(mockKintoneClient).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -121,7 +125,7 @@ describe("getKintoneClient", () => {
         KINTONE_API_TOKEN: "some-token",
       };
 
-      getKintoneClient(config);
+      createKintoneClient(config);
 
       expect(mockKintoneClient).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -145,7 +149,7 @@ describe("getKintoneClient", () => {
         KINTONE_BASIC_AUTH_PASSWORD: "basicpass",
       };
 
-      getKintoneClient(config);
+      createKintoneClient(config);
 
       expect(mockKintoneClient).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -167,7 +171,7 @@ describe("getKintoneClient", () => {
         KINTONE_BASIC_AUTH_PASSWORD: undefined,
       };
 
-      getKintoneClient(config);
+      createKintoneClient(config);
 
       expect(mockKintoneClient).toHaveBeenCalledWith(
         expect.not.objectContaining({
@@ -190,7 +194,7 @@ describe("getKintoneClient", () => {
         HTTPS_PROXY: "http://proxy.example.com:8080",
       };
 
-      getKintoneClient(config);
+      createKintoneClient(config);
 
       expect(mockHttpsProxyAgent).toHaveBeenCalledWith(
         "http://proxy.example.com:8080",
@@ -207,7 +211,7 @@ describe("getKintoneClient", () => {
       const mockClientInstance = { app: { getApp: vi.fn() } };
       mockKintoneClient.mockReturnValue(mockClientInstance);
 
-      getKintoneClient(mockKintoneConfig);
+      createKintoneClient(mockKintoneConfig);
 
       expect(mockKintoneClient).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -228,7 +232,7 @@ describe("getKintoneClient", () => {
         KINTONE_PFX_FILE_PASSWORD: "pfx-password",
       };
 
-      getKintoneClient(config);
+      createKintoneClient(config);
 
       expect(mockReadFileSync).toHaveBeenCalledWith("/path/to/cert.pfx");
       expect(mockKintoneClient).toHaveBeenCalledWith(
@@ -249,7 +253,7 @@ describe("getKintoneClient", () => {
         KINTONE_PFX_FILE_PASSWORD: "pfx-password",
       };
 
-      expect(() => getKintoneClient(config)).toThrow(
+      expect(() => createKintoneClient(config)).toThrow(
         "Failed to read PFX file: /invalid/path.pfx. File not found",
       );
     });
@@ -266,7 +270,7 @@ describe("getKintoneClient", () => {
         HTTPS_PROXY: "invalid-url",
       };
 
-      expect(() => getKintoneClient(config)).toThrow(
+      expect(() => createKintoneClient(config)).toThrow(
         "Invalid HTTPS proxy URL: [invalid proxy URL]. Invalid URL",
       );
     });
@@ -281,7 +285,7 @@ describe("getKintoneClient", () => {
         HTTPS_PROXY: "http://user:pass@proxy.example.com:8080",
       };
 
-      expect(() => getKintoneClient(config)).toThrow(
+      expect(() => createKintoneClient(config)).toThrow(
         "Invalid HTTPS proxy URL: http://proxy.example.com:8080/. Connection refused",
       );
     });

@@ -12,7 +12,7 @@
 
 ```typescript
 const config = parseKintoneClientConfig();
-const client = getKintoneClient(config);
+const client = createKintoneClient(config);
 ```
 
 ### テスト作成時の注意点
