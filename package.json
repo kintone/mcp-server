@@ -90,7 +90,7 @@
   },
   "pnpm": {
     "overrides": {
-      "fast-uri": ">=3.1.5"
+      "fast-uri": ">=4.1.2"
     }
   },
   "publishConfig": {
