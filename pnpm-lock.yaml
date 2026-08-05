@@ -58,8 +58,8 @@ importers:
         specifier: 0.88.3
         version: 0.88.3(@types/estree@1.0.9)(eslint@9.39.5(jiti@2.5.1))(jsonc-eslint-parser@2.4.0)
       globals:
-        specifier: 17.8.0
-        version: 17.8.0
+        specifier: 17.9.0
+        version: 17.9.0
       npm:
         specifier: 11.19.0
         version: 11.19.0
@@ -2490,8 +2490,8 @@ packages:
     resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
     engines: {node: '>=18'}
 
-  globals@17.8.0:
-    resolution: {integrity: sha512-Zz/LMDZScFmkakeL2cTHzf+PbWKdpU3uclqkZT7TjDG58j5WPt0PpA+n9uPI24fZtlw07q0OtEi84K+umsRzqQ==}
+  globals@17.9.0:
+    resolution: {integrity: sha512-m/MvAW61QVU5VDNF1Vj8axt016h8w7L5TU1e9zlab7XIttAT2YAlCwl75K1fOqvMM9apmD7lbCIRhpfkhmxhCg==}
     engines: {node: '>=18'}
 
   globalthis@1.0.4:
@@ -4311,7 +4311,7 @@ snapshots:
       eslint-plugin-prettier: 5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.5(jiti@2.5.1)))(eslint@9.39.5(jiti@2.5.1))(prettier@3.8.5)
       eslint-plugin-react: 7.37.5(eslint@9.39.5(jiti@2.5.1))
       eslint-plugin-react-hooks: 7.0.1(eslint@9.39.5(jiti@2.5.1))
-      globals: 17.8.0
+      globals: 17.9.0
       typescript: 5.9.3
       typescript-eslint: 8.56.1(eslint@9.39.5(jiti@2.5.1))(typescript@5.9.3)
     transitivePeerDependencies:
@@ -6632,7 +6632,7 @@ snapshots:
 
   globals@15.15.0: {}
 
-  globals@17.8.0: {}
+  globals@17.9.0: {}
 
   globalthis@1.0.4:
     dependencies:
