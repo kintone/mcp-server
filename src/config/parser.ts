@@ -29,25 +29,41 @@ export const parseKintoneMcpServerConfig = (): ParsedConfig => {
   );
 };
 
+const emptyToUndefined = (value: string | undefined): string | undefined => {
+  return value === "" ? undefined : value;
+};
+
 export const merge = (
   env: Record<string, string | undefined>,
   args: Record<string, string | undefined>,
 ): Partial<ProvidedConfig> => {
   return {
-    KINTONE_BASE_URL: args["base-url"] ?? env.KINTONE_BASE_URL,
-    KINTONE_USERNAME: args.username ?? env.KINTONE_USERNAME,
-    KINTONE_PASSWORD: args.password ?? env.KINTONE_PASSWORD,
-    KINTONE_API_TOKEN: args["api-token"] ?? env.KINTONE_API_TOKEN,
-    KINTONE_BASIC_AUTH_USERNAME:
+    KINTONE_BASE_URL: emptyToUndefined(
+      args["base-url"] ?? env.KINTONE_BASE_URL,
+    ),
+    KINTONE_USERNAME: emptyToUndefined(args.username ?? env.KINTONE_USERNAME),
+    KINTONE_PASSWORD: emptyToUndefined(args.password ?? env.KINTONE_PASSWORD),
+    KINTONE_API_TOKEN: emptyToUndefined(
+      args["api-token"] ?? env.KINTONE_API_TOKEN,
+    ),
+    KINTONE_BASIC_AUTH_USERNAME: emptyToUndefined(
       args["basic-auth-username"] ?? env.KINTONE_BASIC_AUTH_USERNAME,
-    KINTONE_BASIC_AUTH_PASSWORD:
+    ),
+    KINTONE_BASIC_AUTH_PASSWORD: emptyToUndefined(
       args["basic-auth-password"] ?? env.KINTONE_BASIC_AUTH_PASSWORD,
-    KINTONE_PFX_FILE_PATH: args["pfx-file-path"] ?? env.KINTONE_PFX_FILE_PATH,
-    KINTONE_PFX_FILE_PASSWORD:
+    ),
+    KINTONE_PFX_FILE_PATH: emptyToUndefined(
+      args["pfx-file-path"] ?? env.KINTONE_PFX_FILE_PATH,
+    ),
+    KINTONE_PFX_FILE_PASSWORD: emptyToUndefined(
       args["pfx-file-password"] ?? env.KINTONE_PFX_FILE_PASSWORD,
-    HTTPS_PROXY: args.proxy ?? env.HTTPS_PROXY ?? env.https_proxy,
-    KINTONE_ATTACHMENTS_DIR:
+    ),
+    HTTPS_PROXY: emptyToUndefined(
+      args.proxy ?? env.HTTPS_PROXY ?? env.https_proxy,
+    ),
+    KINTONE_ATTACHMENTS_DIR: emptyToUndefined(
       args["attachments-dir"] ?? env.KINTONE_ATTACHMENTS_DIR,
+    ),
   };
 };
 

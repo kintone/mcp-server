@@ -164,6 +164,27 @@ describe("config - successful parsing", () => {
       expected: mockProvidedConfig,
     },
     {
+      name: "should treat empty username/password as not provided when API token is set",
+      env: {
+        KINTONE_BASE_URL: "https://example.cybozu.com",
+        KINTONE_USERNAME: "",
+        KINTONE_PASSWORD: "",
+        KINTONE_API_TOKEN: "abc123",
+      },
+      expected: {
+        KINTONE_BASE_URL: "https://example.cybozu.com",
+        KINTONE_API_TOKEN: "abc123",
+        KINTONE_USERNAME: undefined,
+        KINTONE_PASSWORD: undefined,
+        KINTONE_BASIC_AUTH_USERNAME: undefined,
+        KINTONE_BASIC_AUTH_PASSWORD: undefined,
+        HTTPS_PROXY: undefined,
+        KINTONE_PFX_FILE_PATH: undefined,
+        KINTONE_PFX_FILE_PASSWORD: undefined,
+        KINTONE_ATTACHMENTS_DIR: undefined,
+      },
+    },
+    {
       name: "should parse with API token instead of username/password",
       env: {
         KINTONE_BASE_URL: "https://example.cybozu.com",

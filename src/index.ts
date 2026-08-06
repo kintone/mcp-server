@@ -7,10 +7,13 @@ import {
   getMcpServerConfig,
   getToolConditionConfig,
 } from "./config/index.js";
+import { PACKAGE_NAME } from "./config/schema.js";
+
+const log = (...args: unknown[]) => console.error(`[${PACKAGE_NAME}]`, ...args);
 
 const main = async () => {
   const transport = new StdioServerTransport();
-  console.error("Starting server...");
+  log("Starting server...");
 
   const mcpServerConfig = getMcpServerConfig();
   const clientConfig = getKintoneClientConfig();
@@ -31,4 +34,8 @@ const main = async () => {
   await server.connect(transport);
 };
 
-main().catch(console.error);
+main().catch((error) => {
+  log(error);
+  // eslint-disable-next-line n/no-process-exit
+  process.exit(1);
+});
