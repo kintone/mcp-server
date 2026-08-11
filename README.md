@@ -1,5 +1,7 @@
 # kintone MCP Server
 
+[![MCP Toplist](https://mcptoplist.com/badge/glama%2Fkintone%2Fmcp-server.svg)](https://mcptoplist.com/server/glama%2Fkintone%2Fmcp-server)
+
 [![ci][ci-badge]][ci-url]
 [![npm version][npm-badge]][npm-url]
 [![License: Apache 2.0][license-badge]][license-url]
