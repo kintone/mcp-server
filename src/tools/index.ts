@@ -4,6 +4,9 @@ import { addRecords } from "./kintone/record/add-records.js";
 import { deleteRecords } from "./kintone/record/delete-records.js";
 import { getRecordComments } from "./kintone/record/get-record-comments.js";
 import { getRecords } from "./kintone/record/get-records.js";
+import { exportRecordsToFile } from "./kintone/record/export-records-to-file.js";
+import { importRecordsFromFile } from "./kintone/record/import-records-from-file.js";
+import { updateRecordsFromFile } from "./kintone/record/update-records-from-file.js";
 import { updateRecords } from "./kintone/record/update-records.js";
 import { getApp } from "./kintone/app/get-app.js";
 import { getApps } from "./kintone/app/get-apps.js";
@@ -42,6 +45,9 @@ export const tools: Array<Tool<any, any>> = [
   addFormFields,
   updateStatuses,
   addRecords,
+  importRecordsFromFile,
+  updateRecordsFromFile,
+  exportRecordsToFile,
   deleteRecords,
   getRecords,
   getRecordComments,
