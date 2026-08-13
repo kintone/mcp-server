@@ -69,7 +69,7 @@ const actionSchema = z.object({
 const outputSchema = {
   enable: z.boolean().describe("Whether process management is enabled"),
   states: z
-    .record(stateSchema)
+    .record(z.string(), stateSchema)
     .nullable()
     .describe("Object containing status configurations"),
   actions: z
