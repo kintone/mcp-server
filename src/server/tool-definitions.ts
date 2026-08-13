@@ -11,7 +11,12 @@ import type { Tool } from "../tools/types/tool.js";
 const JSON_SCHEMA_TARGET = "draft-2020-12";
 
 const toJsonSchema = (shape: ZodRawShape, io: "input" | "output") =>
-  z.toJSONSchema(z.object(shape), {
+  // Zod emits "additionalProperties": false for strict objects only, so build
+  // the input schema from a strict object to keep advertising "no extra
+  // parameters" as the previous draft-07 output did. Tool arguments are still
+  // parsed with the non-strict schemas registered by registerTool, so unknown
+  // keys keep being stripped instead of rejected.
+  z.toJSONSchema(io === "input" ? z.strictObject(shape) : z.object(shape), {
     target: JSON_SCHEMA_TARGET,
     io,
     // Extract schemas that appear more than once into $defs, as the previous
