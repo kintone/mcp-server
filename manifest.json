@@ -93,12 +93,24 @@
       "description": "Get multiple records from a Kintone app"
     },
     {
+      "name": "kintone-export-records-to-file",
+      "description": "Retrieve records from a Kintone app and save them to a local JSON file under KINTONE_ATTACHMENTS_DIR without returning record contents to the LLM"
+    },
+    {
       "name": "kintone-add-records",
       "description": "Add multiple records to a Kintone app"
     },
     {
+      "name": "kintone-import-records-from-file",
+      "description": "Add records to a Kintone app in bulk by reading them from a local JSON file without loading the record contents into the LLM context"
+    },
+    {
       "name": "kintone-update-records",
       "description": "Update multiple records in a Kintone app"
+    },
+    {
+      "name": "kintone-update-records-from-file",
+      "description": "Update records of a Kintone app in bulk by reading them from a local JSON file without loading the record contents into the LLM context"
     },
     {
       "name": "kintone-delete-records",

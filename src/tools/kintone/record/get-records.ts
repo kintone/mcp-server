@@ -3,7 +3,7 @@ import { createTool } from "../../factory.js";
 import { recordSchema } from "../../../schema/record/index.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
 
-const filtersSchema = z
+export const filtersSchema = z
   .object({
     textContains: z
       .array(
@@ -85,7 +85,7 @@ const filtersSchema = z
     "Filter conditions for records. All conditions are AND-combined. NOTE: This MCP server does not currently support OR conditions in filters. Use kintone-get-form-fields tool to discover available field codes and types for an app",
   );
 
-const orderBySchema = z
+export const orderBySchema = z
   .array(
     z.object({
       field: z.string().describe("Field code to sort by"),
@@ -128,7 +128,7 @@ const outputSchema = {
   totalCount: z.string().describe("Total count of records matching the query"),
 };
 
-function buildQueryFromFilters(
+export function buildQueryFromFilters(
   filters: NonNullable<z.infer<typeof filtersSchema>>,
 ): string | undefined {
   const conditions: string[] = [];
