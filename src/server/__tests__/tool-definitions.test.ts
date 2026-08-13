@@ -75,6 +75,20 @@ describe("tool schemas", () => {
     );
   });
 
+  it("reject extra properties", async () => {
+    const advertised = await listTools();
+
+    // The input schemas say so because they are built from strict objects; the
+    // output ones because Zod adds it for "io: output" on its own.
+    expect(
+      advertised.map((tool) => [
+        tool.name,
+        tool.inputSchema.additionalProperties,
+        tool.outputSchema?.additionalProperties,
+      ]),
+    ).toEqual(advertised.map((tool) => [tool.name, false, false]));
+  });
+
   it("keep every tool property the SDK advertises", async () => {
     const [ours, bySdk] = await Promise.all([
       listTools(),

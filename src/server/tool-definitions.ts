@@ -20,7 +20,7 @@ const toJsonSchema = (shape: ZodRawShape, io: "input" | "output") =>
     target: JSON_SCHEMA_TARGET,
     io,
     // Extract schemas that appear more than once into $defs, as the previous
-    // draft-07 output did. Inlining them grows tools/list by about 30%.
+    // draft-07 output did. Inlining them grows tools/list by about 23%.
     reused: "ref",
   }) as McpTool["inputSchema"];
 

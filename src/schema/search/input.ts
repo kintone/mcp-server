@@ -76,7 +76,12 @@ export const searchInputSchema = {
   query: z
     .tuple([searchQuerySchema])
     .rest(searchQuerySchema)
-    .describe("Search queries (at least 1 required)"),
+    // Zod renders a tuple with a rest element as prefixItems + items, which
+    // does not tell a client that one query is required, so state it here.
+    .meta({
+      minItems: 1,
+      description: "Search queries (at least 1 required)",
+    }),
   types: z
     .array(searchHitTypeSchema)
     .optional()
