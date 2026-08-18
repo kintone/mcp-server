@@ -756,3 +756,86 @@ export const propertiesForParameterSchema = z
 export type PropertiesForParameter = z.infer<
   typeof propertiesForParameterSchema
 >;
+
+// Update Form Fields (PUT) only requires `type` for every field type - unlike
+// Add Form Fields (POST), `code` and `label` are optional and kintone keeps
+// the field's current value when they are omitted.
+const inSubtableFieldForUpdateSchema = z.union([
+  lookupSchema.partial({ code: true, label: true }),
+  singleLineTextSchema.partial({ code: true, label: true }),
+  numberSchema.partial({ code: true, label: true }),
+  calcSchema.partial({ code: true, label: true }),
+  multiLineTextSchema.partial({ code: true, label: true }),
+  richTextSchema.partial({ code: true, label: true }),
+  linkSchema.partial({ code: true, label: true }),
+  checkboxSchema.partial({ code: true, label: true }),
+  radioButtonSchema.partial({ code: true, label: true }),
+  dropdownSchema.partial({ code: true, label: true }),
+  multiSelectSchema.partial({ code: true, label: true }),
+  fileSchema.partial({ code: true, label: true }),
+  dateSchema.partial({ code: true, label: true }),
+  timeSchema.partial({ code: true, label: true }),
+  datetimeSchema.partial({ code: true, label: true }),
+  userSelectSchema.partial({ code: true, label: true }),
+  organizationSelectSchema.partial({ code: true, label: true }),
+  groupSelectSchema.partial({ code: true, label: true }),
+]);
+
+const subtableForUpdateSchema = z.object({
+  type: z.literal("SUBTABLE"),
+  code: z.string().optional().describe("Field code"),
+  label: z.string().optional().describe("Field label"),
+  noLabel: z
+    .boolean()
+    .optional()
+    .describe("Whether to hide the label (true: hide, false: show)"),
+  fields: z
+    .record(z.string(), inSubtableFieldForUpdateSchema)
+    .optional()
+    .describe("Configuration of fields within the subtable"),
+});
+
+// Union of all field types for update (code/label optional)
+const fieldPropertyForUpdateSchema = z.union([
+  recordNumberSchema.partial({ code: true, label: true }),
+  creatorSchema.partial({ code: true, label: true }),
+  createdTimeSchema.partial({ code: true, label: true }),
+  modifierSchema.partial({ code: true, label: true }),
+  updatedTimeSchema.partial({ code: true, label: true }),
+  categorySchema.partial({ code: true, label: true }),
+  statusSchema.partial({ code: true, label: true }),
+  statusAssigneeSchema.partial({ code: true, label: true }),
+  lookupSchema.partial({ code: true, label: true }),
+  singleLineTextSchema.partial({ code: true, label: true }),
+  numberSchema.partial({ code: true, label: true }),
+  calcSchema.partial({ code: true, label: true }),
+  multiLineTextSchema.partial({ code: true, label: true }),
+  richTextSchema.partial({ code: true, label: true }),
+  linkSchema.partial({ code: true, label: true }),
+  checkboxSchema.partial({ code: true, label: true }),
+  radioButtonSchema.partial({ code: true, label: true }),
+  dropdownSchema.partial({ code: true, label: true }),
+  multiSelectSchema.partial({ code: true, label: true }),
+  fileSchema.partial({ code: true, label: true }),
+  dateSchema.partial({ code: true, label: true }),
+  timeSchema.partial({ code: true, label: true }),
+  datetimeSchema.partial({ code: true, label: true }),
+  userSelectSchema.partial({ code: true, label: true }),
+  organizationSelectSchema.partial({ code: true, label: true }),
+  groupSelectSchema.partial({ code: true, label: true }),
+  groupSchema.partial({ code: true, label: true }),
+  referenceTableSchema.partial({ code: true, label: true }),
+  subtableForUpdateSchema,
+]);
+
+// Schema for PropertiesForParameter used by Update Form Fields
+export const propertiesForParameterForUpdateSchema = z
+  .record(z.string().describe("Field code"), fieldPropertyForUpdateSchema)
+  .describe(
+    "Object containing field configuration information to update. Keys are field codes, values are field properties. " +
+      "code and label may be omitted to keep their current values.",
+  );
+
+export type PropertiesForUpdateParameter = z.infer<
+  typeof propertiesForParameterForUpdateSchema
+>;
