@@ -40,8 +40,6 @@ const listTools = () =>
     }),
   );
 
-// The same tools registered without the tools/list handler of createServer,
-// to diff our tool definitions against the ones the SDK builds by itself.
 const listToolsBuiltBySdk = () => {
   const server = new McpServer({ name: "test-server", version: "0.0.0" });
   tools.forEach((tool) =>

@@ -795,7 +795,6 @@ const subtableForUpdateSchema = z.object({
     .describe("Configuration of fields within the subtable"),
 });
 
-// Union of all field types for update (code/label optional)
 const fieldPropertyForUpdateSchema = z.union([
   recordNumberSchema.partial({ code: true, label: true }),
   creatorSchema.partial({ code: true, label: true }),
@@ -828,7 +827,6 @@ const fieldPropertyForUpdateSchema = z.union([
   subtableForUpdateSchema,
 ]);
 
-// Schema for PropertiesForParameter used by Update Form Fields
 export const propertiesForParameterForUpdateSchema = z
   .record(z.string().describe("Field code"), fieldPropertyForUpdateSchema)
   .describe(
