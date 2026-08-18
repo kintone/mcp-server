@@ -14,19 +14,12 @@ const toJsonSchema = (shape: ZodRawShape, io: "input" | "output") =>
   z.toJSONSchema(io === "input" ? z.strictObject(shape) : z.object(shape), {
     target: JSON_SCHEMA_TARGET,
     io,
-    // "ref" extracts every structurally-identical schema into $defs, even
-    // bare `z.string()`/`z.boolean()` reused across unrelated fields, which
-    // leaves those properties as a bare $ref with no top-level "type" - the
-    // same problem the override below works around, but with no branches to
-    // synthesize a type from. Inline avoids it at the cost of a larger
-    // tools/list (measured: about the same size as the SDK's draft-07 output).
+    // "ref" dedupes bare primitives into $defs, leaving some properties as a
+    // typeless $ref - clients infer how to parse args from that type.
     reused: "inline",
-    // z.discriminatedUnion / z.union / .nullable() render as oneOf/anyOf with
-    // no top-level "type", which breaks clients that decide how to parse an
-    // argument by checking the declared type. Synthesize one from the
-    // branches: a shared type across all of them ("object" for a
-    // discriminated union), or an array of their types when they don't all
-    // agree (["array", "null"] for a nullable array).
+    // discriminatedUnion/union/nullable() have the same problem via
+    // oneOf/anyOf; synthesize a type from the branches, merging into an
+    // array (e.g. ["array", "null"]) when they don't all agree.
     override: (ctx) => {
       const schema = ctx.jsonSchema as Record<string, unknown>;
       const branches = (schema.oneOf ?? schema.anyOf) as

@@ -110,9 +110,8 @@ describe("tool schemas", () => {
   });
 
   it("declare a type for every top-level input property", async () => {
-    // A property schema built only from oneOf/anyOf (e.g. a discriminated
-    // union) has no top-level "type", which breaks clients that decide how
-    // to serialize an argument by checking the declared type.
+    // A property built only from oneOf/anyOf has no top-level "type", which
+    // breaks clients that decide how to parse an argument from it.
     const advertised = await listTools();
 
     expect(
