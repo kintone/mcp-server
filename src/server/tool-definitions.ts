@@ -25,8 +25,8 @@ const toJsonSchema = (shape: ZodRawShape, io: "input" | "output") =>
     // no top-level "type", which breaks clients that decide how to parse an
     // argument by checking the declared type. Synthesize one from the
     // branches: a shared type across all of them ("object" for a
-    // discriminated union, ["array", "null"] for a nullable array), left
-    // alone if the branches disagree.
+    // discriminated union), or an array of their types when they don't all
+    // agree (["array", "null"] for a nullable array).
     override: (ctx) => {
       const schema = ctx.jsonSchema as Record<string, unknown>;
       const branches = (schema.oneOf ?? schema.anyOf) as
