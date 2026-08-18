@@ -48,9 +48,8 @@ const listToolsBuiltBySdk = () => {
   return listToolsOf(server);
 };
 
-// Clients following SEP-1613 (Claude Cowork, Claude API, ...) reject tool
-// schemas that are not valid JSON Schema 2020-12, and a single invalid tool
-// breaks every tool call of the session.
+// SEP-1613 clients (Claude Cowork, Claude API) reject tools whose schema
+// isn't 2020-12, and one invalid tool breaks every call in the session.
 // https://github.com/kintone/mcp-server/issues/544
 // https://github.com/kintone/mcp-server/issues/547
 describe("tool schemas", () => {

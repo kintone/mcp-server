@@ -757,9 +757,8 @@ export type PropertiesForParameter = z.infer<
   typeof propertiesForParameterSchema
 >;
 
-// Update Form Fields (PUT) only requires `type` for every field type - unlike
-// Add Form Fields (POST), `code` and `label` are optional and kintone keeps
-// the field's current value when they are omitted.
+// Update Form Fields (PUT) only requires `type`; unlike Add Form Fields
+// (POST), `code`/`label` are optional and kept unchanged when omitted.
 const inSubtableFieldForUpdateSchema = z.union([
   lookupSchema.partial({ code: true, label: true }),
   singleLineTextSchema.partial({ code: true, label: true }),

@@ -3,19 +3,14 @@ import type { Tool as McpTool } from "@modelcontextprotocol/sdk/types.js";
 import type { ZodRawShape } from "zod";
 import type { Tool } from "../tools/types/tool.js";
 
-// MCP SDK converts Zod schemas with JSON Schema draft-07 and exposes no option
-// to change the dialect, while MCP clients following SEP-1613 accept JSON
-// Schema 2020-12 only. Build the tool definitions ourselves so that tools/list
-// advertises 2020-12 schemas.
+// The SDK always emits JSON Schema draft-07 with no way to change the
+// dialect, but SEP-1613 clients require 2020-12, so it's built here instead.
 // https://github.com/kintone/mcp-server/issues/544
 const JSON_SCHEMA_TARGET = "draft-2020-12";
 
 const toJsonSchema = (shape: ZodRawShape, io: "input" | "output") =>
-  // Zod emits "additionalProperties": false for strict objects only, so build
-  // the input schema from a strict object to keep advertising "no extra
-  // parameters" as the previous draft-07 output did. Tool arguments are still
-  // parsed with the non-strict schemas registered by registerTool, so unknown
-  // keys keep being stripped instead of rejected.
+  // Only advertises additionalProperties:false like draft-07 did; registerTool
+  // still strips unknown keys via its non-strict schema instead of rejecting.
   z.toJSONSchema(io === "input" ? z.strictObject(shape) : z.object(shape), {
     target: JSON_SCHEMA_TARGET,
     io,
