@@ -14,9 +14,35 @@ const toJsonSchema = (shape: ZodRawShape, io: "input" | "output") =>
   z.toJSONSchema(io === "input" ? z.strictObject(shape) : z.object(shape), {
     target: JSON_SCHEMA_TARGET,
     io,
-    // Extract schemas that appear more than once into $defs, as the previous
-    // draft-07 output did. Inlining them grows tools/list by about 23%.
-    reused: "ref",
+    // "ref" extracts every structurally-identical schema into $defs, even
+    // bare `z.string()`/`z.boolean()` reused across unrelated fields, which
+    // leaves those properties as a bare $ref with no top-level "type" - the
+    // same problem the override below works around, but with no branches to
+    // synthesize a type from. Inline avoids it at the cost of a larger
+    // tools/list (measured: about the same size as the SDK's draft-07 output).
+    reused: "inline",
+    // z.discriminatedUnion / z.union / .nullable() render as oneOf/anyOf with
+    // no top-level "type", which breaks clients that decide how to parse an
+    // argument by checking the declared type. Synthesize one from the
+    // branches: a shared type across all of them ("object" for a
+    // discriminated union, ["array", "null"] for a nullable array), left
+    // alone if the branches disagree.
+    override: (ctx) => {
+      const schema = ctx.jsonSchema as Record<string, unknown>;
+      const branches = (schema.oneOf ?? schema.anyOf) as
+        | Array<{ type?: unknown }>
+        | undefined;
+      if (!branches || "type" in schema) return;
+
+      const types = [...new Set(branches.map((branch) => branch.type))].filter(
+        Boolean,
+      );
+      if (types.length === 1) {
+        schema.type = types[0];
+      } else if (types.length > 1) {
+        schema.type = types;
+      }
+    },
   }) as McpTool["inputSchema"];
 
 export const buildToolDefinition = (tool: Tool): McpTool => ({

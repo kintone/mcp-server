@@ -102,6 +102,29 @@ describe("tool schemas", () => {
     expect(ours.map(withoutSchemas)).toEqual(bySdk.map(withoutSchemas));
   });
 
+  it("keep advertising minItems for the search query", async () => {
+    const advertised = await listTools();
+
+    const search = advertised.find((tool) => tool.name === "kintone-search");
+    expect(search?.inputSchema.properties?.query.minItems).toBe(1);
+  });
+
+  it("declare a type for every top-level input property", async () => {
+    // A property schema built only from oneOf/anyOf (e.g. a discriminated
+    // union) has no top-level "type", which breaks clients that decide how
+    // to serialize an argument by checking the declared type.
+    const advertised = await listTools();
+
+    expect(
+      advertised.flatMap((tool) => {
+        const properties = tool.inputSchema.properties ?? {};
+        return Object.entries(properties)
+          .filter(([, propertySchema]) => !("type" in propertySchema))
+          .map(([name]) => `${tool.name}: ${name}`);
+      }),
+    ).toEqual([]);
+  });
+
   it("compile as JSON Schema 2020-12", async () => {
     const advertised = await listTools();
 
