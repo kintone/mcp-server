@@ -10,10 +10,11 @@ const inputSchema = {
     .describe("Array of app IDs to check deploy status (maximum 300)"),
 };
 
-const deployStatusEnum = z.enum(["PROCESSING", "SUCCESS", "FAIL", "CANCEL"], {
-  description:
+const deployStatusEnum = z
+  .enum(["PROCESSING", "SUCCESS", "FAIL", "CANCEL"])
+  .describe(
     "Deployment status: PROCESSING (in progress), SUCCESS (completed), FAIL (failed), CANCEL (canceled)",
-});
+  );
 
 const outputSchema = {
   apps: z

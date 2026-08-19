@@ -41,7 +41,7 @@ export default [
       "n/no-missing-import": [
         "error",
         {
-          allowModules: ["@modelcontextprotocol/sdk"],
+          allowModules: ["@modelcontextprotocol/sdk", "ajv"],
         },
       ],
     },

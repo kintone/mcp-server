@@ -34,6 +34,7 @@ describe("update-form-fields tool", () => {
       expect(updateFormFields.config.description).toBe(
         "Update form field settings in a kintone app (preview environment only). " +
           "Requires App Management permissions. " +
+          "Only type is required per field; omit code or label to keep their current values. " +
           "Cannot update field codes for Label, Blank space, Border, Status, Assignee, or Category fields. " +
           "For selection fields, unspecified options will be deleted. " +
           "Option keys must exactly match current option names. " +
@@ -167,6 +168,46 @@ describe("update-form-fields tool", () => {
             revision: "10",
           },
           description: "with multi-line text field and revision",
+        },
+        {
+          input: {
+            app: "49",
+            properties: {
+              memo: {
+                type: "MULTI_LINE_TEXT",
+                label: "メモ（最小更新）",
+              },
+            },
+          },
+          description: "with label only, code omitted",
+        },
+        {
+          input: {
+            app: "106",
+            properties: {
+              field1: {
+                type: "SINGLE_LINE_TEXT",
+              },
+            },
+          },
+          description: "with only type, code and label both omitted",
+        },
+        {
+          input: {
+            app: "107",
+            properties: {
+              table: {
+                type: "SUBTABLE",
+                fields: {
+                  inner: {
+                    type: "NUMBER",
+                  },
+                },
+              },
+            },
+          },
+          description:
+            "with subtable field, code/label omitted at both outer and inner levels",
         },
       ])("accepts $description", ({ input }) => {
         expect(() => inputSchema.parse(input)).not.toThrow();

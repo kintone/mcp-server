@@ -1,4 +1,4 @@
-import type { z, ZodRawShape, ZodTypeAny } from "zod";
+import type { z, ZodObject, ZodRawShape } from "zod";
 import type {
   ToolConfig,
   KintoneToolCallback,
@@ -25,6 +25,5 @@ export const createToolCallback = <InputArgs extends ZodRawShape>(
   callback: KintoneToolCallback<InputArgs>,
   options: ToolCallbackOptions,
 ) => {
-  return (args: z.objectOutputType<InputArgs, ZodTypeAny>) =>
-    callback(args, options);
+  return (args: z.infer<ZodObject<InputArgs>>) => callback(args, options);
 };

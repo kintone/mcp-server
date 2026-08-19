@@ -64,7 +64,7 @@
     "@modelcontextprotocol/sdk": "1.29.0",
     "file-type": "22.0.1",
     "https-proxy-agent": "7.0.6",
-    "zod": "3.25.76"
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@anthropic-ai/mcpb": "2.1.2",
@@ -74,6 +74,7 @@
     "@cybozu/license-manager": "1.4.1",
     "@modelcontextprotocol/inspector": "0.18.0",
     "@types/node": "22.20.1",
+    "ajv": "8.17.1",
     "doctoc": "2.5.0",
     "eslint": "9.39.5",
     "eslint-plugin-package-json": "0.88.3",

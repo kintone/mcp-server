@@ -5,19 +5,21 @@ export const PACKAGE_NAME = "@kintone/mcp-server";
 export const configSchema = z
   .object({
     KINTONE_BASE_URL: z
-      .string()
-      .url()
+      .url({
+        error: (issue) =>
+          issue.input === undefined ? "Required" : "Invalid url",
+      })
       .describe(
         "The base URL of your kintone environment (e.g., https://example.cybozu.com)",
       ),
     KINTONE_USERNAME: z
       .string()
-      .min(1)
+      .min(1, "Must not be empty")
       .optional()
       .describe("Username for authentication"),
     KINTONE_PASSWORD: z
       .string()
-      .min(1)
+      .min(1, "Must not be empty")
       .optional()
       .describe("Password for authentication"),
     KINTONE_API_TOKEN: z

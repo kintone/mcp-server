@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
-import { propertiesForParameterSchema } from "../../../schema/app/index.js";
+import { propertiesForParameterForUpdateSchema } from "../../../schema/app/index.js";
 
 const inputSchema = {
   app: z
@@ -9,7 +9,7 @@ const inputSchema = {
     .describe(
       "The ID of the app to update form fields for (numeric value as string)",
     ),
-  properties: propertiesForParameterSchema.describe(
+  properties: propertiesForParameterForUpdateSchema.describe(
     "Object containing field configurations to update",
   ),
   revision: z
@@ -30,6 +30,7 @@ const toolConfig = {
   description:
     "Update form field settings in a kintone app (preview environment only). " +
     "Requires App Management permissions. " +
+    "Only type is required per field; omit code or label to keep their current values. " +
     "Cannot update field codes for Label, Blank space, Border, Status, Assignee, or Category fields. " +
     "For selection fields, unspecified options will be deleted. " +
     "Option keys must exactly match current option names. " +

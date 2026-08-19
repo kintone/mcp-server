@@ -1,6 +1,6 @@
 import type { KintoneRestAPIClient } from "@kintone/rest-api-client";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import type { ZodRawShape, ZodTypeAny, z } from "zod";
+import type { ZodObject, ZodRawShape, z } from "zod";
 
 export type ToolCallbackOptions = {
   client: KintoneRestAPIClient;
@@ -27,6 +27,6 @@ export type Tool<
 };
 
 export type KintoneToolCallback<InputArgs extends ZodRawShape> = (
-  args: z.objectOutputType<InputArgs, ZodTypeAny>,
+  args: z.infer<ZodObject<InputArgs>>,
   extra: ToolCallbackOptions,
 ) => CallToolResult | Promise<CallToolResult>;

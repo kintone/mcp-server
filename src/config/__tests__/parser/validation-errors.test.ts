@@ -68,7 +68,7 @@ describe("config - validation errors", () => {
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
-        "KINTONE_USERNAME: String must contain at least 1 character(s)",
+        "KINTONE_USERNAME: Must not be empty",
       ],
     },
     {
@@ -90,7 +90,7 @@ describe("config - validation errors", () => {
       },
       expectedErrors: [
         "Environment variables are missing or invalid",
-        "KINTONE_PASSWORD: String must contain at least 1 character(s)",
+        "KINTONE_PASSWORD: Must not be empty",
       ],
     },
     {
@@ -103,8 +103,8 @@ describe("config - validation errors", () => {
       expectedErrors: [
         "Environment variables are missing or invalid",
         "KINTONE_BASE_URL: Invalid url",
-        "KINTONE_USERNAME: String must contain at least 1 character(s)",
-        "KINTONE_PASSWORD: String must contain at least 1 character(s)",
+        "KINTONE_USERNAME: Must not be empty",
+        "KINTONE_PASSWORD: Must not be empty",
       ],
     },
     {

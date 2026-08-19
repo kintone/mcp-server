@@ -1,6 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { z } from "zod";
-import { propertiesForParameterSchema } from "../properties-parameter.js";
+import {
+  propertiesForParameterSchema,
+  propertiesForParameterForUpdateSchema,
+} from "../properties-parameter.js";
 
 describe("properties-parameter schema", () => {
   describe("lookupSchema with type NUMBER", () => {
@@ -531,6 +534,92 @@ describe("properties-parameter schema", () => {
           },
         },
       });
+    });
+  });
+
+  describe("propertiesForParameterForUpdateSchema", () => {
+    const schema = z.object({
+      properties: propertiesForParameterForUpdateSchema,
+    });
+
+    it("accepts a field with only label, code omitted", () => {
+      const input = {
+        properties: {
+          memo: {
+            type: "MULTI_LINE_TEXT",
+            label: "メモ（最小更新）",
+          },
+        },
+      };
+
+      expect(() => schema.parse(input)).not.toThrow();
+    });
+
+    it("accepts a field with only type, code and label both omitted", () => {
+      const input = {
+        properties: {
+          field1: {
+            type: "SINGLE_LINE_TEXT",
+          },
+        },
+      };
+
+      expect(() => schema.parse(input)).not.toThrow();
+    });
+
+    it("still requires type", () => {
+      const input = {
+        properties: {
+          field1: {
+            code: "field1",
+            label: "Field 1",
+          },
+        },
+      };
+
+      expect(() => schema.parse(input)).toThrow();
+    });
+
+    it("accepts a subtable with code/label omitted at both outer and inner levels", () => {
+      const input = {
+        properties: {
+          table: {
+            type: "SUBTABLE",
+            fields: {
+              inner: {
+                type: "NUMBER",
+              },
+            },
+          },
+        },
+      };
+
+      expect(() => schema.parse(input)).not.toThrow();
+    });
+
+    it("accepts a lookup field with code/label omitted", () => {
+      const input = {
+        properties: {
+          lookup_field: {
+            type: "NUMBER",
+            lookup: {
+              relatedApp: {
+                app: "17",
+                code: "related_app",
+              },
+              relatedKeyField: "record_number",
+              fieldMappings: [
+                { field: "lookup_field", relatedField: "source_field" },
+              ],
+              lookupPickerFields: ["record_number"],
+              filterCond: "",
+              sort: "",
+            },
+          },
+        },
+      };
+
+      expect(() => schema.parse(input)).not.toThrow();
     });
   });
 });

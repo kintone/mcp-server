@@ -99,7 +99,7 @@ const _recordValueSchema = z.union([
         z.object({
           id: z.string().optional().describe("Row ID (optional for new rows)"),
           value: z
-            .record(z.any())
+            .record(z.string(), z.any())
             .describe("Field values within this subtable row"),
         }),
       )
@@ -127,6 +127,7 @@ const _recordValueSchema = z.union([
 ]);
 
 export const recordSchemaForParameter = z.record(
+  z.string(),
   _recordValueSchema.or(
     z.object({
       value: z
@@ -146,6 +147,7 @@ export const recordSchemaForParameter = z.record(
 // ファイルアップロードツール未実装のため現在はinputとしては指定不可
 // TODO: ファイルアップロードツール実装後に調整
 export const recordSchemaForParameterWithoutFile = z.record(
+  z.string(),
   _recordValueSchema.or(
     z.object({
       value: z

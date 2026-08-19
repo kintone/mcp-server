@@ -144,7 +144,7 @@ const recordValueSchema = z.union([
       .array(
         z.object({
           id: z.string(),
-          value: z.record(z.any()),
+          value: z.record(z.string(), z.any()),
         }),
       )
       .nullable(),
@@ -193,4 +193,4 @@ const recordValueSchema = z.union([
   }),
 ]);
 
-export const recordSchema = z.record(recordValueSchema);
+export const recordSchema = z.record(z.string(), recordValueSchema);
