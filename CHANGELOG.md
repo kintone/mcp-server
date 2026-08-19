@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.2](https://github.com/kintone/mcp-server/compare/1.9.1...1.9.2) (2026-08-19)
+
+
+### Bug Fixes
+
+* advertise tool schemas as JSON Schema 2020-12 ([#549](https://github.com/kintone/mcp-server/issues/549)) ([dea2ba1](https://github.com/kintone/mcp-server/commit/dea2ba17e72addf9c096c5260cde6f1265474ac3))
+
 ## [1.9.1](https://github.com/kintone/mcp-server/compare/1.9.0...1.9.1) (2026-07-23)
 
 
