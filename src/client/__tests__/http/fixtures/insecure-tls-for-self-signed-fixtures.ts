@@ -32,6 +32,13 @@ export const useInsecureTlsForSelfSignedFixtures = (): void => {
   });
 
   afterEach(() => {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = original;
+    // `process.env.X = undefined`は代入であってキー削除ではなく、
+    // Node.jsは文字列"undefined"に変換してしまう（`delete`とは異なる）。
+    // 元が未設定だった場合はキー自体を削除し、本当に「元の状態」へ戻す。
+    if (original === undefined) {
+      delete process.env.NODE_TLS_REJECT_UNAUTHORIZED;
+    } else {
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = original;
+    }
   });
 };

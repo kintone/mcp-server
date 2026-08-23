@@ -1,10 +1,10 @@
 import { describe, it, expect, afterEach } from "vitest";
 import { getApp } from "../../../tools/kintone/app/get-app.js";
-import { TestServer } from "./fixtures/TestServer.js";
-import { createFreshKintoneClient } from "./fixtures/createFreshKintoneClient.js";
-import { useInsecureTlsForSelfSignedFixtures } from "./fixtures/insecureTlsForSelfSignedFixtures.js";
-import { SAMPLE_APP_RESPONSE } from "./fixtures/sampleAppResponse.js";
-import { TLS_FIXTURES } from "./fixtures/tlsFixtures.js";
+import { TestServer } from "./fixtures/test-server.js";
+import { createFreshKintoneClient } from "./fixtures/create-fresh-kintone-client.js";
+import { useInsecureTlsForSelfSignedFixtures } from "./fixtures/insecure-tls-for-self-signed-fixtures.js";
+import { SAMPLE_APP_RESPONSE } from "./fixtures/sample-app-response.js";
+import { TLS_FIXTURES } from "./fixtures/tls-fixtures.js";
 import { mockKintoneConfig } from "../../../__tests__/utils.js";
 import type { KintoneClientConfig } from "../../index.js";
 
@@ -66,7 +66,15 @@ describe("client certificate (mTLS) configuration", () => {
     );
   });
 
-  it("fails the handshake instead of silently connecting when the passphrase is wrong", async () => {
+  // 注意: このテストは「PFX/httpsAgentの配線が壊れていないこと」の検知には
+  // 実質的に寄与しない。PFX分岐自体を無効化して証明書を一切送らない場合でも、
+  // mTLSサーバーは同様に接続を拒否するため、このテストは変わらずパスしてしまう
+  // （mutation testで確認済み）。ここで検証しているのは、パスフレーズ不一致が
+  // 「invalid clientCertAuth setting」という具体的なエラー（PFXの復号失敗、
+  // OpenSSLの"mac verify failure"由来）として明示的に失敗することであり、
+  // その一点に絞ってアサートする。PFX/httpsAgentの配線自体の回帰検知は、
+  // 上の「completes a real mTLS handshake...」テストが担っている。
+  it("fails with a clientCertAuth-specific error when the passphrase is wrong", async () => {
     server = await startMtlsServer();
     server.mockJsonResponse(SAMPLE_APP_RESPONSE);
 
@@ -78,7 +86,9 @@ describe("client certificate (mTLS) configuration", () => {
     };
     const client = await createFreshKintoneClient(config);
 
-    await expect(getApp.callback({ appId: "1" }, { client })).rejects.toThrow();
+    await expect(getApp.callback({ appId: "1" }, { client })).rejects.toThrow(
+      /invalid clientCertAuth setting/,
+    );
     expect(server.getLogs()).toHaveLength(0);
   });
 });

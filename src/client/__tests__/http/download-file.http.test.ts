@@ -3,10 +3,10 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { downloadFile } from "../../../tools/kintone/file/download-file.js";
-import { TestServer } from "./fixtures/TestServer.js";
-import { createFreshKintoneClient } from "./fixtures/createFreshKintoneClient.js";
-import { useInsecureTlsForSelfSignedFixtures } from "./fixtures/insecureTlsForSelfSignedFixtures.js";
-import { TLS_FIXTURES } from "./fixtures/tlsFixtures.js";
+import { TestServer } from "./fixtures/test-server.js";
+import { createFreshKintoneClient } from "./fixtures/create-fresh-kintone-client.js";
+import { useInsecureTlsForSelfSignedFixtures } from "./fixtures/insecure-tls-for-self-signed-fixtures.js";
+import { TLS_FIXTURES } from "./fixtures/tls-fixtures.js";
 import { mockKintoneConfig } from "../../../__tests__/utils.js";
 import type { KintoneClientConfig } from "../../index.js";
 

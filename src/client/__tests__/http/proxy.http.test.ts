@@ -1,11 +1,11 @@
 import { describe, it, expect, afterEach } from "vitest";
 import { getApp } from "../../../tools/kintone/app/get-app.js";
-import { TestServer } from "./fixtures/TestServer.js";
-import { TestConnectProxyServer } from "./fixtures/TestConnectProxyServer.js";
-import { createFreshKintoneClient } from "./fixtures/createFreshKintoneClient.js";
-import { useInsecureTlsForSelfSignedFixtures } from "./fixtures/insecureTlsForSelfSignedFixtures.js";
-import { SAMPLE_APP_RESPONSE } from "./fixtures/sampleAppResponse.js";
-import { TLS_FIXTURES } from "./fixtures/tlsFixtures.js";
+import { TestServer } from "./fixtures/test-server.js";
+import { TestConnectProxyServer } from "./fixtures/test-connect-proxy-server.js";
+import { createFreshKintoneClient } from "./fixtures/create-fresh-kintone-client.js";
+import { useInsecureTlsForSelfSignedFixtures } from "./fixtures/insecure-tls-for-self-signed-fixtures.js";
+import { SAMPLE_APP_RESPONSE } from "./fixtures/sample-app-response.js";
+import { TLS_FIXTURES } from "./fixtures/tls-fixtures.js";
 import { mockKintoneConfig } from "../../../__tests__/utils.js";
 import type { KintoneClientConfig } from "../../index.js";
 
