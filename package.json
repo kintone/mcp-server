@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "@kintone/rest-api-client": "6.2.1",
-    "@modelcontextprotocol/sdk": "1.29.0",
+    "@modelcontextprotocol/sdk": "1.30.0",
     "file-type": "22.0.2",
     "https-proxy-agent": "7.0.6",
     "zod": "4.4.3"
