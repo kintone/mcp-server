@@ -30,6 +30,7 @@ The official local MCP server for Kintone.
   - [Example Configuration File Content](#example-configuration-file-content)
 - [Configuration](#configuration)
   - [Configuration Options](#configuration-options)
+  - [HTTP Transport Mode](#http-transport-mode)
   - [Proxy Configuration](#proxy-configuration)
 - [Tools](#tools)
 - [Documentation](#documentation)
@@ -165,18 +166,21 @@ Please refer to the documentation of the AI tool you are using for details on ho
 
 ### Configuration Options
 
-| Command-line Argument   | Environment Variable          | Description                                                               | Required |
-| ----------------------- | ----------------------------- | ------------------------------------------------------------------------- | -------- |
-| `--base-url`            | `KINTONE_BASE_URL`            | Base URL of your Kintone environment (e.g., `https://example.cybozu.com`) | ✓        |
-| `--username`            | `KINTONE_USERNAME`            | Kintone login username                                                    | ※1       |
-| `--password`            | `KINTONE_PASSWORD`            | Kintone login password                                                    | ※1       |
-| `--api-token`           | `KINTONE_API_TOKEN`           | API token (comma-separated, max 9 tokens)                                 | ※1       |
-| `--basic-auth-username` | `KINTONE_BASIC_AUTH_USERNAME` | Basic authentication username                                             | -        |
-| `--basic-auth-password` | `KINTONE_BASIC_AUTH_PASSWORD` | Basic authentication password                                             | -        |
-| `--pfx-file-path`       | `KINTONE_PFX_FILE_PATH`       | Path to PFX file (for client certificate authentication)                  | -        |
-| `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFX file password                                                         | -        |
-| `--proxy`               | `HTTPS_PROXY`                 | HTTPS proxy URL (e.g., `http://proxy.example.com:8080`)                   | -        |
-| `--attachments-dir`     | `KINTONE_ATTACHMENTS_DIR`     | Directory to save downloaded files                                        | -        |
+| Command-line Argument   | Environment Variable          | Description                                                                                                                                      | Required |
+| ----------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
+| `--base-url`            | `KINTONE_BASE_URL`            | Base URL of your Kintone environment (e.g., `https://example.cybozu.com`)                                                                        | ✓        |
+| `--username`            | `KINTONE_USERNAME`            | Kintone login username                                                                                                                           | ※1       |
+| `--password`            | `KINTONE_PASSWORD`            | Kintone login password                                                                                                                           | ※1       |
+| `--api-token`           | `KINTONE_API_TOKEN`           | API token (comma-separated, max 9 tokens)                                                                                                        | ※1       |
+| `--basic-auth-username` | `KINTONE_BASIC_AUTH_USERNAME` | Basic authentication username                                                                                                                    | -        |
+| `--basic-auth-password` | `KINTONE_BASIC_AUTH_PASSWORD` | Basic authentication password                                                                                                                    | -        |
+| `--pfx-file-path`       | `KINTONE_PFX_FILE_PATH`       | Path to PFX file (for client certificate authentication)                                                                                         | -        |
+| `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFX file password                                                                                                                                | -        |
+| `--proxy`               | `HTTPS_PROXY`                 | HTTPS proxy URL (e.g., `http://proxy.example.com:8080`)                                                                                          | -        |
+| `--attachments-dir`     | `KINTONE_ATTACHMENTS_DIR`     | Directory to save downloaded files                                                                                                               | -        |
+| `--transport`           | `TRANSPORT`                   | Transport type (`stdio` or `http`, default: `stdio`)                                                                                             | -        |
+| `--port`                | `PORT`                        | HTTP server port (default: `3000`)                                                                                                               | -        |
+| `--hostname`            | -                             | HTTP server bind address (default: `127.0.0.1`). `HOSTNAME` is excluded from env fallback since it's a reserved variable auto-set by Docker etc. | -        |
 
 ※1: Either `KINTONE_USERNAME` & `KINTONE_PASSWORD` or `KINTONE_API_TOKEN` is required
 
@@ -186,6 +190,54 @@ Please refer to the documentation of the AI tool you are using for details on ho
 - When password authentication and API token authentication are specified simultaneously, password authentication takes priority
 - When both command-line arguments and environment variables are specified, command-line arguments take priority
 - For detailed authentication configuration, refer to the [Authentication Configuration Guide](./docs/en/authentication.md)
+
+### HTTP Transport Mode
+
+You can start the server in Streamable HTTP transport mode by specifying `--transport http`.
+This is useful for sharing the MCP server as a remote server within a team.
+
+To run the MCP server in HTTP mode, use the following command:
+
+```bash
+# Start locally (default: 127.0.0.1:3000)
+kintone-mcp-server \
+  --base-url https://example.cybozu.com \
+  --username (username) \
+  --password (password) \
+  --transport http
+
+# Specify port and hostname
+kintone-mcp-server \
+  --base-url https://example.cybozu.com \
+  --username (username) \
+  --password (password) \
+  --transport http --port 8080 --hostname 0.0.0.0
+```
+
+To run the Docker container in HTTP mode, use the following command:
+
+```bash
+docker run --rm -p 3000:3000 \
+  -e KINTONE_BASE_URL=https://example.cybozu.com \
+  -e KINTONE_USERNAME=(username) \
+  -e KINTONE_PASSWORD=(password) \
+  ghcr.io/kintone/mcp-server:latest --transport http --hostname 0.0.0.0
+```
+
+To connect from an MCP client, use the following command:
+
+```bash
+# Claude Code
+claude mcp add --transport http kintone http://localhost:3000/mcp
+```
+
+**Notes:**
+
+- By default, the server binds to `127.0.0.1`, making it accessible only from the local machine
+- To allow external access, specify `--hostname 0.0.0.0`
+- **When exposing on `0.0.0.0`, the HTTP endpoint has no authentication and no encryption (TLS). On untrusted networks, place it behind a reverse proxy (TLS termination + authentication)**
+- HTTP mode operates statelessly (each request has an independent session)
+- In HTTP transport mode, files saved by `kintone-download-file` are written to the server's local filesystem. If the server runs on a remote host, the returned file path is not accessible to the MCP client
 
 ### Proxy Configuration
 
