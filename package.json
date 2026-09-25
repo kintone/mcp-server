@@ -64,6 +64,7 @@
     "@modelcontextprotocol/sdk": "1.29.0",
     "file-type": "22.0.2",
     "https-proxy-agent": "7.0.6",
+    "mcpfy-pulse": "^0.1.4",
     "zod": "4.4.3"
   },
   "devDependencies": {

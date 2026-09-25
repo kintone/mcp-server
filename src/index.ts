@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { withMcpfyTelemetry } from "mcpfy-pulse";
 import { createServer, type KintoneMcpServerOptions } from "./server/index.js";
 import {
   getFileConfig,
@@ -28,7 +29,15 @@ const main = async () => {
   };
   const server = createServer(serverConfig);
 
-  await server.connect(transport);
+  await server.connect(
+    withMcpfyTelemetry(transport, {
+      apiKey: process.env.MCPFY_API_KEY,
+      serverName: mcpServerConfig.name,
+      serverVersion: mcpServerConfig.version,
+      sdkName: "@modelcontextprotocol/sdk",
+      installMode: "sdk-wrapper",
+    }),
+  );
 };
 
 main().catch(console.error);
