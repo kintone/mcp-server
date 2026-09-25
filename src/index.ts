@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { createServer, type KintoneMcpServerOptions } from "./server/index.js";
+import { connectServer } from "./transport/index.js";
 import {
   getFileConfig,
   getKintoneClientConfig,
@@ -9,7 +9,6 @@ import {
 } from "./config/index.js";
 
 const main = async () => {
-  const transport = new StdioServerTransport();
   console.error("Starting server...");
 
   const mcpServerConfig = getMcpServerConfig();
@@ -28,7 +27,7 @@ const main = async () => {
   };
   const server = createServer(serverConfig);
 
-  await server.connect(transport);
+  await connectServer(server);
 };
 
 main().catch(console.error);
