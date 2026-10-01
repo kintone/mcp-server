@@ -143,6 +143,20 @@ describe("search tool", () => {
         {
           input: {
             query: [{ operator: "AND", keywords: ["test"] }],
+            useSynonyms: true,
+          },
+          description: "with useSynonyms true",
+        },
+        {
+          input: {
+            query: [{ operator: "AND", keywords: ["test"] }],
+            useSynonyms: false,
+          },
+          description: "with useSynonyms false",
+        },
+        {
+          input: {
+            query: [{ operator: "AND", keywords: ["test"] }],
             types: null,
             scopes: null,
             excludeScopes: null,
@@ -206,6 +220,20 @@ describe("search tool", () => {
             sort: { by: "INVALID" },
           },
           description: "invalid sort by value",
+        },
+        {
+          input: {
+            query: [{ operator: "AND", keywords: ["test"] }],
+            useSynonyms: "true",
+          },
+          description: "useSynonyms as string",
+        },
+        {
+          input: {
+            query: [{ operator: "AND", keywords: ["test"] }],
+            useSynonyms: null,
+          },
+          description: "useSynonyms as null",
         },
         {
           input: { query: { operator: "AND", keywords: ["test"] } },
@@ -342,6 +370,7 @@ describe("search tool", () => {
         scopes: [{ scope: "APP" as const, ids: ["1"] }],
         createdAfter: "2025-01-01T00:00:00Z",
         creators: ["admin"],
+        useSynonyms: true,
         sort: { by: "CREATED_AT" as const, order: "DESC" as const },
         limit: 10,
       };
