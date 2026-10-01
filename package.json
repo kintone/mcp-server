@@ -91,7 +91,9 @@
   },
   "pnpm": {
     "overrides": {
-      "fast-uri": ">=4.1.2"
+      "brace-expansion@^1": ">=1.1.20 <2",
+      "brace-expansion@^5": ">=5.0.11 <6",
+      "fast-uri": ">=4.1.4 <5"
     }
   },
   "publishConfig": {
