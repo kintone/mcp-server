@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.4](https://github.com/kintone/mcp-server/compare/1.9.3...1.9.4) (2026-10-01)
+
+
+### Bug Fixes
+
+* **deps:** pin fast-uri and brace-expansion past their advisories [security] ([#572](https://github.com/kintone/mcp-server/issues/572)) ([4480c9a](https://github.com/kintone/mcp-server/commit/4480c9a906b26aa479bdb92d022a07b946239d82))
+
 ## [1.9.3](https://github.com/kintone/mcp-server/compare/1.9.2...1.9.3) (2026-08-19)
 
 
