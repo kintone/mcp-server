@@ -133,6 +133,10 @@
       "description": "Download and save a file from a Kintone"
     },
     {
+      "name": "kintone-upload-file",
+      "description": "Upload one local file to the temporary storage of kintone via the File REST API (POST /k/v1/file.json) and return its fileKey. Only a single file can be uploaded per call. filePath must be an absolute path, or a file name resolved against KINTONE_ATTACHMENTS_DIR. The returned fileKey identifies the file in temporary storage and is what an attachment field expects when the file is attached to a record, a space, or an app setting; it is a different kind of key from the attachment fileKey returned by record retrieval. Uploading itself needs no specific permission. A file left in temporary storage without being attached is deleted after 3 days."
+    },
+    {
       "name": "kintone-add-space-from-template",
       "description": "Create a new kintone space from an existing space template via POST /k/v1/template/space.json. Requires permission to create spaces from templates (typically a kintone System Administrator, or a user explicitly granted space-creation rights). The members array must contain at least one entry with isAdmin: true; otherwise the API rejects the request. To create a guest space, the supplied template id must be a guest space template and isGuest must be true. The space is created immediately on the production environment (no deploy step); this operation is not reversible from this tool. Returns the id of the newly created space."
     },
