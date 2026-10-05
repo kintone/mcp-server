@@ -110,7 +110,7 @@ export const searchInputSchema = {
     .optional()
     .nullable()
     .describe("Filter by creator codes"),
-  useSynonyms: z
+  includeSynonyms: z
     .boolean()
     .optional()
     .describe(
