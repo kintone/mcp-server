@@ -26,7 +26,7 @@ export type WithRequired<T, K extends keyof T> = T & {
 };
 
 /**
- * Assert that every item of `items` carries all of `keys`.
+ * Assert that every item of an array carries the fields its tool requires.
  *
  * Every missing field is reported at once, so the caller does not have to fix
  * them one round trip at a time.
