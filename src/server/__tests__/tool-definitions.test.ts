@@ -124,15 +124,9 @@ describe("tool schemas", () => {
     ).toEqual([]);
   });
 
-  // Some MCP clients cannot build the arguments for an array that is required
-  // at the top level when its "items" schema declares "required" of its own:
-  // they never send tools/call and keep asking the user for the item keys. The
-  // affected tools leave those item fields optional and check them in the
-  // callback instead (src/tools/validation.ts).
-  // https://github.com/mondaycom/mcp/issues/499
-  //
-  // Only the "items" schema itself is checked. "required" further down (inside
-  // properties, anyOf or additionalProperties) is left alone, because
+  // The affected tools leave those item fields optional and check them in the
+  // callback instead (src/tools/validation.ts). Only the "items" schema itself
+  // is checked here: "required" nested further down is left alone, because
   // kintone-add-records advertises it and is not affected.
   it("never declare required directly on the items of a required array", async () => {
     const advertised = await listTools();
