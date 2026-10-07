@@ -21,7 +21,7 @@ export class MissingRequiredFieldsError extends Error {
   }
 }
 
-export type WithRequired<T, K extends keyof T> = T & {
+type WithRequired<T, K extends keyof T> = T & {
   [P in K]-?: Exclude<T[P], undefined>;
 };
 
