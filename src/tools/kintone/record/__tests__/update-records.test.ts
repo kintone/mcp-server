@@ -256,17 +256,6 @@ describe("update-records tool", () => {
             app: "123",
             records: [
               {
-                record: { title: { value: "test" } },
-              },
-            ],
-          },
-          description: "missing required id field",
-        },
-        {
-          input: {
-            app: "123",
-            records: [
-              {
                 id: 123,
                 record: { title: { value: "test" } },
               },
@@ -274,19 +263,28 @@ describe("update-records tool", () => {
           },
           description: "id as number instead of string",
         },
+      ])("rejects $description", ({ input }) => {
+        expect(() => inputSchema.parse(input)).toThrow();
+      });
+    });
+
+    // `id` and `record` are required, but the schema declares them optional
+    // (src/tools/validation.ts). The callback rejects a missing one instead.
+    describe("input schema validation with item fields left to the callback", () => {
+      it.each([
         {
           input: {
             app: "123",
-            records: [
-              {
-                id: "1",
-              },
-            ],
+            records: [{ record: { title: { value: "test" } } }],
           },
-          description: "missing required record field",
+          description: "record without id",
         },
-      ])("rejects $description", ({ input }) => {
-        expect(() => inputSchema.parse(input)).toThrow();
+        {
+          input: { app: "123", records: [{ id: "1" }] },
+          description: "record without record",
+        },
+      ])("accepts $description", ({ input }) => {
+        expect(() => inputSchema.parse(input)).not.toThrow();
       });
     });
 
@@ -603,6 +601,23 @@ describe("update-records tool", () => {
         ],
         upsert: false,
       });
+    });
+
+    it("should reject records missing id or record without calling the API", async () => {
+      const mockClient = createMockClient();
+      mockClient.record.updateRecords = mockUpdateRecords;
+
+      await expect(
+        updateRecords.callback(
+          {
+            app: "123",
+            records: [{ record: { title: { value: "test" } } }, { id: "2" }],
+          },
+          mockToolCallbackOptions(mockClient),
+        ),
+      ).rejects.toThrow("records[0].id, records[1].record");
+
+      expect(mockUpdateRecords).not.toHaveBeenCalled();
     });
 
     it("should handle API errors properly", async () => {

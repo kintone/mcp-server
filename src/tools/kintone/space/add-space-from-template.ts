@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
+import { requireItemFields } from "../../validation.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
 
 const inputSchema = {
@@ -12,6 +13,9 @@ const inputSchema = {
   members: z
     .array(
       z.object({
+        // `entity` is required, but the schema declares it optional. See
+        // `requireItemFields` (src/tools/validation.ts) for why, and for where
+        // the guarantee lives instead.
         entity: z
           .object({
             type: z
@@ -25,8 +29,9 @@ const inputSchema = {
                 "Entity code: login name for USER, group code for GROUP, organization code for ORGANIZATION.",
               ),
           })
+          .optional()
           .describe(
-            "The entity (user, group, or organization) granted membership.",
+            "Required. The entity (user, group, or organization) granted membership.",
           ),
         isAdmin: z
           .boolean()
@@ -46,7 +51,7 @@ const inputSchema = {
     )
     .min(1)
     .describe(
-      "Array of space members. Must contain at least one entry and at least one of them must have isAdmin: true.",
+      "Array of space members. Each member must have entity (who is granted membership). Must contain at least one entry and at least one of them must have isAdmin: true.",
     )
     .refine((members) => members.some((m) => m.isAdmin), {
       message: "At least one member must have isAdmin: true",
@@ -101,7 +106,7 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
   const response = await client.space.addSpaceFromTemplate({
     id,
     name,
-    members,
+    members: requireItemFields(members, "members", ["entity"]),
     isPrivate,
     isGuest,
     fixedMember,

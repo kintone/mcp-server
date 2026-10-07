@@ -1,14 +1,21 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
+import { requireItemFields } from "../../validation.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
 
 const inputSchema = {
   apps: z
     .array(
       z.object({
+        // `app` is required, but the schema declares it optional. See
+        // `requireItemFields` (src/tools/validation.ts) for why, and for where
+        // the guarantee lives instead.
         app: z
           .string()
-          .describe("The ID of the app to deploy (numeric value as string)"),
+          .optional()
+          .describe(
+            "Required. The ID of the app to deploy (numeric value as string)",
+          ),
         revision: z
           .string()
           .optional()
@@ -17,7 +24,9 @@ const inputSchema = {
     )
     .min(1)
     .max(300)
-    .describe("List of apps to deploy (minimum 1, maximum 300 apps)"),
+    .describe(
+      "List of apps to deploy (minimum 1, maximum 300 apps). Each entry must have app (which app to deploy).",
+    ),
   revert: z
     .boolean()
     .optional()
@@ -42,7 +51,10 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
   { apps, revert },
   { client },
 ) => {
-  await client.app.deployApp({ apps, revert });
+  await client.app.deployApp({
+    apps: requireItemFields(apps, "apps", ["app"]),
+    revert,
+  });
 
   const result = {
     message: `Deployment initiated for ${apps.length} app(s). Use kintone-get-app-deploy-status tool to check progress.`,

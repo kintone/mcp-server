@@ -1,13 +1,21 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
+import { requireItemFields } from "../../validation.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
 
+// `id` and `action` are required, but the schema declares them optional. See
+// `requireItemFields` (src/tools/validation.ts) for why, and for where the
+// guarantee lives instead.
 const statusRecordSchema = z.object({
-  id: z.string().describe("Record ID (numeric value as string)"),
+  id: z
+    .string()
+    .optional()
+    .describe("Required. Record ID (numeric value as string)"),
   action: z
     .string()
+    .optional()
     .describe(
-      "Action name to execute. Must be specified in the user's display language if multiple languages are configured. If multiple actions with the same name exist for the current status, an error will occur.",
+      "Required. Action name to execute. Must be specified in the user's display language if multiple languages are configured. If multiple actions with the same name exist for the current status, an error will occur.",
     ),
   assignee: z
     .string()
@@ -30,7 +38,7 @@ const inputSchema = {
     .min(1)
     .max(100)
     .describe(
-      "Array of records to update status (min 1, max 100). Each record contains id, action, and optionally assignee and revision.",
+      "Array of records to update status (min 1, max 100). Each record must have both id (which record to update) and action (the action to execute), and may have assignee and revision.",
     ),
 };
 
@@ -64,7 +72,7 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
 ) => {
   const response = await client.record.updateRecordsStatus({
     app,
-    records,
+    records: requireItemFields(records, "records", ["id", "action"]),
   });
 
   const result = {

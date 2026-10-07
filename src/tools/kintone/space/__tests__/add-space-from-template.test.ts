@@ -107,6 +107,27 @@ describe("add-space-from-template tool", () => {
   });
 
   describe("callback function", () => {
+    it("should reject members missing entity without calling the API", async () => {
+      const mockClient = createMockClient();
+      mockClient.space.addSpaceFromTemplate = mockAddSpaceFromTemplate;
+
+      await expect(
+        addSpaceFromTemplate.callback(
+          {
+            id: "1",
+            name: "My Space",
+            members: [{ isAdmin: true, includeSubs: false }],
+            isPrivate: false,
+            isGuest: false,
+            fixedMember: false,
+          },
+          { client: mockClient },
+        ),
+      ).rejects.toThrow("members[0].entity");
+
+      expect(mockAddSpaceFromTemplate).not.toHaveBeenCalled();
+    });
+
     it("should call addSpaceFromTemplate with the parsed input and return structured content", async () => {
       mockAddSpaceFromTemplate.mockResolvedValueOnce({ id: "200" });
 

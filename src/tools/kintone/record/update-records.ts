@@ -1,14 +1,23 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
 import { recordSchemaForParameter } from "../../../schema/record/index.js";
+import { requireItemFields } from "../../validation.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
 
+// `id` and `record` are required, but the schema declares them optional. See
+// `requireItemFields` (src/tools/validation.ts) for why, and for where the
+// guarantee lives instead.
 const updateRecordSchema = z.object({
   // updateKey指定は対象外
-  id: z.string().describe("Record ID to update (numeric value as string)"),
-  record: recordSchemaForParameter.describe(
-    "Record data with field codes as keys. Use kintone-get-form-fields tool first to discover available field codes and their types.",
-  ),
+  id: z
+    .string()
+    .optional()
+    .describe("Required. Record ID to update (numeric value as string)"),
+  record: recordSchemaForParameter
+    .optional()
+    .describe(
+      "Required. Record data with field codes as keys. Use kintone-get-form-fields tool first to discover available field codes and their types.",
+    ),
   revision: z
     .string()
     .optional()
@@ -28,7 +37,7 @@ const inputSchema = {
     .min(1)
     .max(100)
     .describe(
-      "Array of records to update (min 1, max 100). Each record must have an ID to identify which record to update.",
+      "Array of records to update (min 1, max 100). Each record must have both id (which record to update) and record (the field values to set).",
     ),
 };
 
@@ -58,7 +67,7 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
 ) => {
   const response = await client.record.updateRecords({
     app,
-    records,
+    records: requireItemFields(records, "records", ["id", "record"]),
     upsert: false, // upsertモードは対象外
   });
 
