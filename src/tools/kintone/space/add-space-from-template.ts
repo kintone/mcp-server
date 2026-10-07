@@ -13,9 +13,8 @@ const inputSchema = {
   members: z
     .array(
       z.object({
-        // `entity` is required, but the schema declares it optional. See
-        // `requireItemFields` (src/tools/validation.ts) for why, and for where
-        // the guarantee lives instead.
+        // `entity` is required; the schema declares it optional and
+        // `requireItemFields` (src/tools/validation.ts) holds the guarantee.
         entity: z
           .object({
             type: z

@@ -3,9 +3,8 @@ import { createTool } from "../../factory.js";
 import { requireItemFields } from "../../validation.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
 
-// `id` and `action` are required, but the schema declares them optional. See
-// `requireItemFields` (src/tools/validation.ts) for why, and for where the
-// guarantee lives instead.
+// `id` and `action` are required; the schema declares them optional and
+// `requireItemFields` (src/tools/validation.ts) holds the guarantee.
 const statusRecordSchema = z.object({
   id: z
     .string()

@@ -4,9 +4,8 @@ import { recordSchemaForParameter } from "../../../schema/record/index.js";
 import { requireItemFields } from "../../validation.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
 
-// `id` and `record` are required, but the schema declares them optional. See
-// `requireItemFields` (src/tools/validation.ts) for why, and for where the
-// guarantee lives instead.
+// `id` and `record` are required; the schema declares them optional and
+// `requireItemFields` (src/tools/validation.ts) holds the guarantee.
 const updateRecordSchema = z.object({
   // updateKey指定は対象外
   id: z

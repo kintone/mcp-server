@@ -7,9 +7,8 @@ const inputSchema = {
   apps: z
     .array(
       z.object({
-        // `app` is required, but the schema declares it optional. See
-        // `requireItemFields` (src/tools/validation.ts) for why, and for where
-        // the guarantee lives instead.
+        // `app` is required; the schema declares it optional and
+        // `requireItemFields` (src/tools/validation.ts) holds the guarantee.
         app: z
           .string()
           .optional()

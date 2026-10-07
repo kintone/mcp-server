@@ -1,12 +1,9 @@
 // Some MCP clients cannot build arguments for an array that is required at the
-// top level when its `items` schema declares `required` of its own. They never
-// send `tools/call` and keep asking the user for the item keys instead. The same
-// symptom is reported in https://github.com/mondaycom/mcp/issues/499.
-//
-// The affected tools therefore declare those item fields optional in their input
-// schema, and `requireItemFields` holds the guarantee that they are required: a
-// missing field is rejected before the kintone API is called, and the message
-// names the item and the key that is missing.
+// top level when its `items` schema declares `required` of its own: they never
+// send `tools/call` and keep asking the user for the item keys instead. The
+// affected tools therefore declare those item fields optional in their input
+// schema, and the guarantee that they are required lives here.
+// https://github.com/mondaycom/mcp/issues/499
 
 /** Error thrown when an array item is missing a field its tool requires. */
 export class MissingRequiredFieldsError extends Error {
@@ -55,6 +52,6 @@ export const requireItemFields = <T extends object, K extends keyof T & string>(
   }
 
   // The check above rules out `undefined` for every key, which the type checker
-  // cannot follow back to the element type. A type test pins the result.
+  // cannot follow back to the element type.
   return items as Array<WithRequired<T, K>>;
 };

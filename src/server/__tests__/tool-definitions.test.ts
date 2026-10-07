@@ -131,9 +131,8 @@ describe("tool schemas", () => {
   it("never declare required directly on the items of a required array", async () => {
     const advertised = await listTools();
 
-    // "kintone-search: query" is a tuple with a rest element, so it also
-    // advertises prefixItems. Whether the same clients stumble on that shape
-    // has not been confirmed, so it is left alone rather than reshaped blind.
+    // "kintone-search: query" is a tuple with a rest element, so it advertises
+    // prefixItems too. Whether the same clients stumble on that shape is unconfirmed.
     const known = ["kintone-search: query"];
 
     expect(
