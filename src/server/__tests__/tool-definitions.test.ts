@@ -124,15 +124,14 @@ describe("tool schemas", () => {
     ).toEqual([]);
   });
 
-  // The affected tools leave those item fields optional and check them in the
-  // callback instead (src/tools/validation.ts). Only the "items" schema itself
-  // is checked here: "required" nested further down is left alone, because
-  // kintone-add-records advertises it and is not affected.
+  // The item fields are checked in the callback (src/tools/validation.ts).
+  // Only "items" itself is checked here; "required" nested further down is
+  // left alone, because kintone-add-records advertises it and is not affected.
   it("never declare required directly on the items of a required array", async () => {
     const advertised = await listTools();
 
-    // "kintone-search: query" is a tuple with a rest element, so it advertises
-    // prefixItems too. Whether the same clients stumble on that shape is unconfirmed.
+    // "kintone-search: query" is a tuple with a rest element, so it also
+    // advertises prefixItems. Whether that shape trips clients is unconfirmed.
     const known = ["kintone-search: query"];
 
     expect(
