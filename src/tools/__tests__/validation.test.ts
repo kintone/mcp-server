@@ -45,8 +45,7 @@ describe("requireItemFields", () => {
     expect(requireItemFields([], "records", ["id"])).toEqual([]);
   });
 
-  // The return goes through a type assertion, so tsc is what checks that the
-  // narrowing matches the keys that were asserted.
+  // The return goes through a type assertion, so tsc is what checks this.
   it("narrows only the asserted keys to required", () => {
     const items: Array<{ id?: string; record?: object; revision?: string }> = [
       { id: "1", record: {} },

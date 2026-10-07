@@ -268,8 +268,7 @@ describe("update-records tool", () => {
       });
     });
 
-    // `id` and `record` are required, but the schema declares them optional
-    // (src/tools/validation.ts). The callback rejects a missing one instead.
+    // The callback is what rejects a missing one (src/tools/validation.ts).
     describe("input schema validation with item fields left to the callback", () => {
       it.each([
         {
