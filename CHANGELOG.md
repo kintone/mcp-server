@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.5](https://github.com/kintone/mcp-server/compare/1.9.4...1.9.5) (2026-10-09)
+
+
+### Bug Fixes
+
+* **deps:** update @modelcontextprotocol/sdk to 1.32.1 past the OAuth issuer advisory ([#578](https://github.com/kintone/mcp-server/issues/578)) ([9ef1784](https://github.com/kintone/mcp-server/commit/9ef17842be49d5f2252ef473ad2dbc8de5acdbda))
+
 ## [1.9.4](https://github.com/kintone/mcp-server/compare/1.9.3...1.9.4) (2026-10-01)
 
 
