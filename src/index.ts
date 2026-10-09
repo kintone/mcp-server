@@ -6,12 +6,12 @@ import {
   getKintoneClientConfig,
   getMcpServerConfig,
   getToolConditionConfig,
+  getTransportConfig,
 } from "./config/index.js";
+import { startHttpServer } from "./transport/http.js";
+import { setupGracefulShutdown } from "./shutdown.js";
 
 const main = async () => {
-  const transport = new StdioServerTransport();
-  console.error("Starting server...");
-
   const mcpServerConfig = getMcpServerConfig();
   const clientConfig = getKintoneClientConfig();
   const fileConfig = getFileConfig();
@@ -26,9 +26,24 @@ const main = async () => {
       toolConditionConfig,
     },
   };
-  const server = createServer(serverConfig);
 
-  await server.connect(transport);
+  const transportConfig = getTransportConfig();
+
+  if (transportConfig.transport === "http") {
+    console.error("Starting HTTP server...");
+    const httpServer = await startHttpServer(
+      serverConfig,
+      transportConfig.port,
+      transportConfig.hostname,
+    );
+
+    setupGracefulShutdown(httpServer);
+  } else {
+    console.error("Starting server...");
+    const transport = new StdioServerTransport();
+    const server = createServer(serverConfig);
+    await server.connect(transport);
+  }
 };
 
 main().catch(console.error);
