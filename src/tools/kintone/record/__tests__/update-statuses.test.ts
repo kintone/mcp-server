@@ -144,14 +144,6 @@ describe("update-statuses tool", () => {
           description: "more than 100 records",
         },
         {
-          input: { app: "123", records: [{ action: "申請する" }] },
-          description: "record missing id field",
-        },
-        {
-          input: { app: "123", records: [{ id: "1" }] },
-          description: "record missing action field",
-        },
-        {
           input: {
             app: "123",
             records: [{ id: "1", action: 123 }],
@@ -167,6 +159,22 @@ describe("update-statuses tool", () => {
         },
       ])("rejects $description", ({ input }) => {
         expect(() => inputSchema.parse(input)).toThrow();
+      });
+    });
+
+    // The callback is what rejects a missing one (src/tools/validation.ts).
+    describe("input schema validation with item fields left to the callback", () => {
+      it.each([
+        {
+          input: { app: "123", records: [{ action: "申請する" }] },
+          description: "record without id",
+        },
+        {
+          input: { app: "123", records: [{ id: "1" }] },
+          description: "record without action",
+        },
+      ])("accepts $description", ({ input }) => {
+        expect(() => inputSchema.parse(input)).not.toThrow();
       });
     });
 
@@ -261,6 +269,20 @@ describe("update-statuses tool", () => {
   });
 
   describe("callback function", () => {
+    it("should reject records missing id or action without calling the API", async () => {
+      const mockClient = createMockClient();
+      mockClient.record.updateRecordsStatus = mockUpdateRecordsStatus;
+
+      await expect(
+        updateStatuses.callback(
+          { app: "123", records: [{ assignee: "user1" }] },
+          mockToolCallbackOptions(mockClient),
+        ),
+      ).rejects.toThrow("records[0].id, records[0].action");
+
+      expect(mockUpdateRecordsStatus).not.toHaveBeenCalled();
+    });
+
     it("should call API and return formatted response for single record", async () => {
       const mockData = {
         records: [

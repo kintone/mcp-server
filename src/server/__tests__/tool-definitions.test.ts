@@ -124,6 +124,57 @@ describe("tool schemas", () => {
     ).toEqual([]);
   });
 
+  // The item fields are checked in the callback (src/tools/validation.ts).
+  // Only "items" itself is checked here; "required" nested further down is
+  // left alone, because kintone-add-records advertises it and is not affected.
+  it("never declare required directly on the items of a required array", async () => {
+    const advertised = await listTools();
+
+    // "kintone-search: query" is a tuple with a rest element, so it also
+    // advertises prefixItems. Whether that shape trips clients is unconfirmed.
+    const known = ["kintone-search: query"];
+
+    expect(
+      advertised.flatMap((tool) => {
+        const required: string[] = tool.inputSchema.required ?? [];
+        return Object.entries(tool.inputSchema.properties ?? {})
+          .filter(
+            ([name, property]) =>
+              required.includes(name) &&
+              (property as { items?: { required?: unknown } }).items
+                ?.required !== undefined,
+          )
+          .map(([name]) => `${tool.name}: ${name}`);
+      }),
+    ).toEqual(known);
+  });
+
+  // Dropping the item-level "required" must not be done by dropping the array
+  // itself from "required", which would let a client omit the argument.
+  it("keep arrays whose items the callback validates required", async () => {
+    const advertised = await listTools();
+
+    const arrays = [
+      ["kintone-update-records", "records"],
+      ["kintone-update-statuses", "records"],
+      ["kintone-deploy-app", "apps"],
+      ["kintone-add-space-from-template", "members"],
+    ];
+
+    expect(
+      arrays.map(([toolName, property]) => {
+        const tool = advertised.find(
+          (candidate) => candidate.name === toolName,
+        );
+        return [
+          toolName,
+          tool?.inputSchema.required?.includes(property),
+          (tool?.inputSchema.properties?.[property] as { type?: string })?.type,
+        ];
+      }),
+    ).toEqual(arrays.map(([toolName]) => [toolName, true, "array"]));
+  });
+
   it("compile as JSON Schema 2020-12", async () => {
     const advertised = await listTools();
 

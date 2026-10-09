@@ -123,6 +123,20 @@ describe("deploy-app tool", () => {
   });
 
   describe("callback function", () => {
+    it("should reject apps missing app without calling the API", async () => {
+      const mockClient = createMockClient();
+      mockClient.app.deployApp = mockDeployApp;
+
+      await expect(
+        deployApp.callback(
+          { apps: [{ revision: "3" }] },
+          { client: mockClient },
+        ),
+      ).rejects.toThrow("apps[0].app");
+
+      expect(mockDeployApp).not.toHaveBeenCalled();
+    });
+
     it("should call API and return formatted response", async () => {
       const expectedResult = {
         message:
