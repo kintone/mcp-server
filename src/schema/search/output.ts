@@ -7,16 +7,24 @@ const searchUserSchema = z.object({
 
 const idSchema = z.union([z.number(), z.string()]);
 
+// Fields that do not apply to a hit come back as null (older servers omit
+// them instead), so accept both. A flat union instead of
+// idSchema.nullable(): the JSON Schema override in tool-definitions.ts
+// sees the nested union before it has a type and advertises just "null".
+const optionalIdSchema = z.union([z.number(), z.string(), z.null()]).optional();
+const optionalNameSchema = z.string().nullable().optional();
+
 const searchHitRecordSchema = z.object({
   appId: idSchema,
   appName: z.string(),
   recordId: idSchema,
   recordTitle: z.string(),
-  createdAt: z.string(),
-  creator: searchUserSchema,
+  // null when the user cannot view the record's Created datetime / Created by
+  createdAt: z.string().nullable().optional(),
+  creator: searchUserSchema.nullable().optional(),
   matchedFields: z.array(z.object({ code: z.string(), label: z.string() })),
-  spaceId: idSchema.optional(),
-  spaceName: z.string().optional(),
+  spaceId: optionalIdSchema,
+  spaceName: optionalNameSchema,
 });
 
 const searchHitRecordCommentSchema = z.object({
@@ -27,8 +35,8 @@ const searchHitRecordCommentSchema = z.object({
   commentId: idSchema,
   createdAt: z.string(),
   creator: searchUserSchema,
-  spaceId: idSchema.optional(),
-  spaceName: z.string().optional(),
+  spaceId: optionalIdSchema,
+  spaceName: optionalNameSchema,
 });
 
 const searchHitSpaceSchema = z.object({
@@ -49,7 +57,7 @@ const searchHitThreadSchema = z.object({
 
 const searchHitThreadCommentSchema = z.object({
   commentId: idSchema,
-  replyId: idSchema.optional(),
+  replyId: optionalIdSchema,
   spaceId: idSchema,
   spaceName: z.string(),
   threadId: idSchema,
@@ -60,7 +68,7 @@ const searchHitThreadCommentSchema = z.object({
 
 const searchHitPeopleCommentSchema = z.object({
   commentId: idSchema,
-  replyId: idSchema.optional(),
+  replyId: optionalIdSchema,
   owner: searchUserSchema,
   createdAt: z.string(),
   creator: searchUserSchema,
@@ -76,8 +84,10 @@ const searchHitMessageCommentSchema = z.object({
 const attachmentBaseSchema = z.object({
   fileKey: z.string(),
   name: z.string(),
-  createdAt: z.string(),
-  creator: searchUserSchema,
+  // The API may return null for any attachment; in practice it does so for a
+  // record attachment when the user cannot view those fields of the record
+  createdAt: z.string().nullable().optional(),
+  creator: searchUserSchema.nullable().optional(),
 });
 
 const hitBase = { url: z.string(), snippets: z.array(z.string()) };

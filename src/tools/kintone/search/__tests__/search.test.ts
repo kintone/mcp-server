@@ -297,6 +297,131 @@ describe("search tool", () => {
       ])("accepts $description", ({ output }) => {
         expect(() => outputSchema.parse(output)).not.toThrow();
       });
+
+      // The API returns these fields as null (not only omitted) when the
+      // record is outside a space or the comment is not a reply.
+      const record = {
+        appId: "1",
+        appName: "Test App",
+        recordId: "1",
+        recordTitle: "Test",
+        createdAt: "2025-01-01T00:00:00Z",
+        creator: { code: "user1", name: "User 1" },
+        matchedFields: [],
+        spaceId: null,
+        spaceName: null,
+      };
+      const threadComment = {
+        commentId: "1",
+        replyId: null,
+        spaceId: "1",
+        spaceName: "Test Space",
+        threadId: "1",
+        threadName: "Test Thread",
+        createdAt: "2025-01-01T00:00:00Z",
+        creator: { code: "user1", name: "User 1" },
+      };
+      const user = { code: "user1", name: "User 1" };
+
+      it.each([
+        {
+          hit: {
+            type: "RECORD",
+            url: "https://example.cybozu.com/k/1/show#record=1",
+            snippets: [],
+            record,
+          },
+          description: "RECORD hit with null spaceId and spaceName",
+        },
+        {
+          hit: {
+            type: "RECORD_COMMENT",
+            url: "https://example.cybozu.com/k/1/show#record=1&comment=1",
+            snippets: [],
+            recordComment: {
+              appId: "1",
+              appName: "Test App",
+              recordId: "1",
+              recordTitle: "Test",
+              commentId: "1",
+              createdAt: "2025-01-01T00:00:00Z",
+              creator: user,
+              spaceId: null,
+              spaceName: null,
+            },
+          },
+          description: "RECORD_COMMENT hit with null spaceId and spaceName",
+        },
+        {
+          hit: {
+            type: "THREAD_COMMENT",
+            url: "https://example.cybozu.com/k/#/space/1/thread/1/1",
+            snippets: [],
+            threadComment,
+          },
+          description: "THREAD_COMMENT hit with null replyId",
+        },
+        {
+          hit: {
+            type: "PEOPLE_COMMENT",
+            url: "https://example.cybozu.com/k/#/people/user/user1/1",
+            snippets: [],
+            peopleComment: {
+              commentId: "1",
+              replyId: null,
+              owner: user,
+              createdAt: "2025-01-01T00:00:00Z",
+              creator: user,
+            },
+          },
+          description: "PEOPLE_COMMENT hit with null replyId",
+        },
+        {
+          hit: {
+            type: "ATTACHMENT",
+            url: "https://example.cybozu.com/k/1/show#record=1",
+            snippets: [],
+            attachment: {
+              attachedTo: "RECORD",
+              fileKey: "key",
+              name: "file.txt",
+              createdAt: "2025-01-01T00:00:00Z",
+              creator: user,
+            },
+            record,
+          },
+          description: "ATTACHMENT hit on a record with null space fields",
+        },
+        {
+          hit: {
+            type: "RECORD",
+            url: "https://example.cybozu.com/k/1/show#record=1",
+            snippets: [],
+            record: { ...record, createdAt: null, creator: null },
+          },
+          description: "RECORD hit with null createdAt and creator",
+        },
+        {
+          hit: {
+            type: "ATTACHMENT",
+            url: "https://example.cybozu.com/k/1/show#record=1",
+            snippets: [],
+            attachment: {
+              attachedTo: "RECORD",
+              fileKey: "key",
+              name: "file.txt",
+              createdAt: null,
+              creator: null,
+            },
+            record: { ...record, createdAt: null, creator: null },
+          },
+          description: "ATTACHMENT hit with null createdAt and creator",
+        },
+      ])("accepts $description", ({ hit }) => {
+        expect(() =>
+          outputSchema.parse({ hits: [hit], nextPageToken: null }),
+        ).not.toThrow();
+      });
     });
 
     describe("output schema validation with invalid outputs", () => {
