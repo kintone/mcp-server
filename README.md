@@ -203,6 +203,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-get-process-management`  | プロセス管理設定を取得                 |
 | `kintone-get-app-deploy-status`   | アプリ設定の運用環境への反映状況確認   |
 | `kintone-get-general-settings`    | アプリの一般設定を取得                 |
+| `kintone-get-customization`       | JavaScript / CSSカスタマイズ設定を取得 |
 | `kintone-add-form-fields`         | アプリにフィールドを追加               |
 | `kintone-get-records`             | 複数のレコードを取得                   |
 | `kintone-add-records`             | 複数のレコードを追加                   |
