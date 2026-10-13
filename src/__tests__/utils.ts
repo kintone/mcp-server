@@ -28,6 +28,7 @@ export const createMockClient = (): KintoneRestAPIClient =>
       getProcessManagement: vi.fn(),
       getDeployStatus: vi.fn(),
       getAppSettings: vi.fn(),
+      getAppCustomize: vi.fn(),
       addApp: vi.fn(),
       deployApp: vi.fn(),
       updateAppSettings: vi.fn(),

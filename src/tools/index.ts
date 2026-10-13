@@ -15,6 +15,7 @@ import { deleteFormFields } from "./kintone/app/delete-form-fields.js";
 import { getProcessManagement } from "./kintone/app/get-process-management.js";
 import { getAppDeployStatus } from "./kintone/app/get-app-deploy-status.js";
 import { getGeneralSettings } from "./kintone/app/get-general-settings.js";
+import { getCustomization } from "./kintone/app/get-customization.js";
 import { addFormFields } from "./kintone/app/add-form-fields.js";
 import { updateStatuses } from "./kintone/record/update-statuses.js";
 import { addApp } from "./kintone/app/add-app.js";
@@ -39,6 +40,7 @@ export const tools: Array<Tool<any, any>> = [
   getProcessManagement,
   getAppDeployStatus,
   getGeneralSettings,
+  getCustomization,
   addFormFields,
   updateStatuses,
   addRecords,
