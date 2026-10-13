@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
-import { requireItemFields } from "../../validation.js";
+import { withoutAdvertisedRequired } from "../../../schema/without-advertised-required.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
 
 const inputSchema = {
@@ -12,41 +12,40 @@ const inputSchema = {
   name: z.string().min(1).describe("The name of the new space."),
   members: z
     .array(
-      z.object({
-        // `entity` is required; the schema declares it optional and
-        // `requireItemFields` (src/tools/validation.ts) holds the guarantee.
-        entity: z
-          .object({
-            type: z
-              .enum(["USER", "GROUP", "ORGANIZATION"])
-              .describe(
-                "Entity type: USER (individual user), GROUP (role/group), or ORGANIZATION (department).",
-              ),
-            code: z
-              .string()
-              .describe(
-                "Entity code: login name for USER, group code for GROUP, organization code for ORGANIZATION.",
-              ),
-          })
-          .optional()
-          .describe(
-            "Required. The entity (user, group, or organization) granted membership.",
-          ),
-        isAdmin: z
-          .boolean()
-          .optional()
-          .default(false)
-          .describe(
-            "Whether this member is a space administrator. At least one member in the array must have isAdmin set to true (default: false).",
-          ),
-        includeSubs: z
-          .boolean()
-          .optional()
-          .default(false)
-          .describe(
-            "For ORGANIZATION entity, also include affiliated departments. Ignored for USER and GROUP entities (default: false).",
-          ),
-      }),
+      withoutAdvertisedRequired(
+        z.object({
+          entity: z
+            .object({
+              type: z
+                .enum(["USER", "GROUP", "ORGANIZATION"])
+                .describe(
+                  "Entity type: USER (individual user), GROUP (role/group), or ORGANIZATION (department).",
+                ),
+              code: z
+                .string()
+                .describe(
+                  "Entity code: login name for USER, group code for GROUP, organization code for ORGANIZATION.",
+                ),
+            })
+            .describe(
+              "Required. The entity (user, group, or organization) granted membership.",
+            ),
+          isAdmin: z
+            .boolean()
+            .optional()
+            .default(false)
+            .describe(
+              "Whether this member is a space administrator. At least one member in the array must have isAdmin set to true (default: false).",
+            ),
+          includeSubs: z
+            .boolean()
+            .optional()
+            .default(false)
+            .describe(
+              "For ORGANIZATION entity, also include affiliated departments. Ignored for USER and GROUP entities (default: false).",
+            ),
+        }),
+      ),
     )
     .min(1)
     .describe(
@@ -105,7 +104,7 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
   const response = await client.space.addSpaceFromTemplate({
     id,
     name,
-    members: requireItemFields(members, "members", ["entity"]),
+    members,
     isPrivate,
     isGuest,
     fixedMember,

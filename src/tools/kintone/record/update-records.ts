@@ -1,22 +1,17 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
 import { recordSchemaForParameter } from "../../../schema/record/index.js";
-import { requireItemFields } from "../../validation.js";
+import { withoutAdvertisedRequired } from "../../../schema/without-advertised-required.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
 
-// `id` and `record` are required; the schema declares them optional and
-// `requireItemFields` (src/tools/validation.ts) holds the guarantee.
 const updateRecordSchema = z.object({
   // updateKey指定は対象外
   id: z
     .string()
-    .optional()
     .describe("Required. Record ID to update (numeric value as string)"),
-  record: recordSchemaForParameter
-    .optional()
-    .describe(
-      "Required. Record data with field codes as keys. Use kintone-get-form-fields tool first to discover available field codes and their types.",
-    ),
+  record: recordSchemaForParameter.describe(
+    "Required. Record data with field codes as keys. Use kintone-get-form-fields tool first to discover available field codes and their types.",
+  ),
   revision: z
     .string()
     .optional()
@@ -32,7 +27,7 @@ const inputSchema = {
       "The ID of the app to update records in (numeric value as string)",
     ),
   records: z
-    .array(updateRecordSchema)
+    .array(withoutAdvertisedRequired(updateRecordSchema))
     .min(1)
     .max(100)
     .describe(
@@ -66,7 +61,7 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
 ) => {
   const response = await client.record.updateRecords({
     app,
-    records: requireItemFields(records, "records", ["id", "record"]),
+    records,
     upsert: false, // upsertモードは対象外
   });
 

@@ -1,25 +1,24 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
-import { requireItemFields } from "../../validation.js";
+import { withoutAdvertisedRequired } from "../../../schema/without-advertised-required.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
 
 const inputSchema = {
   apps: z
     .array(
-      z.object({
-        // `app` is required; the schema declares it optional and
-        // `requireItemFields` (src/tools/validation.ts) holds the guarantee.
-        app: z
-          .string()
-          .optional()
-          .describe(
-            "Required. The ID of the app to deploy (numeric value as string)",
-          ),
-        revision: z
-          .string()
-          .optional()
-          .describe("The expected revision number"),
-      }),
+      withoutAdvertisedRequired(
+        z.object({
+          app: z
+            .string()
+            .describe(
+              "Required. The ID of the app to deploy (numeric value as string)",
+            ),
+          revision: z
+            .string()
+            .optional()
+            .describe("The expected revision number"),
+        }),
+      ),
     )
     .min(1)
     .max(300)
@@ -50,10 +49,7 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
   { apps, revert },
   { client },
 ) => {
-  await client.app.deployApp({
-    apps: requireItemFields(apps, "apps", ["app"]),
-    revert,
-  });
+  await client.app.deployApp({ apps, revert });
 
   const result = {
     message: `Deployment initiated for ${apps.length} app(s). Use kintone-get-app-deploy-status tool to check progress.`,

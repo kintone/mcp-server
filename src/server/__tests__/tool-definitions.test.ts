@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import Ajv2020 from "ajv/dist/2020.js";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
@@ -124,9 +125,9 @@ describe("tool schemas", () => {
     ).toEqual([]);
   });
 
-  // The item fields are checked in the callback (src/tools/validation.ts).
-  // Only "items" itself is checked here; "required" nested further down is
-  // left alone, because kintone-add-records advertises it and is not affected.
+  // See src/schema/without-advertised-required.ts. Only "items" itself is
+  // checked here; "required" nested further down is left alone, because
+  // kintone-add-records advertises it and is not affected.
   it("never declare required directly on the items of a required array", async () => {
     const advertised = await listTools();
 
@@ -149,17 +150,21 @@ describe("tool schemas", () => {
     ).toEqual(known);
   });
 
+  const arrays = [
+    ["kintone-update-records", "records", { app: "1", records: [{}] }],
+    ["kintone-update-statuses", "records", { app: "1", records: [{}] }],
+    ["kintone-deploy-app", "apps", { apps: [{}] }],
+    [
+      "kintone-add-space-from-template",
+      "members",
+      { id: "1", name: "space", members: [{ isAdmin: true }] },
+    ],
+  ] as const;
+
   // Dropping the item-level "required" must not be done by dropping the array
   // itself from "required", which would let a client omit the argument.
-  it("keep arrays whose items the callback validates required", async () => {
+  it("keep arrays whose items hide required still required", async () => {
     const advertised = await listTools();
-
-    const arrays = [
-      ["kintone-update-records", "records"],
-      ["kintone-update-statuses", "records"],
-      ["kintone-deploy-app", "apps"],
-      ["kintone-add-space-from-template", "members"],
-    ];
 
     expect(
       arrays.map(([toolName, property]) => {
@@ -173,6 +178,18 @@ describe("tool schemas", () => {
         ];
       }),
     ).toEqual(arrays.map(([toolName]) => [toolName, true, "array"]));
+  });
+
+  it("still reject items missing a field they require", () => {
+    expect(
+      arrays.map(([toolName, , args]) => {
+        const tool = tools.find((candidate) => candidate.name === toolName);
+        return [
+          toolName,
+          z.object(tool?.config.inputSchema ?? {}).safeParse(args).success,
+        ];
+      }),
+    ).toEqual(arrays.map(([toolName]) => [toolName, false]));
   });
 
   it("compile as JSON Schema 2020-12", async () => {

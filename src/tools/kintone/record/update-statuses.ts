@@ -1,18 +1,12 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
-import { requireItemFields } from "../../validation.js";
+import { withoutAdvertisedRequired } from "../../../schema/without-advertised-required.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
 
-// `id` and `action` are required; the schema declares them optional and
-// `requireItemFields` (src/tools/validation.ts) holds the guarantee.
 const statusRecordSchema = z.object({
-  id: z
-    .string()
-    .optional()
-    .describe("Required. Record ID (numeric value as string)"),
+  id: z.string().describe("Required. Record ID (numeric value as string)"),
   action: z
     .string()
-    .optional()
     .describe(
       "Required. Action name to execute. Must be specified in the user's display language if multiple languages are configured. If multiple actions with the same name exist for the current status, an error will occur.",
     ),
@@ -33,7 +27,7 @@ const statusRecordSchema = z.object({
 const inputSchema = {
   app: z.string().describe("The ID of the app (numeric value as string)"),
   records: z
-    .array(statusRecordSchema)
+    .array(withoutAdvertisedRequired(statusRecordSchema))
     .min(1)
     .max(100)
     .describe(
@@ -71,7 +65,7 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
 ) => {
   const response = await client.record.updateRecordsStatus({
     app,
-    records: requireItemFields(records, "records", ["id", "action"]),
+    records,
   });
 
   const result = {
