@@ -125,29 +125,29 @@ describe("tool schemas", () => {
     ).toEqual([]);
   });
 
-  // See src/schema/without-advertised-required.ts. Only "items" itself is
-  // checked here; "required" nested further down is left alone, because
-  // kintone-add-records advertises it and is not affected.
+  // See src/schema/without-advertised-required.ts. Only "items" and
+  // "prefixItems" themselves are checked here; "required" nested further down
+  // is left alone, because kintone-add-records advertises it and is not affected.
   it("never declare required directly on the items of a required array", async () => {
     const advertised = await listTools();
-
-    // "kintone-search: query" is a tuple with a rest element, so it also
-    // advertises prefixItems. Whether that shape trips clients is unconfirmed.
-    const known = ["kintone-search: query"];
 
     expect(
       advertised.flatMap((tool) => {
         const required: string[] = tool.inputSchema.required ?? [];
         return Object.entries(tool.inputSchema.properties ?? {})
-          .filter(
-            ([name, property]) =>
-              required.includes(name) &&
-              (property as { items?: { required?: unknown } }).items
-                ?.required !== undefined,
-          )
+          .filter(([name]) => required.includes(name))
+          .filter(([, property]) => {
+            const { items, prefixItems = [] } = property as {
+              items?: { required?: unknown };
+              prefixItems?: Array<{ required?: unknown }>;
+            };
+            return [items, ...prefixItems].some(
+              (item) => item?.required !== undefined,
+            );
+          })
           .map(([name]) => `${tool.name}: ${name}`);
       }),
-    ).toEqual(known);
+    ).toEqual([]);
   });
 
   const arrays = [
@@ -159,6 +159,7 @@ describe("tool schemas", () => {
       "members",
       { id: "1", name: "space", members: [{ isAdmin: true }] },
     ],
+    ["kintone-search", "query", { query: [{}] }],
   ] as const;
 
   // Dropping the item-level "required" must not be done by dropping the array
