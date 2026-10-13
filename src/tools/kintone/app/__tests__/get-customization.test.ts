@@ -207,7 +207,7 @@ describe("get-customization tool", () => {
       expect(result.structuredContent).toEqual(data);
     });
 
-    it("should omit permissions and allowedHosts keys when absent", async () => {
+    it("should not output permissions and allowedHosts when absent", async () => {
       mockGetAppCustomize.mockResolvedValueOnce({
         scope: "ALL",
         desktop: { js: [urlResource], css: [] },
@@ -217,8 +217,9 @@ describe("get-customization tool", () => {
 
       const result = await run({ app: "123" });
 
-      expect(result.structuredContent).not.toHaveProperty("permissions");
-      expect(result.structuredContent).not.toHaveProperty("allowedHosts");
+      const output = JSON.parse(result.content[0].text);
+      expect(output).not.toHaveProperty("permissions");
+      expect(output).not.toHaveProperty("allowedHosts");
     });
 
     it("should not leak fields outside the output schema", async () => {

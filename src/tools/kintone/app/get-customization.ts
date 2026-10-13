@@ -92,8 +92,8 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
     scope: customize.scope,
     desktop: customize.desktop,
     mobile: customize.mobile,
-    ...(customize.permissions && { permissions: customize.permissions }),
-    ...(customize.allowedHosts && { allowedHosts: customize.allowedHosts }),
+    permissions: customize.permissions,
+    allowedHosts: customize.allowedHosts,
     revision: customize.revision,
   };
 
