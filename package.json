@@ -1,6 +1,6 @@
 {
   "name": "@kintone/mcp-server",
-  "version": "1.9.2",
+  "version": "1.9.4",
   "description": "The official MCP Server for kintone",
   "keywords": [
     "kintone",
@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "@kintone/rest-api-client": "6.4.0",
-    "@modelcontextprotocol/sdk": "1.29.0",
+    "@modelcontextprotocol/sdk": "1.32.1",
     "file-type": "22.0.2",
     "https-proxy-agent": "7.0.6",
     "zod": "4.4.3"
@@ -79,11 +79,11 @@
     "eslint": "9.39.5",
     "eslint-plugin-package-json": "0.88.3",
     "globals": "17.11.0",
-    "npm": "11.19.0",
+    "npm": "11.19.1",
     "prettier": "3.8.5",
     "tsx": "4.23.12",
     "typescript": "5.9.3",
-    "vitest": "4.1.10"
+    "vitest": "4.1.11"
   },
   "packageManager": "pnpm@10.34.5+sha512.a4ee05f2f73658255bd6a89859c065a45c28a57daefae2c893a168ee2b73168c37b91e83e57ea67654ad03f03031746430e8bce38e362e042605fb8abc80192e",
   "engines": {
@@ -91,7 +91,9 @@
   },
   "pnpm": {
     "overrides": {
-      "fast-uri": ">=3.1.5"
+      "brace-expansion@^1": ">=1.1.20 <2",
+      "brace-expansion@^5": ">=5.0.11 <6",
+      "fast-uri": ">=4.1.4 <5"
     }
   },
   "publishConfig": {
