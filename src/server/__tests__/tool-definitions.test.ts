@@ -109,6 +109,38 @@ describe("tool schemas", () => {
     expect(search?.inputSchema.properties?.query.minItems).toBe(1);
   });
 
+  it("advertise every branch type of the nullable search ids", async () => {
+    // Wrapping a union in nullable() leaves the override with only "null",
+    // so the ids are declared as a flat union; keep it that way.
+    const advertised = await listTools();
+
+    const search = advertised.find((tool) => tool.name === "kintone-search");
+    const hits = search?.outputSchema?.properties?.hits as {
+      items: { anyOf: Array<{ properties: Record<string, unknown> }> };
+    };
+    // Look the hit branch up by the key it carries so the assertion does not
+    // depend on the order of the union.
+    const propertiesOf = (key: string) => {
+      const hit = hits.items.anyOf.find((branch) => key in branch.properties);
+      return (
+        hit?.properties[key] as {
+          properties: Record<string, { type?: unknown }>;
+        }
+      ).properties;
+    };
+
+    expect(propertiesOf("record").spaceId.type).toEqual([
+      "number",
+      "string",
+      "null",
+    ]);
+    expect(propertiesOf("threadComment").replyId.type).toEqual([
+      "number",
+      "string",
+      "null",
+    ]);
+  });
+
   it("declare a type for every top-level input property", async () => {
     // A property built only from oneOf/anyOf has no top-level "type", which
     // breaks clients that decide how to parse an argument from it.

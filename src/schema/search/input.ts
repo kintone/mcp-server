@@ -110,6 +110,12 @@ export const searchInputSchema = {
     .optional()
     .nullable()
     .describe("Filter by creator codes"),
+  includeSynonyms: z
+    .boolean()
+    .optional()
+    .describe(
+      "Whether to include synonyms of the search keywords. Not available in the US region (kintone.com).",
+    ),
   sort: searchSortSchema.optional().describe("Sort configuration"),
   limit: z
     .number()
