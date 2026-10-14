@@ -3,23 +3,18 @@ import { createTool } from "../../factory.js";
 import { withoutAdvertisedRequired } from "../../../schema/without-advertised-required.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
 
+const deployAppSchema = z.object({
+  app: z
+    .string()
+    .describe(
+      "Required. The ID of the app to deploy (numeric value as string)",
+    ),
+  revision: z.string().optional().describe("The expected revision number"),
+});
+
 const inputSchema = {
   apps: z
-    .array(
-      withoutAdvertisedRequired(
-        z.object({
-          app: z
-            .string()
-            .describe(
-              "Required. The ID of the app to deploy (numeric value as string)",
-            ),
-          revision: z
-            .string()
-            .optional()
-            .describe("The expected revision number"),
-        }),
-      ),
-    )
+    .array(withoutAdvertisedRequired(deployAppSchema))
     .min(1)
     .max(300)
     .describe(
