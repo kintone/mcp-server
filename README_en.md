@@ -200,34 +200,35 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 
 ## Tools
 
-| Tool Name                         | Description                                        |
-| --------------------------------- | -------------------------------------------------- |
-| `kintone-get-apps`                | Get information of multiple apps                   |
-| `kintone-get-app`                 | Get details of a single app                        |
-| `kintone-get-form-fields`         | Get app field settings                             |
-| `kintone-get-form-layout`         | Get app form layout                                |
-| `kintone-update-form-fields`      | Update app field settings                          |
-| `kintone-update-form-layout`      | Update app form layout                             |
-| `kintone-delete-form-fields`      | Delete app fields                                  |
-| `kintone-get-process-management`  | Get process management settings                    |
-| `kintone-get-app-deploy-status`   | Check app settings deployment status to production |
-| `kintone-get-general-settings`    | Get general settings of an app                     |
-| `kintone-add-form-fields`         | Add fields to an app                               |
-| `kintone-get-records`             | Get multiple records                               |
-| `kintone-add-records`             | Add multiple records                               |
-| `kintone-update-records`          | Update multiple records                            |
-| `kintone-delete-records`          | Delete multiple records                            |
-| `kintone-update-statuses`         | Update status of multiple records                  |
-| `kintone-get-record-comments`     | Get comments on a record                           |
-| `kintone-add-record-comment`      | Add a comment to a record                          |
-| `kintone-add-app`                 | Create app in pre-live environment                 |
-| `kintone-deploy-app`              | Deploy app settings to production                  |
-| `kintone-update-general-settings` | Update app general settings                        |
-| `kintone-download-file`           | Download and save a file from an attachment field  |
-| `kintone-add-space-from-template` | Create a new kintone space from a space template   |
-| `kintone-update-space`            | Update space settings                              |
-| `kintone-get-space`               | Get space information and portal settings          |
-| `kintone-delete-space`            | Delete a space                                     |
+| Tool Name                         | Description                                                  |
+| --------------------------------- | ------------------------------------------------------------ |
+| `kintone-get-apps`                | Get information of multiple apps                             |
+| `kintone-get-app`                 | Get details of a single app                                  |
+| `kintone-get-form-fields`         | Get app field settings                                       |
+| `kintone-get-form-layout`         | Get app form layout                                          |
+| `kintone-update-form-fields`      | Update app field settings                                    |
+| `kintone-update-form-layout`      | Update app form layout                                       |
+| `kintone-delete-form-fields`      | Delete app fields                                            |
+| `kintone-get-process-management`  | Get process management settings                              |
+| `kintone-get-app-deploy-status`   | Check app settings deployment status to production           |
+| `kintone-get-general-settings`    | Get general settings of an app                               |
+| `kintone-add-form-fields`         | Add fields to an app                                         |
+| `kintone-get-records`             | Get multiple records                                         |
+| `kintone-add-records`             | Add multiple records                                         |
+| `kintone-update-records`          | Update multiple records                                      |
+| `kintone-delete-records`          | Delete multiple records                                      |
+| `kintone-update-statuses`         | Update status of multiple records                            |
+| `kintone-get-record-comments`     | Get comments on a record                                     |
+| `kintone-add-record-comment`      | Add a comment to a record                                    |
+| `kintone-add-app`                 | Create app in pre-live environment                           |
+| `kintone-deploy-app`              | Deploy app settings to production                            |
+| `kintone-update-general-settings` | Update app general settings                                  |
+| `kintone-download-file`           | Download and save a file from an attachment field            |
+| `kintone-upload-file`             | Upload a local file to temporary storage and get its fileKey |
+| `kintone-add-space-from-template` | Create a new kintone space from a space template             |
+| `kintone-update-space`            | Update space settings                                        |
+| `kintone-get-space`               | Get space information and portal settings                    |
+| `kintone-delete-space`            | Delete a space                                               |
 
 ## Documentation
 

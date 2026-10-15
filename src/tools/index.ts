@@ -21,6 +21,7 @@ import { addApp } from "./kintone/app/add-app.js";
 import { deployApp } from "./kintone/app/deploy-app.js";
 import { updateGeneralSettings } from "./kintone/app/update-general-settings.js";
 import { downloadFile } from "./kintone/file/download-file.js";
+import { uploadFile } from "./kintone/file/upload-file.js";
 import { addSpaceFromTemplate } from "./kintone/space/add-space-from-template.js";
 import { getSpace } from "./kintone/space/get-space.js";
 import { search } from "./kintone/search/search.js";
@@ -51,6 +52,7 @@ export const tools: Array<Tool<any, any>> = [
   deployApp,
   updateGeneralSettings,
   downloadFile,
+  uploadFile,
   addSpaceFromTemplate,
   getSpace,
   search,
