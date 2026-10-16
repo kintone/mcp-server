@@ -85,6 +85,10 @@
       "description": "Get general settings of a kintone app"
     },
     {
+      "name": "kintone-get-customization",
+      "description": "Get the JavaScript and CSS customization settings of a kintone app"
+    },
+    {
       "name": "kintone-add-form-fields",
       "description": "Add new fields to a Kintone app"
     },
