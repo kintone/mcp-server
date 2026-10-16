@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.11.0](https://github.com/kintone/mcp-server/compare/1.10.0...1.11.0) (2026-10-16)
+
+
+### Features
+
+* add kintone-get-customization tool ([#582](https://github.com/kintone/mcp-server/issues/582)) ([0cba1c5](https://github.com/kintone/mcp-server/commit/0cba1c5dad26f80500655767d0127ce16a5bc5bd))
+
+
+### Bug Fixes
+
+* let clients call tools whose required array items declare required ([#577](https://github.com/kintone/mcp-server/issues/577)) ([254a3ce](https://github.com/kintone/mcp-server/commit/254a3ce5bbd829310d0aa14ddc90d55413ccdc01))
+
 ## [1.10.0](https://github.com/kintone/mcp-server/compare/1.9.4...1.10.0) (2026-10-13)
 
 
