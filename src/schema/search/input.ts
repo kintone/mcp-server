@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { withoutAdvertisedRequired } from "../without-advertised-required.js";
 
 const searchQuerySchema = z.object({
   operator: z
@@ -74,8 +75,8 @@ const searchHitTypeSchema = z.enum([
 
 export const searchInputSchema = {
   query: z
-    .tuple([searchQuerySchema])
-    .rest(searchQuerySchema)
+    .tuple([withoutAdvertisedRequired(searchQuerySchema)])
+    .rest(withoutAdvertisedRequired(searchQuerySchema))
     // Zod renders a tuple with a rest element as prefixItems + items, which
     // does not tell a client that one query is required, so state it here.
     .meta({

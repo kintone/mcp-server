@@ -1,13 +1,14 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
+import { withoutAdvertisedRequired } from "../../../schema/without-advertised-required.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
 
 const statusRecordSchema = z.object({
-  id: z.string().describe("Record ID (numeric value as string)"),
+  id: z.string().describe("Required. Record ID (numeric value as string)"),
   action: z
     .string()
     .describe(
-      "Action name to execute. Must be specified in the user's display language if multiple languages are configured. If multiple actions with the same name exist for the current status, an error will occur.",
+      "Required. Action name to execute. Must be specified in the user's display language if multiple languages are configured. If multiple actions with the same name exist for the current status, an error will occur.",
     ),
   assignee: z
     .string()
@@ -26,11 +27,11 @@ const statusRecordSchema = z.object({
 const inputSchema = {
   app: z.string().describe("The ID of the app (numeric value as string)"),
   records: z
-    .array(statusRecordSchema)
+    .array(withoutAdvertisedRequired(statusRecordSchema))
     .min(1)
     .max(100)
     .describe(
-      "Array of records to update status (min 1, max 100). Each record contains id, action, and optionally assignee and revision.",
+      "Array of records to update status (min 1, max 100). Each record must have both id (which record to update) and action (the action to execute), and may have assignee and revision.",
     ),
 };
 

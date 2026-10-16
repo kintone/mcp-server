@@ -1,6 +1,40 @@
 import { z } from "zod";
 import { createTool } from "../../factory.js";
+import { withoutAdvertisedRequired } from "../../../schema/without-advertised-required.js";
 import type { KintoneToolCallback } from "../../types/tool.js";
+
+const spaceMemberSchema = z.object({
+  entity: z
+    .object({
+      type: z
+        .enum(["USER", "GROUP", "ORGANIZATION"])
+        .describe(
+          "Entity type: USER (individual user), GROUP (role/group), or ORGANIZATION (department).",
+        ),
+      code: z
+        .string()
+        .describe(
+          "Entity code: login name for USER, group code for GROUP, organization code for ORGANIZATION.",
+        ),
+    })
+    .describe(
+      "Required. The entity (user, group, or organization) granted membership.",
+    ),
+  isAdmin: z
+    .boolean()
+    .optional()
+    .default(false)
+    .describe(
+      "Whether this member is a space administrator. At least one member in the array must have isAdmin set to true (default: false).",
+    ),
+  includeSubs: z
+    .boolean()
+    .optional()
+    .default(false)
+    .describe(
+      "For ORGANIZATION entity, also include affiliated departments. Ignored for USER and GROUP entities (default: false).",
+    ),
+});
 
 const inputSchema = {
   id: z
@@ -10,43 +44,10 @@ const inputSchema = {
     ),
   name: z.string().min(1).describe("The name of the new space."),
   members: z
-    .array(
-      z.object({
-        entity: z
-          .object({
-            type: z
-              .enum(["USER", "GROUP", "ORGANIZATION"])
-              .describe(
-                "Entity type: USER (individual user), GROUP (role/group), or ORGANIZATION (department).",
-              ),
-            code: z
-              .string()
-              .describe(
-                "Entity code: login name for USER, group code for GROUP, organization code for ORGANIZATION.",
-              ),
-          })
-          .describe(
-            "The entity (user, group, or organization) granted membership.",
-          ),
-        isAdmin: z
-          .boolean()
-          .optional()
-          .default(false)
-          .describe(
-            "Whether this member is a space administrator. At least one member in the array must have isAdmin set to true (default: false).",
-          ),
-        includeSubs: z
-          .boolean()
-          .optional()
-          .default(false)
-          .describe(
-            "For ORGANIZATION entity, also include affiliated departments. Ignored for USER and GROUP entities (default: false).",
-          ),
-      }),
-    )
+    .array(withoutAdvertisedRequired(spaceMemberSchema))
     .min(1)
     .describe(
-      "Array of space members. Must contain at least one entry and at least one of them must have isAdmin: true.",
+      "Array of space members. Each member must have entity (who is granted membership). Must contain at least one entry and at least one of them must have isAdmin: true.",
     )
     .refine((members) => members.some((m) => m.isAdmin), {
       message: "At least one member must have isAdmin: true",

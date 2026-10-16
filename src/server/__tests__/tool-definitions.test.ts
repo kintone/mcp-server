@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import Ajv2020 from "ajv/dist/2020.js";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
@@ -154,6 +155,74 @@ describe("tool schemas", () => {
           .map(([name]) => `${tool.name}: ${name}`);
       }),
     ).toEqual([]);
+  });
+
+  // See src/schema/without-advertised-required.ts. Only "items" and
+  // "prefixItems" themselves are checked here; "required" nested further down
+  // is left alone, because kintone-add-records advertises it and is not affected.
+  it("never declare required directly on the items of a required array", async () => {
+    const advertised = await listTools();
+
+    expect(
+      advertised.flatMap((tool) => {
+        const required: string[] = tool.inputSchema.required ?? [];
+        return Object.entries(tool.inputSchema.properties ?? {})
+          .filter(([name]) => required.includes(name))
+          .filter(([, property]) => {
+            const { items, prefixItems = [] } = property as {
+              items?: { required?: unknown };
+              prefixItems?: Array<{ required?: unknown }>;
+            };
+            return [items, ...prefixItems].some(
+              (item) => item?.required !== undefined,
+            );
+          })
+          .map(([name]) => `${tool.name}: ${name}`);
+      }),
+    ).toEqual([]);
+  });
+
+  const arrays = [
+    ["kintone-update-records", "records", { app: "1", records: [{}] }],
+    ["kintone-update-statuses", "records", { app: "1", records: [{}] }],
+    ["kintone-deploy-app", "apps", { apps: [{}] }],
+    [
+      "kintone-add-space-from-template",
+      "members",
+      { id: "1", name: "space", members: [{ isAdmin: true }] },
+    ],
+    ["kintone-search", "query", { query: [{}] }],
+  ] as const;
+
+  // Dropping the item-level "required" must not be done by dropping the array
+  // itself from "required", which would let a client omit the argument.
+  it("keep arrays whose items hide required still required", async () => {
+    const advertised = await listTools();
+
+    expect(
+      arrays.map(([toolName, property]) => {
+        const tool = advertised.find(
+          (candidate) => candidate.name === toolName,
+        );
+        return [
+          toolName,
+          tool?.inputSchema.required?.includes(property),
+          (tool?.inputSchema.properties?.[property] as { type?: string })?.type,
+        ];
+      }),
+    ).toEqual(arrays.map(([toolName]) => [toolName, true, "array"]));
+  });
+
+  it("still reject items missing a field they require", () => {
+    expect(
+      arrays.map(([toolName, , args]) => {
+        const tool = tools.find((candidate) => candidate.name === toolName);
+        return [
+          toolName,
+          z.object(tool?.config.inputSchema ?? {}).safeParse(args).success,
+        ];
+      }),
+    ).toEqual(arrays.map(([toolName]) => [toolName, false]));
   });
 
   it("compile as JSON Schema 2020-12", async () => {
