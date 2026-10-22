@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.1](https://github.com/kintone/mcp-server/compare/1.11.0...1.11.1) (2026-10-22)
+
+
+### Bug Fixes
+
+* run the Docker image on Node.js 22.23.4 with the updated root certificate store ([#585](https://github.com/kintone/mcp-server/issues/585)) ([bd501a3](https://github.com/kintone/mcp-server/commit/bd501a367b8552bf591ce0ad76d4772dc1a8d730))
+
 ## [1.11.0](https://github.com/kintone/mcp-server/compare/1.10.0...1.11.0) (2026-10-16)
 
 
