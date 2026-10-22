@@ -21,6 +21,9 @@ export const parse = (args: string[]) => {
       "pfx-file-password": { type: "string" },
       proxy: { type: "string" },
       "attachments-dir": { type: "string" },
+      transport: { type: "string" },
+      port: { type: "string" },
+      hostname: { type: "string" },
     },
   });
 
