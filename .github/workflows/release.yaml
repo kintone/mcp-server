@@ -16,14 +16,14 @@ jobs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
-      - uses: actions/create-github-app-token@v2.2.2
+      - uses: actions/create-github-app-token@v3.3.0
         id: create-iat
         with:
           app-id: ${{ secrets.NPM_RELEASER_GITHUB_APP_ID}}
           private-key: ${{ secrets.NPM_RELEASER_GITHUB_APP_KEY }}
       - name: Release Please
         id: release
-        uses: googleapis/release-please-action@16a9c90856f42705d54a6fda1823352bdc62cf38 # v4.4.0
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         with:
           token: ${{ steps.create-iat.outputs.token }}
 
