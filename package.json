@@ -64,7 +64,7 @@
     "@modelcontextprotocol/sdk": "1.32.1",
     "file-type": "22.0.2",
     "https-proxy-agent": "7.0.6",
-    "zod": "4.4.3"
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@anthropic-ai/mcpb": "2.1.2",
@@ -91,6 +91,7 @@
   },
   "pnpm": {
     "overrides": {
+      "body-parser@^2": ">=2.4.0 <3",
       "brace-expansion@^1": ">=1.1.20 <2",
       "brace-expansion@^5": ">=5.0.11 <6",
       "fast-uri": ">=4.1.4 <5"
