@@ -1,7 +1,62 @@
 {
-  extends: ["github>cybozu/renovate-config", ":prConcurrentLimitNone"],
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    ":ignoreModulesAndTests",
+    ":label(renovate)",
+    ":timezone(Asia/Tokyo)",
+    "group:monorepos",
+    ":widenPeerDependencies",
+    ":prImmediately",
+    ":dependencyDashboard",
+    ":prConcurrentLimitNone",
+  ],
+  minimumReleaseAge: "14 days",
   rangeStrategy: "pin",
+  npm: {
+    extends: [
+      ":automergePatch",
+      ":noUnscheduledUpdates",
+      ":separatePatchReleases",
+      "helpers:disableTypesNodeMajor",
+    ],
+    schedule: ["* 9-11 * * 1-5"],
+    rangeStrategy: "bump",
+    postUpdateOptions: ["pnpmDedupe"],
+    packageRules: [
+      {
+        matchDepTypes: ["dependencies", "peerDependencies"],
+        semanticCommitType: "fix",
+      },
+      {
+        groupName: "ESLint and Prettier",
+        matchPackageNames: [
+          "eslint",
+          "prettier",
+          "/^eslint-config-/",
+          "/^eslint-plugin-/",
+          "@cybozu/eslint-config",
+        ],
+      },
+      {
+        description: "disable package.json > engines update",
+        matchDepTypes: ["engines"],
+        enabled: false,
+      },
+    ],
+  },
   packageRules: [
+    {
+      description: "Renovate cannot enforce minimumReleaseAge for these update types",
+      matchUpdateTypes: [
+        "lockFileMaintenance",
+        "replacement",
+        "pin",
+        "bump",
+        "lockfileUpdate",
+        "rollback",
+      ],
+      minimumReleaseAge: null,
+    },
     {
       description: "Pin Node.js to v22 and automerge",
       matchPackageNames: ["node"],
@@ -23,7 +78,6 @@
     {
       description: "Automerge pnpm minor and patch updates",
       matchPackageNames: ["pnpm"],
-      minimumReleaseAge: "14 days",
       matchUpdateTypes: ["minor", "patch"],
       automerge: true,
     },
