@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.2](https://github.com/kintone/mcp-server/compare/1.11.1...1.11.2) (2026-10-26)
+
+
+### Bug Fixes
+
+* **deps:** update zod to 4.6.7 and pin body-parser past their advisories [security] ([#589](https://github.com/kintone/mcp-server/issues/589)) ([59d63b4](https://github.com/kintone/mcp-server/commit/59d63b4d82c411886b8d44a422a9b58ac2a7532f))
+
 ## [1.11.1](https://github.com/kintone/mcp-server/compare/1.11.0...1.11.1) (2026-10-22)
 
 
