@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.3
       - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
-      - uses: actions/setup-node@v6.4.0
+      - uses: actions/setup-node@v6.5.0
         with:
           node-version-file: .node-version
       - uses: flatt-security/setup-takumi-guard-npm@9a5d797c2085b6326d3a2985c08e3a114b9b88c1 # v1.1.1
@@ -73,7 +73,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.3
       - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
-      - uses: actions/setup-node@v6.4.0
+      - uses: actions/setup-node@v6.5.0
         with:
           node-version-file: .node-version
           registry-url: "https://registry.npmjs.org"
