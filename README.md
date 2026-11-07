@@ -35,6 +35,7 @@ kintoneの公式ローカルMCPサーバーです。
   - [設定ファイルの内容の例](#%E8%A8%AD%E5%AE%9A%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E5%86%85%E5%AE%B9%E3%81%AE%E4%BE%8B)
 - [設定](#%E8%A8%AD%E5%AE%9A)
   - [設定オプション一覧](#%E8%A8%AD%E5%AE%9A%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3%E4%B8%80%E8%A6%A7)
+  - [HTTPトランスポートモード](#http%E3%83%88%E3%83%A9%E3%83%B3%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88%E3%83%A2%E3%83%BC%E3%83%89)
   - [プロキシ設定](#%E3%83%97%E3%83%AD%E3%82%AD%E3%82%B7%E8%A8%AD%E5%AE%9A)
 - [ツール一覧](#%E3%83%84%E3%83%BC%E3%83%AB%E4%B8%80%E8%A6%A7)
 - [ドキュメント](#%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88)
@@ -156,18 +157,21 @@ MCPBファイルをインストールした場合、追加の手順は必要あ�
 
 ### 設定オプション一覧
 
-| コマンドライン引数      | 環境変数                      | 説明                                                       | 必須 |
-| ----------------------- | ----------------------------- | ---------------------------------------------------------- | ---- |
-| `--base-url`            | `KINTONE_BASE_URL`            | kintone環境のベースURL（例: `https://example.cybozu.com`） | ✓    |
-| `--username`            | `KINTONE_USERNAME`            | kintoneのログインユーザー名                                | ※1   |
-| `--password`            | `KINTONE_PASSWORD`            | kintoneのログインパスワード                                | ※1   |
-| `--api-token`           | `KINTONE_API_TOKEN`           | APIトークン（カンマ区切りで最大9個まで指定可能）           | ※1   |
-| `--basic-auth-username` | `KINTONE_BASIC_AUTH_USERNAME` | Basic認証のユーザー名                                      | -    |
-| `--basic-auth-password` | `KINTONE_BASIC_AUTH_PASSWORD` | Basic認証のパスワード                                      | -    |
-| `--pfx-file-path`       | `KINTONE_PFX_FILE_PATH`       | PFXファイルのパス（クライアント証明書認証用）              | -    |
-| `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFXファイルのパスワード                                    | -    |
-| `--proxy`               | `HTTPS_PROXY`                 | HTTPSプロキシのURL（例: `http://proxy.example.com:8080`）  | -    |
-| `--attachments-dir`     | `KINTONE_ATTACHMENTS_DIR`     | ダウンロードしたファイルの保存先                           | -    |
+| コマンドライン引数      | 環境変数                      | 説明                                                                                                                          | 必須 |
+| ----------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---- |
+| `--base-url`            | `KINTONE_BASE_URL`            | kintone環境のベースURL（例: `https://example.cybozu.com`）                                                                    | ✓    |
+| `--username`            | `KINTONE_USERNAME`            | kintoneのログインユーザー名                                                                                                   | ※1   |
+| `--password`            | `KINTONE_PASSWORD`            | kintoneのログインパスワード                                                                                                   | ※1   |
+| `--api-token`           | `KINTONE_API_TOKEN`           | APIトークン（カンマ区切りで最大9個まで指定可能）                                                                              | ※1   |
+| `--basic-auth-username` | `KINTONE_BASIC_AUTH_USERNAME` | Basic認証のユーザー名                                                                                                         | -    |
+| `--basic-auth-password` | `KINTONE_BASIC_AUTH_PASSWORD` | Basic認証のパスワード                                                                                                         | -    |
+| `--pfx-file-path`       | `KINTONE_PFX_FILE_PATH`       | PFXファイルのパス（クライアント証明書認証用）                                                                                 | -    |
+| `--pfx-file-password`   | `KINTONE_PFX_FILE_PASSWORD`   | PFXファイルのパスワード                                                                                                       | -    |
+| `--proxy`               | `HTTPS_PROXY`                 | HTTPSプロキシのURL（例: `http://proxy.example.com:8080`）                                                                     | -    |
+| `--attachments-dir`     | `KINTONE_ATTACHMENTS_DIR`     | ダウンロードしたファイルの保存先                                                                                              | -    |
+| `--transport`           | `TRANSPORT`                   | トランスポート方式（`stdio` または `http`、デフォルト: `stdio`）                                                              | -    |
+| `--port`                | `PORT`                        | HTTPサーバーのポート番号（デフォルト: `3000`）                                                                                | -    |
+| `--hostname`            | -                             | HTTPサーバーのバインドアドレス（デフォルト: `127.0.0.1`。`HOSTNAME` は Docker 等が自動設定する予約環境変数のため env 非対応） | -    |
 
 ※1: `KINTONE_USERNAME` & `KINTONE_PASSWORD` または `KINTONE_API_TOKEN` のいずれかが必須
 
@@ -177,6 +181,54 @@ MCPBファイルをインストールした場合、追加の手順は必要あ�
 - パスワード認証とAPIトークン認証を同時に指定した場合、パスワード認証が優先されます
 - コマンドライン引数と環境変数を同時に指定した場合、コマンドライン引数が優先されます
 - 詳細な認証設定については [認証設定ガイド](./docs/ja/authentication.md) を参照してください
+
+### HTTPトランスポートモード
+
+`--transport http` を指定すると、Streamable HTTP transport モードでサーバーを起動できます。
+リモートMCPサーバーとしてチーム内で共有する場合に便利です。
+
+以下のコマンドでHTTPモードのサーバーを起動できます。
+
+```shell
+# ローカルで起動（デフォルト: 127.0.0.1:3000）
+kintone-mcp-server \
+  --base-url https://example.cybozu.com \
+  --username (username) \
+  --password (password) \
+  --transport http
+
+# ポートとホスト名を指定して起動
+kintone-mcp-server \
+  --base-url https://example.cybozu.com \
+  --username (username) \
+  --password (password) \
+  --transport http --port 8080 --hostname 0.0.0.0
+```
+
+以下のコマンドでDockerコンテナをHTTPモードで起動できます。
+
+```shell
+docker run --rm -p 3000:3000 \
+  -e KINTONE_BASE_URL=https://example.cybozu.com \
+  -e KINTONE_USERNAME=(username) \
+  -e KINTONE_PASSWORD=(password) \
+  ghcr.io/kintone/mcp-server:latest --transport http --hostname 0.0.0.0
+```
+
+以下はMCPクライアントからの接続例です。
+
+```shell
+# Claude Code
+claude mcp add --transport http kintone http://localhost:3000/mcp
+```
+
+**注意事項:**
+
+- デフォルトでは `127.0.0.1` にバインドされるため、ローカルからのみアクセス可能です
+- 外部からのアクセスを許可するには `--hostname 0.0.0.0` を指定してください
+- **`0.0.0.0` で公開する場合、HTTPエンドポイントには認証も暗号化（TLS）もありません。信頼できないネットワークではリバースプロキシ（TLS終端 + 認証）の背後に配置してください**
+- HTTPモードはステートレスで動作します（リクエストごとにセッションが独立）
+- HTTPトランスポートモードでは、`kintone-download-file` が保存するファイルはサーバー側のファイルシステムに書き込まれます。サーバーがリモートホストで動作している場合、返却される保存先パスはMCPクライアントから参照できないため注意してください
 
 ### プロキシ設定
 

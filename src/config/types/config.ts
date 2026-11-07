@@ -20,3 +20,9 @@ export type KintoneMcpServerConfig = {
   name: string;
   version: string;
 };
+
+export type TransportConfig = {
+  transport: "stdio" | "http";
+  port: number;
+  hostname: string;
+};
