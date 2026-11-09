@@ -46,6 +46,7 @@ jobs:
         with:
           bot-id: ${{ !github.event.pull_request.head.repo.fork && secrets.TAKUMI_GUARD_BOT_ID || '' }}
       - run: pnpm install --frozen-lockfile
+      - run: pnpm build
       - run: pnpm pack
       - uses: actions/upload-artifact@v6.0.0
         with:
