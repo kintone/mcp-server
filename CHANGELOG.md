@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.4](https://github.com/kintone/mcp-server/compare/1.11.3...1.11.4) (2026-11-12)
+
+
+### Bug Fixes
+
+* **deps:** bump node-forge past its advisories [security] ([#612](https://github.com/kintone/mcp-server/issues/612)) ([10813a2](https://github.com/kintone/mcp-server/commit/10813a21bdb064ee82e9c3275de4a4c333914af8))
+* update Node.js in the Docker image to v22.23.5 ([#613](https://github.com/kintone/mcp-server/issues/613)) ([5ba6bea](https://github.com/kintone/mcp-server/commit/5ba6bea755f05b44249b7eb5a02249a4623ca835))
+
 ## [1.11.3](https://github.com/kintone/mcp-server/compare/1.11.2...1.11.3) (2026-11-10)
 
 
