@@ -220,6 +220,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-update-space`            | スペースの設定を更新                   |
 | `kintone-get-space`               | スペースの情報を取得                   |
 | `kintone-delete-space`            | スペースを削除                         |
+| `kintone-search`                  | kintone全体を検索                      |
 
 ## ドキュメント
 

@@ -229,6 +229,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-update-space`            | Update space settings                              |
 | `kintone-get-space`               | Get space information and portal settings          |
 | `kintone-delete-space`            | Delete a space                                     |
+| `kintone-search`                  | Search across all of kintone                       |
 
 ## Documentation
 
