@@ -23,6 +23,12 @@ const toolConfig = {
     "The API returns an empty body on success.",
   inputSchema,
   outputSchema,
+  annotations: {
+    readOnlyHint: false,
+    destructiveHint: true,
+    idempotentHint: true,
+    openWorldHint: false,
+  },
 };
 const callback: KintoneToolCallback<typeof inputSchema> = async (
   { id },

@@ -3,6 +3,13 @@ import { createTool, createToolCallback } from "../factory.js";
 import { z } from "zod";
 import { mockToolCallbackOptions } from "../../__tests__/utils.js";
 
+const testAnnotations = {
+  readOnlyHint: true,
+  destructiveHint: false,
+  idempotentHint: true,
+  openWorldHint: false,
+};
+
 describe("createTool", () => {
   it("should create a tool with correct structure", () => {
     const inputSchema = {
@@ -28,6 +35,7 @@ describe("createTool", () => {
         description: "Test tool",
         inputSchema,
         outputSchema,
+        annotations: testAnnotations,
       },
       handler,
     );
@@ -58,6 +66,7 @@ describe("createTool", () => {
         description: "A tool with minimal config",
         inputSchema: {},
         outputSchema: {},
+        annotations: testAnnotations,
       },
       handler,
     );
@@ -68,6 +77,7 @@ describe("createTool", () => {
       description: "A tool with minimal config",
       inputSchema: {},
       outputSchema: {},
+      annotations: testAnnotations,
     });
     expect(typeof tool.callback).toBe("function");
   });
@@ -93,6 +103,7 @@ describe("createTool", () => {
         description: "Doubles a number",
         inputSchema,
         outputSchema: { doubled: z.number() },
+        annotations: testAnnotations,
       },
       handler,
     );

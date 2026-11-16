@@ -61,6 +61,12 @@ export const getFormLayout = createTool(
       "Supports both live and pre-live app settings retrieval.",
     inputSchema,
     outputSchema,
+    annotations: {
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: false,
+    },
   },
   callback,
 );

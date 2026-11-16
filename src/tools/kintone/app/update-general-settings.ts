@@ -105,6 +105,12 @@ const toolConfig = {
     "Update the general settings of a kintone app. Changes are made to the pre-live environment, which is a temporary storage area where app information is saved before deployment. To reflect changes to the production environment, execute the kintone-deploy-app tool after this tool.",
   inputSchema,
   outputSchema,
+  annotations: {
+    readOnlyHint: false,
+    destructiveHint: true,
+    idempotentHint: false,
+    openWorldHint: false,
+  },
 };
 
 const callback: KintoneToolCallback<typeof inputSchema> = async (

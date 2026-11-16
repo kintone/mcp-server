@@ -57,6 +57,12 @@ const toolConfig = {
     "Update status of multiple records in a kintone app. Requires process management feature to be enabled. Maximum 100 records can be updated at once.",
   inputSchema,
   outputSchema,
+  annotations: {
+    readOnlyHint: false,
+    destructiveHint: true,
+    idempotentHint: false,
+    openWorldHint: false,
+  },
 };
 
 const callback: KintoneToolCallback<typeof inputSchema> = async (

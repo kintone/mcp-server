@@ -69,6 +69,12 @@ const toolConfig = {
     "Get comments posted on a single kintone record. The kintone API returns comments for one record at a time; to fetch comments for multiple records, call this tool repeatedly. Up to 10 comments are returned per call; use offset to paginate.",
   inputSchema,
   outputSchema,
+  annotations: {
+    readOnlyHint: true,
+    destructiveHint: false,
+    idempotentHint: true,
+    openWorldHint: false,
+  },
 };
 
 const callback: KintoneToolCallback<typeof inputSchema> = async (

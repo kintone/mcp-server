@@ -25,6 +25,12 @@ const toolConfig = {
   description: toolDescription,
   inputSchema,
   outputSchema,
+  annotations: {
+    readOnlyHint: true,
+    destructiveHint: false,
+    idempotentHint: true,
+    openWorldHint: false,
+  },
 };
 
 const callback: KintoneToolCallback<typeof inputSchema> = async (

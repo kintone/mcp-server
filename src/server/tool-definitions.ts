@@ -44,4 +44,5 @@ export const buildToolDefinition = (tool: Tool): McpTool => ({
   description: tool.config.description,
   inputSchema: toJsonSchema(tool.config.inputSchema, "input"),
   outputSchema: toJsonSchema(tool.config.outputSchema, "output"),
+  annotations: tool.config.annotations,
 });
