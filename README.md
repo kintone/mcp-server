@@ -191,35 +191,38 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 
 ## ツール一覧
 
-| ツール名                          | 説明                                   |
-| --------------------------------- | -------------------------------------- |
-| `kintone-get-apps`                | 複数のアプリ情報を取得                 |
-| `kintone-get-app`                 | 単一アプリの詳細情報を取得             |
-| `kintone-get-form-fields`         | アプリのフィールド設定を取得           |
-| `kintone-get-form-layout`         | アプリのフォームレイアウトを取得       |
-| `kintone-update-form-fields`      | アプリのフィールド設定を更新           |
-| `kintone-update-form-layout`      | アプリのフォームレイアウトを更新       |
-| `kintone-delete-form-fields`      | アプリのフィールドを削除               |
-| `kintone-get-process-management`  | プロセス管理設定を取得                 |
-| `kintone-get-app-deploy-status`   | アプリ設定の運用環境への反映状況確認   |
-| `kintone-get-general-settings`    | アプリの一般設定を取得                 |
-| `kintone-get-customization`       | JavaScript / CSSカスタマイズ設定を取得 |
-| `kintone-add-form-fields`         | アプリにフィールドを追加               |
-| `kintone-get-records`             | 複数のレコードを取得                   |
-| `kintone-add-records`             | 複数のレコードを追加                   |
-| `kintone-update-records`          | 複数のレコードを更新                   |
-| `kintone-delete-records`          | 複数のレコードを削除                   |
-| `kintone-update-statuses`         | 複数のレコードのステータスを更新       |
-| `kintone-get-record-comments`     | レコードのコメントを取得               |
-| `kintone-add-record-comment`      | レコードにコメントを追加               |
-| `kintone-add-app`                 | 動作テスト環境にアプリを作成           |
-| `kintone-deploy-app`              | アプリ設定を運用環境へ反映             |
-| `kintone-update-general-settings` | アプリの一般設定を変更                 |
-| `kintone-download-file`           | 添付ファイルフィールドのファイルを保存 |
-| `kintone-add-space-from-template` | テンプレートからスペースを作成         |
-| `kintone-update-space`            | スペースの設定を更新                   |
-| `kintone-get-space`               | スペースの情報を取得                   |
-| `kintone-delete-space`            | スペースを削除                         |
+| ツール名                          | 説明                                                               | readOnlyHint | destructiveHint | idempotentHint | openWorldHint |
+| --------------------------------- | ------------------------------------------------------------------ | ------------ | --------------- | -------------- | ------------- |
+| `kintone-get-apps`                | 複数のアプリ情報を取得                                             | true         | false           | true           | false         |
+| `kintone-get-app`                 | 単一アプリの詳細情報を取得                                         | true         | false           | true           | false         |
+| `kintone-get-form-fields`         | アプリのフィールド設定を取得                                       | true         | false           | true           | false         |
+| `kintone-get-form-layout`         | アプリのフォームレイアウトを取得                                   | true         | false           | true           | false         |
+| `kintone-update-form-fields`      | アプリのフィールド設定を更新                                       | false        | true            | false          | false         |
+| `kintone-update-form-layout`      | アプリのフォームレイアウトを更新                                   | false        | true            | false          | false         |
+| `kintone-delete-form-fields`      | アプリのフィールドを削除                                           | false        | true            | true           | false         |
+| `kintone-get-process-management`  | プロセス管理設定を取得                                             | true         | false           | true           | false         |
+| `kintone-get-app-deploy-status`   | アプリ設定の運用環境への反映状況確認                               | true         | false           | true           | false         |
+| `kintone-get-general-settings`    | アプリの一般設定を取得                                             | true         | false           | true           | false         |
+| `kintone-get-customization`       | JavaScript / CSSカスタマイズ設定を取得                             | true         | false           | true           | false         |
+| `kintone-add-form-fields`         | アプリにフィールドを追加                                           | false        | false           | false          | false         |
+| `kintone-get-records`             | 複数のレコードを取得                                               | true         | false           | true           | false         |
+| `kintone-add-records`             | 複数のレコードを追加                                               | false        | false           | false          | false         |
+| `kintone-update-records`          | 複数のレコードを更新                                               | false        | true            | false          | false         |
+| `kintone-delete-records`          | 複数のレコードを削除                                               | false        | true            | true           | false         |
+| `kintone-update-statuses`         | 複数のレコードのステータスを更新                                   | false        | true            | false          | false         |
+| `kintone-get-record-comments`     | レコードのコメントを取得                                           | true         | false           | true           | false         |
+| `kintone-add-record-comment`      | レコードにコメントを追加                                           | false        | false           | false          | false         |
+| `kintone-add-app`                 | 動作テスト環境にアプリを作成                                       | false        | false           | false          | false         |
+| `kintone-deploy-app`              | アプリ設定を運用環境へ反映                                         | false        | true            | false          | false         |
+| `kintone-update-general-settings` | アプリの一般設定を変更                                             | false        | true            | false          | false         |
+| `kintone-download-file`           | 添付ファイルフィールドのファイルを保存                             | true         | false           | true           | false         |
+| `kintone-add-space-from-template` | テンプレートからスペースを作成                                     | false        | false           | false          | false         |
+| `kintone-update-space`            | スペースの設定を更新                                               | false        | true            | false          | false         |
+| `kintone-get-space`               | スペースの情報を取得                                               | true         | false           | true           | false         |
+| `kintone-delete-space`            | スペースを削除                                                     | false        | true            | true           | false         |
+| `kintone-search`                  | レコード・スペース・スレッド・コメント・添付ファイルを横断して検索 | true         | false           | true           | false         |
+
+各ツールは、ツールの性質を示すMCPのツール注釈（`readOnlyHint`・`destructiveHint`・`idempotentHint`・`openWorldHint`）をMCPクライアントに伝えます。MCPクライアントは、実行前の確認の要否などをこの値をもとに判断することがあります。各値の判定基準は[`src/tools/types/tool.ts`](src/tools/types/tool.ts)の`ToolAnnotationHints`を参照してください。
 
 ## ドキュメント
 
