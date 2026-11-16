@@ -14,6 +14,12 @@ const toolConfig = {
     "Requires password or session authentication (not API token).",
   inputSchema: searchInputSchema,
   outputSchema: searchOutputSchema,
+  annotations: {
+    readOnlyHint: true,
+    destructiveHint: false,
+    idempotentHint: true,
+    openWorldHint: false,
+  },
 };
 
 const callback: KintoneToolCallback<typeof searchInputSchema> = async (

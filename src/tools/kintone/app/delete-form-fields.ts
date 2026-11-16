@@ -37,6 +37,12 @@ const toolConfig = {
     "Changes require kintone-deploy-app to apply to live app.",
   inputSchema,
   outputSchema,
+  annotations: {
+    readOnlyHint: false,
+    destructiveHint: true,
+    idempotentHint: true,
+    openWorldHint: false,
+  },
 };
 
 const callback: KintoneToolCallback<typeof inputSchema> = async (

@@ -93,6 +93,12 @@ const toolConfig = {
     "Returns the id of the newly created space.",
   inputSchema,
   outputSchema,
+  annotations: {
+    readOnlyHint: false,
+    destructiveHint: false,
+    idempotentHint: false,
+    openWorldHint: false,
+  },
 };
 
 const callback: KintoneToolCallback<typeof inputSchema> = async (

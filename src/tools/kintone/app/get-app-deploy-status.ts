@@ -33,6 +33,12 @@ const toolConfig = {
   description: "Get app deploy status from kintone",
   inputSchema,
   outputSchema,
+  annotations: {
+    readOnlyHint: true,
+    destructiveHint: false,
+    idempotentHint: true,
+    openWorldHint: false,
+  },
 };
 const callback: KintoneToolCallback<typeof inputSchema> = async (
   { apps },
