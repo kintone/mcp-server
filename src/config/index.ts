@@ -1,12 +1,14 @@
 import { version } from "../version.js";
-import { parseKintoneMcpServerConfig } from "./parser.js";
+import { parseKintoneMcpServerConfig, parseTransportConfig } from "./parser.js";
 import { PACKAGE_NAME } from "./schema.js";
 import type {
   KintoneClientConfig,
   KintoneMcpServerConfig,
+  TransportConfig,
 } from "./types/config.js";
 
 const config = parseKintoneMcpServerConfig();
+const transportConfig = parseTransportConfig();
 
 export const getMcpServerConfig = (): KintoneMcpServerConfig => {
   return {
@@ -41,3 +43,5 @@ export const getFileConfig = () => {
     attachmentsDir: config.config.KINTONE_ATTACHMENTS_DIR,
   };
 };
+
+export const getTransportConfig = (): TransportConfig => transportConfig;
