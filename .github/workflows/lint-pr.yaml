@@ -15,7 +15,7 @@ jobs:
       contents: read
       id-token: write # Required for Takumi Guard bot authentication (OIDC)
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.1
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       - uses: actions/setup-node@v6.4.0
         with:
