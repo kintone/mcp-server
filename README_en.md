@@ -231,7 +231,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-delete-space`            | Delete a space                                     | false        | true            | true           | false         |
 | `kintone-search`                  | Search across all of kintone                       | true         | false           | true           | false         |
 
-Each tool advertises MCP tool annotations (`readOnlyHint`, `destructiveHint`, `idempotentHint`, and `openWorldHint`) that describe its behavior. MCP clients may use them to decide, for example, whether to ask for confirmation before running a tool. See `ToolAnnotationHints` in [`src/tools/types/tool.ts`](src/tools/types/tool.ts) for how each value is decided.
+Each tool advertises MCP tool annotations (`readOnlyHint`, `destructiveHint`, `idempotentHint`, and `openWorldHint`) that describe its behavior. MCP clients may use them to decide, for example, whether to ask for confirmation before running a tool. See [docs/dev/tool-annotations.md](./docs/dev/tool-annotations.md) for how each value is decided.
 
 ## Documentation
 

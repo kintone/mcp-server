@@ -222,7 +222,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-delete-space`            | スペースを削除                         | false        | true            | true           | false         |
 | `kintone-search`                  | kintone全体を検索                      | true         | false           | true           | false         |
 
-各ツールは、ツールの性質を示すMCPのツール注釈（`readOnlyHint`・`destructiveHint`・`idempotentHint`・`openWorldHint`）をMCPクライアントに伝えます。MCPクライアントは、実行前の確認の要否などをこの値をもとに判断することがあります。各値の判定基準は[`src/tools/types/tool.ts`](src/tools/types/tool.ts)の`ToolAnnotationHints`を参照してください。
+各ツールは、ツールの性質を示すMCPのツール注釈（`readOnlyHint`・`destructiveHint`・`idempotentHint`・`openWorldHint`）をMCPクライアントに伝えます。MCPクライアントは、実行前の確認の要否などをこの値をもとに判断することがあります。各値の判定基準は[docs/dev/tool-annotations.md](./docs/dev/tool-annotations.md)（英語）を参照してください。
 
 ## ドキュメント
 
