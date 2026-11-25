@@ -51,6 +51,21 @@ describe("MCP Server Installation E2E Tests", () => {
         expect(tool.name).toMatch(/^kintone-/);
       });
     });
+
+    it("should advertise all four annotation hints for every tool", async () => {
+      // Act
+      const tools = await client.listTools();
+
+      // Assert
+      tools.tools.forEach((tool) => {
+        expect(tool.annotations).toEqual({
+          readOnlyHint: expect.any(Boolean),
+          destructiveHint: expect.any(Boolean),
+          idempotentHint: expect.any(Boolean),
+          openWorldHint: expect.any(Boolean),
+        });
+      });
+    });
   });
 
   describe("Tool Execution Verification", () => {
