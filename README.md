@@ -204,7 +204,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-get-app-deploy-status`   | アプリ設定の運用環境への反映状況確認   | true         | false           | true           | false         |
 | `kintone-get-general-settings`    | アプリの一般設定を取得                 | true         | false           | true           | false         |
 | `kintone-get-customization`       | JavaScript / CSSカスタマイズ設定を取得 | true         | false           | true           | false         |
-| `kintone-add-form-fields`         | アプリにフィールドを追加               | false        | false           | false          | false         |
+| `kintone-add-form-fields`         | アプリにフィールドを追加               | false        | false           | true           | false         |
 | `kintone-get-records`             | 複数のレコードを取得                   | true         | false           | true           | false         |
 | `kintone-add-records`             | 複数のレコードを追加                   | false        | false           | false          | false         |
 | `kintone-update-records`          | 複数のレコードを更新                   | false        | true            | false          | false         |

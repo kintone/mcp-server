@@ -213,7 +213,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-get-app-deploy-status`   | Check app settings deployment status to production | true         | false           | true           | false         |
 | `kintone-get-general-settings`    | Get general settings of an app                     | true         | false           | true           | false         |
 | `kintone-get-customization`       | Get app JavaScript/CSS customization settings      | true         | false           | true           | false         |
-| `kintone-add-form-fields`         | Add fields to an app                               | false        | false           | false          | false         |
+| `kintone-add-form-fields`         | Add fields to an app                               | false        | false           | true           | false         |
 | `kintone-get-records`             | Get multiple records                               | true         | false           | true           | false         |
 | `kintone-add-records`             | Add multiple records                               | false        | false           | false          | false         |
 | `kintone-update-records`          | Update multiple records                            | false        | true            | false          | false         |

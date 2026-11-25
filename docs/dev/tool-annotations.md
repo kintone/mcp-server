@@ -13,7 +13,7 @@ Every tool declares the four MCP tool annotations in `ToolConfig.annotations`: `
 
 A tool with `readOnlyHint: true` also sets `destructiveHint: false` and `idempotentHint: true`.
 
-Under this rule, treat a write that succeeds again on a second call as not idempotent. Only a write whose second call fails and changes nothing is idempotent.
+Under this rule, a write that succeeds again on a second call is idempotent only if you can confirm that it changes none of this state. A write whose second call fails and changes nothing, such as `kintone-delete-*`, is idempotent.
 
 ## Tools that are easy to get wrong
 
@@ -21,6 +21,7 @@ Under this rule, treat a write that succeeds again on a second call as not idemp
 - `kintone-deploy-app`: it overwrites the production settings with the preview settings and cannot be undone, so `destructiveHint` is `true`. What a second call with the same arguments does depends on the pending changes in the preview environment, so `idempotentHint` is `false`.
 - `kintone-update-statuses`: after the first call moves a record to the next status, a second call fails if the new status has no action of the same name. If it has one, for example when an approval has several steps, the second call succeeds and moves the record further. `idempotentHint` is `false`.
 - `kintone-delete-*`: a second call fails because the target is gone, and nothing changes, so `idempotentHint` is `true`.
+- `kintone-add-form-fields`: a second call with the same field codes fails because the fields already exist, and nothing changes, so `idempotentHint` is `true`. The other `kintone-add-*` tools create a new app, record, comment, or space on each call, so `idempotentHint` is `false`.
 - `kintone-download-file`: it saves a file locally, but it does not change anything in kintone and never overwrites an existing file, so `readOnlyHint` is `true`.
 
 ## When you add or change a tool

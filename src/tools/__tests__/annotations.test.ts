@@ -14,6 +14,12 @@ const ADD: ToolAnnotationHints = {
   idempotentHint: false,
   openWorldHint: false,
 };
+const ADD_UNIQUE: ToolAnnotationHints = {
+  readOnlyHint: false,
+  destructiveHint: false,
+  idempotentHint: true,
+  openWorldHint: false,
+};
 const OVERWRITE: ToolAnnotationHints = {
   readOnlyHint: false,
   destructiveHint: true,
@@ -42,7 +48,7 @@ const expectedAnnotations: Record<string, ToolAnnotationHints> = {
   "kintone-search": READ,
   "kintone-download-file": READ,
   "kintone-add-app": ADD,
-  "kintone-add-form-fields": ADD,
+  "kintone-add-form-fields": ADD_UNIQUE,
   "kintone-add-records": ADD,
   "kintone-add-record-comment": ADD,
   "kintone-add-space-from-template": ADD,
