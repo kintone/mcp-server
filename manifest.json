@@ -69,6 +69,10 @@
       "description": "Update form layout settings in a Kintone app"
     },
     {
+      "name": "kintone-patch-form-layout",
+      "description": "Change label text and element sizes in the form layout of a Kintone app"
+    },
+    {
       "name": "kintone-delete-form-fields",
       "description": "Delete form fields from a Kintone app"
     },

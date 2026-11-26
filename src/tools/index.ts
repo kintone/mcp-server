@@ -11,6 +11,7 @@ import { getFormFields } from "./kintone/app/get-form-fields.js";
 import { getFormLayout } from "./kintone/app/get-form-layout.js";
 import { updateFormFields } from "./kintone/app/update-form-fields.js";
 import { updateFormLayout } from "./kintone/app/update-form-layout.js";
+import { patchFormLayout } from "./kintone/app/patch-form-layout.js";
 import { deleteFormFields } from "./kintone/app/delete-form-fields.js";
 import { getProcessManagement } from "./kintone/app/get-process-management.js";
 import { getAppDeployStatus } from "./kintone/app/get-app-deploy-status.js";
@@ -36,6 +37,7 @@ export const tools: Array<Tool<any, any>> = [
   getFormLayout,
   updateFormFields,
   updateFormLayout,
+  patchFormLayout,
   deleteFormFields,
   getProcessManagement,
   getAppDeployStatus,
