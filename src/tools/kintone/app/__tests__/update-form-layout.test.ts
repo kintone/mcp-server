@@ -37,6 +37,7 @@ describe("update-form-layout tool", () => {
           "Field codes are case-sensitive and must match exactly. " +
           "For SUBTABLE fields, use nested structure: {type: 'SUBTABLE', code: 'table_code', fields: [{type: 'field_type', code: 'field_code'}, ...]}. " +
           "Required when adding new fields to ensure proper positioning. " +
+          "To change only Label text or element sizes, use kintone-patch-form-layout instead of sending the whole layout. " +
           "Changes require kintone-deploy-app to apply to live app.",
       );
     });

@@ -208,6 +208,7 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 | `kintone-get-form-layout`         | Get app form layout                                |
 | `kintone-update-form-fields`      | Update app field settings                          |
 | `kintone-update-form-layout`      | Update app form layout                             |
+| `kintone-patch-form-layout`       | Change label text and element sizes in form layout |
 | `kintone-delete-form-fields`      | Delete app fields                                  |
 | `kintone-get-process-management`  | Get process management settings                    |
 | `kintone-get-app-deploy-status`   | Check app settings deployment status to production |

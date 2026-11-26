@@ -187,6 +187,11 @@ describe("tool schemas", () => {
     ["kintone-update-statuses", "records", { app: "1", records: [{}] }],
     ["kintone-deploy-app", "apps", { apps: [{}] }],
     [
+      "kintone-patch-form-layout",
+      "edits",
+      { app: "1", revision: "-1", edits: [{}] },
+    ],
+    [
       "kintone-add-space-from-template",
       "members",
       { id: "1", name: "space", members: [{ isAdmin: true }] },
