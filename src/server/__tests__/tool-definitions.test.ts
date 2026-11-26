@@ -110,6 +110,23 @@ describe("tool schemas", () => {
     expect(search?.inputSchema.properties?.query.minItems).toBe(1);
   });
 
+  // The revision format is only validated on tools/call; how clients treat
+  // "pattern" in a tool schema has not been verified.
+  it("advertise the update-statuses revision as a plain string", async () => {
+    const advertised = await listTools();
+
+    const updateStatuses = advertised.find(
+      (tool) => tool.name === "kintone-update-statuses",
+    );
+    const records = updateStatuses?.inputSchema.properties?.records as {
+      items: { properties: Record<string, Record<string, unknown>> };
+    };
+    const { description, ...revision } = records.items.properties.revision;
+
+    expect(revision).toEqual({ type: "string" });
+    expect(description).toEqual(expect.any(String));
+  });
+
   it("advertise every branch type of the nullable search ids", async () => {
     // Wrapping a union in nullable() leaves the override with only "null",
     // so the ids are declared as a flat union; keep it that way.

@@ -12,15 +12,16 @@ const statusRecordSchema = z.object({
     ),
   assignee: z
     .string()
-    .optional()
     .describe(
-      "User login name to assign as the assignee. Required when: 1) The destination status has 'Select assignee from these users' enabled and selectable users exist, 2) Setting an assignee for the initial status when returning to it.",
+      "Required. User login name to assign as the assignee, or \"\" to not specify one. A login name is needed when: 1) The destination status has 'Select assignee from these users' enabled and selectable users exist, 2) Setting an assignee for the initial status when returning to it.",
     ),
   revision: z
     .string()
-    .optional()
+    .refine((value) => /^(-1|\d+)$/.test(value), {
+      message: 'Must be "-1" or a numeric string such as "3"',
+    })
     .describe(
-      "Expected revision number (numeric value as string). If it doesn't match the actual revision, an error occurs and status is not updated. Specify -1 or omit to skip revision validation.",
+      'Required. Expected revision number (numeric value as string). If it doesn\'t match the actual revision, an error occurs and status is not updated. Specify "-1" to skip revision validation.',
     ),
 });
 
@@ -31,7 +32,7 @@ const inputSchema = {
     .min(1)
     .max(100)
     .describe(
-      "Array of records to update status (min 1, max 100). Each record must have both id (which record to update) and action (the action to execute), and may have assignee and revision.",
+      'Array of records to update status (min 1, max 100). Each record must have all of id (which record to update), action (the action to execute), assignee ("" to not specify one) and revision ("-1" to skip revision validation).',
     ),
 };
 
@@ -65,7 +66,9 @@ const callback: KintoneToolCallback<typeof inputSchema> = async (
 ) => {
   const response = await client.record.updateRecordsStatus({
     app,
-    records,
+    records: records.map(({ assignee, ...record }) =>
+      assignee === "" ? record : { ...record, assignee },
+    ),
   });
 
   const result = {
