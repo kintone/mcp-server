@@ -5,8 +5,9 @@
 ### 新しいツールの追加
 
 1. `src/tools/`にファイル作成
-2. `createTool`関数で定義
+2. `createTool`関数で定義し、`annotations`の4項目を`docs/dev/tool-annotations.md`の基準で付ける
 3. `src/tools/index.ts`のtools配列に追加
+4. `src/tools/__tests__/annotations.test.ts`の期待値と、README（日英）のツール表に行を足す
 
 ### Kintoneツール開発
 

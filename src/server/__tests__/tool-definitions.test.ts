@@ -103,6 +103,26 @@ describe("tool schemas", () => {
     expect(ours.map(withoutSchemas)).toEqual(bySdk.map(withoutSchemas));
   });
 
+  // The SDK comparison above passes even when both sides drop the annotations.
+  it("advertise all four annotation hints as booleans", async () => {
+    const advertised = await listTools();
+
+    expect(
+      advertised.map((tool) => [
+        tool.name,
+        Object.entries(tool.annotations ?? {})
+          .filter(([, value]) => typeof value === "boolean")
+          .map(([key]) => key)
+          .sort(),
+      ]),
+    ).toEqual(
+      advertised.map((tool) => [
+        tool.name,
+        ["destructiveHint", "idempotentHint", "openWorldHint", "readOnlyHint"],
+      ]),
+    );
+  });
+
   it("keep advertising minItems for the search query", async () => {
     const advertised = await listTools();
 

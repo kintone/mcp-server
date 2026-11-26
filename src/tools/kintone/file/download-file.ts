@@ -35,6 +35,13 @@ const toolConfig = {
     "Download a file from kintone using its fileKey and save it to the configured download directory. Returns the absolute path to the saved file. Requires KINTONE_ATTACHMENTS_DIR environment variable to be set, app record viewing permission, and permission to view the field containing the file.",
   inputSchema,
   outputSchema,
+  annotations: {
+    // Read-only for kintone; the file it saves locally never overwrites an existing one.
+    readOnlyHint: true,
+    destructiveHint: false,
+    idempotentHint: true,
+    openWorldHint: false,
+  },
 };
 const callback: KintoneToolCallback<typeof inputSchema> = async (
   { fileKey, fileName },

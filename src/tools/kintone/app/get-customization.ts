@@ -80,6 +80,12 @@ const toolConfig = {
     "Get the JavaScript and CSS customization settings of a kintone app. Returns the scope, the JavaScript and CSS resources (URLs or uploaded files) for desktop and mobile, the permissions, the allowed hosts, and the revision. Set preview to true to retrieve the settings in the pre-live environment. Requires app administration permission. Does NOT update the customization settings or download the contents of the files.",
   inputSchema,
   outputSchema,
+  annotations: {
+    readOnlyHint: true,
+    destructiveHint: false,
+    idempotentHint: true,
+    openWorldHint: false,
+  },
 };
 
 const callback: KintoneToolCallback<typeof inputSchema> = async (

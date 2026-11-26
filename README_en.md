@@ -200,36 +200,38 @@ export HTTPS_PROXY="http://username:password@proxy.example.com:8080"
 
 ## Tools
 
-| Tool Name                         | Description                                        |
-| --------------------------------- | -------------------------------------------------- |
-| `kintone-get-apps`                | Get information of multiple apps                   |
-| `kintone-get-app`                 | Get details of a single app                        |
-| `kintone-get-form-fields`         | Get app field settings                             |
-| `kintone-get-form-layout`         | Get app form layout                                |
-| `kintone-update-form-fields`      | Update app field settings                          |
-| `kintone-update-form-layout`      | Update app form layout                             |
-| `kintone-delete-form-fields`      | Delete app fields                                  |
-| `kintone-get-process-management`  | Get process management settings                    |
-| `kintone-get-app-deploy-status`   | Check app settings deployment status to production |
-| `kintone-get-general-settings`    | Get general settings of an app                     |
-| `kintone-get-customization`       | Get app JavaScript/CSS customization settings      |
-| `kintone-add-form-fields`         | Add fields to an app                               |
-| `kintone-get-records`             | Get multiple records                               |
-| `kintone-add-records`             | Add multiple records                               |
-| `kintone-update-records`          | Update multiple records                            |
-| `kintone-delete-records`          | Delete multiple records                            |
-| `kintone-update-statuses`         | Update status of multiple records                  |
-| `kintone-get-record-comments`     | Get comments on a record                           |
-| `kintone-add-record-comment`      | Add a comment to a record                          |
-| `kintone-add-app`                 | Create app in pre-live environment                 |
-| `kintone-deploy-app`              | Deploy app settings to production                  |
-| `kintone-update-general-settings` | Update app general settings                        |
-| `kintone-download-file`           | Download and save a file from an attachment field  |
-| `kintone-add-space-from-template` | Create a new kintone space from a space template   |
-| `kintone-update-space`            | Update space settings                              |
-| `kintone-get-space`               | Get space information and portal settings          |
-| `kintone-delete-space`            | Delete a space                                     |
-| `kintone-search`                  | Search across all of kintone                       |
+| Tool Name                         | Description                                        | readOnlyHint | destructiveHint | idempotentHint | openWorldHint |
+| --------------------------------- | -------------------------------------------------- | ------------ | --------------- | -------------- | ------------- |
+| `kintone-get-apps`                | Get information of multiple apps                   | true         | false           | true           | false         |
+| `kintone-get-app`                 | Get details of a single app                        | true         | false           | true           | false         |
+| `kintone-get-form-fields`         | Get app field settings                             | true         | false           | true           | false         |
+| `kintone-get-form-layout`         | Get app form layout                                | true         | false           | true           | false         |
+| `kintone-update-form-fields`      | Update app field settings                          | false        | true            | false          | false         |
+| `kintone-update-form-layout`      | Update app form layout                             | false        | true            | false          | false         |
+| `kintone-delete-form-fields`      | Delete app fields                                  | false        | true            | true           | false         |
+| `kintone-get-process-management`  | Get process management settings                    | true         | false           | true           | false         |
+| `kintone-get-app-deploy-status`   | Check app settings deployment status to production | true         | false           | true           | false         |
+| `kintone-get-general-settings`    | Get general settings of an app                     | true         | false           | true           | false         |
+| `kintone-get-customization`       | Get app JavaScript/CSS customization settings      | true         | false           | true           | false         |
+| `kintone-add-form-fields`         | Add fields to an app                               | false        | false           | true           | false         |
+| `kintone-get-records`             | Get multiple records                               | true         | false           | true           | false         |
+| `kintone-add-records`             | Add multiple records                               | false        | false           | false          | false         |
+| `kintone-update-records`          | Update multiple records                            | false        | true            | false          | false         |
+| `kintone-delete-records`          | Delete multiple records                            | false        | true            | true           | false         |
+| `kintone-update-statuses`         | Update status of multiple records                  | false        | true            | false          | false         |
+| `kintone-get-record-comments`     | Get comments on a record                           | true         | false           | true           | false         |
+| `kintone-add-record-comment`      | Add a comment to a record                          | false        | false           | false          | false         |
+| `kintone-add-app`                 | Create app in pre-live environment                 | false        | false           | false          | false         |
+| `kintone-deploy-app`              | Deploy app settings to production                  | false        | true            | false          | false         |
+| `kintone-update-general-settings` | Update app general settings                        | false        | true            | false          | false         |
+| `kintone-download-file`           | Download and save a file from an attachment field  | true         | false           | true           | false         |
+| `kintone-add-space-from-template` | Create a new kintone space from a space template   | false        | false           | false          | false         |
+| `kintone-update-space`            | Update space settings                              | false        | true            | false          | false         |
+| `kintone-get-space`               | Get space information and portal settings          | true         | false           | true           | false         |
+| `kintone-delete-space`            | Delete a space                                     | false        | true            | true           | false         |
+| `kintone-search`                  | Search across all of kintone                       | true         | false           | true           | false         |
+
+Each tool advertises MCP tool annotations (`readOnlyHint`, `destructiveHint`, `idempotentHint`, and `openWorldHint`) that describe its behavior. MCP clients may use them to decide, for example, whether to ask for confirmation before running a tool. See [docs/dev/tool-annotations.md](./docs/dev/tool-annotations.md) for how each value is decided.
 
 ## Documentation
 

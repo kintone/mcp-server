@@ -38,6 +38,12 @@ const toolConfig = {
     "This is an asynchronous API - use kintone-get-app-deploy-status tool to check deployment progress.",
   inputSchema,
   outputSchema,
+  annotations: {
+    readOnlyHint: false,
+    destructiveHint: true,
+    idempotentHint: false,
+    openWorldHint: false,
+  },
 };
 
 const callback: KintoneToolCallback<typeof inputSchema> = async (

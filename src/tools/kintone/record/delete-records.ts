@@ -26,6 +26,12 @@ const toolConfig = {
     "Delete multiple records from a kintone app. Maximum 100 records can be deleted at once.",
   inputSchema,
   outputSchema,
+  annotations: {
+    readOnlyHint: false,
+    destructiveHint: true,
+    idempotentHint: true,
+    openWorldHint: false,
+  },
 };
 
 const callback: KintoneToolCallback<typeof inputSchema> = async (

@@ -47,6 +47,10 @@ pnpm build:mcpb
 pnpm test
 ```
 
+## ツールの注釈
+
+ツールを追加・変更する場合は、MCPのツール注釈の4項目をすべて指定してください。各値の決め方は [docs/dev/tool-annotations.md](docs/dev/tool-annotations.md) を参照してください。
+
 ## コミットメッセージとPRの規約
 
 ### コミットメッセージ

@@ -92,6 +92,12 @@ const toolConfig = {
   description: "Get general settings of a kintone app",
   inputSchema,
   outputSchema,
+  annotations: {
+    readOnlyHint: true,
+    destructiveHint: false,
+    idempotentHint: true,
+    openWorldHint: false,
+  },
 };
 
 const callback: KintoneToolCallback<typeof inputSchema> = async (

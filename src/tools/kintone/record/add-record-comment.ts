@@ -46,6 +46,12 @@ const toolConfig = {
     "Add a single comment to a kintone record. The kintone API accepts one comment per call; to add comments to multiple records, call this tool repeatedly.",
   inputSchema,
   outputSchema,
+  annotations: {
+    readOnlyHint: false,
+    destructiveHint: false,
+    idempotentHint: false,
+    openWorldHint: false,
+  },
 };
 
 const callback: KintoneToolCallback<typeof inputSchema> = async (

@@ -84,6 +84,12 @@ const toolConfig = {
     "Requires space administrator privileges on the target space. The API returns an empty body on success.",
   inputSchema,
   outputSchema,
+  annotations: {
+    readOnlyHint: false,
+    destructiveHint: true,
+    idempotentHint: false,
+    openWorldHint: false,
+  },
 };
 const callback: KintoneToolCallback<typeof inputSchema> = async (
   {
