@@ -143,18 +143,3 @@ export const recordSchemaForParameter = z.record(
     }),
   ),
 );
-
-// ファイルアップロードツール未実装のため現在はinputとしては指定不可
-// TODO: ファイルアップロードツール実装後に調整
-export const recordSchemaForParameterWithoutFile = z.record(
-  z.string(),
-  _recordValueSchema.or(
-    z.object({
-      value: z
-        .never()
-        .describe(
-          "FILE fields are not supported yet (file upload tool not implemented)",
-        ),
-    }),
-  ),
-);

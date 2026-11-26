@@ -158,8 +158,9 @@ describe("tool schemas", () => {
   });
 
   // See src/schema/without-advertised-required.ts. Only "items" and
-  // "prefixItems" themselves are checked here; "required" nested further down
-  // is left alone, because kintone-add-records advertises it and is not affected.
+  // "prefixItems" themselves are checked here; "required" nested further down,
+  // such as the { code } values of kintone-add-records, is left alone because
+  // the clients are only known to stall on the items of a required array.
   it("never declare required directly on the items of a required array", async () => {
     const advertised = await listTools();
 
@@ -183,6 +184,7 @@ describe("tool schemas", () => {
   });
 
   const arrays = [
+    ["kintone-add-records", "records", { app: "1", records: [{}] }],
     ["kintone-update-records", "records", { app: "1", records: [{}] }],
     ["kintone-update-statuses", "records", { app: "1", records: [{}] }],
     ["kintone-deploy-app", "apps", { apps: [{}] }],
