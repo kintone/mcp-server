@@ -45,7 +45,9 @@ describe("update-statuses tool", () => {
         {
           input: {
             app: "123",
-            records: [{ id: "1", action: "申請する" }],
+            records: [
+              { id: "1", action: "申請する", assignee: "", revision: "-1" },
+            ],
           },
           description: "basic record with app as string",
         },
@@ -61,7 +63,7 @@ describe("update-statuses tool", () => {
               },
             ],
           },
-          description: "record with all optional fields",
+          description: "record with assignee and revision",
         },
         {
           input: {
@@ -69,6 +71,8 @@ describe("update-statuses tool", () => {
             records: Array.from({ length: 100 }, (_, i) => ({
               id: String(i + 1),
               action: "申請する",
+              assignee: "",
+              revision: "-1",
             })),
           },
           description: "maximum 100 records",
@@ -77,8 +81,8 @@ describe("update-statuses tool", () => {
           input: {
             app: "123",
             records: [
-              { id: "1", action: "申請する" },
-              { id: "2", action: "承認", assignee: "user2" },
+              { id: "1", action: "申請する", assignee: "", revision: "-1" },
+              { id: "2", action: "承認", assignee: "user2", revision: "3" },
             ],
           },
           description: "multiple records with different actions",
@@ -86,16 +90,29 @@ describe("update-statuses tool", () => {
         {
           input: {
             app: "123",
-            records: [{ id: "123", action: "申請する" }],
+            records: [
+              { id: "123", action: "申請する", assignee: "", revision: "-1" },
+            ],
           },
           description: "record id as number",
         },
         {
           input: {
             app: "123",
-            records: [{ id: "1", action: "申請する", revision: "1" }],
+            records: [
+              { id: "1", action: "申請する", assignee: "", revision: "0" },
+            ],
           },
-          description: "revision as string",
+          description: "revision as zero",
+        },
+        {
+          input: {
+            app: "123",
+            records: [
+              { id: "1", action: "申請する", assignee: "", revision: "12" },
+            ],
+          },
+          description: "revision as multi-digit string",
         },
       ])("accepts $description", ({ input }) => {
         expect(() => inputSchema.parse(input)).not.toThrow();
@@ -103,6 +120,13 @@ describe("update-statuses tool", () => {
     });
 
     describe("input schema validation with invalid inputs", () => {
+      const record = {
+        id: "1",
+        action: "申請する",
+        assignee: "",
+        revision: "-1",
+      };
+
       it.each([
         {
           input: {},
@@ -114,19 +138,19 @@ describe("update-statuses tool", () => {
           description: "missing records field",
         },
         {
-          input: { records: [{ id: "1", action: "申請する" }] },
+          input: { records: [record] },
           description: "missing app field",
         },
         {
-          input: { app: true, records: [{ id: "1", action: "申請する" }] },
+          input: { app: true, records: [record] },
           description: "app as boolean",
         },
         {
-          input: { app: null, records: [{ id: "1", action: "申請する" }] },
+          input: { app: null, records: [record] },
           description: "app as null",
         },
         {
-          input: { app: [], records: [{ id: "1", action: "申請する" }] },
+          input: { app: [], records: [record] },
           description: "app as array",
         },
         {
@@ -137,33 +161,95 @@ describe("update-statuses tool", () => {
           input: {
             app: "123",
             records: Array.from({ length: 101 }, (_, i) => ({
+              ...record,
               id: String(i + 1),
-              action: "申請する",
             })),
           },
           description: "more than 100 records",
         },
         {
-          input: { app: "123", records: [{ action: "申請する" }] },
+          input: {
+            app: "123",
+            records: [{ action: "申請する", assignee: "", revision: "-1" }],
+          },
           description: "record missing id field",
         },
         {
-          input: { app: "123", records: [{ id: "1" }] },
+          input: {
+            app: "123",
+            records: [{ id: "1", assignee: "", revision: "-1" }],
+          },
           description: "record missing action field",
         },
         {
           input: {
             app: "123",
-            records: [{ id: "1", action: 123 }],
+            records: [{ id: "1", action: "申請する", revision: "-1" }],
+          },
+          description: "record missing assignee field",
+        },
+        {
+          input: {
+            app: "123",
+            records: [{ id: "1", action: "申請する", assignee: "" }],
+          },
+          description: "record missing revision field",
+        },
+        {
+          input: {
+            app: "123",
+            records: [{ ...record, action: 123 }],
           },
           description: "record action as number",
         },
         {
           input: {
             app: "123",
-            records: [{ id: "1", action: "申請する", assignee: 123 }],
+            records: [{ ...record, assignee: 123 }],
           },
           description: "assignee as number",
+        },
+        {
+          input: {
+            app: "123",
+            records: [{ ...record, assignee: null }],
+          },
+          description: "assignee as null",
+        },
+        {
+          input: {
+            app: "123",
+            records: [{ ...record, revision: "" }],
+          },
+          description: "revision as empty string",
+        },
+        {
+          input: {
+            app: "123",
+            records: [{ ...record, revision: "abc" }],
+          },
+          description: "revision as non-numeric string",
+        },
+        {
+          input: {
+            app: "123",
+            records: [{ ...record, revision: "-2" }],
+          },
+          description: "revision as negative number other than -1",
+        },
+        {
+          input: {
+            app: "123",
+            records: [{ ...record, revision: "1.5" }],
+          },
+          description: "revision as decimal string",
+        },
+        {
+          input: {
+            app: "123",
+            records: [{ ...record, revision: -1 }],
+          },
+          description: "revision as number",
         },
       ])("rejects $description", ({ input }) => {
         expect(() => inputSchema.parse(input)).toThrow();
@@ -325,8 +411,8 @@ describe("update-statuses tool", () => {
       const input = {
         app: "456",
         records: [
-          { id: "1", action: "申請する" },
-          { id: "2", action: "承認", assignee: "user2" },
+          { id: "1", action: "申請する", assignee: "user1", revision: "-1" },
+          { id: "2", action: "承認", assignee: "user2", revision: "1" },
         ],
       };
 
@@ -341,8 +427,8 @@ describe("update-statuses tool", () => {
       expect(mockUpdateRecordsStatus).toHaveBeenCalledWith({
         app: "456",
         records: [
-          { id: "1", action: "申請する" },
-          { id: "2", action: "承認", assignee: "user2" },
+          { id: "1", action: "申請する", assignee: "user1", revision: "-1" },
+          { id: "2", action: "承認", assignee: "user2", revision: "1" },
         ],
       });
       expect(result.structuredContent).toEqual(mockData);
@@ -353,13 +439,49 @@ describe("update-statuses tool", () => {
       });
     });
 
+    it("should omit assignee from records whose assignee is empty", async () => {
+      mockUpdateRecordsStatus.mockResolvedValueOnce({
+        records: [
+          { id: "1", revision: "2" },
+          { id: "2", revision: "3" },
+        ],
+      });
+
+      const input = {
+        app: "456",
+        records: [
+          { id: "1", action: "申請する", assignee: "", revision: "-1" },
+          { id: "2", action: "承認", assignee: "user2", revision: "1" },
+        ],
+      };
+
+      const mockClient = createMockClient();
+      mockClient.record.updateRecordsStatus = mockUpdateRecordsStatus;
+
+      await updateStatuses.callback(input, mockToolCallbackOptions(mockClient));
+
+      expect(mockUpdateRecordsStatus).toHaveBeenCalledWith({
+        app: "456",
+        records: [
+          { id: "1", action: "申請する", revision: "-1" },
+          { id: "2", action: "承認", assignee: "user2", revision: "1" },
+        ],
+      });
+      expect(
+        mockUpdateRecordsStatus.mock.calls[0][0].records[0],
+      ).not.toHaveProperty("assignee");
+      expect(input.records[0]).toHaveProperty("assignee", "");
+    });
+
     it("should handle API errors", async () => {
       const error = new Error("API Error");
       mockUpdateRecordsStatus.mockRejectedValueOnce(error);
 
       const input = {
         app: "123",
-        records: [{ id: "1", action: "申請する" }],
+        records: [
+          { id: "1", action: "申請する", assignee: "", revision: "-1" },
+        ],
       };
 
       const mockClient = createMockClient();
