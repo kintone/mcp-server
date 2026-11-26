@@ -33,7 +33,7 @@ describe("update-records tool", () => {
 
     it("should have correct description", () => {
       expect(updateRecords.config.description).toBe(
-        "Update multiple records in a kintone app. Use kintone-get-form-fields tool first to discover available field codes and their required formats. Note: Some fields cannot be updated (LOOKUP copies, STATUS, CATEGORY, CALC, ASSIGNEE, auto-calculated fields).",
+        'Update multiple records in a kintone app. Use kintone-get-form-fields tool first to discover available field codes and their required formats. To update a SUBTABLE field, pass every row to keep: existing rows with their row ID from kintone-get-records, and new rows with "" as the ID. Rows left out are deleted. Note: Some fields cannot be updated (LOOKUP copies, STATUS, CATEGORY, CALC, ASSIGNEE, FILE, auto-calculated fields).',
       );
     });
 
@@ -48,13 +48,12 @@ describe("update-records tool", () => {
             records: [
               {
                 id: "1",
-                record: {
-                  title: { value: "Updated Record" },
-                },
+                revision: "-1",
+                fields: [{ fieldCode: "title", value: "Updated Record" }],
               },
             ],
           },
-          description: "single record with text field",
+          description: "single record skipping revision validation",
         },
         {
           input: {
@@ -62,15 +61,15 @@ describe("update-records tool", () => {
             records: [
               {
                 id: "1",
-                record: {
-                  title: { value: "Updated Record" },
-                  number_field: { value: "100" },
-                },
                 revision: "2",
+                fields: [
+                  { fieldCode: "title", value: "Updated Record" },
+                  { fieldCode: "number_field", value: "100" },
+                ],
               },
             ],
           },
-          description: "app as string with revision",
+          description: "record with revision",
         },
         {
           input: {
@@ -78,19 +77,17 @@ describe("update-records tool", () => {
             records: [
               {
                 id: "1",
-                record: {
-                  title: { value: "Record 1" },
-                },
+                revision: "-1",
+                fields: [{ fieldCode: "title", value: "Record 1" }],
               },
               {
                 id: "2",
-                record: {
-                  title: { value: "Record 2" },
-                },
+                revision: "5",
+                fields: [{ fieldCode: "status_text", value: "Done" }],
               },
             ],
           },
-          description: "multiple records",
+          description: "multiple records with different fields",
         },
         {
           input: {
@@ -98,29 +95,18 @@ describe("update-records tool", () => {
             records: [
               {
                 id: "1",
-                record: {
-                  multi_select: { value: ["option1", "option2"] },
-                },
-              },
-            ],
-          },
-          description: "record with array field",
-        },
-        {
-          input: {
-            app: "123",
-            records: [
-              {
-                id: "1",
-                record: {
-                  user_field: {
+                revision: "-1",
+                fields: [
+                  {
+                    fieldCode: "user_field",
                     value: [{ code: "user1" }, { code: "user2" }],
                   },
-                },
+                  { fieldCode: "creator_field", value: { code: "user1" } },
+                ],
               },
             ],
           },
-          description: "record with user select field",
+          description: "record with user fields",
         },
         {
           input: {
@@ -128,39 +114,30 @@ describe("update-records tool", () => {
             records: [
               {
                 id: "1",
-                record: {
-                  file_field: {
-                    value: [{ fileKey: "file123" }],
-                  },
-                },
-              },
-            ],
-          },
-          description: "record with file field",
-        },
-        {
-          input: {
-            app: "123",
-            records: [
-              {
-                id: "1",
-                record: {
-                  subtable_field: {
+                revision: "-1",
+                fields: [
+                  {
+                    fieldCode: "subtable_field",
                     value: [
                       {
                         id: "12345",
-                        value: {
-                          sub_field_1: { value: "sub value 1" },
-                          sub_field_2: { value: "sub value 2" },
-                        },
+                        fields: [
+                          { fieldCode: "sub_field_1", value: "sub value 1" },
+                        ],
+                      },
+                      {
+                        id: "",
+                        fields: [
+                          { fieldCode: "sub_field_1", value: "new row" },
+                        ],
                       },
                     ],
                   },
-                },
+                ],
               },
             ],
           },
-          description: "record with subtable field",
+          description: "record with existing and new subtable rows",
         },
         {
           input: {
@@ -168,50 +145,15 @@ describe("update-records tool", () => {
             records: [
               {
                 id: "1",
-                record: {
-                  date_field: { value: "2025-01-01" },
-                  time_field: { value: "13:30" },
-                  datetime_field: { value: "2025-01-01T13:30:00Z" },
-                  number_field: { value: "123.45" },
-                  checkbox_field: { value: ["option1", "option2"] },
-                  radio_field: { value: "option1" },
-                  dropdown_field: { value: "selected_option" },
-                  link_field: { value: "https://example.com" },
-                },
+                revision: "-1",
+                fields: [
+                  { fieldCode: "text_field", value: "" },
+                  { fieldCode: "empty_checkbox_field", value: [] },
+                ],
               },
             ],
           },
-          description: "record with various field types",
-        },
-        {
-          input: {
-            app: "123",
-            records: [
-              {
-                id: "1",
-                record: {
-                  nullable_field: { value: null },
-                  empty_checkbox_field: { value: [] },
-                },
-              },
-            ],
-          },
-          description: "record with nullable and empty checkbox values",
-        },
-        {
-          input: {
-            app: "123",
-            records: [
-              {
-                id: "1",
-                record: {
-                  lookup_text_key: { value: "Code001" },
-                  lookup_number_key: { value: "10" },
-                },
-              },
-            ],
-          },
-          description: "record with lookup fields",
+          description: "record with empty text and empty checkbox values",
         },
       ])("accepts $description", ({ input }) => {
         expect(() => inputSchema.parse(input)).not.toThrow();
@@ -221,21 +163,10 @@ describe("update-records tool", () => {
     describe("input schema validation with invalid inputs", () => {
       it.each([
         { input: {}, description: "missing required app field" },
-        { input: { app: true }, description: "app as boolean" },
-        { input: { app: null }, description: "app as null" },
-        { input: { app: [] }, description: "app as array" },
         { input: { app: 123 }, description: "app as number" },
         {
           input: { app: "123" },
           description: "missing required records field",
-        },
-        {
-          input: { app: "123", records: null },
-          description: "records as null",
-        },
-        {
-          input: { app: "123", records: "not an array" },
-          description: "records as string",
         },
         {
           input: { app: "123", records: [] },
@@ -246,7 +177,8 @@ describe("update-records tool", () => {
             app: "123",
             records: Array(101).fill({
               id: "1",
-              record: { title: { value: "test" } },
+              revision: "-1",
+              fields: [{ fieldCode: "title", value: "test" }],
             }),
           },
           description: "too many records (over 100)",
@@ -256,7 +188,8 @@ describe("update-records tool", () => {
             app: "123",
             records: [
               {
-                record: { title: { value: "test" } },
+                revision: "-1",
+                fields: [{ fieldCode: "title", value: "test" }],
               },
             ],
           },
@@ -265,14 +198,9 @@ describe("update-records tool", () => {
         {
           input: {
             app: "123",
-            records: [
-              {
-                id: 123,
-                record: { title: { value: "test" } },
-              },
-            ],
+            records: [{ id: "1", revision: "-1" }],
           },
-          description: "id as number instead of string",
+          description: "missing required fields field",
         },
         {
           input: {
@@ -280,13 +208,154 @@ describe("update-records tool", () => {
             records: [
               {
                 id: "1",
+                record: { title: { value: "test" } },
               },
             ],
           },
-          description: "missing required record field",
+          description: '"record" key instead of "fields"',
+        },
+        {
+          input: {
+            app: "123",
+            records: [
+              {
+                id: "1",
+                revision: "-1",
+                fields: [
+                  { fieldCode: "title", value: "a" },
+                  { fieldCode: "title", value: "b" },
+                ],
+              },
+            ],
+          },
+          description: "duplicate field codes",
+        },
+        {
+          input: {
+            app: "123",
+            records: [
+              {
+                id: "1",
+                revision: "-1",
+                fields: [
+                  { fieldCode: "file_field", value: [{ fileKey: "file123" }] },
+                ],
+              },
+            ],
+          },
+          description: "FILE field value",
+        },
+        {
+          input: {
+            app: "123",
+            records: [
+              {
+                id: "1",
+                revision: "-1",
+                fields: [
+                  {
+                    fieldCode: "subtable_field",
+                    value: [
+                      { fields: [{ fieldCode: "sub_field_1", value: "x" }] },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+          description: "subtable row without id",
         },
       ])("rejects $description", ({ input }) => {
         expect(() => inputSchema.parse(input)).toThrow();
+      });
+    });
+
+    describe("revision validation", () => {
+      const parseRevision = (record: object) =>
+        inputSchema.safeParse({
+          app: "123",
+          records: [
+            {
+              id: "1",
+              fields: [{ fieldCode: "title", value: "x" }],
+              ...record,
+            },
+          ],
+        });
+
+      it.each(["-1", "0", "12"])("accepts %j", (revision) => {
+        expect(parseRevision({ revision }).success).toBe(true);
+      });
+
+      it("tells how to skip revision validation when revision is missing", () => {
+        const result = parseRevision({});
+
+        expect(result.error?.issues).toEqual([
+          expect.objectContaining({
+            path: ["records", 0, "revision"],
+            message:
+              'revision is required. Specify "-1" to skip revision validation',
+          }),
+        ]);
+      });
+
+      it.each(["", "abc", "-2", "1.5", " 1"])(
+        "rejects %j with how to write a revision",
+        (revision) => {
+          const result = parseRevision({ revision });
+
+          expect(result.error?.issues).toEqual([
+            expect.objectContaining({
+              path: ["records", 0, "revision"],
+              message:
+                'revision must be "-1" or a revision number such as "3". Specify "-1" to skip revision validation',
+            }),
+          ]);
+        },
+      );
+    });
+
+    describe("fields validation", () => {
+      it("rejects empty fields", () => {
+        const result = inputSchema.safeParse({
+          app: "123",
+          records: [{ id: "1", revision: "-1", fields: [] }],
+        });
+
+        expect(result.error?.issues).toContainEqual(
+          expect.objectContaining({
+            path: ["records", 0, "fields"],
+            message: "fields must contain at least one field to update",
+          }),
+        );
+      });
+    });
+
+    describe("advertised input schema", () => {
+      // tools/list renders the input side of the schema.
+      const advertised = z.toJSONSchema(inputSchema, { io: "input" });
+      const recordItem = z
+        .looseObject({
+          properties: z.object({
+            revision: z.record(z.string(), z.unknown()),
+            fields: z.record(z.string(), z.unknown()),
+          }),
+        })
+        .parse(
+          z.object({ items: z.unknown() }).parse(advertised.properties?.records)
+            .items,
+        );
+
+      it("does not advertise the revision pattern", () => {
+        expect(recordItem.properties.revision).not.toHaveProperty("pattern");
+      });
+
+      it("does not advertise a minimum number of fields", () => {
+        expect(recordItem.properties.fields).not.toHaveProperty("minItems");
+      });
+
+      it("does not advertise required keys of records", () => {
+        expect(recordItem).not.toHaveProperty("required");
       });
     });
 
@@ -332,16 +401,8 @@ describe("update-records tool", () => {
           description: "records as null",
         },
         {
-          output: { records: "not an array" },
-          description: "records as string",
-        },
-        {
           output: { records: [{ id: 1, revision: "2" }] },
           description: "id as number",
-        },
-        {
-          output: { records: [{ id: "1", revision: 2 }] },
-          description: "revision as number",
         },
         {
           output: { records: [{ id: "1" }] },
@@ -354,31 +415,30 @@ describe("update-records tool", () => {
   });
 
   describe("callback function", () => {
-    it("should call API with single record and return formatted response", async () => {
+    it("should convert fields into a record and return formatted response", async () => {
       const mockResponse = {
         records: [{ id: "123", revision: "2" }],
       };
 
       mockUpdateRecords.mockResolvedValueOnce(mockResponse);
 
-      const input = {
-        app: "123",
-        records: [
-          {
-            id: "123",
-            record: {
-              title: { value: "Updated Record" },
-              description: { value: "Updated Description" },
-            },
-          },
-        ],
-      };
-
       const mockClient = createMockClient();
       mockClient.record.updateRecords = mockUpdateRecords;
 
       const result = await updateRecords.callback(
-        input,
+        {
+          app: "123",
+          records: [
+            {
+              id: "123",
+              revision: "1",
+              fields: [
+                { fieldCode: "title", value: "Updated Record" },
+                { fieldCode: "description", value: "Updated Description" },
+              ],
+            },
+          ],
+        },
         mockToolCallbackOptions(mockClient),
       );
 
@@ -387,6 +447,7 @@ describe("update-records tool", () => {
         records: [
           {
             id: "123",
+            revision: "1",
             record: {
               title: { value: "Updated Record" },
               description: { value: "Updated Description" },
@@ -403,50 +464,33 @@ describe("update-records tool", () => {
       });
     });
 
-    it("should call API with multiple records", async () => {
-      const mockResponse = {
+    it('should pass revision "-1" to the API as is', async () => {
+      mockUpdateRecords.mockResolvedValueOnce({
         records: [
           { id: "123", revision: "3" },
           { id: "124", revision: "2" },
-          { id: "125", revision: "1" },
         ],
-      };
-
-      mockUpdateRecords.mockResolvedValueOnce(mockResponse);
-
-      const input = {
-        app: "456",
-        records: [
-          {
-            id: "123",
-            record: {
-              title: { value: "Updated Record 1" },
-              number_field: { value: "100" },
-            },
-            revision: "2",
-          },
-          {
-            id: "124",
-            record: {
-              title: { value: "Updated Record 2" },
-              number_field: { value: "200" },
-            },
-          },
-          {
-            id: "125",
-            record: {
-              title: { value: "Updated Record 3" },
-              multi_select: { value: ["option1", "option2"] },
-            },
-          },
-        ],
-      };
+      });
 
       const mockClient = createMockClient();
       mockClient.record.updateRecords = mockUpdateRecords;
 
-      const result = await updateRecords.callback(
-        input as any,
+      await updateRecords.callback(
+        {
+          app: "456",
+          records: [
+            {
+              id: "123",
+              revision: "2",
+              fields: [{ fieldCode: "number_field", value: "100" }],
+            },
+            {
+              id: "124",
+              revision: "-1",
+              fields: [{ fieldCode: "multi_select", value: ["option1"] }],
+            },
+          ],
+        },
         mockToolCallbackOptions(mockClient),
       );
 
@@ -455,78 +499,52 @@ describe("update-records tool", () => {
         records: [
           {
             id: "123",
-            record: {
-              title: { value: "Updated Record 1" },
-              number_field: { value: "100" },
-            },
             revision: "2",
+            record: { number_field: { value: "100" } },
           },
           {
             id: "124",
-            record: {
-              title: { value: "Updated Record 2" },
-              number_field: { value: "200" },
-            },
-          },
-          {
-            id: "125",
-            record: {
-              title: { value: "Updated Record 3" },
-              multi_select: { value: ["option1", "option2"] },
-            },
+            revision: "-1",
+            record: { multi_select: { value: ["option1"] } },
           },
         ],
         upsert: false,
       });
-      expect(result.structuredContent).toEqual(mockResponse);
     });
 
-    it("should handle complex field types", async () => {
-      const mockResponse = {
+    it('should keep subtable row IDs and drop "" for new rows', async () => {
+      mockUpdateRecords.mockResolvedValueOnce({
         records: [{ id: "123", revision: "2" }],
-      };
-
-      mockUpdateRecords.mockResolvedValueOnce(mockResponse);
-
-      const input = {
-        app: "123",
-        records: [
-          {
-            id: "123",
-            record: {
-              title: { value: "Complex Updated Record" },
-              user_field: {
-                value: [{ code: "user1" }, { code: "user2" }],
-              },
-              file_field: {
-                value: [{ fileKey: "file123" }, { fileKey: "file456" }],
-              },
-              subtable_field: {
-                value: [
-                  {
-                    value: {
-                      sub_text: { value: "updated sub value 1" },
-                      sub_number: { value: "15" },
-                    },
-                  },
-                  {
-                    value: {
-                      sub_text: { value: "updated sub value 2" },
-                      sub_number: { value: "25" },
-                    },
-                  },
-                ],
-              },
-            },
-          },
-        ],
-      };
+      });
 
       const mockClient = createMockClient();
       mockClient.record.updateRecords = mockUpdateRecords;
 
-      const result = await updateRecords.callback(
-        input,
+      await updateRecords.callback(
+        {
+          app: "123",
+          records: [
+            {
+              id: "123",
+              revision: "-1",
+              fields: [
+                {
+                  fieldCode: "subtable_field",
+                  value: [
+                    {
+                      id: "10",
+                      fields: [{ fieldCode: "sub_text", value: "kept row" }],
+                    },
+                    {
+                      id: "",
+                      fields: [{ fieldCode: "sub_text", value: "new row" }],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
         mockToolCallbackOptions(mockClient),
       );
 
@@ -535,69 +553,14 @@ describe("update-records tool", () => {
         records: [
           {
             id: "123",
+            revision: "-1",
             record: {
-              title: { value: "Complex Updated Record" },
-              user_field: {
-                value: [{ code: "user1" }, { code: "user2" }],
-              },
-              file_field: {
-                value: [{ fileKey: "file123" }, { fileKey: "file456" }],
-              },
               subtable_field: {
                 value: [
-                  {
-                    value: {
-                      sub_text: { value: "updated sub value 1" },
-                      sub_number: { value: "15" },
-                    },
-                  },
-                  {
-                    value: {
-                      sub_text: { value: "updated sub value 2" },
-                      sub_number: { value: "25" },
-                    },
-                  },
+                  { id: "10", value: { sub_text: { value: "kept row" } } },
+                  { value: { sub_text: { value: "new row" } } },
                 ],
               },
-            },
-          },
-        ],
-        upsert: false,
-      });
-      expect(result.structuredContent).toEqual(mockResponse);
-    });
-
-    it("should always set upsert to false", async () => {
-      const mockResponse = {
-        records: [{ id: "123", revision: "2" }],
-      };
-
-      mockUpdateRecords.mockResolvedValueOnce(mockResponse);
-
-      const input = {
-        app: "123",
-        records: [
-          {
-            id: "123",
-            record: {
-              title: { value: "Test Record" },
-            },
-          },
-        ],
-      };
-
-      const mockClient = createMockClient();
-      mockClient.record.updateRecords = mockUpdateRecords;
-
-      await updateRecords.callback(input, mockToolCallbackOptions(mockClient));
-
-      expect(mockUpdateRecords).toHaveBeenCalledWith({
-        app: "123",
-        records: [
-          {
-            id: "123",
-            record: {
-              title: { value: "Test Record" },
             },
           },
         ],
@@ -609,40 +572,24 @@ describe("update-records tool", () => {
       const mockError = new Error("API Error: Record not found");
       mockUpdateRecords.mockRejectedValueOnce(mockError);
 
-      const input = {
-        app: "123",
-        records: [
-          {
-            id: "999",
-            record: {
-              title: { value: "test" },
-            },
-          },
-        ],
-      };
-
       const mockClient = createMockClient();
       mockClient.record.updateRecords = mockUpdateRecords;
 
       await expect(
         updateRecords.callback(
-          input as any,
+          {
+            app: "123",
+            records: [
+              {
+                id: "999",
+                revision: "-1",
+                fields: [{ fieldCode: "title", value: "test" }],
+              },
+            ],
+          },
           mockToolCallbackOptions(mockClient),
         ),
       ).rejects.toThrow("API Error: Record not found");
-
-      expect(mockUpdateRecords).toHaveBeenCalledWith({
-        app: "123",
-        records: [
-          {
-            id: "999",
-            record: {
-              title: { value: "test" },
-            },
-          },
-        ],
-        upsert: false,
-      });
     });
   });
 });
