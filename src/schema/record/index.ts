@@ -1,3 +1,4 @@
+export { fieldEntriesSchema, toRecordForParameter } from "./field-entries.js";
 export {
   recordSchemaForParameter,
   recordSchemaForParameterWithoutFile,
