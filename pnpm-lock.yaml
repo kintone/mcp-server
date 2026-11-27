@@ -67,8 +67,8 @@ importers:
         specifier: 17.14.0
         version: 17.14.0
       npm:
-        specifier: 11.21.2
-        version: 11.21.2
+        specifier: 12.2.2
+        version: 12.2.2
       prettier:
         specifier: 3.8.5
         version: 3.8.5
@@ -2992,15 +2992,16 @@ packages:
   node-releases@2.0.27:
     resolution: {integrity: sha512-nmh3lCkYZ3grZvqcCH+fjmQ7X+H0OeZgP40OierEaAptX4XofMh5kwNbWh7lBduUzCcV/8kZ+NDLCwm2iorIlA==}
 
-  npm@11.21.2:
-    resolution: {integrity: sha512-7HPApk+AflMUavSseL1Pm6CnYqMIHk53x+KmuhqmTDqPkjPMgxIpTPcTqsE91EKNw4gFBJV9fnXiSdGm1DXq9A==}
-    engines: {node: ^20.17.0 || >=22.9.0}
+  npm@12.2.2:
+    resolution: {integrity: sha512-KglgbZyacf7jH+FHuNRqVuCzQi8VhI2a7J87Ix43FsPTuZoGWmIXXGdZtBUOA79vwL+IJREqURVzupA7PsQTcA==}
+    engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
     hasBin: true
     bundledDependencies:
       - '@isaacs/string-locale-compare'
       - '@npmcli/arborist'
       - '@npmcli/config'
       - '@npmcli/fs'
+      - '@npmcli/git'
       - '@npmcli/map-workspaces'
       - '@npmcli/metavuln-calculator'
       - '@npmcli/package-json'
@@ -3010,9 +3011,11 @@ packages:
       - '@sigstore/tuf'
       - abbrev
       - archy
+      - bin-links
       - cacache
       - chalk
       - ci-info
+      - diff
       - fastest-levenshtein
       - fs-minipass
       - glob
@@ -7030,7 +7033,7 @@ snapshots:
 
   node-releases@2.0.27: {}
 
-  npm@11.21.2: {}
+  npm@12.2.2: {}
 
   object-assign@4.1.1: {}
 
